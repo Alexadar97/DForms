@@ -1,0 +1,1030 @@
+<app-spinner *ngIf="loading"></app-spinner>
+<div class="col-md-2" style="padding: 0;
+background-color: #242536; height: 100vh;">
+<div style="margin-top: 15px;">
+  <p class="sidetext"  (click)="pmlists()"  routerLinkActive="active" ><i class="fa fa-angle-double-right"></i>&nbsp;&nbsp;Machine Shop Work List</p>
+    <p class="sidetext" (click)="addpmwork()" routerLinkActive="active" ><i class="fa fa-plus"></i>&nbsp;&nbsp;New
+                Request</p>
+
+                <!-- <p  (click)="Material_master()"
+                *ngIf="usertype == 'mechanicalsupervisor'">Material Cost Master</p> -->
+    </div>
+</div>
+<div class="col-md-10">
+<div class="row" style="margin-top: 11px;">
+  <div class="col-md-10">
+    <h4 class="first_head">Machine Shop Work</h4>
+  </div>
+  <div class="col-md-2" style="padding-right: 30px;">
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <!-- <h4 class="sec_head">Form Details</h4> -->
+  </div>
+</div>
+<div class="row">
+  <form [formGroup]="pmworkreqform" style="padding: 10px;width: 100%;">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="row" style="margin-top:10px;">
+          <div class="col-md-6  table-responsive">
+            <table class="table proto-table table-bordered">
+              <tr>
+                <th>Date of Request</th>
+                <td colspan="3"><input type="text" id="input" class="form-control" formControlName="createddate"
+                    disabled>
+                </td>
+              </tr>
+              <tr>
+                <th>Form ID</th>
+                <td colspan="3"><input type="text" id="input" class="form-control" formControlName="mswformid" disabled>
+                </td>
+              </tr>
+              <tr>
+                <th>Request Name</th>
+                <td colspan="3"><input type="text" id="input" class="form-control" formControlName="requestername"
+                    disabled></td>
+              </tr>
+              <tr>
+                <th>Department</th>
+                <td colspan="3"><input type="text" id="input" class="form-control" formControlName="department"
+                    disabled>
+                </td>
+              </tr>
+              <tr>
+                <th>CAD</th>
+                <td style="vertical-align: middle;">
+                  <ng-container *ngIf="card == 1">
+                    <input type="text" id="input" class="form-control" value="Yes" disabled>
+                  </ng-container>
+                  <ng-container *ngIf="card == 0">
+                    <input type="text" id="input" class="form-control" value="No" disabled>
+                  </ng-container>
+                </td>
+                <th style="vertical-align: middle;">
+                  <ng-container *ngIf="card == 0">
+                    CAD Remarks
+                  </ng-container>
+                  <ng-container *ngIf="card == 1">
+                    Attachment File
+                  </ng-container>
+                </th>
+                <td style="vertical-align: middle;" style="width: 26%;padding: 5px">
+                  <div *ngIf="card == 1" style="height: 14vh;overflow: auto;">
+                    <table>
+                      <section class="file-scroll">
+                        <table>
+                          <ng-container *ngFor="let fileList of pmwrFileListData">
+                            <tr>
+                              <td style="border: none;padding:0px 0px 10px 0px">{{fileList.filename}}</td>
+                              <td style="border: none;padding:0px 0px 10px 0px;width: 8%"><i class="fa fa-download"
+                                  (click)="downlaodfile(fileList.filename+'.'+fileList.fileformat ,fileList.id)"
+                                  style="font-size: 15px;color: #130f0fb5;cursor: pointer;"></i></td>
+                            </tr>
+                          </ng-container>
+                        </table>
+                      </section>
+                    </table>
+                  </div>
+                  <ng-container *ngIf="card == 0">
+                    <input style="width: 132px;" type="text" id="input" placeholder="Remakrs" class="form-control"
+                      formControlName="cadtext" disabled>
+                  </ng-container>
+                </td>
+              </tr>
+              <tr>
+                <th>Cost Center</th>
+                <td colspan="3"><input style="width: 132px;" type="text" id="input" class="form-control"
+                  formControlName="costcenter" disabled></td>
+              </tr>
+            
+              <tr *ngIf="mechbcashortid != null">
+                <ng-container *ngIf="mechbcashortid != null">
+                  <th>BCA Short ID</th>
+                  <td>
+                      <input type="text" id="input" class="form-control" formControlName="mechbcashortid"
+                        disabled></td>
+                </ng-container>
+                <ng-container *ngIf="mechbcashortid != null">
+                  <th>BCA Password</th>
+                  <td>
+                      <input type="text" id="input" class="form-control" formControlName="mechbcapassword"
+                        disabled>
+                  </td>
+                </ng-container>
+              </tr>
+            </table>
+          </div>
+          <div class="col-md-6  table-responsive">
+            <table class="table proto-table table-bordered">
+              <tr>
+                <th>Project Name</th>
+                <td> <input type="text" id="input" class="form-control" formControlName="projectname" disabled></td>
+              </tr>
+              <tr>
+                <th>Purpose of Activity</th>
+                <td> <input class="form-control" id="input" type="text" formControlName="storagePurpose" disabled></td>
+              </tr>
+              <tr>
+                <th>Status</th>
+                <td><input class="form-control" id="input" type="text" formControlName="status" disabled></td>
+              </tr>
+              <tr>
+                <th>L4 Remarks</th>
+                <td><textarea style="height: 63px;overflow: auto" class="form-control" id="input" type="text"
+                    formControlName="l4remarks" disabled></textarea></td>
+              </tr>
+              <tr *ngIf="protol4remarks != null">
+                <th>Proto L4 Remarks</th>
+                <td><textarea style="height: 63px;overflow: auto" class="form-control" id="input" type="text"
+                    formControlName="protol4remarks" disabled></textarea></td>
+              </tr>
+              <tr>
+                <th>Activity Description</th>
+                <td> <textarea style="height: 63px;overflow: auto" id="input" class="form-control" type="text"
+                    formControlName="activity" disabled></textarea></td>
+              </tr>
+              <tr *ngIf="supervisorremarks != null">
+                <th>
+                  Supervisor Remarks
+                </th>
+                <td><textarea style="height: 63px;overflow: auto" id="input" class="form-control" type="text"
+                  formControlName="supervisorremarks" disabled></textarea></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <h4 style="margin-top: 22px;">Part Details</h4>
+      </div>
+      <div class="col-md-12">
+        <table class="table responsive table-bordered">
+          <thead>
+            <tr class="tableheader">
+              <th>S.No</th>
+              <th style="width: 14%;">Work Category<dot></dot>
+              </th>
+              <th style="width: 19%;">Sub Category<dot></dot>
+              </th>
+              <th>Part Number<dot></dot>
+              </th>
+              <th>Part Description<dot></dot>
+              </th>
+              <th>Vehicle number</th>
+              <th>Quantity<dot></dot>
+              </th>
+              <th>Expected Delivery Date<dot></dot>
+              </th>
+            </tr>
+          </thead>
+          <tbody formArrayName="mswParts">
+            <tr class="tablerow" *ngFor="let part of rowForms.controls;let i =index" [formGroupName]="i">
+              <td style="text-align: center;">{{i+1}}</td>
+              <td>
+                <select *ngIf="(Operationstatus != 'mechsupervisorapproved' || Operationstatus == 'protol4approved' || Operationstatus == 'l4approved') && (issupapproved == 0)" class="form-control" id="workcatid{{i}}"
+                  formControlName="workcategory" (change)="workcat($event.target.value,i)">
+                  <option value="null" disabled selected>Select Work Category</option>
+                  <option value="servicesutilization">Services Utilization</option>
+                  <option value="partfabrication">Part Fabrication</option>
+                </select>
+                  <select *ngIf="(Operationstatus == 'mechsupervisorapproved' || Operationstatus != 'protol4approved' || Operationstatus != 'l4approved') && (issupapproved != 0 || supervisordateval != 0)" class="form-control" id="workcatid{{i}}"
+                  formControlName="workcategory" (change)="workcat($event.target.value,i)" disabled>
+                  <option value="null" disabled selected>Select Work Category</option>
+                  <option value="servicesutilization">Services Utilization</option>
+                  <option value="partfabrication">Part Fabrication</option>
+                </select>
+                <small class="text-danger" *ngIf="
+                !part.controls.workcategory.valid &&
+                part.workcategory.touched
+              ">Work Category is required</small>
+              </td>
+              <td>
+                <ng-container *ngIf="(Operationstatus != 'mechsupervisorapproved' || Operationstatus == 'protol4approved' || Operationstatus == 'l4approved') && (issupapproved == 0)">
+                  <ng-multiselect-dropdown [placeholder]="'Select Sub Category'" id="select{{i}}"
+                    [(data)]="dropdownList[i]" [(ngModel)]="selectedItems[i]" formControlName="worksubcategory2"
+                    [settings]="dropdownSettings" (onSelect)="onItemSelect($event,i)"
+                    (onSelectAll)="onSelectAll($event,i)">
+                  </ng-multiselect-dropdown>
+                </ng-container>
+                <ng-container *ngIf="(Operationstatus == 'mechsupervisorapproved' || Operationstatus != 'protol4approved' || Operationstatus != 'l4approved') && (issupapproved != 0 || supervisordateval != 0)">
+                  <ng-multiselect-dropdown [placeholder]="'Select Sub Category'" id="select{{i}}"
+                    [(data)]="dropdownList[i]" [(ngModel)]="selectedItems[i]" formControlName="worksubcategory2"
+                    [settings]="dropdownSettings" (onSelect)="onItemSelect($event,i)"
+                    (onSelectAll)="onSelectAll($event,i)" [disabled]="'false'">
+                  </ng-multiselect-dropdown>
+                </ng-container>
+
+                <small class="text-danger" *ngIf="
+                !part.controls.worksubcategory2.valid &&
+                part.controls.worksubcategory2.touched
+              ">Sub Category is required</small>
+              </td>
+              <td>
+                <input *ngIf="(Operationstatus != 'mechsupervisorapproved' || Operationstatus == 'protol4approved' || Operationstatus == 'l4approved') && (issupapproved == 0)" class="form-control" type="text"
+                  formControlName="partnumber" minlength="8" maxlength="15">
+                <input *ngIf="(Operationstatus == 'mechsupervisorapproved' || Operationstatus != 'protol4approved' || Operationstatus != 'l4approved') && (issupapproved != 0 || supervisordateval != 0)" class="form-control" type="text"
+                  formControlName="partnumber" minlength="8" maxlength="15" disabled>
+                <small class="text-danger" *ngIf="
+                  !part.controls.partnumber.valid &&
+                  part.controls.partnumber.touched
+                ">Part Number is required <br>(Should be minimum 8 characters) </small>
+              </td>
+              <td>
+                <input *ngIf="(Operationstatus != 'mechsupervisorapproved' || Operationstatus == 'protol4approved' || Operationstatus == 'l4approved') && (issupapproved == 0)" class="form-control" type="text"
+                  formControlName="description">
+                <input *ngIf="(Operationstatus == 'mechsupervisorapproved' || Operationstatus != 'protol4approved' || Operationstatus != 'l4approved') && (issupapproved != 0 || supervisordateval != 0)" class="form-control" type="text"
+                  formControlName="description" disabled>
+                <small class="text-danger" *ngIf="
+                !part.controls.description.valid &&
+                part.controls.description.touched
+              ">Description is required</small>
+              </td>
+              <td>
+                <input *ngIf="(Operationstatus != 'mechsupervisorapproved' || Operationstatus == 'protol4approved' || Operationstatus == 'l4approved') && (issupapproved == 0)" class="form-control" type="text"
+                  formControlName="vehicleno">
+                <input *ngIf="(Operationstatus == 'mechsupervisorapproved' || Operationstatus != 'protol4approved' || Operationstatus != 'l4approved') && (issupapproved != 0 || supervisordateval != 0)" class="form-control" type="text"
+                  formControlName="vehicleno" disabled>
+                <!-- <small class="text-danger" *ngIf="
+                !part.controls.vehicleno.valid &&
+                part.controls.vehicleno.touched
+              ">Vehicle Number is required</small> -->
+              </td>
+              <td>
+                <input *ngIf="(Operationstatus != 'mechsupervisorapproved' || Operationstatus == 'protol4approved' || Operationstatus == 'l4approved') && (issupapproved == 0)" class="form-control" type="text"
+                  formControlName="quantity" (keypress)="keyAlpha($event)">
+                <input *ngIf="(Operationstatus == 'mechsupervisorapproved' || Operationstatus != 'protol4approved' || Operationstatus != 'l4approved') && (issupapproved != 0 || supervisordateval != 0)" class="form-control" type="text"
+                  formControlName="quantity" (keypress)="keyAlpha($event)" disabled>
+                <small class="text-danger" *ngIf="
+                !part.controls.quantity.valid &&
+                part.controls.quantity.touched
+              ">Quantity is required</small>
+              </td>
+              <td>
+                <ng-container *ngIf="(Operationstatus == 'mechsupervisorapproved' || Operationstatus == 'protol4approved' || Operationstatus == 'l4approved') && (issupapproved != 0 || exigencycase == 1)">
+                  <input formControlName="startdate" type="text" placeholder="DD/MM/YYYY" class="form-control" bsDatepicker
+                    id="date{{i}}" [minDate]="today"
+                    [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }" disabled>
+                </ng-container>
+                <ng-container *ngIf="(exigencycase == 0 && Operationstatus != 'mechsupervisorapproved' || Operationstatus != 'protol4approved' || Operationstatus != 'l4approved') && (issupapproved == 0 && exigencycase == 0)">
+                  <input formControlName="startdate" type="text"
+                    placeholder="DD/MM/YYYY" class="form-control" bsDatepicker id="date{{i}}" [minDate]="today"
+                    [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }">
+                  <small class="text-danger" *ngIf="
+                  !part.controls.startdate.valid &&
+                  part.controls.startdate.touched
+                ">Expected Delivery Date is required</small>
+                </ng-container>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <ng-container
+        *ngIf="(Operationstatus != 'mechsupervisorapproved' && Operationstatus != 'pending') && (exigencycase == 1 || exigencycase == 0) && (issupapproved == 0)">
+        <div class="col-md-9"></div>
+        <div class="col-md-3" [formGroup]="remarkForm">
+          <div class="form-group" style="margin: 23px 0px 0px 0px;">
+            Remarks<dot></dot>
+            <textarea type="text" class="form-control" id="Project" formControlName="remark"></textarea>
+            <small class="text-danger" *ngIf="
+                                                  !remarkForm.controls.remark.valid &&
+                                                  remarkForm.controls.remark.touched
+                                                ">Remarks is required</small>
+          </div>
+        </div>
+        <div class="col-md-12" style="text-align: right;margin: 20px 0px;">
+          <button style="background: green;border:none;width:100px;" class="btn btn-primary btn-md"
+            (click)="updateData(1)">
+            <i class="fa fa-check"></i>&nbsp;&nbsp;Approve</button>
+          &nbsp;&nbsp;&nbsp;
+          <button style="background: #c9302c;border:none;width:100px;" class="btn btn-primary btn-md"
+            (click)="updateData(0)"><i class="fa fa-times"></i>&nbsp;&nbsp;Reject</button>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="Operationstatus == 'mechsupervisorapproved' && isreqapproved == 0">
+        <div class="col-md-9" style="padding: 0px;"></div>
+        <div class="col-md-3" [formGroup]="remarkForm">
+          <div class="form-group" style="margin: 23px 0px 0px 0px;padding: 0px;">
+            Remarks<dot></dot>
+            <textarea type="text" class="form-control" id="Project" formControlName="remark"></textarea>
+            <small class="text-danger" *ngIf="
+                                                  !remarkForm.controls.remark.valid &&
+                                                  remarkForm.controls.remark.touched
+                                                ">Remarks is required</small>
+          </div>
+        </div>
+        <div class="col-md-12" style="text-align: right;margin: 20px 0px;">
+          <button class="btn-submit" (click)="Close()">Close</button>
+        </div>
+      </ng-container>
+    </div>
+  </form>
+  <ng-container *ngIf="(Operationstatus == 'mechsupervisorapproved' || Operationstatus == 'protol4approved' || Operationstatus == 'l4approved') && (isreqapproved == 1 && supervisordateval != 0)">
+    <div class="row" style="margin:37px 0px 0px 11px">
+      <div class="col-md-12" style="margin-bottom: 55px;padding-left: 0px;">
+        <div class="col-md-8  table-responsive" style="padding-left: 0px;">
+          <h4>Operations</h4>
+          <table id="table" class="table responsive table-bordered">
+            <thead>
+              <tr id="operations">
+                <th class="workcat" style="width: 9%;text-align: center;">S.No</th>
+                <th class="workcat" style="border-right: 1px solid #ebebeb;">Work Category</th>
+                <th class="workcat" style="border-right: 1px solid #ebebeb;">Sub Category</th>
+                <th class="workcat">Operations</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngIf="worksubcategory1 == 'servicesutilization'">
+                <td style="text-align: center;">
+                  <p class="workcat">1</p>
+                </td>
+                <td style="border-right: 1px solid #ffffff;">
+                  <p class="workcat">Services Utilization</p>
+                </td>
+
+                <td style="border-right: 1px solid #ffffff;">
+                  <ng-container *ngFor="let data of servicesutilization; let i=index">
+                    <p class="workcat">{{data.worksubcategory}}</p>
+                  </ng-container>
+                </td>
+                <td>
+                  <ng-container *ngFor="let data of servicesutilization; let i=index">
+                    <p><button class="btn-entires"
+                        (click)="showAddEntires(data,'servicesutilization',i)">{{data.technicianDetails.length}}
+                        Entries</button>
+                      <i *ngIf="selectedIndex == i && workcategory == 'servicesutilization'" class="fa fa-caret-right"
+                        aria-hidden="true"></i>
+                    </p>
+                  </ng-container>
+                </td>
+
+              </tr>
+              <tr *ngIf="worksubcategory2 == 'partfabrication'">
+                <td style="text-align: center;">
+                  <p class="workcat">{{PartCount}}</p>
+                </td>
+                <td style="border-right: 1px solid #ffffff;">
+                  <p class="workcat">Part Fabrication</p>
+                </td>
+
+                <td style="border-right: 1px solid #ffffff;">
+                  <ng-container *ngFor="let data of partfabrication; let i=index">
+                    <p class="workcat">{{data.worksubcategory}}</p>
+                  </ng-container>
+                </td>
+                <td>
+                  <ng-container *ngFor="let data of partfabrication; let i=index">
+                    <p><button class="btn-entires"
+                        (click)="showAddEntires(data,'partfabrication',i)">{{data.technicianDetails.length}}
+                        Entries</button>
+                      <i *ngIf="selectedIndex == i && workcategory == 'partfabrication'" class="fa fa-caret-right"
+                        aria-hidden="true"></i>
+                    </p>
+                  </ng-container>
+                </td>
+
+              </tr>
+            </tbody>
+          </table>
+          <div class="col-md-12 nopadding" style="text-align: right;" *ngIf="CategorySubmitStatus != 'submitted'">
+            <button class="btn-clear" style="margin: 14px 0px 0px 0px;" (click)="SaveCategory(1)">Save as Draft</button>
+            <button class="btn-submit" style="margin: 14px 0px 0px 17px;" (click)="submitForm()">Submit</button>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card" id="card" *ngIf="ShowEnires" [formGroup]="addrowForm">
+            <div id="sub-card">
+              <div class="card-header row" style="margin-bottom: 5px;">
+                <div class="col-sm-6">
+                  <p class="workHrs">{{workhoursname}}</p>
+                </div>
+                <div class="col-sm-6" style="text-align: right;">
+                  <!-- <ng-container *ngIf="CategorySubmitStatus == 'submitted'">
+                      <p class="workHrs">{{workcategory}}</p>
+                  </ng-container> -->
+                  <button class="addnew" (click)="catSaveRow()" *ngIf="CategorySubmitStatus != 'submitted'">
+                    Save</button>
+                </div>
+              </div>
+              <div class="card-body">
+                <table id="addTable" class="table responsive table-bordered">
+                    <ng-container *ngIf="CategorySubmitStatus != 'submitted'">
+                  <tr>
+                    <td style="border: none !important;">
+                      <input id="Catinput" type="text" placeholder="Technician Name" class="form-control"
+                        formControlName="technicianname">
+                    </td>
+                    <td style="border: none !important;width: 2%;"></td>
+                    <td style="border: none !important">
+                      <div style="position: relative;">
+                        <input formControlName="date" type="text" placeholder="DD/MM/YYYY" class="form-control"
+                          bsDatepicker id="adddate" [minDate]="today"
+                          [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }" style="height: 28px;">
+                        <img id="img" src="assets/images/date.svg">
+                      </div>
+                    </td>
+                    <td style="border: none !important;width: 2%;"></td>
+                    <td style="border: none !important;">
+                      <input formControlName="workinghrs" id="Catinput" type="text" placeholder="Working Hours"
+                        class="form-control">
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="border: none !important;">
+                      <small class="text-danger" *ngIf="
+                              !addrowForm.controls.technicianname.valid &&
+                              addrowForm.controls.technicianname.touched
+                            ">Technician Name is required</small>
+                    </td>
+                    <td style="border: none !important;width: 2%;"></td>
+                    <td style="border: none !important">
+                      <small class="text-danger" *ngIf="
+                            !addrowForm.controls.date.valid &&
+                            addrowForm.controls.date.touched
+                          ">Date is required</small>
+                    </td>
+                    <td style="border: none !important;width: 2%;"></td>
+                    <td style="border: none !important;">
+                      <small class="text-danger" *ngIf="
+                            !addrowForm.controls.workinghrs.valid &&
+                            addrowForm.controls.workinghrs.touched
+                          ">Working Hours is required</small>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="6" style="border: none !important;padding: 4px;"></td>
+                  </tr>
+                </ng-container>
+                  <ng-container *ngFor="let data of WorkHoursArray;let i=index">
+                    <tr>
+                      <td style="border: none !important;">
+                        <input disabled type="text" placeholder="Technician Name" class="form-control"
+                          value="{{data.technicianname}}" style="height: 28px;" style="height: 28px;">
+                        <!-- <p class="form-control oprs">{{data.technicianname}}</p> -->
+                      </td>
+                      <td style="border: none !important;width: 2%;"></td>
+                      <td style="border: none !important">
+                        <div style="position: relative;">
+                          <input disabled type="text" placeholder="DD/MM/YYYY" class="form-control" bsDatepicker
+                            [minDate]="today" value="{{data.date}}"
+                            [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }" style="height: 28px;"
+                            style="height: 28px;">
+                          <!-- <img id="img" src="assets/images/date.svg"> -->
+
+                          <!-- <p class="form-control oprs">{{data.date}}</p>
+                          <img style="top: 6px;" id="img" src="assets/images/date.svg"> -->
+                        </div>
+                      </td>
+                      <td style="border: none !important;width: 2%;"></td>
+                      <td style="border: none !important;">
+                        <input disabled type="text" placeholder="Working Hours" class="form-control"
+                          value="{{data.workinghrs}}" style="height: 28px;">
+                        <!-- <p class="form-control oprs">{{data.workinghrs}}</p> -->
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colspan="6" style="border: none !important;padding: 4px;"></td>
+                    </tr>
+                  </ng-container>
+                </table>
+              </div>
+            </div>
+            <p class="closecat"><span (click)="addrowClose()">Close <b>x</b></span></p>
+          </div>
+        </div>
+      </div>
+      <div class="row" style="margin: 0px 0px 39px 11px;">
+
+        <div class="col-md-4"></div>
+      </div>
+      <ng-container>
+        <div class="row" style="margin-bottom: 26px;">
+          <div class="col-md-12  table-responsive">
+            <table id="table" class="table responsive table-bordered">
+              <tr id="dime">
+                <td style="position: relative; text-align: left;width: 10%;
+                      background: linear-gradient(17deg,rgb(235,235,235) 47%,#aaa 50%,rgb(235,235,235) 52%);">
+                  <span class="dime">Dimension(mm)</span>
+                  <div class="one"> <span class="material">Material</span></div>
+                </td>
+                <td>Length</td>
+                <td>Width</td>
+                <td>Thickness</td>
+                <td>Density</td>
+                <td style="width: 15%;">Unit Cost</td>
+                <td class="clear_td"></td>
+                <td style="width: 13%;">Quantity</td>
+                <td class="clear_td"></td>
+                <td style="width: 13%;">Total Cost</td>
+              </tr>
+              <tr class="tablerow" [formGroup]="master_Form1">
+                <th style="background: rgba(235, 235, 235, 0.15);">Sheet Metal</th>
+                <td>
+                  <input type="number" id="damin_input" class="form-control" formControlName="length" *ngIf="!MaterialDisabled">
+                  <input type="number" id="damin_input" class="form-control" formControlName="length" *ngIf="MaterialDisabled" disabled>
+                  <small class="text-danger" *ngIf="
+                      !master_Form1.controls.length.valid &&
+                      master_Form1.controls.length.touched
+                    ">Length is required</small>
+                </td>
+                <td>
+                  <input type="number" id="damin_input" class="form-control" formControlName="width" *ngIf="!MaterialDisabled">
+                  <input type="number" id="damin_input" class="form-control" formControlName="width" *ngIf="MaterialDisabled" disabled>
+                  <small class="text-danger" *ngIf="
+                        !master_Form1.controls.width.valid &&
+                        master_Form1.controls.width.touched
+                      ">Width is required</small>
+                </td>
+                <td>
+                  <input type="number" id="damin_input" class="form-control" formControlName="thickness" *ngIf="!MaterialDisabled">
+                  <input type="number" id="damin_input" class="form-control" formControlName="thickness" *ngIf="MaterialDisabled" disabled>
+                  <small class="text-danger" *ngIf="
+                          !master_Form1.controls.thickness.valid &&
+                          master_Form1.controls.thickness.touched
+                        ">Thickness is required</small>
+                </td>
+                <td>
+                  <input type="number" id="damin_input" class="form-control" formControlName="density" *ngIf="!MaterialDisabled">
+                  <input type="number" id="damin_input" class="form-control" formControlName="density" *ngIf="MaterialDisabled" disabled>
+                  <small class="text-danger" *ngIf="
+                            !master_Form1.controls.density.valid &&
+                            master_Form1.controls.density.touched
+                          ">Density is required</small>
+                </td>
+                <td style="position: relative;">
+                  <button class="btn-submit" id="go" (click)="Calculation(1)">Calculate</button>
+                  <input type="number" id="damin_input" style="padding: 0px 0px 0px 51px;" class="form-control"
+                    formControlName="unitcost" disabled>
+                  <small class="text-danger" *ngIf="
+                      !master_Form1.controls.unitcost.valid &&
+                      master_Form1.controls.unitcost.touched
+                    ">Unit Cost is required</small>
+                </td>
+                <td class="clear_td"></td>
+                <td>
+                  <input type="number" id="damin_input" class="form-control" formControlName="quantity"
+                    (input)="calculateQuantity($event.target.value,1)" *ngIf="!MaterialDisabled">
+                    <input type="number" id="damin_input" class="form-control" formControlName="quantity" *ngIf="MaterialDisabled" disabled>
+                  <small class="text-danger" *ngIf="
+                        !master_Form1.controls.quantity.valid &&
+                        master_Form1.controls.quantity.touched
+                      ">Quantity is required</small>
+                </td>
+                <td class="clear_td"></td>
+                <td>
+                  <input type="number" id="damin_input" class="form-control" formControlName="totalcost" disabled (input)="calculateQuantity($event.target.value,1)">
+                  <small class="text-danger" *ngIf="
+                        !master_Form1.controls.totalcost.valid &&
+                        master_Form1.controls.totalcost.touched
+                      ">Total Cost is required</small>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div class="row" style="margin-bottom: 26px;">
+          <div class="col-md-12  table-responsive">
+            <table id="table" class="table responsive table-bordered">
+              <tr id="dime">
+                <td style="position: relative; text-align: left;width: 10%;
+                        background: linear-gradient(17deg,rgb(235,235,235) 47%,#aaa 50%,rgb(235,235,235) 52%);">
+                  <span class="dime">Dimension(mm)</span>
+                  <div class="one"> <span class="material">Material</span></div>
+                </td>
+                <td style="width: 16%;">Diameter</td>
+                <td style="width: 16%;">Length</td>
+                <td style="width: 13.5%;">Density</td>
+                <td style="width: 15%;">Unit Cost</td>
+                <td class="clear_td"></td>
+                <td style="width: 13%;">Quantity</td>
+                <td class="clear_td"></td>
+                <td style="width: 13%;">Total Cost</td>
+              </tr>
+              <tr class="tablerow" [formGroup]="master_Form2">
+                <th style="background: rgba(235, 235, 235, 0.15);">Rod</th>
+                <td>
+                  <input type="number" id="damin_input" class="form-control" formControlName="diameter" *ngIf="!MaterialDisabled">
+                  <input type="number" id="damin_input" class="form-control" formControlName="diameter" *ngIf="MaterialDisabled" disabled>
+                  <small class="text-danger" *ngIf="
+                          !master_Form2.controls.diameter.valid &&
+                          master_Form2.controls.diameter.touched
+                        ">Diameter Cost is required</small>
+                </td>
+                <td>
+                  <input type="number" id="damin_input" class="form-control" formControlName="length" *ngIf="!MaterialDisabled">
+                  <input type="number" id="damin_input" class="form-control" formControlName="length" *ngIf="MaterialDisabled" disabled>
+                  <small class="text-danger" *ngIf="
+                          !master_Form2.controls.length.valid &&
+                          master_Form2.controls.length.touched
+                        ">Length is required</small>
+                </td>
+                <td>
+                  <input type="number" id="damin_input" class="form-control" formControlName="density" *ngIf="!MaterialDisabled">
+                  <input type="number" id="damin_input" class="form-control" formControlName="density" *ngIf="MaterialDisabled" disabled>
+                  <small class="text-danger" *ngIf="
+                            !master_Form2.controls.density.valid &&
+                            master_Form2.controls.density.touched
+                          ">Density is required</small>
+                </td>
+                <td style="position: relative;">
+                  <button class="btn-submit" id="go" (click)="Calculation(2)">Calculate</button>
+                  <input type="number" id="damin_input" style="padding: 0px 0px 0px 51px;" class="form-control"
+                    formControlName="unitcost" disabled>
+                  <small class="text-danger" *ngIf="
+                    !master_Form2.controls.unitcost.valid &&
+                    master_Form2.controls.unitcost.touched
+                  ">Unit Cost is required</small>
+                </td>
+                <td class="clear_td"></td>
+                <td>
+                  <input type="number" id="damin_input" class="form-control" formControlName="quantity"
+                    (input)="calculateQuantity($event.target.value,2)" *ngIf="!MaterialDisabled">
+                    <input type="number" id="damin_input" class="form-control" formControlName="quantity" *ngIf="MaterialDisabled" disabled>
+                  <small class="text-danger" *ngIf="
+                          !master_Form2.controls.quantity.valid &&
+                          master_Form2.controls.quantity.touched
+                        ">Quantity is required</small>
+                </td>
+                <td class="clear_td"></td>
+                <td>
+                  <input type="number" id="damin_input" class="form-control" formControlName="totalcost" disabled (input)="calculateQuantity($event.target.value,2)">
+                  <small class="text-danger" *ngIf="
+                          !master_Form2.controls.totalcost.valid &&
+                          master_Form2.controls.totalcost.touched
+                        ">Total Cost is required</small>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div class="row" style="margin-bottom: 26px;">
+          <div class="col-md-12  table-responsive">
+            <table id="table" class="table responsive table-bordered">
+              <tr id="dime">
+                <td style="position: relative; text-align: left;width: 10%;
+                          background: linear-gradient(17deg,rgb(235,235,235) 47%,#aaa 50%,rgb(235,235,235) 52%);">
+                  <span class="dime">Dimension(mm)</span>
+                  <div class="one"> <span class="material">Material</span></div>
+                </td>
+                <!-- <td>Inner Diameter</td> -->
+                <td>Outer Diameter</td>
+                <td>Length</td>
+                <td>Thickness</td>
+                <td>Density</td>
+                <td style="width: 15%;">Unit Cost</td>
+                <td class="clear_td"></td>
+                <td style="width: 13%;">Quantity</td>
+                <td class="clear_td"></td>
+                <td style="width: 13%;">Total Cost</td>
+              </tr>
+              <tr class="tablerow" [formGroup]="master_Form3">
+                <th style="background: rgba(235, 235, 235, 0.15);">Pipe</th>
+                <!-- <td>
+                    <input type="number" id="damin_input" class="form-control" formControlName="innerdiameter">
+                    <small class="text-danger" *ngIf="
+                          !master_Form3.controls.innerdiameter.valid &&
+                          master_Form3.controls.innerdiameter.touched
+                        ">Inner Diameter is required</small>
+                  </td> -->
+                <td>
+                  <input type="number" id="damin_input" class="form-control" formControlName="outerdiameter" *ngIf="!MaterialDisabled">
+                  <input type="number" id="damin_input" class="form-control" formControlName="outerdiameter" *ngIf="MaterialDisabled" disabled>
+                  <small class="text-danger" *ngIf="
+                            !master_Form3.controls.outerdiameter.valid &&
+                            master_Form3.controls.outerdiameter.touched
+                          ">Outer Diameter is required</small>
+                </td>
+                <td>
+                  <input type="number" id="damin_input" class="form-control" formControlName="length" *ngIf="!MaterialDisabled">
+                  <input type="number" id="damin_input" class="form-control" formControlName="length" *ngIf="MaterialDisabled" disabled>
+                  <small class="text-danger" *ngIf="
+                            !master_Form3.controls.length.valid &&
+                            master_Form3.controls.length.touched
+                          ">Length is required</small>
+                </td>
+                <td>
+                  <input type="number" id="damin_input" class="form-control" formControlName="thickness" *ngIf="!MaterialDisabled">
+                  <input type="number" id="damin_input" class="form-control" formControlName="thickness" *ngIf="MaterialDisabled" disabled>
+                  <small class="text-danger" *ngIf="
+                              !master_Form3.controls.thickness.valid &&
+                              master_Form3.controls.thickness.touched
+                            ">Thickness is required</small>
+                </td>
+                <td>
+                  <input type="number" id="damin_input" class="form-control" formControlName="density" *ngIf="!MaterialDisabled">
+                  <input type="number" id="damin_input" class="form-control" formControlName="density" *ngIf="MaterialDisabled" disabled>
+                  <small class="text-danger" *ngIf="
+                            !master_Form3.controls.density.valid &&
+                            master_Form3.controls.density.touched
+                          ">Density is required</small>
+                </td>
+                <td style="position: relative;">
+                  <button class="btn-submit" id="go" (click)="Calculation(3)">Calculate</button>
+                  <input type="number" id="damin_input" style="padding: 0px 0px 0px 51px;" class="form-control"
+                    formControlName="unitcost" disabled>
+                  <small class="text-danger" *ngIf="
+                    !master_Form3.controls.unitcost.valid &&
+                    master_Form3.controls.unitcost.touched
+                  ">Unit Cost is required</small>
+                </td>
+                <td class="clear_td"></td>
+                <td>
+                  <input type="number" id="damin_input" class="form-control" formControlName="quantity"
+                    (input)="calculateQuantity($event.target.value,3)" *ngIf="!MaterialDisabled">
+                    <input type="number" id="damin_input" class="form-control" formControlName="quantity" *ngIf="MaterialDisabled" disabled>
+                  <small class="text-danger" *ngIf="
+                          !master_Form3.controls.quantity.valid &&
+                          master_Form3.controls.quantity.touched
+                        ">Quantity is required</small>
+                </td>
+                <td class="clear_td"></td>
+                <td>
+                  <input type="number" id="damin_input" class="form-control" formControlName="totalcost" disabled (input)="calculateQuantity($event.target.value,3)">
+                  <small class="text-danger" *ngIf="
+                          !master_Form3.controls.totalcost.valid &&
+                          master_Form3.controls.totalcost.touched
+                        ">Total Cost is required</small>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div class="row" style="margin-bottom: 26px;">
+          <div class="col-md-12  table-responsive">
+            <table id="table" class="table responsive table-bordered">
+              <tr id="dime">
+                <td style="position: relative; text-align: left;width: 10%;
+                            background: linear-gradient(17deg,rgb(235,235,235) 47%,#aaa 50%,rgb(235,235,235) 52%);">
+                  <span class="dime">Dimension(mm)</span>
+                  <div class="one"> <span class="material">Material</span></div>
+                </td>
+                <td>Length</td>
+                <td>Thickness</td>
+                <td>Side A + Side B</td>
+                <td>Density</td>
+                <td style="width: 15%;">Unit Cost</td>
+                <td class="clear_td"></td>
+                <td style="width: 13%;">Quantity</td>
+                <td class="clear_td"></td>
+                <td style="width: 13%;">Total Cost</td>
+              </tr>
+              <tr class="tablerow" [formGroup]="master_Form4">
+                <th style="background: rgba(235, 235, 235, 0.15);">L-angle</th>
+                <td>
+                  <input type="number" id="damin_input" class="form-control" formControlName="length" *ngIf="!MaterialDisabled">
+                  <input type="number" id="damin_input" class="form-control" formControlName="length" *ngIf="MaterialDisabled" disabled>
+                  <small class="text-danger" *ngIf="
+                        !master_Form4.controls.length.valid &&
+                        master_Form4.controls.length.touched
+                      ">Length is required</small>
+                </td>
+                <td>
+                  <input type="number" id="damin_input" class="form-control" formControlName="thickness" *ngIf="!MaterialDisabled">
+                  <input type="number" id="damin_input" class="form-control" formControlName="thickness" *ngIf="MaterialDisabled" disabled>
+                  <small class="text-danger" *ngIf="
+                          !master_Form4.controls.thickness.valid &&
+                          master_Form4.controls.thickness.touched
+                        ">Thickness is required</small>
+                </td>
+                <td>
+                  <input type="number" id="damin_input" class="form-control" formControlName="sideaplusb" *ngIf="!MaterialDisabled">
+                  <input type="number" id="damin_input" class="form-control" formControlName="sideaplusb" *ngIf="MaterialDisabled" disabled>
+                  <small class="text-danger" *ngIf="
+                            !master_Form4.controls.sideaplusb.valid &&
+                            master_Form4.controls.sideaplusb.touched
+                          ">Side A / Side B is required</small>
+                </td>
+                <td>
+                  <input type="number" id="damin_input" class="form-control" formControlName="density" *ngIf="!MaterialDisabled">
+                  <input type="number" id="damin_input" class="form-control" formControlName="density" *ngIf="MaterialDisabled" disabled>
+                  <small class="text-danger" *ngIf="
+                            !master_Form4.controls.density.valid &&
+                            master_Form4.controls.density.touched
+                          ">Density is required</small>
+                </td>
+                <td style="position: relative;">
+                  <button class="btn-submit" id="go" (click)="Calculation(4)">Calculate</button>
+                  <input type="number" id="damin_input" style="padding: 0px 0px 0px 51px;" class="form-control"
+                    formControlName="unitcost" disabled>
+                  <small class="text-danger" *ngIf="
+                        !master_Form4.controls.unitcost.valid &&
+                        master_Form4.controls.unitcost.touched
+                      ">Unit Cost is required</small>
+                </td>
+                <td class="clear_td"></td>
+                <td>
+                  <input type="number" id="damin_input" class="form-control" formControlName="quantity"
+                    (input)="calculateQuantity($event.target.value,4)" *ngIf="!MaterialDisabled">
+                    <input type="number" id="damin_input" class="form-control" formControlName="quantity" *ngIf="MaterialDisabled" disabled>
+                  <small class="text-danger" *ngIf="
+                          !master_Form4.controls.quantity.valid &&
+                          master_Form4.controls.quantity.touched
+                        ">Quantity is required</small>
+                </td>
+                <td class="clear_td"></td>
+                <td>
+                  <input type="number" id="damin_input" class="form-control" formControlName="totalcost" disabled (input)="calculateQuantity($event.target.value,4)">
+                  <small class="text-danger" *ngIf="
+                          !master_Form4.controls.totalcost.valid &&
+                          master_Form4.controls.totalcost.touched
+                        ">Total Cost is required</small>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div class="row" style="margin-bottom: 26px;">
+          <div class="col-md-12  table-responsive">
+            <table id="table" class="table responsive table-bordered">
+              <tr id="dime">
+                <td style="position: relative; text-align: left;width: 10%;
+                              background: linear-gradient(17deg,rgb(235,235,235) 47%,#aaa 50%,rgb(235,235,235) 52%);">
+                  <span class="dime">Dimension(mm)</span>
+                  <div class="one"> <span class="material">Material</span></div>
+                </td>
+                <td>Thickness</td>
+                <td>Width</td>
+                <td>Length</td>
+                <td>Density</td>
+                <td style="width: 15%;">Unit Cost</td>
+                <td class="clear_td"></td>
+                <td style="width: 13%;">Quantity</td>
+                <td class="clear_td"></td>
+                <td style="width: 13%;">Total Cost</td>
+              </tr>
+              <tr class="tablerow" [formGroup]="master_Form5">
+                <th style="background: rgba(235, 235, 235, 0.15);">Square Tube</th>
+                <td>
+                  <input type="number" id="damin_input" class="form-control" formControlName="thickness" *ngIf="!MaterialDisabled">
+                  <input type="number" id="damin_input" class="form-control" formControlName="thickness" *ngIf="MaterialDisabled" disabled>
+                  <small class="text-danger" *ngIf="
+                        !master_Form5.controls.thickness.valid &&
+                        master_Form5.controls.thickness.touched
+                      ">Height is required</small>
+                </td>
+                <td>
+                  <input type="number" id="damin_input" class="form-control" formControlName="width" *ngIf="!MaterialDisabled">
+                  <input type="number" id="damin_input" class="form-control" formControlName="width" *ngIf="MaterialDisabled" disabled>
+                  <small class="text-danger" *ngIf="
+                          !master_Form5.controls.width.valid &&
+                          master_Form5.controls.width.touched
+                        ">Width is required</small>
+                </td>
+                <td>
+                  <input type="number" id="damin_input" class="form-control" formControlName="length" *ngIf="!MaterialDisabled">
+                  <input type="number" id="damin_input" class="form-control" formControlName="length" *ngIf="MaterialDisabled" disabled>
+                  <small class="text-danger" *ngIf="
+                            !master_Form5.controls.length.valid &&
+                            master_Form5.controls.length.touched
+                          ">Length is required</small>
+                </td>
+                <td>
+                  <input type="number" id="damin_input" class="form-control" formControlName="density" *ngIf="!MaterialDisabled">
+                  <input type="number" id="damin_input" class="form-control" formControlName="density" *ngIf="MaterialDisabled" disabled>
+                  <small class="text-danger" *ngIf="
+                            !master_Form5.controls.density.valid &&
+                            master_Form5.controls.density.touched
+                          ">Density is required</small>
+                </td>
+                <td style="position: relative;">
+                  <button class="btn-submit" id="go" (click)="Calculation(5)">Calculate</button>
+                  <input type="number" id="damin_input" style="padding: 0px 0px 0px 51px;" class="form-control"
+                    formControlName="unitcost" disabled>
+                  <small class="text-danger" *ngIf="
+                        !master_Form5.controls.unitcost.valid &&
+                        master_Form5.controls.unitcost.touched
+                      ">Unit Cost is required</small>
+                </td>
+                <td class="clear_td"></td>
+                <td>
+                  <input type="number" id="damin_input" class="form-control" formControlName="quantity"
+                    (input)="calculateQuantity($event.target.value,5)" *ngIf="!MaterialDisabled">
+                    <input type="number" id="damin_input" class="form-control" formControlName="quantity" *ngIf="MaterialDisabled" disabled>
+                  <small class="text-danger" *ngIf="
+                          !master_Form5.controls.quantity.valid &&
+                          master_Form5.controls.quantity.touched
+                        ">Quantity is required</small>
+                </td>
+                <td class="clear_td"></td>
+                <td>
+                  <input type="number" id="damin_input" class="form-control" formControlName="totalcost" disabled (input)="calculateQuantity($event.target.value,5)">
+                  <small class="text-danger" *ngIf="
+                          !master_Form5.controls.totalcost.valid &&
+                          master_Form5.controls.totalcost.touched
+                        ">Total Cost is required</small>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div class="row" style="margin-bottom: 26px;">
+          <div class="col-md-12  table-responsive">
+            <table id="table" class="table responsive table-bordered">
+              <tr id="dime">
+                <td colspan="9" style="background:rgb(255, 255, 255);border-left: 1px solid rgb(255, 255, 255);
+                border-top: 1px solid rgb(255, 255, 255);
+                border-bottom: 1px solid rgb(255, 255, 255);"></td>
+                <td>Overall Cost</td>
+              </tr>
+              <tr [formGroup]="totalcostForm">
+                <td colspan="9" style="background:rgb(255, 255, 255);border-left: 1px solid rgb(255, 255, 255);
+                border-top: 1px solid rgb(255, 255, 255);
+                border-bottom: 1px solid rgb(255, 255, 255);"></td>
+                <td style="width: 13%;">
+                  <input type="number" id="damin_input" class="form-control" formControlName="overallcost" disabled (input)="calculateQuantity($event.target.value,0)">
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div class="row" style="margin-bottom: 81px;">
+            <div class="col-md-12" style="text-align: right;">
+                <ng-container *ngIf="(Operationstatus == 'mechsupervisorapproved' || Operationstatus == 'protol4approved' || Operationstatus == 'l4approved') && (isreqapproved == 1 && supervisordateval != 0)">
+                  <!-- <button class="btn-clear">Clear</button> -->
+                  <button class="btn-submit" *ngIf="!MaterialDisabled" (click)="Totalsubmit()">Calculate Cost</button>
+                </ng-container>
+              </div>
+            <div class="col-md-12">
+              <div class="col-md-9"></div>
+              <div class="col-md-3 nopadding" [formGroup]="remarkForm">
+                <div class="form-group" style="margin: 0px 0px 22px 0px;padding: 0px;">
+                  Remarks<dot></dot>
+                  <textarea type="text" class="form-control" id="Project" formControlName="remark"></textarea>
+                  <small class="text-danger" *ngIf="
+                                                              !remarkForm.controls.remark.valid &&
+                                                              remarkForm.controls.remark.touched
+                                                            ">Remarks is required</small>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12" style="text-align: right;">
+              <button class="btn-submit" (click)="submitClose()">Close</button>
+            </div>
+        </div>
+      </ng-container>
+    </div>
+  </ng-container>
+</div>
+</div>
+
+
+
+
+<!-- confirm modal -->
+
+<div class="modal fade" id="confirmSubmit" role="dialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-10">
+            <p class="modalHeader"  style="font-weight: 600;">Submit</p>
+          </div>
+          <div class="col-md-2">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <br>
+          <div class="col-md-12">
+            <p> Are you sure to submit the form ?</p>
+          </div>
+        </div>
+      </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-sm btn-primary" data-dismiss="modal">No </button>
+      <button type="button" class="btn btn-sm btn-primary" (click)="SaveCategory(0)">Yes</button>
+    </div>
+  </div>
+  </div>
+</div>
+
+
+
+
+<!-- confirm close modal -->
+
+<div class="modal fade" id="confirmClose" role="dialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-10">
+            <p class="modalHeader" style="font-weight: 600;">Close</p>
+          </div>
+          <div class="col-md-2">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <br>
+          <div class="col-md-12">
+            <p> Are you sure to close the form ?</p>
+          </div>
+        </div>
+      </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-sm btn-primary" data-dismiss="modal">No </button>
+      <button type="button" class="btn btn-sm btn-primary" (click)="Close()">Yes</button>
+    </div>
+  </div>
+  </div>
+</div>

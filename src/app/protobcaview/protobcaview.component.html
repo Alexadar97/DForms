@@ -1,0 +1,2133 @@
+<app-spinner *ngIf="loading"></app-spinner>
+<nav class="site-navbar navbar navbar-default navbar-fixed-top navbar-mega" role="navigation">
+
+  <div _ngcontent-c4="" class="innerhead">
+      <img class="innerpgtop" src="assets/images/innerpagetopbg.jpg">
+      <img class="innerpglogo" (click)="home()" src="assets/images/loginpglogo.png">
+      <!-- <div class="homeicon" (click)="home()">
+          <i class="fa fa-home" ></i></div> -->
+  </div>
+  <div>
+ 
+      <div style="position: absolute;
+      right: 100px;
+      top: 22px;
+      color: #fff;">
+      <i class="fa fa-home" (click)="home()" style="cursor: pointer;"></i>
+      | <i class="fa fa-user" style="font-size: 14px;"></i> |
+       Welcome | {{username}}
+          <!-- [{{userdetail.usertype}}] -->
+      </div>
+
+      <button class="btn btn-default " data-toggle="tooltip" title="Logout" data-placement="bottom" (click)="logout()"
+          style="position: absolute;
+          right: 30px;top: 17px;   padding: 4px 5px 2px 5px;"><i class="fa fa-power-off" style="    font-size: 19px;
+  color: #6d6d6d;"></i></button>
+      <!-- <div class="setting-icon mr-5">
+      <i class="fa fa-gear" style="    font-size: 22px;
+      color: #6d6d6d;"></i>
+          <div class="settings-content pl-3"> -->
+      <!-- <a href="#" class="text-center">Hi Admin</a> -->
+
+      <!-- <div>
+                <a routerLink="../ticketstab/newtickets" class="text-center">Issues</a>
+              </div> -->
+      <!-- <p style="    margin: 0;
+            padding-top: 11px;">
+              <a (click)="logout()" routerLink="../login" class="text-center logoff">
+                <i class="fa fa-power-off"></i>&nbsp; Logout</a>
+            </p>
+          </div>
+        </div> -->
+  </div>
+</nav>
+
+
+<div class="container">
+  <div class="row" style="margin-top: 75px;">
+    <div class="col-md-4">
+      <h4>Proto Retrofitment</h4>
+    </div>
+    <div class="col-md-6">&nbsp;</div>
+    <div class="col-md-2" style="position: relative;
+    right: 32px;">
+      <!-- <ng-container *ngIf ="status == 'hdtsupervisor' || status == 'mdtsupervisor' || status == 'aggregatesupervisor'
+        || status == 'eandesupervisor' || status == 'ppssupervisor' || status == 'maintenancesupervisor' || status == 'mechanicalsupervisor'"> -->
+      <button class="btn btn-default" style="float: right" (click)="goBack()"><i
+          class="fa fa-chevron-left"></i>&nbsp;&nbsp;Back</button>
+      <!-- </ng-container> -->
+    </div>
+  </div>
+  <div class="row" style="box-shadow: 1px 1px 1px 1px #d6d6d6;
+padding: 16px;
+width: 100%;">
+    <form [formGroup]="ProtoReqForm">
+      <div class="row" style="margin-top:10px;">
+        <div class="col-md-6  table-responsive">
+          <table id="prototable" class="table proto-table table-bordered">
+            <tr>
+              <th>Date of Request</th>
+              <td><input type="text" formControlName="createddate"
+                  style="border: none; background: transparent;width: 100%;" disabled></td>
+            </tr>
+            <tr>
+              <th>Form ID</th>
+              <td><input type="text" formControlName="prformid"
+                  style="border: none; background: transparent;width: 100%;" disabled></td>
+            </tr>
+            <tr>
+              <th>Requester Name</th>
+              <td><input type="text" formControlName="requestorname" style="border: none;
+                background: transparent;width: 100%;" disabled></td>
+            </tr>
+            <tr>
+              <th>Contact Number</th>
+              <td><input type="text" formControlName="contactno" style="border: none;
+                background: transparent;width: 100%;" disabled></td>
+            </tr>
+            <tr>
+              <th>Department</th>
+              <td><input type="text" formControlName="department" style="border: none;
+                background: transparent;width: 100%;" disabled></td>
+            </tr>
+            <tr>
+              <th>Function</th>
+               <td>
+                <ng-container *ngIf="supervisor == 'mdtsupervisor'">
+                    Vehicle MDT
+                  </ng-container>
+                  <ng-container *ngIf="supervisor == 'hdtsupervisor'">
+                    Vehicle HDT
+                  </ng-container>
+                  <ng-container *ngIf="supervisor == 'aggregateengine'">
+                    Engine
+                  </ng-container>
+                  <ng-container *ngIf="supervisor == 'ppssupervisor'">
+                    PPS
+                  </ng-container>
+                  <ng-container *ngIf="supervisor == 'aggregatetransmission'">
+                    Transmission
+                  </ng-container>
+                  <ng-container *ngIf="supervisor == 'aggregateaxle'">
+                    Axle
+                  </ng-container>
+            </td>
+            </tr>
+            <tr>
+              <th>Sub Function</th>
+              <td>
+                <ul class="list-group-category" style="padding-left: 14px;">
+                  <ng-container *ngFor="let data of arrlist ; let i =index ">
+                    <!-- <li class="list-group" style="margin-bottom: 8px;">{{data}}</li> -->
+                    <li class="list-group" *ngIf="data == 'hdtsupervisor'" style="margin-bottom: 8px;">Vehicle HDT</li>
+                    <li class="list-group" *ngIf="data == 'aggregateengine'" style="margin-bottom: 8px;">Aggregate
+                      Engine</li>
+                    <li class="list-group" *ngIf="data == 'aggregatetransmission'" style="margin-bottom: 8px;">Aggregate
+                      Transmission</li>
+                    <li class="list-group" *ngIf="data == 'aggregateaxle'" style="margin-bottom: 8px;">Aggregate Axle
+                    </li>
+                    <li class="list-group" *ngIf="data == 'eandesupervisor'" style="margin-bottom: 8px;">E&E</li>
+                    <li class="list-group" *ngIf="data == 'mdtsupervisor'" style="margin-bottom: 8px;">Vehicle MDT</li>
+                    <li class="list-group" *ngIf="data == 'ppssupervisor'" style="margin-bottom: 8px;">PPS</li>
+                    <li class="list-group" *ngIf="data == 'maintenancesupervisor'" style="margin-bottom: 8px;">
+                      Maintenance</li>
+                    <li class="list-group" *ngIf="data == 'mechanicalsupervisor'" style="margin-bottom: 8px;">Proto
+                      Mechanical Workshop</li>
+                  </ng-container>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <th>Category</th>
+              <td>
+                <ul class="list-group-category" style="padding-left: 14px;">
+                  <ng-container *ngFor="let data of arrcategorylist ; let i =index ">
+                    <li class="list-group" style="margin-bottom: 8px;" *ngIf="data == 1">Retro Fitment</li>
+                    <li class="list-group" style="margin-bottom: 8px;" *ngIf="data == 2">Trail</li>
+                    <li class="list-group" style="margin-bottom: 8px;" *ngIf="data == 3">Failure</li>
+                    <li class="list-group" style="margin-bottom: 8px;" *ngIf="data == 4">
+                      {{otherCategory}}
+                    </li>
+                  </ng-container>
+                </ul>
+              </td>
+
+            </tr>
+            <ng-container *ngIf="loginType == 'admin' || loginType == 'hdtsupervisor' || loginType == 'mdtsupervisor' || loginType == 'aggregatesupervisor'|| loginType == 'ppssupervisor'
+            || loginType == 'eandesupervisor'|| loginType == 'maintenancesupervisor'|| loginType == 'mechanicalsupervisor'">
+              <tr>
+                <th>
+                  <ng-container *ngIf="loginType == 'hdtsupervisor'">
+                    HDT Supervisor BCA Username
+                  </ng-container>
+                  <ng-container *ngIf="loginType == 'mdtsupervisor'">
+                    MDT Supervisor BCA Username
+                  </ng-container>
+                  <ng-container *ngIf="loginType == 'aggregatesupervisor'">
+                    Aggregate Supervisor BCA Username
+                  </ng-container>
+                  <ng-container *ngIf="loginType == 'ppssupervisor'">
+                    PPS Supervisor BCA Username
+                  </ng-container>
+                  <ng-container *ngIf="loginType == 'eandesupervisor'">
+                    E&E Supervisor BCA Username
+                  </ng-container>
+                  <ng-container *ngIf="loginType == 'maintenancesupervisor'">
+                    Maintainence Supervisor BCA Username
+                  </ng-container>
+                  <ng-container *ngIf="loginType == 'mechanicalsupervisor'">
+                    Mechanical Supervisor BCA Username
+                  </ng-container>
+                </th>
+                <td>
+                  <ng-container *ngIf="loginType == 'hdtsupervisor'">
+                   
+                    <input type="text" formControlName="hdtbcashortid" style="border: none;
+                    background: transparent;width: 100%;" disabled>
+                  </ng-container>
+                  <ng-container *ngIf="loginType == 'mdtsupervisor'">
+                    <input type="text" formControlName="mdtbcashortid" style="border: none;
+                    background: transparent;width: 100%;" disabled>
+                  </ng-container>
+                  <ng-container *ngIf="loginType == 'aggregatesupervisor'">
+                    <input type="text" formControlName="aggregatebcashortid" style="border: none;
+                    background: transparent;width: 100%;" disabled>
+                  </ng-container>
+                  <ng-container *ngIf="loginType == 'ppssupervisor'">
+                    <input type="text" formControlName="ppsbcashortid" style="border: none;
+                    background: transparent;width: 100%;" disabled>
+                  </ng-container>
+                  <ng-container *ngIf="loginType == 'eandesupervisor'">
+                    <input type="text" formControlName="eandebcashortid" style="border: none;
+                    background: transparent;width: 100%;" disabled>
+                  </ng-container>
+                  <ng-container *ngIf="loginType == 'maintenancesupervisor'">
+                    <input type="text" formControlName="maintenancebcashortid" style="border: none;
+                    background: transparent;width: 100%;" disabled>
+                  </ng-container>
+                  <ng-container *ngIf="loginType == 'mechanicalsupervisor'">
+                    <input type="text" formControlName="mechanicalbcashortid" style="border: none;
+                    background: transparent;width: 100%;" disabled>
+                  </ng-container>
+
+                </td>
+              </tr>
+              <tr>
+                <th>
+                  <ng-container *ngIf="loginType == 'hdtsupervisor'">
+                    HDT Supervisor BCA Password
+                  </ng-container>
+                  <ng-container *ngIf="loginType == 'mdtsupervisor'">
+                    MDT Supervisor BCA Password
+                  </ng-container>
+                  <ng-container *ngIf="loginType == 'aggregatesupervisor'">
+                    Aggregate Supervisor BCA Password
+                  </ng-container>
+                  <ng-container *ngIf="loginType == 'ppssupervisor'">
+                    PPS Supervisor BCA Password
+                  </ng-container>
+                  <ng-container *ngIf="loginType == 'eandesupervisor'">
+                    E&E Supervisor BCA Password
+                  </ng-container>
+                  <ng-container *ngIf="loginType == 'maintenancesupervisor'">
+                    Maintainence Supervisor BCA Password
+                  </ng-container>
+                  <ng-container *ngIf="loginType == 'mechanicalsupervisor'">
+                    Mechanical Supervisor BCA Password
+                  </ng-container>
+                </th>
+                <td>
+                  <ng-container *ngIf="loginType == 'hdtsupervisor'">
+                    <input type="text" formControlName="hdtbcapassword" style="border: none;
+                    background: transparent;width: 100%;" disabled>
+                  </ng-container>
+                  <ng-container *ngIf="loginType == 'mdtsupervisor'">
+                    <input type="text" formControlName="mdtbcapassword" style="border: none;
+                    background: transparent;width: 100%;" disabled>
+                  </ng-container>
+                  <ng-container *ngIf="loginType == 'aggregatesupervisor'">
+                    <input type="text" formControlName="aggregatebcapassword" style="border: none;
+                    background: transparent;width: 100%;" disabled>
+                  </ng-container>
+                  <ng-container *ngIf="loginType == 'ppssupervisor'">
+                    <input type="text" formControlName="ppsbcapassword" style="border: none;
+                    background: transparent;width: 100%;" disabled>
+                  </ng-container>
+                  <ng-container *ngIf="loginType == 'eandesupervisor'">
+                    <input type="text" formControlName="eandebcapassword" style="border: none;
+                    background: transparent;width: 100%;" disabled>
+                  </ng-container>
+                  <ng-container *ngIf="loginType == 'maintenancesupervisor'">
+                    <input type="text" formControlName="maintenancebcapassword" style="border: none;
+                    background: transparent;width: 100%;" disabled>
+                  </ng-container>
+                  <ng-container *ngIf="loginType == 'mechanicalsupervisor'">
+                    <input type="text" formControlName="mechanicalbcapassword" style="border: none;
+                    background: transparent;width: 100%;" disabled>
+                  </ng-container>
+
+                </td>
+              </tr>
+            </ng-container>
+          </table>
+        </div>
+        <div class="col-md-6  table-responsive">
+          <table id="prototable" class="table proto-table table table-bordered">
+            <tr>
+              <th>Project Name</th>
+              <td><input type="text" formControlName="projectname" style="border: none;
+                    background: transparent;width: 100%;" disabled></td>
+            </tr>
+
+            <tr>
+              <th>
+                System Name</th>
+              <td><input type="text" formControlName="systemname" style="border: none;
+                  background: transparent;width: 100%;" disabled></td>
+            </tr>
+            <tr>
+              <th>
+                Activity</th>
+              <td><input type="text" formControlName="activity" style="border: none;
+                  background: transparent;width: 100%;" disabled></td>
+            </tr>
+            <tr>
+              <th>
+                Types of Activity</th>
+              <td>
+                <ul class="list-group-category" style="padding-left: 14px;">
+                  <ng-container *ngFor="let data of arrlists ; let i =index ">
+                    <li class="list-group" style="margin-bottom: 8px;" *ngIf="data == 1">Retrofitment was planned
+                      at the time of vehicle sign off</li>
+                    <li class="list-group" style="margin-bottom: 8px;" *ngIf="data == 2">Retrofitment due to
+                      testing feedback</li>
+                    <li class="list-group" style="margin-bottom: 8px;" *ngIf="data == 3">Retrofitment due to Field
+                      Issue</li>
+                    <li class="list-group" style="margin-bottom: 8px;" *ngIf="data == 4">IMCS / Cost Reduction
+                      Proposal</li>
+                    <li class="list-group" style="margin-bottom: 8px;" *ngIf="data == 5">
+                      {{retrofitmentothers}}</li>
+                  </ng-container>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <th style="padding: 0px 8px;">
+                <ng-container>
+                  AO Drawing Required
+                </ng-container>
+              </th>
+              <td style="padding: 0px !important;margin: 0px !important;">
+                <table class="table table-striped">
+                  <tr>
+                    <td style="width: 25%;padding: 12px !important;
+                        border-right: 1px solid #ccc !important;
+                        border-bottom-color: transparent !important;
+                        border-top-color: transparent !important;">
+                      <ng-container *ngIf="aodrawing == 1">
+                        Yes
+                      </ng-container>
+                      <ng-container *ngIf="aodrawing == 0">
+                        No
+                      </ng-container>
+                    </td>
+                    <th style="width: 25%;background: transparent;
+                      color: #000;
+                      padding: 8px !important;
+                      border-left: 1px solid #ccc !important;
+                      border-right: 1px solid #ccc !important;
+                      border-top: 1px solid transparent !important;
+                      border-bottom: 1px solid transparent !important;">
+                      <ng-container *ngIf="aodrawing == 0"> AO Drawing File</ng-container>
+                      <ng-container *ngIf="aodrawing == 1"> AO Drawing Number</ng-container>
+                    </th>
+                    <td style="padding: 12px !important;border-top-color: transparent !important;
+                          border-bottom-color: transparent !important;">
+                      <ng-container *ngIf="aodrawing == 0">
+                        <ul class="list-group-category" style="padding-left: 26px;">
+                          <ng-container *ngFor="let file of fileDownloadList ; let i =index">
+                            <li class="list-group" style="margin-bottom: 8px;">{{file.filename}}&nbsp;&nbsp;<i
+                                class="fa fa-download" (click)="downlaodfile(file.filename,file.id)"
+                                style="font-size: 15px;color: #130f0fb5;cursor: pointer;"></i></li>
+                          </ng-container>
+                        </ul>
+                      </ng-container>
+                      <ng-container *ngIf="aodrawing == 1">
+                        {{aodrawingtext}}
+                      </ng-container>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <th style="padding: 0px 8px;">Finas Update Required</th>
+              <td style="padding: 0px !important;margin: 0px !important;">
+                <table class="table table-striped">
+                  <tr>
+                    <td style="padding: 12px !important;
+                        border-right: 1px solid #ccc !important;
+                        border-bottom-color: transparent !important;
+                        border-top-color: transparent !important;">
+                      <ng-container *ngIf="finasupdate == 1">
+                        Yes
+                      </ng-container>
+                      <ng-container *ngIf="finasupdate == 0">
+                        No
+                      </ng-container>
+                    </td>
+                    <ng-container *ngIf="finasupdate == 0">
+                      <th style="background: transparent;
+                          color: #000;
+                          padding: 8px !important;
+                          border-left: 1px solid #ccc !important;
+                          border-right: 1px solid #ccc !important;
+                          border-top: 1px solid transparent !important;
+                          border-bottom: 1px solid transparent !important;">Remarks</th>
+                    </ng-container>
+                    <ng-container *ngIf="finasupdate == 0">
+                      <td style="width: 25%;padding: 12px !important;
+                          border-right: 1px solid #ccc !important;
+                          border-bottom-color: transparent !important;
+                          border-top-color: transparent !important;">
+                        <ng-container>
+                          {{finasupdateremarks}}
+                        </ng-container>
+                      </td>
+                    </ng-container>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <th style="padding: 0px 8px;">Fitment Report Required</th>
+              <td style="padding: 0px !important;margin: 0px !important;">
+                <table class="table table-striped">
+                  <tr>
+                    <td style="padding: 12px !important;
+                      border-right: 1px solid #ccc !important;
+                      border-bottom-color: transparent !important;
+                      border-top-color: transparent !important;">
+                      <ng-container *ngIf="fitmentreport == 1">
+                        Yes
+                      </ng-container>
+                      <ng-container *ngIf="fitmentreport == 0">
+                        No
+                      </ng-container>
+                    </td>
+                    <ng-container *ngIf="fitmentreport == 0">
+                      <th style="background: transparent;
+                     color: #000;
+                     padding: 8px !important;
+                     border-left: 1px solid #ccc !important;
+                     border-right: 1px solid #ccc !important;
+                     border-top: 1px solid transparent !important;
+                     border-bottom: 1px solid transparent !important;">Remarks</th>
+                    </ng-container>
+                    <ng-container *ngIf="fitmentreport == 0">
+                      <td style="width: 25%;padding: 12px !important;
+                        border-right: 1px solid #ccc !important;
+                        border-bottom-color: transparent !important;
+                        border-top-color: transparent !important;">
+                        <ng-container>
+                          {{fitmentremarks}}
+                        </ng-container>
+                      </td>
+                    </ng-container>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <h5 style="font-size: 16px;
+          padding: 10px 0px;">Part Details</h5>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 table-responsive">
+          <table id="prototable" class="table part-table table table-bordered">
+            <tr>
+              <th>S.No</th>
+              <th>Finas Id</th>
+              <th>Part No</th>
+              <th>Description</th>
+              <th>ZGS</th>
+              <th>Quantity</th>
+              <th>To be Scrapped / Stored</th>
+            </tr>
+            <tbody formArrayName="prpartsmaster">
+              <tr *ngFor="let part of rowForms.controls;let i =index;" [formGroupName]="i">
+                <td style="text-align: center">{{(i+1)}}</td>
+                <td><input type="text" formControlName="finasid" style="border: none;
+                  background: transparent;width: 100%;" disabled></td>
+                <td><input type="text" formControlName="partnumber" style="border: none;
+                  background: transparent;width: 100%;" disabled></td>
+                <td><input type="text" formControlName="description" style="border: none;
+                  background: transparent;width: 100%;" disabled></td>
+                <td><input type="text" formControlName="quantity" style="border: none;
+                  background: transparent;width: 100%;" disabled></td>
+                <td><input type="text" formControlName="zgs" style="border: none;
+                  background: transparent;width: 100%;" disabled></td>
+                <td><input type="text" formControlName="scraporstored" style="border: none;
+                    background: transparent;width: 100%;" disabled></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <h5 style="font-size: 16px;
+          padding: 10px 0px;">No of Vehicle /Objects</h5>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12  table-responsive">
+          <table id="prototable" class="table part-table table table-bordered">
+            <tr>
+              <th>S.No</th>
+              <th>Vehicle / Aggregate Number</th>
+              <th>Vehicle / Model Number</th>
+              <th>Vehicle / Aggregate Owner Name</th>
+              <th>Expected Start Date</th>
+            </tr>
+            <tbody formArrayName="prvehiclemaster">
+              <tr *ngFor="let data of novehicle.controls;let i =index;" [formGroupName]="i">
+                <td style="text-align:center;">{{(i+1)}}</td>
+                <td><input type="text" formControlName="vehicleaggregateno" style="border: none;
+                background: transparent;width: 100%;" disabled></td>
+                <td><input type="text" formControlName="modelnumber" style="border: none;
+                  background: transparent;width: 100%;" disabled></td>
+                <td><input type="text" formControlName="ownername" style="border: none;
+              background: transparent;width: 100%;" disabled></td>
+                <td> <input type="text" formControlName="startdate" style="border: none;
+              background: transparent;width: 100%;" bsDatepicker id="date{{i}}"
+                    [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }" disabled></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </form>
+    <!-- Vehicle Details -->
+    <br><br>
+  </div>
+</div>
+
+<div class="col-md-12 tabcont">
+  <div class="tabbar" style="padding: 15px;">
+    <div id="plannedTab" (click)="markTab('hdtsupervisor',$event)" class="tab tab_selected">HDT Supervisor</div>
+    <div (click)="markTab('mdtsupervisor',$event)" class="tab">MDT Supervisor</div>
+    <div (click)="markTab('eandesupervisor',$event)" class="tab">E&E Supervisor</div>
+    <div (click)="markTab('ppssupervisor',$event)" class="tab">PPS Supervisor</div>
+    <div (click)="markTab('aggregatesupervisor',$event)" class="tab">Aggregate Supervisor</div>
+    <div (click)="markTab('maintenancesupervisor',$event)" class="tab">Maintenance Supervisor</div>
+    <div (click)="markTab('mechanicalsupervisor',$event)" class="tab">Mechanical Supervisor</div>
+
+  </div>
+  <div *ngIf="tab == 'hdtsupervisor'" class="col-md-12" style="padding-bottom: 30px;">
+    <ng-container *ngFor="let data of hdtlist;let i =index">
+      <div style="margin-top: 20px;">
+        <span class="detail-style"> Vehicle Details : {{hdtlist[i].modelnumber}}</span> &nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-sm btn-primary"
+          (click)="viewRetroHDT(data.id,i)" *ngIf="data.isfitmentcreated == 1">View Retrofitment</button>
+      </div>
+
+      <div class="row" style="padding: 20px 0px;">
+        <div class="col-md-4">
+          <div class="form-group  text-field">
+            Finas Id
+            <input type="text" class="form-control" style="font-weight: 400;" value={{data.finasid}} disabled>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group  text-field">
+            Vehicle / Object Finas Id
+            <input type="text" class="form-control" style="font-weight: 400;" value={{data.objfinasid}} disabled>
+          </div>
+        </div>
+      </div>
+      <div class="row" style="padding: 10px 0px;">
+        <div class="col-md-12">
+          <div class="form-group text-field">
+            Observation
+            <textarea rows="4" type="text" class="form-control" style="font-weight: 400;" value={{data.observation}}
+              disabled>
+                  </textarea>
+
+          </div>
+        </div>
+      </div>
+      <div class="row" style="padding: 10px 0px;">
+        <div class="col-md-3">
+          <div class="form-group text-field">
+            Work Started On
+            <input type="text" class="form-control" value={{data.workstarteddate}} disabled>
+
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group text-field">
+            Work Ends On
+            <input type="text" class="form-control" value={{data.workendsdate}} disabled>
+
+          </div>
+
+        </div>
+        <div class="col-md-3">
+          <div class="form-group text-field">
+            <div class="form-group  text-field">
+              Actual Km. at the time of Fitment
+              <input type="text" class="form-control" style="font-weight: 400;" value={{data.actualkm}} disabled>
+
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3"></div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group text-field">
+            Work Done By
+            <textarea rows="4" type="text" class="form-control" style="font-weight: 400;" value={{data.workdoneby}}
+              disabled>
+                  </textarea>
+
+          </div>
+        </div>
+      </div>
+      <div class="row" style="padding: 10px 0px;">
+        <div class="col-md-12">
+          <h5 class="style-border" style="font-weight: 600;">Supervisor</h5>
+        </div>
+      </div>
+      <div class="row" style="padding: 10px 0px;">
+        <div class="col-md-3">
+          <div class="form-group  text-field">
+            Name
+            <input type="text" class="form-control" style="font-weight: 400;" value={{data.supervisorname}} disabled>
+
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group text-field">
+            Date
+            <input type="text" class="form-control" value={{data.supervisordate}} disabled>
+
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group text-field">
+            Received Date
+            <input type="text" class="form-control" value={{data.supervisorreceiveddate}} disabled>
+
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group text-field">
+            Completed Date
+            <input type="text" class="form-control" value={{data.supervisorcompleteddate}} disabled>
+
+          </div>
+        </div>
+      </div>
+      <ng-container *ngIf="finasupdate == 1">
+        <div class="row" style="padding: 10px 0px;">
+          <div class="col-md-12">
+            <h5 class="style-border" style="font-weight: 600;">FINAS Requester </h5>
+          </div>
+        </div>
+        <div class="row" style="padding: 10px 0px;">
+          <div class="col-md-2">
+            <div class="form-group  text-field">
+              Name
+              <input type="text" class="form-control" style="font-weight: 400;" value={{data.finasreqname}} disabled>
+
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group text-field">
+              Date
+              <input type="text" class="form-control" value={{data.finasreqdate}} disabled>
+
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group  text-field">
+              Mobile No
+              <input type="text" class="form-control" style="font-weight: 400;" maxlength="10"
+                value={{data.finasreqcontactno}} disabled>
+
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group text-field">
+              Return On
+              <input type="text" class="form-control" value={{data.finasreqreturndate}} disabled>
+
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group text-field">
+              Received On
+              <input type="text" class="form-control" value={{data.finasreqreceiveddate}} disabled>
+
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group text-field">
+              Remarks
+              <textarea rows="1" type="text" class="form-control" style="font-weight: 400;"
+                value={{data.finasreqremarks}} disabled>
+                  </textarea>
+
+            </div>
+          </div>
+        </div>
+      </ng-container>
+      <!-- </form> -->
+    </ng-container>
+    <h3 class="text-center" *ngIf="hdtlist?.length==0" style="padding-top: 15%;">
+      No data available!</h3>
+  </div>
+  <div *ngIf="tab == 'mdtsupervisor'" class="col-md-12" style="padding-bottom: 30px;">
+    <ng-container *ngFor="let data of mdtlist;let i =index">
+      <div style="margin-top: 20px;">
+        <span class="detail-style"> Vehicle Details : {{mdtlist[i].modelnumber}}</span> &nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-sm btn-primary"
+          (click)="viewRetroMDT(data.id)" *ngIf="data.isfitmentcreated == 1">View Retrofitment</button>
+      </div>
+      <div class="row" style="padding: 20px 0px;">
+        <div class="col-md-4">
+          <div class="form-group  text-field">
+            Finas Id
+            <input type="text" class="form-control" style="font-weight: 400;" value={{data.finasid}} disabled>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group  text-field">
+            Vehicle / Object Finas Id
+            <input type="text" class="form-control" style="font-weight: 400;" value={{data.objfinasid}} disabled>
+          </div>
+        </div>
+      </div>
+      <div class="row" style="padding: 10px 0px;">
+        <div class="col-md-12">
+          <div class="form-group text-field">
+            Observation
+            <textarea rows="4" type="text" class="form-control" style="font-weight: 400;" value={{data.observation}}
+              disabled>
+                  </textarea>
+
+          </div>
+        </div>
+      </div>
+      <div class="row" style="padding: 10px 0px;">
+        <div class="col-md-3">
+          <div class="form-group text-field">
+            Work Started On
+            <input type="text" class="form-control" value={{data.workstarteddate}} disabled>
+
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group text-field">
+            Work Ends On
+            <input type="text" class="form-control" value={{data.workendsdate}} disabled>
+
+          </div>
+
+        </div>
+        <div class="col-md-3">
+          <div class="form-group text-field">
+            <div class="form-group  text-field">
+              Actual Km. at the time of Fitment
+              <input type="text" class="form-control" style="font-weight: 400;" value={{data.actualkm}} disabled>
+
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3"></div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group text-field">
+            Work Done By
+            <textarea rows="4" type="text" class="form-control" style="font-weight: 400;" value={{data.workdoneby}}
+              disabled>
+                  </textarea>
+
+          </div>
+        </div>
+      </div>
+      <div class="row" style="padding: 10px 0px;">
+        <div class="col-md-12">
+          <h5 class="style-border" style="font-weight: 600;">Supervisor</h5>
+        </div>
+      </div>
+      <div class="row" style="padding: 10px 0px;">
+        <div class="col-md-3">
+          <div class="form-group  text-field">
+            Name
+            <input type="text" class="form-control" style="font-weight: 400;" value={{data.supervisorname}} disabled>
+
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group text-field">
+            Date
+            <input type="text" class="form-control" value={{data.supervisordate}} disabled>
+
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group text-field">
+            Received Date
+            <input type="text" class="form-control" value={{data.supervisorreceiveddate}} disabled>
+
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group text-field">
+            Completed Date
+            <input type="text" class="form-control" value={{data.supervisorcompleteddate}} disabled>
+
+          </div>
+        </div>
+      </div>
+      <ng-container *ngIf="finasupdate == 1">
+        <div class="row" style="padding: 10px 0px;">
+          <div class="col-md-12">
+            <h5 class="style-border" style="font-weight: 600;">FINAS Requester </h5>
+          </div>
+        </div>
+        <div class="row" style="padding: 10px 0px;">
+          <div class="col-md-2">
+            <div class="form-group  text-field">
+              Name
+              <input type="text" class="form-control" style="font-weight: 400;" value={{data.finasreqname}} disabled>
+
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group text-field">
+              Date
+              <input type="text" class="form-control" value={{data.finasreqdate}} disabled>
+
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group  text-field">
+              Mobile No
+              <input type="text" class="form-control" style="font-weight: 400;" maxlength="10"
+                value={{data.finasreqcontactno}} disabled>
+
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group text-field">
+              Return On
+              <input type="text" class="form-control" value={{data.finasreqreturndate}} disabled>
+
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group text-field">
+              Received On
+              <input type="text" class="form-control" value={{data.finasreqreceiveddate}} disabled>
+
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group text-field">
+              Remarks
+              <textarea rows="1" type="text" class="form-control" style="font-weight: 400;"
+                value={{data.finasreqremarks}} disabled>
+                  </textarea>
+
+            </div>
+          </div>
+        </div>
+      </ng-container>
+      <!-- </form> -->
+    </ng-container>
+    <h3 class="text-center" *ngIf="mdtlist?.length==0" style="padding-top: 15%;">
+      No data available!</h3>
+  </div>
+  <div *ngIf="tab == 'eandesupervisor'" class="col-md-12" style="padding-bottom: 30px;">
+    <ng-container *ngFor="let data of eandelist;let i =index">
+      <div style="margin-top: 20px;">
+        <span class="detail-style">Vehicle Details :{{eandelist[i].modelnumber}}</span> &nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-sm btn-primary"
+          (click)="viewRetroEandE(data.id)" *ngIf="data.isfitmentcreated == 1">View Retrofitment</button>
+      </div>
+      <div class="row" style="padding: 20px 0px;">
+        <div class="col-md-4">
+          <div class="form-group  text-field">
+            Finas Id
+            <input type="text" class="form-control" style="font-weight: 400;" value={{data.finasid}} disabled>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group  text-field">
+            Vehicle / Object Finas Id
+            <input type="text" class="form-control" style="font-weight: 400;" value={{data.objfinasid}} disabled>
+          </div>
+        </div>
+      </div>
+      <div class="row" style="padding: 10px 0px;">
+        <div class="col-md-12">
+          <div class="form-group text-field">
+            Observation
+            <textarea rows="4" type="text" class="form-control" style="font-weight: 400;" value={{data.observation}}
+              disabled>
+                  </textarea>
+
+          </div>
+        </div>
+      </div>
+      <div class="row" style="padding: 10px 0px;">
+        <div class="col-md-3">
+          <div class="form-group text-field">
+            Work Started On
+            <input type="text" class="form-control" value={{data.workstarteddate}} disabled>
+
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group text-field">
+            Work Ends On
+            <input type="text" class="form-control" value={{data.workendsdate}} disabled>
+
+          </div>
+
+        </div>
+        <div class="col-md-3">
+          <div class="form-group text-field">
+            <div class="form-group  text-field">
+              Actual Km. at the time of Fitment
+              <input type="text" class="form-control" style="font-weight: 400;" value={{data.actualkm}} disabled>
+
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3"></div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group text-field">
+            Work Done By
+            <textarea rows="4" type="text" class="form-control" style="font-weight: 400;" value={{data.workdoneby}}
+              disabled>
+                  </textarea>
+
+          </div>
+        </div>
+      </div>
+      <div class="row" style="padding: 10px 0px;">
+        <div class="col-md-12">
+          <h5 class="style-border" style="font-weight: 600;">Supervisor</h5>
+        </div>
+      </div>
+      <div class="row" style="padding: 10px 0px;">
+        <div class="col-md-3">
+          <div class="form-group  text-field">
+            Name
+            <input type="text" class="form-control" style="font-weight: 400;" value={{data.supervisorname}} disabled>
+
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group text-field">
+            Date
+            <input type="text" class="form-control" value={{data.supervisordate}} disabled>
+
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group text-field">
+            Received Date
+            <input type="text" class="form-control" value={{data.supervisorreceiveddate}} disabled>
+
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group text-field">
+            Completed Date
+            <input type="text" class="form-control" value={{data.supervisorcompleteddate}} disabled>
+
+          </div>
+        </div>
+      </div>
+      <ng-container *ngIf="finasupdate == 1">
+        <div class="row" style="padding: 10px 0px;">
+          <div class="col-md-12">
+            <h5 class="style-border" style="font-weight: 600;">FINAS Requester </h5>
+          </div>
+        </div>
+        <div class="row" style="padding: 10px 0px;">
+          <div class="col-md-2">
+            <div class="form-group  text-field">
+              Name
+              <input type="text" class="form-control" style="font-weight: 400;" value={{data.finasreqname}} disabled>
+
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group text-field">
+              Date
+              <input type="text" class="form-control" value={{data.finasreqdate}} disabled>
+
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group  text-field">
+              Mobile No
+              <input type="text" class="form-control" style="font-weight: 400;" maxlength="10"
+                value={{data.finasreqcontactno}} disabled>
+
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group text-field">
+              Return On
+              <input type="text" class="form-control" value={{data.finasreqreturndate}} disabled>
+
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group text-field">
+              Received On
+              <input type="text" class="form-control" value={{data.finasreqreceiveddate}} disabled>
+
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group text-field">
+              Remarks
+              <textarea rows="1" type="text" class="form-control" style="font-weight: 400;"
+                value={{data.finasreqremarks}} disabled>
+                  </textarea>
+
+            </div>
+          </div>
+        </div>
+      </ng-container>
+      <!-- </form> -->
+    </ng-container>
+    <h3 class="text-center" *ngIf="eandelist?.length==0" style="padding-top: 15%;">
+      No data available!</h3>
+  </div>
+  <div *ngIf="tab == 'ppssupervisor'" class="col-md-12" style="padding-bottom: 30px;">
+    <ng-container *ngFor="let data of ppslist;let i =index">
+      <div style="margin-top: 20px;">
+        <span class="detail-style">Vehicle Details : {{ppslist[i].modelnumber}}</span> &nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-sm btn-primary"
+          (click)="viewRetroPPS(data.id)" *ngIf="data.isfitmentcreated == 1">View Retrofitment</button>
+      </div>
+      <div class="row" style="padding: 20px 0px;">
+        <div class="col-md-4">
+          <div class="form-group  text-field">
+            Finas Id
+            <input type="text" class="form-control" style="font-weight: 400;" value={{data.finasid}} disabled>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group  text-field">
+            Vehicle / Object Finas Id
+            <input type="text" class="form-control" style="font-weight: 400;" value={{data.objfinasid}} disabled>
+          </div>
+        </div>
+      </div>
+      <div class="row" style="padding: 10px 0px;">
+        <div class="col-md-12">
+          <div class="form-group text-field">
+            Observation
+            <textarea rows="4" type="text" class="form-control" style="font-weight: 400;" value={{data.observation}}
+              disabled>
+                  </textarea>
+
+          </div>
+        </div>
+      </div>
+      <div class="row" style="padding: 10px 0px;">
+        <div class="col-md-3">
+          <div class="form-group text-field">
+            Work Started On
+            <input type="text" class="form-control" value={{data.workstarteddate}} disabled>
+
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group text-field">
+            Work Ends On
+            <input type="text" class="form-control" value={{data.workendsdate}} disabled>
+
+          </div>
+
+        </div>
+        <div class="col-md-3">
+          <div class="form-group text-field">
+            <div class="form-group  text-field">
+              Actual Km. at the time of Fitment
+              <input type="text" class="form-control" style="font-weight: 400;" value={{data.actualkm}} disabled>
+
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3"></div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group text-field">
+            Work Done By
+            <textarea rows="4" type="text" class="form-control" style="font-weight: 400;" value={{data.workdoneby}}
+              disabled>
+                  </textarea>
+
+          </div>
+        </div>
+      </div>
+      <div class="row" style="padding: 10px 0px;">
+        <div class="col-md-12">
+          <h5 class="style-border" style="font-weight: 600;">Supervisor</h5>
+        </div>
+      </div>
+      <div class="row" style="padding: 10px 0px;">
+        <div class="col-md-3">
+          <div class="form-group  text-field">
+            Name
+            <input type="text" class="form-control" style="font-weight: 400;" value={{data.supervisorname}} disabled>
+
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group text-field">
+            Date
+            <input type="text" class="form-control" value={{data.supervisordate}} disabled>
+
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group text-field">
+            Received Date
+            <input type="text" class="form-control" value={{data.supervisorreceiveddate}} disabled>
+
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group text-field">
+            Completed Date
+            <input type="text" class="form-control" value={{data.supervisorcompleteddate}} disabled>
+
+          </div>
+        </div>
+      </div>
+      <ng-container *ngIf="finasupdate == 1">
+        <div class="row" style="padding: 10px 0px;">
+          <div class="col-md-12">
+            <h5 class="style-border" style="font-weight: 600;">FINAS Requester </h5>
+          </div>
+        </div>
+        <div class="row" style="padding: 10px 0px;">
+          <div class="col-md-2">
+            <div class="form-group  text-field">
+              Name
+              <input type="text" class="form-control" style="font-weight: 400;" value={{data.finasreqname}} disabled>
+
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group text-field">
+              Date
+              <input type="text" class="form-control" value={{data.finasreqdate}} disabled>
+
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group  text-field">
+              Mobile No
+              <input type="text" class="form-control" style="font-weight: 400;" maxlength="10"
+                value={{data.finasreqcontactno}} disabled>
+
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group text-field">
+              Return On
+              <input type="text" class="form-control" value={{data.finasreqreturndate}} disabled>
+
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group text-field">
+              Received On
+              <input type="text" class="form-control" value={{data.finasreqreceiveddate}} disabled>
+
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group text-field">
+              Remarks
+              <textarea rows="1" type="text" class="form-control" style="font-weight: 400;"
+                value={{data.finasreqremarks}} disabled>
+                  </textarea>
+
+            </div>
+          </div>
+        </div>
+      </ng-container>
+      <!-- </form> -->
+    </ng-container>
+    <h3 class="text-center" *ngIf="ppslist?.length==0" style="padding-top: 15%;">
+      No data available!</h3>
+  </div>
+  <div *ngIf="tab == 'aggregatesupervisor'" class="col-md-12" style="padding-bottom: 30px;">
+    <ng-container *ngFor="let data of aggrelist;let i =index">
+      <div style="margin-top: 20px;">
+        <span class="detail-style">Vehicle Details :{{aggrelist[i].modelnumber}}</span> &nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-sm btn-primary"
+          (click)="viewRetroAggre(data.id)" *ngIf="data.isfitmentcreated == 1">View Retrofitment</button>
+      </div>
+      <div class="row" style="padding: 20px 0px;">
+        <div class="col-md-4">
+          <div class="form-group  text-field">
+            Finas Id
+            <input type="text" class="form-control" style="font-weight: 400;" value={{data.finasid}} disabled>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group  text-field">
+            Vehicle / Object Finas Id
+            <input type="text" class="form-control" style="font-weight: 400;" value={{data.objfinasid}} disabled>
+          </div>
+        </div>
+      </div>
+      <div class="row" style="padding: 10px 0px;">
+        <div class="col-md-12">
+          <div class="form-group text-field">
+            Observation
+            <textarea rows="4" type="text" class="form-control" style="font-weight: 400;" value={{data.observation}}
+              disabled>
+                  </textarea>
+
+          </div>
+        </div>
+      </div>
+      <div class="row" style="padding: 10px 0px;">
+        <div class="col-md-3">
+          <div class="form-group text-field">
+            Work Started On
+            <input type="text" class="form-control" value={{data.workstarteddate}} disabled>
+
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group text-field">
+            Work Ends On
+            <input type="text" class="form-control" value={{data.workendsdate}} disabled>
+
+          </div>
+
+        </div>
+        <div class="col-md-3">
+          <div class="form-group text-field">
+            <div class="form-group  text-field">
+              Actual Km. at the time of Fitment
+              <input type="text" class="form-control" style="font-weight: 400;" value={{data.actualkm}} disabled>
+
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3"></div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group text-field">
+            Work Done By
+            <textarea rows="4" type="text" class="form-control" style="font-weight: 400;" value={{data.workdoneby}}
+              disabled>
+                  </textarea>
+
+          </div>
+        </div>
+      </div>
+      <div class="row" style="padding: 10px 0px;">
+        <div class="col-md-12">
+          <h5 class="style-border" style="font-weight: 600;">Supervisor</h5>
+        </div>
+      </div>
+      <div class="row" style="padding: 10px 0px;">
+        <div class="col-md-3">
+          <div class="form-group  text-field">
+            Name
+            <input type="text" class="form-control" style="font-weight: 400;" value={{data.supervisorname}} disabled>
+
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group text-field">
+            Date
+            <input type="text" class="form-control" value={{data.supervisordate}} disabled>
+
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group text-field">
+            Received Date
+            <input type="text" class="form-control" value={{data.supervisorreceiveddate}} disabled>
+
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group text-field">
+            Completed Date
+            <input type="text" class="form-control" value={{data.supervisorcompleteddate}} disabled>
+
+          </div>
+        </div>
+      </div>
+      <ng-container *ngIf="finasupdate == 1">
+        <div class="row" style="padding: 10px 0px;">
+          <div class="col-md-12">
+            <h5 class="style-border" style="font-weight: 600;">FINAS Requester </h5>
+          </div>
+        </div>
+        <div class="row" style="padding: 10px 0px;">
+          <div class="col-md-2">
+            <div class="form-group  text-field">
+              Name
+              <input type="text" class="form-control" style="font-weight: 400;" value={{data.finasreqname}} disabled>
+
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group text-field">
+              Date
+              <input type="text" class="form-control" value={{data.finasreqdate}} disabled>
+
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group  text-field">
+              Mobile No
+              <input type="text" class="form-control" style="font-weight: 400;" maxlength="10"
+                value={{data.finasreqcontactno}} disabled>
+
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group text-field">
+              Return On
+              <input type="text" class="form-control" value={{data.finasreqreturndate}} disabled>
+
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group text-field">
+              Received On
+              <input type="text" class="form-control" value={{data.finasreqreceiveddate}} disabled>
+
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group text-field">
+              Remarks
+              <textarea rows="1" type="text" class="form-control" style="font-weight: 400;"
+                value={{data.finasreqremarks}} disabled>
+                  </textarea>
+
+            </div>
+          </div>
+        </div>
+      </ng-container>
+      <!-- </form> -->
+    </ng-container>
+    <h3 class="text-center" *ngIf="aggrelist?.length==0" style="padding-top: 15%;">
+      No data available!</h3>
+  </div>
+  <div *ngIf="tab == 'maintenancesupervisor'" class="col-md-12" style="padding-bottom: 30px;">
+    <ng-container *ngFor="let data of mainlist;let i =index">
+      <div style="margin-top: 20px;">
+        <span class="detail-style">Vehicle Details : {{mainlist[i].modelnumber}}</span> &nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-sm btn-primary"
+          (click)="viewRetroMain(data.id)" *ngIf="data.isfitmentcreated == 1">View Retrofitment</button>
+      </div>
+      <div class="row" style="padding: 20px 0px;">
+        <div class="col-md-4">
+          <div class="form-group  text-field">
+            Finas Id
+            <input type="text" class="form-control" style="font-weight: 400;" value={{data.finasid}} disabled>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group  text-field">
+            Vehicle / Object Finas Id
+            <input type="text" class="form-control" style="font-weight: 400;" value={{data.objfinasid}} disabled>
+          </div>
+        </div>
+      </div>
+      <div class="row" style="padding: 10px 0px;">
+        <div class="col-md-12">
+          <div class="form-group text-field">
+            Observation
+            <textarea rows="4" type="text" class="form-control" style="font-weight: 400;" value={{data.observation}}
+              disabled>
+                  </textarea>
+
+          </div>
+        </div>
+      </div>
+      <div class="row" style="padding: 10px 0px;">
+        <div class="col-md-3">
+          <div class="form-group text-field">
+            Work Started On
+            <input type="text" class="form-control" value={{data.workstarteddate}} disabled>
+
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group text-field">
+            Work Ends On
+            <input type="text" class="form-control" value={{data.workendsdate}} disabled>
+
+          </div>
+
+        </div>
+        <div class="col-md-3">
+          <div class="form-group text-field">
+            <div class="form-group  text-field">
+              Actual Km. at the time of Fitment
+              <input type="text" class="form-control" style="font-weight: 400;" value={{data.actualkm}} disabled>
+
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3"></div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group text-field">
+            Work Done By
+            <textarea rows="4" type="text" class="form-control" style="font-weight: 400;" value={{data.workdoneby}}
+              disabled>
+                  </textarea>
+
+          </div>
+        </div>
+      </div>
+      <div class="row" style="padding: 10px 0px;">
+        <div class="col-md-12">
+          <h5 class="style-border" style="font-weight: 600;">Supervisor</h5>
+        </div>
+      </div>
+      <div class="row" style="padding: 10px 0px;">
+        <div class="col-md-3">
+          <div class="form-group  text-field">
+            Name
+            <input type="text" class="form-control" style="font-weight: 400;" value={{data.supervisorname}} disabled>
+
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group text-field">
+            Date
+            <input type="text" class="form-control" value={{data.supervisordate}} disabled>
+
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group text-field">
+            Received Date
+            <input type="text" class="form-control" value={{data.supervisorreceiveddate}} disabled>
+
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group text-field">
+            Completed Date
+            <input type="text" class="form-control" value={{data.supervisorcompleteddate}} disabled>
+
+          </div>
+        </div>
+      </div>
+      <ng-container *ngIf="finasupdate == 1">
+        <div class="row" style="padding: 10px 0px;">
+          <div class="col-md-12">
+            <h5 class="style-border" style="font-weight: 600;">FINAS Requester </h5>
+          </div>
+        </div>
+        <div class="row" style="padding: 10px 0px;">
+          <div class="col-md-2">
+            <div class="form-group  text-field">
+              Name
+              <input type="text" class="form-control" style="font-weight: 400;" value={{data.finasreqname}} disabled>
+
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group text-field">
+              Date
+              <input type="text" class="form-control" value={{data.finasreqdate}} disabled>
+
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group  text-field">
+              Mobile No
+              <input type="text" class="form-control" style="font-weight: 400;" maxlength="10"
+                value={{data.finasreqcontactno}} disabled>
+
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group text-field">
+              Return On
+              <input type="text" class="form-control" value={{data.finasreqreturndate}} disabled>
+
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group text-field">
+              Received On
+              <input type="text" class="form-control" value={{data.finasreqreceiveddate}} disabled>
+
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group text-field">
+              Remarks
+              <textarea rows="1" type="text" class="form-control" style="font-weight: 400;"
+                value={{data.finasreqremarks}} disabled>
+                  </textarea>
+
+            </div>
+          </div>
+        </div>
+      </ng-container>
+      <!-- </form> -->
+    </ng-container>
+    <h3 class="text-center" *ngIf="mainlist?.length==0" style="padding-top: 15%;">
+      No data available!</h3>
+  </div>
+  <div *ngIf="tab == 'mechanicalsupervisor'" class="col-md-12" style="padding-bottom: 30px;">
+    <ng-container *ngFor="let data of mechlist;let i =index">
+      <div style="margin-top: 20px;">
+        <span class="detail-style">Vehicle Details : {{mechlist[i].modelnumber}}</span> &nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-sm btn-primary"
+          (click)="viewRetroMech(data.id)" *ngIf="data.isfitmentcreated == 1">View Retrofitment</button>
+      </div>
+      <div class="row" style="padding: 20px 0px;">
+        <div class="col-md-4">
+          <div class="form-group  text-field">
+            Finas Id
+            <input type="text" class="form-control" style="font-weight: 400;" value={{data.finasid}} disabled>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group  text-field">
+            Vehicle / Object Finas Id
+            <input type="text" class="form-control" style="font-weight: 400;" value={{data.objfinasid}} disabled>
+          </div>
+        </div>
+      </div>
+      <div class="row" style="padding: 10px 0px;">
+        <div class="col-md-12">
+          <div class="form-group text-field">
+            Observation
+            <textarea rows="4" type="text" class="form-control" style="font-weight: 400;" value={{data.observation}}
+              disabled>
+                  </textarea>
+
+          </div>
+        </div>
+      </div>
+      <div class="row" style="padding: 10px 0px;">
+        <div class="col-md-3">
+          <div class="form-group text-field">
+            Work Started On
+            <input type="text" class="form-control" value={{data.workstarteddate}} disabled>
+
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group text-field">
+            Work Ends On
+            <input type="text" class="form-control" value={{data.workendsdate}} disabled>
+
+          </div>
+
+        </div>
+        <div class="col-md-3">
+          <div class="form-group text-field">
+            <div class="form-group  text-field">
+              Actual Km. at the time of Fitment
+              <input type="text" class="form-control" style="font-weight: 400;" value={{data.actualkm}} disabled>
+
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3"></div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group text-field">
+            Work Done By
+            <textarea rows="4" type="text" class="form-control" style="font-weight: 400;" value={{data.workdoneby}}
+              disabled>
+                  </textarea>
+
+          </div>
+        </div>
+      </div>
+      <div class="row" style="padding: 10px 0px;">
+        <div class="col-md-12">
+          <h5 class="style-border" style="font-weight: 600;">Supervisor</h5>
+        </div>
+      </div>
+      <div class="row" style="padding: 10px 0px;">
+        <div class="col-md-3">
+          <div class="form-group  text-field">
+            Name
+            <input type="text" class="form-control" style="font-weight: 400;" value={{data.supervisorname}} disabled>
+
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group text-field">
+            Date
+            <input type="text" class="form-control" value={{data.supervisordate}} disabled>
+
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group text-field">
+            Received Date
+            <input type="text" class="form-control" value={{data.supervisorreceiveddate}} disabled>
+
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group text-field">
+            Completed Date
+            <input type="text" class="form-control" value={{data.supervisorcompleteddate}} disabled>
+
+          </div>
+        </div>
+      </div>
+      <ng-container *ngIf="finasupdate == 1">
+        <div class="row" style="padding: 10px 0px;">
+          <div class="col-md-12">
+            <h5 class="style-border" style="font-weight: 600;">FINAS Requester </h5>
+          </div>
+        </div>
+        <div class="row" style="padding: 10px 0px;">
+          <div class="col-md-2">
+            <div class="form-group  text-field">
+              Name
+              <input type="text" class="form-control" style="font-weight: 400;" value={{data.finasreqname}} disabled>
+
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group text-field">
+              Date
+              <input type="text" class="form-control" value={{data.finasreqdate}} disabled>
+
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group  text-field">
+              Mobile No
+              <input type="text" class="form-control" style="font-weight: 400;" maxlength="10"
+                value={{data.finasreqcontactno}} disabled>
+
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group text-field">
+              Return On
+              <input type="text" class="form-control" value={{data.finasreqreturndate}} disabled>
+
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group text-field">
+              Received On
+              <input type="text" class="form-control" value={{data.finasreqreceiveddate}} disabled>
+
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group text-field">
+              Remarks
+              <textarea rows="1" type="text" class="form-control" style="font-weight: 400;"
+                value={{data.finasreqremarks}} disabled>
+                  </textarea>
+
+            </div>
+          </div>
+        </div>
+      </ng-container>
+      <!-- </form> -->
+    </ng-container>
+    <h3 class="text-center" *ngIf="mechlist?.length==0" style="padding-top: 15%;">
+      No data available!</h3>
+  </div>
+</div>
+
+
+
+<!-- show the retrofitment form total view in modal -->
+
+
+<div class="modal fade" id="retroview" role="dialog">
+  <div class="modal-dialog modal-lg" style="width: 80%;">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title" style="font-size: 15px;
+          ">Retrofitment Report</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class=" col-md-12 table-responsive">
+            <table class="table table-striped">
+              <tbody>
+                <tr>
+                  <th style="width: 25%;">Fitment Details</th>
+                  <td style="width: 25%;">{{retroViewData?.fitmentdetails}}</td>
+                  <th style="width: 25%;">Vehicle Model</th>
+                  <td style="width: 25%;">{{retroViewData?.vehiclemodel}}</td>
+                </tr>
+                <tr>
+                  <th style="width: 25%;">Fouling With Other Parts</th>
+                  <td style="padding: 0px !important;
+                      margin: 0px !important;
+                      width: 25%;">
+                    <table class="table table-striped">
+                      <tr>
+                        <td style="padding: 12px !important;border-right: 1px solid #ccc !important;border-bottom-color: transparent !important;
+                            border-top-color: transparent !important;width: 25%;">
+                          <ng-container *ngIf="retroViewData?.isfoulingparts == 1">
+                            Yes
+                          </ng-container>
+                          <ng-container *ngIf="retroViewData?.isfoulingparts == 0">
+                            No
+                          </ng-container>
+                        </td>
+                        <th style="background: transparent;
+                           color: #000;
+                           padding: 8px !important;
+                           border-left: 1px solid #ccc !important;
+                           border-right: 1px solid #ccc !important;
+                           border-top: 1px solid transparent !important;
+                           border-bottom: 1px solid transparent !important;width: 50%;">Fouling Parts</th>
+                        <td style="padding: 12px !important;border-right: 1px solid #ccc !important;border-bottom-color: transparent !important;
+                              border-top-color: transparent !important;width: 25%;">
+                          <ng-container *ngIf="retroViewData?.foulingparts ==''">-</ng-container>
+                          <ng-container *ngIf="retroViewData?.foulingparts !=''">{{retroViewData?.foulingparts}}
+                          </ng-container>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                  <th style="width: 25%;">Parts Quality Issues If Any </th>
+                  <td style="padding: 0px !important;
+                      margin: 0px !important;
+                      width: 25%;">
+                    <table class="table table-striped">
+                      <tr>
+                        <td style="padding: 12px !important;border-right: 1px solid #ccc !important;border-bottom-color: transparent !important;
+                            border-top-color: transparent !important;width: 25%;">
+                          <ng-container *ngIf="retroViewData?.ispartqualityissues == 1">
+                            Yes
+                          </ng-container>
+                          <ng-container *ngIf="retroViewData?.ispartqualityissues == 0">
+                            No
+                          </ng-container>
+                        </td>
+                        <th style="background: transparent;
+                           color: #000;
+                           padding: 8px !important;
+                           border-left: 1px solid #ccc !important;
+                           border-right: 1px solid #ccc !important;
+                           border-top: 1px solid transparent !important;
+                           border-bottom: 1px solid transparent !important;width: 50%;">Fouling Parts</th>
+                        <td style="padding: 12px !important;border-right: 1px solid #ccc !important;border-bottom-color: transparent !important;
+                              border-top-color: transparent !important;width: 25%;">
+                          <ng-container *ngIf="retroViewData?.partqualityissues ==''">-</ng-container>
+                          <ng-container *ngIf="retroViewData?.partqualityissues !=''">
+                            {{retroViewData?.partqualityissues}}</ng-container>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <th style="width: 25%;">Accesibility Issues If Any</th>
+                  <td style="padding: 0px !important;
+                      margin: 0px !important;
+                      width: 25%;">
+                    <table class="table table-striped">
+                      <tr>
+                        <td style="padding: 12px !important;border-right: 1px solid #ccc !important;border-bottom-color: transparent !important;
+                            border-top-color: transparent !important;width: 25%;">
+                          <ng-container *ngIf="retroViewData?.isaccessibilityissues == 1">
+                            Yes
+                          </ng-container>
+                          <ng-container *ngIf="retroViewData?.isaccessibilityissues == 0">
+                            No
+                          </ng-container>
+                        </td>
+                        <th style="background: transparent;
+                           color: #000;
+                           padding: 8px !important;
+                           border-left: 1px solid #ccc !important;
+                           border-right: 1px solid #ccc !important;
+                           border-top: 1px solid transparent !important;
+                           border-bottom: 1px solid transparent !important;width: 50%;">Fouling Parts</th>
+                        <td style="padding: 12px !important;border-right: 1px solid #ccc !important;border-bottom-color: transparent !important;
+                              border-top-color: transparent !important;width: 25%;">
+                          <ng-container *ngIf="retroViewData?.accessibilityissues ==''">-</ng-container>
+                          <ng-container *ngIf="retroViewData?.accessibilityissues !=''">
+                            {{retroViewData?.accessibilityissues}}</ng-container>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                  <th style="width: 25%;">Other Issues If Any</th>
+                  <td style="width: 25%;">
+                    <ng-container *ngIf="retroViewData?.otherissues ==''">-</ng-container>
+                    <ng-container *ngIf="retroViewData?.otherissues !=''">
+                      {{retroViewData?.otherissues}}</ng-container>
+                  </td>
+                </tr>
+                <tr>
+                  <th style="width: 25%;">Remarks</th>
+                  <td style="  width: 25%;">
+                    {{retroViewData?.remarks}}
+                  </td>
+                  <th style="width: 25%;"> Fitment Status </th>
+                  <td style="width: 25%;">{{retroViewData?.fitmentstatus}}</td>
+                </tr>
+                <tr>
+                  <th style="width: 25%;">Work Completed On</th>
+                  <td style="padding: 0px !important;
+                  margin: 0px !important;
+                  width: 25%;">
+                    <table class="table table-striped">
+                      <tr>
+                        <th style="background: transparent;
+                    color: #000;
+                    padding: 8px !important;
+                    border-left: 1px solid #ccc !important;
+                    border-right: 1px solid #ccc !important;
+                    border-top: 1px solid transparent !important;
+                    border-bottom: 1px solid transparent !important;width: 25%;">Fitment prepared By</th>
+                        <td style="padding: 12px !important;border-right: 1px solid #ccc !important;border-bottom-color: transparent !important;
+                        border-top-color: transparent !important;width: 25%;">
+                          {{retroViewData?.preparedby}}
+                        </td>
+                        <th style="background: transparent;
+                       color: #000;
+                       padding: 8px !important;
+                       border-left: 1px solid #ccc !important;
+                       border-right: 1px solid #ccc !important;
+                       border-top: 1px solid transparent !important;
+                       border-bottom: 1px solid transparent !important;width: 25%;">Fitment checked By</th>
+                        <td style="padding: 12px !important;border-right: 1px solid #ccc !important;border-bottom-color: transparent !important;
+                          border-top-color: transparent !important;width: 25%;">
+
+                          {{retroViewData?.checkedby}}
+
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                  <th style="width: 25%;"> AO Drawing Number</th>
+                  <td style="width: 25%;">{{retroViewData?.aodrawingtext}}</td>
+                </tr>
+                <tr>
+                  <th style="width: 25%;">Fitment Photograph</th>
+                  <td style="  width: 25%;">
+                    <ng-container *ngIf="retroViewData?.imageList.length == 0">-</ng-container>
+                    <ng-container *ngIf="retroViewData?.imageList.length != 0">
+                 <table>
+                   <tr>
+                     <div class="col-md-12">
+                       <div class="col-md-4">
+                        <th colspan="2" style="border:none;">
+                          <img id="imgid3" [src]='' alt="..." class="img-responsive img2">
+                       </div>
+                       <div class="col-md-4">
+                        <th colspan="2" style="border:none;">
+                          <img id="imgid4" [src]='' alt="..." class="img-responsive img2">
+                        </div>
+                       <div class="col-md-4">
+                        <th colspan="2" style="border:none;">
+                          <img id="imgid5" [src]='' alt="..." class="img-responsive img2">
+                       </div>
+                     </div>
+                      <!-- <th *ngFor="let data of showImage;let i = index">
+                            <img id="imgid{{i}}" src='' alt="..." class="img2" (click)="priviewimage(3)">
+                          </th> -->
+                   </tr>
+                 </table>
+                </ng-container>
+                  </td>
+                
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- part details view -->
+          <div class="col-md-12">
+            <table class="table table-striped" style="margin-top: 10px;">
+              <thead style="background-color: #ececec;">
+                <tr>
+                  <th>S.No</th>
+                  <th>Part Number</th>
+                  <th>Part Description</th>
+                  <th>Quantity</th>
+                  <th>ZGS level as per NWC </th>
+                  <th>Actual Part Fitted ZGS</th>
+                  <th style="text-align: center;">TCMS
+                    <table style="width: 100%;">
+                      <tr>
+                        <th style="text-align: center;border-color: transparent;
+                                width: 50%;">DS</th>
+                        <th style="text-align: center;width: 50%;border-color: transparent;">DZ</th>
+                      </tr>
+                    </table>
+
+                  </th>
+                  <th>Special remark if any</th>
+
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="tablerow"
+                  *ngFor="let part of retroViewData?.fitmentParts | paginate: { itemsPerPage: 10, currentPage: p1,id: 'one'};let index=index;">
+                  <td style="text-align: center;">{{((p1- 1) * 10 + index+1)}}</td>
+                  <td> 
+                    <ng-container *ngIf="part.partnumber == null ">-</ng-container>
+                    <ng-container *ngIf="part.partnumber != null ">{{part.partnumber}}</ng-container>
+                  </td>
+                  <td>
+                    <ng-container *ngIf="part.description == null ">-</ng-container>
+                    <ng-container *ngIf="part.description != null ">{{part.description}}</ng-container>
+                  </td>
+                  <td>
+                    <ng-container *ngIf="part.quantity == null ">-</ng-container>
+                    <ng-container *ngIf="part.quantity != null ">{{part.quantity}}</ng-container> </td>
+                  <td>
+                    <ng-container *ngIf="part.zgsnwc == null ">-</ng-container>
+                    <ng-container *ngIf="part.zgsnwc != null ">{{part.zgsnwc}}</ng-container>
+                  </td>
+                  <td>
+                    <ng-container *ngIf="part.actualzgs == null ">-</ng-container>
+                    <ng-container *ngIf="part.actualzgs != null ">{{part.actualzgs}}</ng-container>
+                  </td>
+                  <td>
+                    <table style="width: 100%;text-align: center;">
+                      <tr>
+                        <td style="text-align: center;border-color: transparent;
+                        width: 50%;">
+                          <ng-container *ngIf="part?.ds == 0">-</ng-container>
+                          <ng-container *ngIf="part?.ds == 1">DS</ng-container>
+                        </td>
+                        <td style="text-align: center;border-color: transparent;
+                        width: 50%;">
+                          <ng-container *ngIf="part?.dz == 0">-</ng-container>
+                          <ng-container *ngIf="part?.dz == 1">DZ</ng-container>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                  <td>{{part.remarks}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div style="margin: 10px 0px;">
+            <pagination-controls *ngIf="retroViewData?.fitmentParts.length!=0" style="text-align: right;"
+              (pageChange)="p1 = $event" #api id="one">
+            </pagination-controls>
+          </div>
+
+
+          <div class="col-md-12">
+            <table class="table table-striped" style="margin-top: 10px;">
+              <thead style="background-color: #ececec;">
+                <tr>
+                  <th>S.No</th>
+                  <th>Part Number</th>
+                  <th>Alternate Part number If Used</th>
+                  <th>Part Description</th>
+                  <th>Quantity </th>
+                  <th style="text-align: center;">TCMS
+                    <table style="width: 100%;">
+                      <tr>
+                        <th style="text-align: center;border-color: transparent;
+                                width: 50%;">DS</th>
+                        <th style="text-align: center;width: 50%;border-color: transparent;">DZ</th>
+                      </tr>
+                    </table>
+
+                  </th>
+                  <th>Drawing specified torque value</th>
+                  <th>Actual given torque value</th>
+
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="tablerow"
+                  *ngFor="let kto of retroViewData?.fitmentKTODetails | paginate: { itemsPerPage: 10, currentPage: p2,id: 'two'};let index=index;">
+                  <td style="text-align: center;">{{((p2- 1) * 10 + index+1)}}</td>
+                  <td>
+                    <ng-container *ngIf="kto.partnumber == null ">-</ng-container>
+                    <ng-container *ngIf="kto.partnumber != null ">{{kto.partnumber}}</ng-container>
+                  </td>
+                  <td>
+                    <ng-container *ngIf="kto.altpartno == null ">-</ng-container>
+                    <ng-container *ngIf="kto.altpartno != null ">{{kto.altpartno}}</ng-container>
+                  </td>
+                  <td>
+                    <ng-container *ngIf="kto.description == null ">-</ng-container>
+                    <ng-container *ngIf="kto.description != null ">{{kto.description}}</ng-container>
+                  </td>
+                  <td>
+                    <ng-container *ngIf="kto.quantity == null ">-</ng-container>
+                    <ng-container *ngIf="kto.quantity != null ">{{kto.quantity}}</ng-container>
+                  </td>
+                  <td>
+                    <table style="width: 100%;text-align: center;">
+                      <tr>
+                        <td style="text-align: center;border-color: transparent;
+                        width: 50%;">
+                          <ng-container *ngIf="kto?.ds == 0">-</ng-container>
+                          <ng-container *ngIf="kto?.ds == 1">DS</ng-container>
+                        </td>
+                        <td style="text-align: center;border-color: transparent;
+                        width: 50%;">
+                          <ng-container *ngIf="kto?.dz == 0">-</ng-container>
+                          <ng-container *ngIf="kto?.dz == 1">DZ</ng-container>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                  <td>
+                    <ng-container *ngIf="kto.drawingtorqueval == null ">-</ng-container>
+                    <ng-container *ngIf="kto.drawingtorqueval != null ">{{kto.drawingtorqueval}}</ng-container>
+                  </td>
+                  <td>
+                    <ng-container *ngIf="kto.actualtorqueval == null ">-</ng-container>
+                    <ng-container *ngIf="kto.actualtorqueval != null ">{{kto.actualtorqueval}}</ng-container>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div style="margin: 10px 0px;">
+            <pagination-controls *ngIf="retroViewData?.fitmentKTODetails.length!=0" style="text-align: right;"
+              (pageChange)="p2 = $event" #api id="two">
+            </pagination-controls>
+          </div>
+
+          <!--   -->
+          <div class="col-md-12">
+            <table class="table table-striped" style="margin-top: 10px;">
+              <thead style="background-color: #ececec;">
+                <tr>
+                  <th>S.No</th>
+                  <th>Parameters</th>
+                  <th>Dimensions mentioned as per drawing</th>
+                  <th style="text-align: center;">TCMS
+                    <table style="width: 100%;">
+                      <tr>
+                        <th style="text-align: center;border-color: transparent;
+                                width: 50%;">DS</th>
+                        <th style="text-align: center;width: 50%;border-color: transparent;">DZ</th>
+                      </tr>
+                    </table>
+
+                  </th>
+                  <th>Actual observations</th>
+                  <th>Remark</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="tablerow"
+                  *ngFor="let observe of retroViewData?.fitmentObservations | paginate: { itemsPerPage: 10, currentPage: p2,id: 'three'};let index=index;">
+                  <td style="text-align: center;">{{((p3- 1) * 10 + index+1)}}</td>
+                  <td>
+                    <ng-container *ngIf="observe.parameters == null ">-</ng-container>
+                    <ng-container *ngIf="observe.parameters != null ">{{observe.parameters}}</ng-container>
+                  </td>
+                  <td>
+                    <ng-container *ngIf="observe.dimensionsdrawing == null ">-</ng-container>
+                    <ng-container *ngIf="observe.dimensionsdrawing != null ">{{observe.dimensionsdrawing}}
+                    </ng-container>
+                  </td>
+                  <td>
+                    <table style="width: 100%;text-align: center;">
+                      <tr>
+                        <td style="text-align: center;border-color: transparent;
+                        width: 50%;">
+                          <ng-container *ngIf="observe?.ds == 0">-</ng-container>
+                          <ng-container *ngIf="observe?.ds == 1">DS</ng-container>
+                        </td>
+                        <td style="text-align: center;border-color: transparent;
+                        width: 50%;">
+                          <ng-container *ngIf="observe?.dz == 0">-</ng-container>
+                          <ng-container *ngIf="observe?.dz == 1">DZ</ng-container>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                  <td>
+                    <ng-container *ngIf="observe.actualobservtions == null ">-</ng-container>
+                    <ng-container *ngIf="observe.actualobservtions != null ">{{observe.actualobservtions}}</ng-container>
+                  </td>
+                  <td>
+                    <ng-container *ngIf="observe.remarks == null ">-</ng-container>
+                    <ng-container *ngIf="observe.remarks != null ">{{observe.remarks}}</ng-container>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div style="margin: 10px 0px;">
+            <pagination-controls *ngIf="retroViewData?.fitmentObservations.length!=0" style="text-align: right;"
+              (pageChange)="p3 = $event" #api id="three">
+            </pagination-controls>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+
+
+
+<!-- preview the image -->
+
+<div class="modal fade" id="preview" role="dialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Preview</h4>
+      </div>
+      <div class="modal-body" style="text-align: center;">
+        <img id="previewid1" [src]='' alt="..." class="" style="">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sm" data-dismiss="modal" (click)="calcelpreviewimage()">close</button>
+      </div>
+    </div>
+  </div>
+</div>

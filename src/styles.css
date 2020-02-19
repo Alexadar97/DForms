@@ -1,0 +1,224 @@
+/* You can add global styles to this file, and also import other style files */
+body{
+    font-family: 'Lato', sans-serif;
+}
+
+
+.notifier__container * {
+    box-sizing: border-box;
+  }
+
+  .notifier__container-list {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 0;
+    list-style-type: none;
+  }
+
+  .notifier__notification {
+    display: block;
+    position: fixed;
+    visibility: hidden;
+    z-index: 10000;
+    will-change: transform;
+    backface-visibility: hidden;
+  }
+
+  .notifier__notification--material {
+    border-radius: 3px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    cursor: default;
+    padding-top: 11px;
+    padding-right: 26px;
+    padding-bottom: 10px;
+    padding-left: 26px;
+  }
+
+  .notifier__notification--material .notifier__notification-message {
+    display: inline-block;
+    margin-top: 0;
+    margin-bottom: 0;
+    vertical-align: top;
+    line-height: 32px;
+    font-size: 15px;
+  }
+
+  .notifier__notification--material .notifier__notification-button {
+    display: inline-block;
+    transition: opacity .2s ease;
+    opacity: .5;
+    margin-right: -10px;
+    margin-left: 10px;
+    outline: none;
+    border: none;
+    background: none;
+    cursor: pointer;
+    padding: 6px;
+    width: 32px;
+    height: 32px;
+    vertical-align: top;
+  }
+
+  .notifier__notification--material .notifier__notification-button:hover, .notifier__notification--material .notifier__notification-button:focus {
+    opacity: 1;
+  }
+
+  .notifier__notification--material .notifier__notification-button:active {
+    transform: scale(0.82);
+    opacity: 1;
+  }
+
+  .notifier__notification--default {
+    background-color: #444;
+    color: #FFF;
+  }
+
+  .notifier__notification--default .notifier__notification-button-icon {
+    fill: #FFF;
+  }
+
+  .notifier__notification--error {
+    background-color: #D9534F;
+    color: #FFF;
+  }
+
+  .notifier__notification--error .notifier__notification-button-icon {
+    fill: #FFF;
+  }
+
+  .notifier__notification--info {
+    background-color: #5BC0DE;
+    color: #FFF;
+  }
+
+  .notifier__notification--info .notifier__notification-button-icon {
+    fill: #FFF;
+  }
+
+  .notifier__notification--success {
+    background-color: #5CB85C;
+    color: #FFF;
+  }
+
+  .notifier__notification--success .notifier__notification-button-icon {
+    fill: #FFF;
+  }
+
+  .notifier__notification--warning {
+    background-color: #F0AD4E;
+    color: #FFF;
+  }
+
+  .notifier__notification--warning .notifier__notification-button-icon {
+    fill: #FFF;
+  }
+  .text-center{
+    text-align:center !important;
+  }
+  /*# sourceMappingURL=styles.css.map */
+  .nopadding{
+    padding: 0px !important;
+  }
+  .mt-1{
+    margin-top: 1%
+  }
+  .mt-2{
+    margin-top: 2%
+  }
+  .mt-3{
+    margin-top: 3%
+  }
+  .mt-4{
+    margin-top: 4%
+  }
+  .mt-5{
+    margin-top: 5%
+  }
+  .mt-1{
+    margin-top: 1%
+  }
+  .pt-2{
+    padding-top: 2%
+  }
+  .pt-3{
+    padding-top: 3%
+  }
+  .pt-4{
+    padding-top: 4%
+  }
+  .pt-5{
+    padding-top: 5%
+  }
+  input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+#drop_file_zone {
+  background-color: #EEE;
+  border: #999 5px dashed;
+  width: 290px;
+  height: 200px;
+  padding: 8px;
+  font-size: 18px;
+}
+#drag_upload_file {
+width:50%;
+margin:0 auto;
+}
+#drag_upload_file p {
+text-align: center;
+}
+#drag_upload_file #selectfile {
+display: none;
+}
+
+
+
+.multiselect-dropdown{
+  background: #fff !important;
+  border: 1px solid #cccccc !important;
+}
+span.dropdown-down {
+  border-top: 5px solid #424242 !important;
+  border-left: 5px solid transparent !important;
+  border-right: 5px solid transparent !important;
+  
+}
+.notifier__container * {          
+  box-sizing: border-box;
+}
+
+.notifier__container-list {    
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-left: 0;
+  list-style-type: none;
+}
+
+.notifier__notification {
+  display: block;
+  position: fixed;
+  visibility: hidden;
+  z-index: 10000;
+  will-change: transform;
+  backface-visibility: hidden;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+/*# sourceMappingURL=core.css.map */
+textarea{
+  resize: none;
+}
+#select > .multiselect-dropdown {
+  background: #fff;
+}
+.theme-green .bs-datepicker-body table td.week span {
+  color: #5cb85c;
+  display: none;
+}
+span.dropdown-btn {
+  background: #fff;
+  border: 1px solid #cccccc !important;
+}

@@ -1,0 +1,123 @@
+.list-group-item{
+    border: 0px;
+    border-radius: 0px;
+    background: #242536;
+    margin-left: 10px;
+  }
+  .list-group{
+    background: #242536;
+    height: 100vh;
+    padding-top: 20px;
+  }
+  .list-group-item > a {
+      color: #ffffff;
+  }
+  
+  .list-group-item > a:active{
+      color: #fff !important;
+      text-decoration: none;
+  }
+  
+  .list-group-item.active, .list-group-item.active:focus{
+    background: #030305;
+    color: #fff;
+    /* font-weight: bold; */
+    box-shadow: 0 0 2px 0px #828387;
+    border-left: 4px solid #FFB946;
+    margin-left: 6px;
+  }
+  .list-group-item:hover{
+    background: #030305;
+    color: #fff;
+    /* font-weight: bold; */
+    box-shadow: 0 0 2px 0px #828387;
+    border-left: 4px solid #FFB946;
+    margin-left: 6px;
+  }
+  .list-group-item.active > a, .list-group-item.active:focus > a, .list-group-item.active:hover > a{
+      
+      color:#fff;
+  }
+  .innerhead{
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      height: 64px;
+      width: 100%;
+      overflow: hidden;
+      background-size: cover;
+      min-width: 512px;
+  }
+  img.innerpgtop{
+      width: 100%;
+      min-height: 56px;
+      height: 100%;
+  }
+  img.innerpglogo {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 20vw !important;
+    height: auto !important;
+    max-width: 200px !important;
+    min-width: 230px !important;
+    /* background-color: #14141F !important; */
+    padding: 20px 29px !important;
+  }
+  .card{
+    box-shadow: 0 8px 20px -14px rgba(0,0,0,0.5);
+    border: 1px solid #D7D7D7;
+    background: #FFFFFF;
+    height: 160px;
+    width: 170px;
+    border-radius: 8px;
+    padding: 20px 10px;
+    cursor: pointer;
+  }
+  .form-name{
+    margin: 0;
+    font-size: 16px;
+    padding-top: 10px;
+  }
+  .card img{
+    width: 70px;
+    height: 70px;
+  }
+.bgimg{
+  background: url('../../assets/images/bg-home.png');
+  background-repeat: no-repeat;
+  background-size: cover;width: 100vw;height:100vh;
+}
+  @media (max-width:1444px){
+  .card {
+    box-shadow: 0 8px 20px -14px rgba(0,0,0,0.5);
+    border: 1px solid #D7D7D7;
+    background: #FFFFFF;
+    height: 150px;
+    width: 146px;
+    border-radius: 8px;
+    padding: 20px 10px;
+    cursor: pointer;
+}
+.card img{
+  width: 60px;
+  height: 60px;
+}
+.form-name {
+  margin: 0;
+  font-size: 13px;
+  padding-top: 15px;
+}
+  }
+  .homeicon{
+    position: absolute;
+    right: 273px;
+    top: 24px;
+    color: #fff;
+    border: 2px solid #ffffff;
+    padding: 1px 2px;
+    border-radius: 100px;
+    cursor: pointer;
+    font-size: 8px;
+  }

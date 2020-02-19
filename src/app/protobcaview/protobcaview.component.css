@@ -1,0 +1,343 @@
+
+.proto-table > tr > th{
+    /* border: 1px solid #9e9e9e3d !important; */
+    padding: 12px;
+    /* color: #000; */
+    width: 50%;
+   background: rgb(235,235,235);
+    border: 1px solid rgb(220,220,220);
+  
+    font-weight: 600;
+  
+  }
+  .part-table > tr > th{
+    /* border: 1px solid #9e9e9e3d !important; */
+    padding: 12px;
+    background: rgb(235,235,235);
+    border: 1px solid rgb(220,220,220);
+    font-size: 12px;
+    font-weight: 600;
+  
+  }
+  
+  .proto-table > tr > td{
+    border: 1px solid rgb(220,220,220);
+    padding: 12px;
+    font-weight: 500;
+    width: 50%;
+    font-size: 12px;
+  }
+  .part-table > tr > td{
+    border: 1px solid rgb(220,220,220);
+    padding: 12px;
+    font-weight: 500;
+    font-size: 12px;
+  }
+  
+   td {
+    border: 1px solid rgb(220,220,220);
+  }
+  table.table,  td, th{
+    margin-bottom: 0px;
+    border: 1px solid rgb(220,220,220);
+    font-size: 12px;
+  }
+  input#date:focus {
+    outline: none;
+  }
+  textarea {
+    resize: none;
+    outline: none;
+  }
+  
+  .control {
+    display: block;
+    position: relative;
+    padding-left: 30px;
+    margin-bottom: 15px;
+    cursor: pointer;
+  }
+  .control input {
+    position: absolute;
+    z-index: -1;
+    opacity: 0;
+  }
+  .control__indicator {
+    position: absolute;
+    top: 2px;
+    left: 0;
+    height: 15px;
+      width: 15px;
+    background: #9E9E9E;
+  }
+  .control:hover input ~ .control__indicator,
+  .control input:focus ~ .control__indicator {
+    background: #ccc;
+  }
+  .control input:checked ~ .control__indicator {
+    background: #534a4a;
+  }
+  .control input:disabled ~ .control__indicator {
+    background: #e6e6e6;
+    opacity: 0.6;
+    pointer-events: none;
+  }
+  .control__indicator:after {
+    content: '';
+    position: absolute;
+    display: none;
+  }
+  .control input:checked ~ .control__indicator:after {
+    display: block;
+  }
+  .control--checkbox .control__indicator:after {
+    left: 6px;
+      top: 2px;
+      width: 4px;
+      height: 8px;
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+  .control--checkbox input:disabled ~ .control__indicator:after {
+    border-color: #7b7b7b;
+  }
+  label{
+    font-weight: 400;
+    }
+    h5.style-border:before {
+      border-top: 2px solid #ccc!important;
+      content: "";
+      margin: 0 auto;
+      position: absolute;
+      top: 50%;
+        left: 120px;
+        right: 0;
+      bottom: 0;
+      width: 85%;
+      z-index: -1;
+    }
+    h5.style-border-number:before{
+      border-top: 2px solid #ccc!important;
+      content: "";
+      margin: 0 auto;
+      position: absolute;
+      top: 50%;
+      left: 158px;
+      right: 0;
+      bottom: 0;
+      width: 82%;
+      z-index: -1;
+    }
+    .tablerow > td{
+      padding: 6px 6px;
+      background: #f3f3f3ad;
+    }
+    .tableheader>th{
+      padding: 6px 6px;
+      background: #f3f3f3ad;
+    }
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+    }
+  
+
+
+    .tab:hover{
+      cursor: pointer;
+    }
+  
+    .tab_selected{
+      border-bottom:4px solid #3498db !important;
+      background: #3498db !important;
+      color:#fff !important;
+    }
+  
+    .tab{
+      width: 140px;
+      background: whitesmoke;
+      display: inline-block;
+      float: left;
+      text-align: center;
+      padding: 4px 0;
+      color: #2f2f2f;
+      margin-right: 10px;
+      border-bottom: 4px solid silver;
+      border-top-right-radius: 5px;
+      border-top-left-radius: 5px;
+      font-size: 12px;
+    }
+  
+    .tabhighlight{
+      border-bottom:4px solid #3498db;
+    }
+  
+    .tab:hover{
+      
+      border-bottom:4px solid #3498db;
+    }
+    @media (max-width: 1440px){
+    .tabcont{
+      padding: 13px 54px 0 25px !important;
+    }
+  }
+    @media (min-width: 1440px){
+      .tabcont{
+        padding: 13px 160px 0 135px !important;
+      }
+    }
+
+
+    .modal-table{
+      border-top: 1px solid #ccc;
+     
+    }
+    .modal-table th{
+      border: 1px solid #ccc;
+    }
+    .modal-table td{
+      border: 1px solid #ccc;
+    }
+   .detail-style{
+    font-size: 16px;
+    font-weight: 600;
+   }
+
+   .img2{
+     width: 100px;
+   }
+
+
+  /* navbar style */
+ 
+
+  .innerhead{
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      height: 64px;
+      width: 100%;
+      overflow: hidden;
+      background-size: cover;
+      min-width: 512px;
+  }
+  img.innerpgtop{
+      width: 100%;
+      min-height: 56px;
+      height: 100%;
+  }
+  img.innerpglogo {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 20vw !important;
+    height: auto !important;
+    max-width: 200px !important;
+    min-width: 230px !important;
+    /* background-color: #14141F !important; */
+    padding: 20px 29px !important;
+    cursor: pointer;
+  }
+  
+  
+  :host /deep/ .mat-radio-label {
+      flex-direction: column-reverse;
+      
+    }
+  
+    .mat-radio-label > .mat-radio-label-content {
+      padding: 0;
+    }
+    .btn-primary{
+      background-color: #006692!important;
+      border-color: #006692!important;
+      box-shadow: none;
+      color: #fff !important;
+    }
+  
+    a.waves-effect{
+      width: 100%;
+      display: block;
+      color: #000;
+    }
+  
+  .setting-icon {
+    position: absolute;
+    right: 23px;
+    display: inline-block;
+    cursor: pointer;
+    top: 16px;
+    padding-top: 6px;
+    padding-bottom: 4px;
+    padding-right: 7px;
+    padding-left: 6px;
+    border-radius: 4px;
+    background-color: #ffffffeb;
+  }
+  
+  .setting-icon:hover .settings-content {
+    display: block;
+  }
+  .settings-content {
+      display: none;
+      position: absolute;
+      right: 0px;
+      background-color: #444444;
+      min-width: 97px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1;
+      height: 45px;
+      margin-left: -33px;
+      border-radius: 4px;
+      top: 34px;
+  }
+  .settings-content a{
+    color: #fff;
+    padding-left: 17px;
+  }
+  
+  .dashboardArea{
+      /* color: #fff; */
+      height: 90vh;
+      /* background: #BDBDBD; */
+      /* background: #565656f2; */
+  }
+  @media (max-width:1444px){
+  img.innerpglogo {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 20vw !important;
+    height: auto !important;
+    max-width: 193px !important;
+    min-width: 194px !important;
+    /* background-color: #14141F !important; */
+    padding: 21px 17px !important;
+  }
+  }
+  @media (min-width:1556px){
+    img.innerpglogo {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 20vw;
+      height: auto;
+      max-width: 200px;
+      min-width: 230px;
+      /* background-color: #14141F; */
+      padding: 20px 29px;
+    }
+  }
+  .homeicon{
+    position: absolute;
+    right: 273px;
+    top: 24px;
+    color: #fff;
+    border: 2px solid #ffffff;
+    padding: 1px 2px;
+    border-radius: 100px;
+    cursor: pointer;
+    font-size: 8px;
+  }

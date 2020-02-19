@@ -1,0 +1,287 @@
+<app-spinner *ngIf="loading"></app-spinner>
+<div class="col-md-2" style="padding: 0;
+background-color: #242536; height: 100vh;">
+  <div style="margin-top: 15px;">
+    <p class="sidetext" (click)="stolist()" routerLinkActive="active"><i class="fa fa-angle-double-right"></i>&nbsp;&nbsp;STO
+      List</p>
+    <p class="sidetext active" (click)="addsto()" routerLinkActive="active"><i class="fa fa-plus"></i>&nbsp;&nbsp;New
+      Request</p>
+
+    <p class="sidetext" (click)="upload()" routerLinkActive="active"><i class="fa fa-upload"></i>&nbsp;&nbsp;Upload
+      Partlist</p>
+
+    <ng-container class="dropdown-item" *ngIf="isPartsplanner">
+      <p class="sidetext" (click)="uploadModal()" routerLinkActive="active"><i class="fa fa-upload"></i>&nbsp;&nbsp;Upload
+        Part Master</p>
+    </ng-container>
+
+
+
+  </div>
+</div>
+<div class="col-md-10">
+  <div class="row">
+    <div class="col-md-4 col-md-offset-4">
+      <h4 style="font-size: 28px;">STO Request</h4>
+    </div>
+    <div class="col-md-2">&nbsp;</div>
+
+  </div>
+  <div class="row" style="
+      padding: 10px;
+      width: 100%;padding-top: 0px;">
+
+    <h5 style="text-align: center;
+        font-size: 20px;width: 85%;">Material Used for Internal Consumption</h5>
+    <hr>
+
+    <form [formGroup]="form">
+
+
+      <div class="row">
+        <div class="col-md-3">
+
+          STO Purpose
+          <dot></dot>
+          <input type="text" class="form-control" value="" formControlName="purpose" placeholder="Purpose/Project">
+
+          <small class="text-danger" *ngIf="
+                !form.controls.purpose.valid &&
+                form.controls.purpose.touched
+              ">Purpose is required</small>
+
+        </div>
+
+        <div class="col-md-3 ">
+
+          Phone Number
+          <dot></dot>
+          <input type="text" class="form-control" value="" formControlName="phonenumber" maxlength="10"
+            (keypress)="keyAlpha($event)">
+          <small class="text-danger" *ngIf="
+                !form.controls.phonenumber.valid &&
+                form.controls.phonenumber.touched
+              ">Phone Number is required</small>
+
+        </div>
+        <ng-container *ngIf="usertype != 'sm'&& usertype != 'ipl'&& usertype != 'store'">
+          <div class="col-md-3 ">
+            Value
+            <dot></dot>
+            <input type="number" class="form-control" value="" formControlName="value" readonly>
+          </div>
+        </ng-container>
+        <div class="col-md-3 ">
+          Exigency Case
+          <dot></dot>
+
+          <select name="" id="" class="form-control" formControlName="exigency">
+            <option value=null selected disabled>Select Exigency Case </option>
+            <option value="1">Yes</option>
+            <option value="0">No</option>
+          </select>
+          <small class="text-danger errormsg" *ngIf="
+                !form.controls.exigency.valid &&
+                form.controls.exigency.touched
+              "> Exigency Case is required</small>
+
+        </div>
+
+        <div class="col-md-3">
+          <div class="" *ngIf="form.value.exigency == 1" style="margin-bottom: 12px;">
+
+            Approver L4
+            <dot></dot>
+
+            <select name="" id="" class="form-control" formControlName="l4">
+              <option value=null selected disabled>Select L4 User </option>
+              <option *ngFor="let user of l4Users" value="{{user.shortid}}">{{user.firstname}}&nbsp;{{user.lastname}}
+              </option>
+
+            </select>
+
+          </div>
+
+
+
+        </div>
+
+        <div class="col-md-3">
+          <div class="" *ngIf="form.value.exigency == 1">
+
+            Approver L3
+            <dot></dot>
+
+            <select name="" id="" class="form-control" formControlName="l3">
+              <option value=null selected disabled>Select L3 User </option>
+              <option *ngFor="let user of l3Users" value="{{user.shortid}}">{{user.firstname}}&nbsp;{{user.lastname}}
+              </option>
+
+            </select>
+
+
+          </div>
+        </div>
+      </div>
+
+
+      <hr>
+      <!-- <h4>{{form.value|json}}</h4>
+          <hr> -->
+      <div class="row">
+        <div class="col-md-12">
+          <table class="table table-bordered">
+            <tr class="tableheader">
+              <th>S.No</th>
+              <th>Part No<dot></dot>
+              </th>
+              <th>Part Description<dot></dot>
+              </th>
+              <th>Quantity<dot></dot>
+              </th>
+              <th>Price Per Quantity<dot></dot>
+              </th>
+              <th>Total Value<dot></dot>
+              </th>
+              <th>Status<dot></dot>
+              </th>
+              <th>Unit<dot></dot>
+              </th>
+              <!-- <th>Purpose of Transfer<dot></dot></th> -->
+              <th>Delete</th>
+            </tr>
+            <tbody formArrayName="stoParts">
+              <tr class="tablerow" *ngFor="let row of rowForms.controls;let i =index" [formGroupName]="i">
+                <td style="text-align: center;">
+                  {{(i+1)}}
+                </td>
+                <td>
+                  <!-- <input type="text" class="form-control" formControlName="partnumber" minlength="8" maxlength="15"
+                  (keypress)="nospace($event)"> -->
+                  <input type="text" class="form-control" minlength="8" maxlength="15" formControlName="partnumber"
+                    (input)="searchPartNo($event.target.value)" list="partnumbersearch" autocomplete="off"
+                    (keypress)="nospace($event)">
+                  <datalist id="partnumbersearch">
+                    <ng-container *ngFor="let part of partNumberList">
+                      <option value="{{part.partnumber}}">{{part.partnumber}}</option>
+                    </ng-container>
+                  </datalist>
+                  <small class="text-danger errormsg" *ngIf="
+                      !row.controls.partnumber.valid &&
+                      row.controls.partnumber.touched
+                    ">Part Number is required</small>
+                </td>
+                <td>
+                  <input type="text" class="form-control" formControlName="description">
+                  <small class="text-danger errormsg" *ngIf="
+                      !row.controls.description.valid &&
+                      row.controls.description.touched
+                    ">Description is required</small>
+                </td>
+                <td>
+                  <input type="text" class="form-control" formControlName="reqquantity" (keypress)="keyAlpha($event)">
+                  <small class="text-danger errormsg" *ngIf="
+                      !row.controls.reqquantity.valid &&
+                      row.controls.reqquantity.touched
+                    ">Quantity is required</small>
+                </td>
+                <td>
+                  <input type="text" class="form-control" formControlName="priceperqty" readonly>
+                </td>
+                <td>
+                  <input type="text" class="form-control" formControlName="priceperpart" readonly>
+                </td> 
+                <td>
+                  <ng-container  *ngIf="row.value.status == null || row.value.status == ''">
+                  <input type="text" class="form-control" formControlName="status" value="" readonly>
+                </ng-container>
+                  <ng-container *ngIf="row.value.status == 'na'">
+                    <input type="text" class="form-control" value="Not Available" readonly>
+                  </ng-container>
+                  <ng-container *ngIf="row.value.status == 'available'">
+                    <input type="text" class="form-control" value="Available" readonly>
+                  </ng-container>
+              </td>
+              <!-- <td  *ngIf="row.value.status != null || row.value.status != ''">
+               
+              </td> -->
+                <td>
+                  <!-- <input type="text" class="form-control" formControlName="unit"> -->
+                  <select name="" id="" class="form-control" formControlName="unit">
+                    <option value=null selected disabled>Select Unit Type </option>
+                    <option value="Kgs">Kg</option>
+                    <option value="Litres">Litre</option>
+                    <option value="Nos">Nos</option>
+
+                  </select>
+                  <small class="text-danger errormsg" *ngIf="
+                        !row.controls.unit.valid &&
+                        row.controls.unit.touched
+                      ">Unit is required</small>
+                </td>
+                <!-- <td>
+                        <input type="text" class="form-control" formControlName="purpose">
+                    </td> -->
+
+                <td>
+                  <button *ngIf="rowForms.controls.length >1" class="btn btn-default" (click)="deleteRow(i)"><i
+                      class="fas fa-trash"></i>
+                    <!-- <span *ngIf="i==0">-</span> -->
+                  </button> </td>
+              </tr>
+            </tbody>
+
+
+
+          </table>
+
+        </div>
+      </div>
+
+
+
+    </form>
+    <div style="text-align: right;">
+      <button class="btn btn-default bt-md" (click)="addRow()"><i class="fa fa-plus"></i>&nbsp;&nbsp;Add
+        Row</button>
+    </div>
+    <br>
+    <div style="text-align: right;">
+      <button class="btn btn-primary btn-success" (click)="calculateForm()"><i
+          class="fa fa-calculator"></i>&nbsp;&nbsp;Calculate</button>&nbsp;&nbsp;
+      <button class="btn btn-primary btn-md" (click)="submitForm()"><i
+          class="fa fa-save"></i>&nbsp;&nbsp;Submit</button>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+<!-- confirm modal -->
+
+<div class="modal fade" id="confirmSubmit" role="dialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-10">
+            <p class="modalHeader"  style="font-weight: 600;">Submit</p>
+          </div>
+          <div class="col-md-2">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <br>
+          <div class="col-md-12">
+            <p> Are you sure to submit the form ?</p>
+          </div>
+        </div>
+      </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-sm btn-primary" data-dismiss="modal">No </button>
+      <button type="button" class="btn btn-sm btn-primary" (click)="confirmSubmit()">Yes</button>
+    </div>
+  </div>
+  </div>
+</div>

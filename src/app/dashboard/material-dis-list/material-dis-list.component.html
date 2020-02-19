@@ -1,0 +1,958 @@
+<app-spinner *ngIf="loading"></app-spinner>
+<div class="col-md-2" style="padding: 0;
+background-color: #242536; height: 100vh;">
+<div style="margin-top: 15px;">
+  <p  class="sidetext active"   routerLinkActive="active"(click)="mislist()" ><i class="fa fa-angle-double-right"></i>&nbsp;&nbsp;Material Dispatch List</p>
+    <p class="sidetext" (click)="addmisdispatch()"routerLinkActive="active" ><i class="fa fa-plus"></i>&nbsp;&nbsp;New
+                Request</p>
+                <p  class="sidetext"  (click)="fileupload()"routerLinkActive="active" ><i class="fa fa-upload"></i>&nbsp;&nbsp;Upload
+                  Partlist</p>
+                <p class="sidetext" (click)="downloadExcel('export.xlsx')" routerLinkActive="active"><i class="fa fa-download"></i>
+                  &nbsp;Download</p>
+            
+                <p class="sidetext " *ngIf="isAdmin"(click)="signature()" routerLinkActive="active"><i
+                  class="fa fa-edit"></i>&nbsp;&nbsp;Authorized Signatory
+          </p>
+                <p  class="sidetext "*ngIf="usertype == 'store'" (click)="add_Master()">Master</p>
+    </div>
+</div>
+<div class="col-md-10">
+  <div class="col-md-12" style="margin-top:10px;">
+    <div class="col-md-4" style="padding: 0">
+        <h4>Material Dispatch</h4>
+    </div>
+    <!-- <div class=" col-md-3 tablestyle col-md-offset-1">
+    <input type="text" class="form-control" placeholder="Search">
+</div> -->
+    <div class="col-md-5">
+        <button class="btn btn-primary dropdown-item" (click)="downloadZip('Generate_ZIP.zip')" style="    width: 15%;float: right;">
+            <i class="fa fa-print"></i>&nbsp;&nbsp;Print</button>
+    </div>
+    <div class="col-md-3">
+        <input type="text" class="form-control" placeholder="  Search  " name="search"
+            (input)="search($event.target.value)" #valsearchuser autocomplete="off"><i
+            class="fa fa-search search"></i>
+    </div>
+    <!-- <div class="col-md-1" style="text-align: right;"> -->
+
+    <!-- <input type="button" value="New Request" class="btn btn-primary" (click)="addsto()" style="margin-right: 0px;"> -->
+
+    <!-- <div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="true"> -->
+    <!-- <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> -->
+    <!-- <i class="fa fa-list"></i> -->
+    <!-- Actions -->
+    <!-- &nbsp;&nbsp;Menu &nbsp;<i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"
+            style="width: 50%;padding: 4px;background: #dedede;">
+            <button class="btn btn-primary dropdown-item" (click)="addsto()"><i
+                    class="fa fa-plus"></i>&nbsp;&nbsp;New Request</button>
+            <button class="btn btn-primary dropdown-item" (click)="upload()"><i
+                    class="fa fa-upload"></i>&nbsp;&nbsp;Upload
+                Partlist</button>
+            <ng-container class="dropdown-item" *ngIf="isPartsplanner">
+                <button class="btn btn-primary dropdown-item" (click)="uploadModal()"><i
+                        class="fa fa-upload"></i>&nbsp;&nbsp;Upload
+                    Part Master</button>
+            </ng-container> -->
+
+    <!-- <button class="btn btn-primary dropdown-item" (click)="downloadExcel('export.xlsx')"><i
+                    class="fa fa-download"></i>
+                &nbsp;Download</button>
+                <ng-container >
+            <button class="btn btn-primary dropdown-item" (click)="downloadZip('Generate_ZIP.zip')">
+                <i class="fa fa-print"></i>
+                &nbsp;Print</button>
+                </ng-container> -->
+
+    <!-- </div>
+    </div> -->
+
+    <!-- </div> -->
+
+
+</div>
+
+<div class="col-md-12">
+  <div class="">
+    <!-- *ngFor="let data of allstoform | paginate: { itemsPerPage: 10, currentPage: p1,id: 'two'};let index=index" -->
+    <table id="prototable" class="table table-bordered table-striped" style="width:99%">
+      <tr>
+        <th>Select All<br>
+          <label class="control control--checkbox">
+            <input type="checkbox" class="chkboxes" id="select-all" value="all"
+              (click)="checkall($event.target.checked)">
+            <div class="control__indicator changeindicator"></div>
+          </label>
+        </th>
+        <th>S.No</th>
+        <th>Form ID</th>
+        <th>Created On </th>
+        <th>Request Name</th>
+        <th>Department </th>
+        <th>Approver Name - L4 </th>
+        <th>Approver Name - L3 </th>
+        <th>Status</th>
+        <th>View Form</th>
+        <th>Action</th>
+        <th *ngIf="usertype != 'store'">Delete</th>
+      </tr>
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+
+        <td>
+            <div class="row">
+                <div class="col-lg-12 nopadding">
+                    <input class="form-control" bsDaterangepicker id="rangedagte" type="text"
+                        style="font-size: 12px" placeholder="Select Created On"  (bsValueChange)="SelectDate($event,'createddate')" />
+                </div>
+            </div>
+        </td>
+        <td></td>
+        <td>
+          <div class="row">
+            <div class="col-lg-12 nopadding">
+                <div class="button-group">
+                    <button type="button" class="btn btn-default btn-sm dropdown-toggle"
+                        data-toggle="dropdown">Select
+                        Department
+                        &nbsp;&nbsp;
+                        <span class="caret"></span></button>
+                    <ul class="dropdown-menu filtermenu" style="position: absolute;
+                    transform: translate3d(1px, 32px, 0px);
+                    top: 0px;
+                    left: 0px;
+                    will-change: transform;
+                    height: 12vh;
+                    overflow-x: hidden;
+                    overflow-y: auto;">
+                        <ng-container *ngFor="let data of getdepartment;">
+                            <li>
+                                <label class="control control--checkbox">
+                                    <input type="checkbox" class="typeSelectBox" value={{data}}
+                                        (change)="departmentfilter($event,'reqdepartment')">&nbsp;<span
+                                        id="select">{{data}}</span>
+                                    <div class="control__indicator filterchkbox"></div>
+                                </label>
+                            </li>
+                        </ng-container>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        </td>
+        <td>
+            <div class="row">
+                <div class="col-lg-12 nopadding">
+                    <div class="button-group">
+                        <button type="button" class="btn btn-default btn-sm dropdown-toggle"
+                            data-toggle="dropdown" style="width: 170px;">Select
+                            Approver - L4
+
+                            <span class="caret"></span></button>
+                        <ul class="dropdown-menu filtermenu" style="position: absolute;
+                    transform: translate3d(1px, 32px, 0px);
+                    top: 0px;
+                    left: 0px;
+                    will-change: transform;
+                    height: 12vh;
+                    overflow-x: hidden;
+                    overflow-y: auto;">
+                            <ng-container *ngFor="let data of getapproverl4;">
+                                <li>
+                                    <label class="control control--checkbox">
+                                        {{data}}
+                                        <input type="checkbox" class="typeSelectBox" value={{data}}
+                                            (change)="approverl4ilter($event,'l4name')">&nbsp;<span
+                                            id="select"></span>
+                                        <div class="control__indicator filterchkbox"></div>
+                                    </label>
+                                </li>
+                            </ng-container>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </td>
+        <td>
+            <div class="row">
+                <div class="col-lg-12 nopadding">
+                    <div class="button-group">
+                        <button type="button" class="btn btn-default btn-sm dropdown-toggle"
+                            data-toggle="dropdown" style="width: 170px;">Select
+                            Approver - L3
+                            <span class="caret"></span></button>
+                        <ul class="dropdown-menu filtermenu" style="position: absolute;
+                    transform: translate3d(1px, 32px, 0px);
+                    top: 0px;
+                    left: 0px;
+                    will-change: transform;
+                    height: 12vh;
+                    overflow-x: hidden;
+                    overflow-y: auto;">
+                            <ng-container *ngFor="let data of getapproverl3;">
+                                <li>
+                                    <label class="control control--checkbox">
+                                        {{data}}
+                                        <input type="checkbox" class="typeSelectBox" value={{data}}
+                                            (change)="approverl3filter($event,'l3name')">&nbsp;<span
+                                            id="select"></span>
+                                        <div class="control__indicator filterchkbox"></div>
+                                    </label>
+                                </li>
+                            </ng-container>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </td>
+        <td>
+            <div class="row">
+                <div class="col-lg-12 nopadding">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default btn-sm dropdown-toggle"
+                            data-toggle="dropdown">Select
+                            Status
+
+                            <span class="caret"></span></button>
+                        <ul class="dropdown-menu filtermenu" role="menu" style="position: absolute;
+                    transform: translate3d(1px, 32px, 0px);
+                    top: 0px;
+                    left: 0px;
+                    will-change: transform;
+                    height: 22vh;
+                    overflow-x: hidden;
+                    min-width: 200px !important;
+                    overflow-y: auto;">
+                            <ng-container *ngFor="let data of getstatus;">
+                                <li>
+                                    <label class="control control--checkbox">
+                                      <span *ngIf="data == 'pending'">
+                                        L4 Approval Pending
+                                      </span>
+                                      <span *ngIf="data == 'l4approved'" >
+                                        L4 Approved
+                                      </span>
+                                      <span *ngIf="data == 'l4rejected'">
+                                        L4 Rejected
+                                      </span>
+                                      <span *ngIf="data.status == 'l3approved'">
+                                        Packaging Initiate Pending
+                                      </span>
+                                      <span *ngIf="data == 'l3rejected'" >
+                                        L3 Rejected
+                                      </span>
+                                      <span *ngIf="data == 'packinitiated'">
+                                        Packaging Initiated
+                                      </span>
+                                      <span *ngIf="data == 'packsubmitted'">
+                                        Dispatch Pending
+                                      </span>
+                                      <span *ngIf="data == 'packdispatched'">
+                                        Dispatched
+                                      </span>
+                                      <span *ngIf="data == 'l4dispatchapproved'">
+                                       Store Approval Pending
+                                      </span>
+                                      <span *ngIf="data == 'l4dispatchrejected'">
+                                        Dispatch L4 Rejected
+                                      </span>
+                                      <span *ngIf="data == 'deleted'">
+                                        Deleted
+                                      </span>
+                                      <span *ngIf="data == 'closed'">
+                                        Completed
+                                      </span>
+                                      <span *ngIf="data == 'storesubmitted'">
+                                        Store Approved
+                                      </span>
+                                      <span *ngIf="data == 'recalled'">
+                                       Form Recalled
+                                      </span>
+                                        <input type="checkbox" class="typeSelectBox" value={{data}}
+                                            (change)="statusfilter($event,'status')">&nbsp;<span
+                                            id="select"></span>
+                                        <div class="control__indicator filterchkbox"></div>
+                                    </label>
+                                </li>
+                            </ng-container>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </td>
+        <td></td>
+        <td></td>
+        <td *ngIf="usertype != 'store'"></td>
+    </tr>
+
+      <tbody>
+        <tr
+          *ngFor="let data of misdiapatchlist| paginate: { itemsPerPage: 10, currentPage: p1,id: 'one'};let index=index">
+          <td style="text-align: center"><label class="control control--checkbox">
+              <input type="checkbox" class="chkboxes checksingle" value="single" (click)="singlecheck($event,data.id)">
+              <div class="control__indicator checkcolor "></div>
+            </label>
+          </td>
+          <td>{{((currentPage - 1) * 10 + index+1)}}</td>
+          <td>{{(data?.mdformid !=null) ? data?.mdformid : '_'}}</td>
+          <td>
+            <ng-container *ngIf="data?.createddate !=null">{{(data?.createddate !=null) ? data?.createddate : '_'}}
+            </ng-container>
+            <ng-container *ngIf="data?.createddate ==null">-</ng-container>
+          </td>
+          <td>{{(data?.requestername !=null) ? data?.requestername : '_'}}</td>
+          <td>{{(data?.reqdepartment !=null) ? data?.reqdepartment : '_'}}</td>
+          <td>
+            <ng-container *ngIf="data?.l4name == null">Not Applicable</ng-container>
+            <ng-container *ngIf="data?.l4name != null">{{data?.l4name}}</ng-container>
+          </td>
+          <td>
+            <ng-container *ngIf="data?.l3name == null">Not Applicable</ng-container>
+            <ng-container *ngIf="data?.l3name != null">{{data?.l3name}}</ng-container>
+          </td>
+          <td>
+            <span [style.color]="pickColor(data.statusLabel)">
+              {{(data?.statusLabel != null) ? data?.statusLabel : '-' }}
+          </span>
+            <!-- <span *ngIf="data.status == 'pending'" class="inprogress">
+              L4 Approval Pending
+            </span>
+            <span *ngIf="data.status == 'l4approved' && data.transportmode == 1" class="inprogress">
+              Packaging Initiate Pending
+            </span>
+            <span *ngIf="data.status == 'l4approved' && data.transportmode == 2" class="inprogress">
+              L3 Approval Pending
+            </span>
+            <span *ngIf="data.status == 'l4rejected'" class="rejected">
+              L4 Rejected
+            </span>
+            <span *ngIf="data.status == 'l3approved'" class="inprogress">
+              Packaging Initiate Pending
+            </span>
+            <span *ngIf="data.status == 'l3rejected'" class="rejected">
+              L3 Rejected
+            </span>
+            <span *ngIf="data.status == 'packinitiated'" class="inprogress">
+              Packaging Complete Pending
+            </span>
+            <span *ngIf="data.status == 'packsubmitted'" class="inprogress">
+               Dispatch Pending
+            </span>
+            <span *ngIf="data.status == 'packdispatched'" class="inprogress">
+              Dispatch L4 Approval Pending
+            </span>
+            <span *ngIf="data.status == 'l4dispatchapproved'" class="inprogress">
+              Store Approval Pending
+            </span>
+            <span *ngIf="data.status == 'l4dispatchrejected'" class="rejected">
+              Dispatch L4 Rejected
+            </span>
+            <span *ngIf="data.status == 'deleted'" class="rejected">
+              Deleted
+            </span>
+            <span *ngIf="data.status == 'closed'" class="completed">
+              Completed
+            </span>
+            <span *ngIf="data.status == 'storesubmitted'" class="inprogress">
+              Store Approved
+            </span>
+            <span *ngIf="data.status == 'recalled'" class="inprogress">
+            Form Recalled
+            </span> -->
+          </td>
+          <td><button class="btn btn-default btn-sm" style="background: rgba(96, 96, 96, 0.28);
+            border: none;" (click)="openParts(data)">
+              <i class="fa fa-eye"></i>&nbsp;&nbsp;View
+            </button></td>
+          <td>
+            <ng-container *ngIf="usertype == 'store' && (data.transportmode == 1) && (data.status == 'l4approved' || data.status == 'packinitiated'
+            || data.status == 'packsubmitted'|| data.status == 'l4dispatchapproved')">
+              <button class="btn btn-primary btn-sm" (click)="Edit(data.id)">Edit</button>
+            </ng-container>
+            <ng-container *ngIf="usertype == 'store' && (data.transportmode == 2) && (data.status == 'l3approved' || data.status == 'packinitiated'
+          || data.status == 'packsubmitted'|| data.status == 'l4dispatchapproved')">
+              <button class="btn btn-primary btn-sm" (click)="Edit(data.id)">Edit</button>
+            </ng-container>
+            <ng-container *ngIf="usertype == 'store' && (data.status == 'packdispatched' || (data.status == 'storesubmitted'))">
+              <button class="btn btn-primary btn-sm" (click)="Edit(data.id)">Edit</button>
+            </ng-container>
+            <ng-container *ngIf="data?.status=='pending' && ( usertype != 'budgetapprover' && usertype != 'sm'
+            && usertype != 'ipl'  && usertype != 'store' && status !='protovehicleowner' && status !='hdtsupervisor'
+            && status !='mdtsupervisor' && status !='ppssupervisor' && status !='maintenancesupervisor' && status !='mechanicalsupervisor'
+            && status !='eandesupervisor'&& status !='aggregatesupervisor')">
+                <button class="btn btn-primary  btn-sm" (click)="Recall(data.id)">
+                    Recall
+                </button>
+            </ng-container>
+            <ng-container *ngIf="data?.status=='recalled' && ( usertype != 'budgetapprover' && usertype != 'sm'
+                  && usertype != 'ipl'  && usertype != 'store' && status !='protovehicleowner' && status !='hdtsupervisor'
+                  && status !='mdtsupervisor' && status !='ppssupervisor' && status !='maintenancesupervisor' && status !='mechanicalsupervisor'
+                  && status !='eandesupervisor'&& status !='aggregatesupervisor')">
+                  <button class="btn btn-primary  btn-sm" (click)="RecallEdit(data.id)">
+                    Edit
+                </button>
+            </ng-container>
+          </td>
+          <td style="text-align: center;" *ngIf="usertype != 'store'">
+            <ng-container *ngIf="data?.status != 'deleted' && data?.status != 'closed'">
+              <button class="btn btn-default  btn-sm" (click)="dispatchDelete(data.id,data,index)" id="delete{{index}}"
+                style="border-radius: 6px;">
+                <i class="fas fa-trash" style="font-size: 16px;"></i>
+              </button>
+            </ng-container>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <br>
+  <h4 *ngIf="misdiapatchlist?.length==0" class="text-center">No New Material Dispatch created yet!</h4>
+  <div style="float: right;margin-bottom: 35px;" *ngIf="misdiapatchlist?.length!=0">
+    <button [disabled]="currentPage == 1" class="btn btn-default paginationbtn" (click)="paginatePartList('prev')"><i
+        class="fa fa-chevron-left"></i></button>
+    <span style="font-size: 15px;
+          padding: 10px;">
+      <!-- {{currentPage}} -->
+      <input id="currentPageInput" class="paginatecontrol" type="text" value="{{currentPage}}" style="width: 50px;">
+      <!-- <i class="icon-search" (click)="searchPage()" class="searchbtn"></i> -->
+      <i class="fa fa-search searchbtn" (click)="searchPage()"></i>
+      of
+      {{totalPages}}
+    </span>
+
+    <button [disabled]="currentPage == totalPages" class="btn btn-default paginationbtn"
+      (click)="paginatePartList('next')"><i class="fa fa-chevron-right"></i></button>
+  </div>
+</div>
+</div>
+
+
+
+<!-- Total forms view model -->
+
+
+
+<div class="modal fade" id="dispatchparts" role="dialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-lg" style="width: 80%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Form Details</h4>
+      </div>
+      <div class="modal-body">
+        <s-update [arr]="updateForm"></s-update>
+        <div class="modal-table">
+          <div class="row">
+            <div class="col-md-12 table-responsive">
+              <table class="table table-striped" id="misform">
+                <tbody>
+                  <tr>
+                    <th style="width: 25%;">Form ID</th>
+                    <td style="width: 25%;">{{dispatchdata?.mdformid}}</td>
+                    <th style="width: 25%;">Created On </th>
+                    <td style="width: 25%;">
+                      <ng-container *ngIf="dispatchdata?.createddate == null">-</ng-container>
+                      <ng-container *ngIf="dispatchdata?.createddate != null">{{dispatchdata?.createddate}}
+                      </ng-container>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th style="width: 25%;">Requester Name</th>
+                    <td style="width: 25%;">{{dispatchdata?.requestername}}</td>
+                    <th style="width: 25%;">Contact Number</th>
+                    <td style="width: 25%;">{{dispatchdata?.contactno}}</td>
+                  </tr>
+                  <tr>
+                    <th style="width: 25%;">Approver L4 Name</th>
+                    <td style="width: 25%;">
+                      <ng-container *ngIf="dispatchdata?.l4name == null">-</ng-container>
+                      <ng-container *ngIf="dispatchdata?.l4name != null">{{dispatchdata?.l4name}}</ng-container>
+                    </td>
+                    <th style="width: 25%;">Approver L3 Name</th>
+                    <td style="width: 25%;">
+                      <ng-container *ngIf="dispatchdata?.l3name == null">-</ng-container>
+                      <ng-container *ngIf="dispatchdata?.l3name != null">{{dispatchdata?.l3name}}</ng-container>
+                    </td>
+
+                  </tr>
+                  <tr>
+                    <th style="width: 25%;">Department</th>
+                    <td style="width: 25%;">{{dispatchdata?.reqdepartment}}</td>
+                    <th style="width: 25%;">SAP Reference of Original Document</th>
+                    <td style="width: 25%;">
+                      <ul class="list-group-category" style="padding-left: 14px;">
+                        <ng-container *ngFor="let data of sapreferenceArrList ; let i =index ">
+                          <li class="list-group" style="margin-bottom: 8px;" *ngIf="data == 1">Purchase Returns</li>
+                          <li class="list-group" style="margin-bottom: 8px;" *ngIf="data == 2">Job Work</li>
+                          <li class="list-group" style="margin-bottom: 8px;" *ngIf="data == 3">FOC</li>
+                          <li class="list-group" style="margin-bottom: 8px;" *ngIf="data == 4">
+                            {{dispatchdata?.otherstext}}</li>
+                        </ng-container>
+                      </ul>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th style="width: 25%;">HR ID</th>
+                    <td style="width: 25%;">{{dispatchdata?.hrid}}</td>
+                    <th style="width: 25%;">Prepared By</th>
+                    <td style="width: 25%;">{{dispatchdata?.preparedby}}</td>
+                  </tr>
+                  <tr>
+                    <th style="width: 25%;">Cost Center / IO </th>
+                    <td style="width: 25%;">{{dispatchdata?.costcenter}}</td>
+                    <th style="width: 25%;">Vehicle Number</th>
+                    <td style="width: 25%;">{{dispatchdata?.vehicleno}}</td>
+                  </tr>
+                  <tr>
+
+                    <th style="width: 25%;">Purpose of Dispatch </th>
+                    <td style="width: 25%;">{{dispatchdata?.dispatchpurpose}}</td>
+                    <th style="width: 25%;">GST Unique Number</th>
+                    <td style="width: 25%;">{{dispatchdata?.gstinuniqueno}}</td>
+                  </tr>
+                  <tr>
+                    <th style="width: 25%;">Name</th>
+                    <td style="width: 25%;">{{dispatchdata?.recipientname}}</td>
+                    <th style="width: 25%;">Address</th>
+                    <td style="width: 25%;">{{dispatchdata?.recipientaddress}}</td>
+
+                  </tr>
+                  <tr>
+                    <th style="width: 25%;">State</th>
+                    <td style="width: 25%;">{{dispatchdata?.state}}</td>
+                    <th style="width: 25%;">Pin Code</th>
+                    <td style="width: 25%;">{{dispatchdata?.statecode}}</td>
+                  </tr>
+                  <tr>
+                    <th style="width: 25%;">Expected Date of Arriving</th>
+                    <td style="width: 25%;">
+                      <ng-container *ngIf="dispatchdata?.expectedreturndate == null">Not Applicable</ng-container>
+                      <ng-container *ngIf="dispatchdata?.expectedreturndate != null">
+                        {{dispatchdata?.expectedreturndate}}</ng-container>
+                    </td>
+                    <th style="width: 25%;">Expected Date of Scrapping</th>
+                    <td style="width: 25%;">
+                      <ng-container *ngIf="dispatchdata?.expectedscrappingdate == null">Not Applicable</ng-container>
+                      <ng-container *ngIf="dispatchdata?.expectedscrappingdate != null">
+                        {{dispatchdata?.expectedscrappingdate}}</ng-container>
+                    </td>
+                  </tr>
+
+                  <tr>
+
+                    <th style="width: 25%;">Purpose of Shipment</th>
+                    <td style="width: 25%;">
+                      <ul class="list-group-category" style="padding-left: 14px;">
+                        <ng-container
+                          *ngIf="dispatchdata?.purposeofshipment == null || dispatchdata?.purposeofshipment == '' ">-
+                        </ng-container>
+                        <ng-container
+                          *ngIf="dispatchdata?.purposeofshipment != null || dispatchdata?.purposeofshipment != ''">
+                          <ng-container *ngFor="let data of purposeofshipmentArrlist ; let i =index ">
+                            <li class="list-group" style="margin-bottom: 8px;" *ngIf="data == 1">Failed Parts Analysis
+                            </li>
+                            <li class="list-group" style="margin-bottom: 8px;" *ngIf="data == 2">Destructive Testing
+                            </li>
+                            <li class="list-group" style="margin-bottom: 8px;" *ngIf="data == 3">Fitment Trail</li>
+                            <li class="list-group" style="margin-bottom: 8px;" *ngIf="data == 4">Sample Testing</li>
+                            <li class="list-group" style="margin-bottom: 8px;" *ngIf="data == 5">New Development
+                              reference</li>
+                          </ng-container>
+                        </ng-container>
+                      </ul>
+                    </td>
+                    <th style="width: 25%;">Mode of Transport </th>
+                    <td style="width: 25%;">
+                      <ng-container *ngIf="dispatchdata?.transportmode == 1">Road</ng-container>
+                      <ng-container *ngIf="dispatchdata?.transportmode == 2">Air</ng-container>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Delivery Challan Date</th>
+                    <td>
+                      <ng-container *ngIf="dispatchdata?.expectedchallan == null">-</ng-container>
+                      <ng-container *ngIf="dispatchdata?.expectedchallan != null">{{dispatchdata.expectedchallan}}
+                      </ng-container>
+                    </td>
+                    <th>Scrap File</th>
+                    <td>
+                      <ng-container *ngIf="dispatchdata?.status != 'storesubmitted'">-</ng-container>
+                      <ng-container *ngIf="dispatchdata?.status == 'storesubmitted'">
+                        <ul class="list-group-category" style="padding-left: 26px;">
+                          <ng-container *ngFor="let file of fileDownloadList ; let i =index">
+                            <li class="list-group" style="margin-bottom: 8px;">{{file.filename}}&nbsp;&nbsp;<i
+                                class="fa fa-download" (click)="downlaodfile(file.filename,file.id)"
+                                style="font-size: 15px;color: #130f0fb5;cursor: pointer;"></i></li>
+                          </ng-container>
+                        </ul>
+                        <!-- <p>{{FileName}}&nbsp;&nbsp;&nbsp;<i
+                          class="fa fa-download" (click)="downlaodfile(file.filename,file.id)"
+                          style="font-size: 15px;color: #130f0fb5;cursor: pointer;"></i></p> -->
+                      </ng-container>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Department</th>
+                    <td>{{dispatchdata?.department}}</td>
+                    <th>Remarks</th>
+                    <td>
+                      <ng-container *ngIf="dispatchdata?.reqremarks == null || dispatchdata?.reqremarks == ''">-</ng-container>
+                      <ng-container *ngIf="dispatchdata?.reqremarks != null || dispatchdata?.reqremarks != ''">{{dispatchdata?.reqremarks}}</ng-container>
+                   </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="row viewpara">
+                <div class="col-md-12">
+                  <div class="col-md-3 tablestyle">
+                    <p class="stylefont">Status</p>
+                  </div>
+                  <div class="col-md-3 tablestyle">
+               <span>{{dispatchdata?.statusLabel}}</span>
+                     <!-- <span *ngIf="dispatchdata?.status == 'pending'">
+                        L4 Approval Pending
+                      </span>
+                      <span *ngIf="dispatchdata?.status == 'l4approved' && dispatchdata?.transportmode == 1" class="inprogress">
+                        Packaging Initiate Pending
+                      </span>
+                      <span *ngIf="dispatchdata?.status == 'l4approved' && dispatchdata?.transportmode == 2" class="inprogress">
+                        L3 Approval Pending
+                      </span>
+                      <span *ngIf="dispatchdata?.status == 'l4rejected'">
+                        L4 Rejected
+                      </span>
+                      <span *ngIf="dispatchdata?.status == 'l3approved' && dispatchdata?.transportmode == 2">
+                        Packaging Initiate Pending
+                      </span>
+                      <span *ngIf="dispatchdata?.status == 'l3rejected'">
+                        L3 Rejected
+                      </span>
+                      <span *ngIf="dispatchdata?.status == 'packinitiated'">
+                        Packaging Complete Pending
+                      </span>
+                      <span *ngIf="dispatchdata?.status == 'packsubmitted'">
+                         Dispatch Pending
+                      </span>
+                      <span *ngIf="dispatchdata?.status == 'packdispatched'">
+                        Dispatch L4 Approval Pending
+                      </span>
+                      <span *ngIf="dispatchdata?.status == 'l4dispatchapproved'">
+                      Store Approval Pending
+                      </span>
+                      <span *ngIf="dispatchdata?.status == 'l4dispatchrejected'">
+                        Dispatch L4 Rejected
+                      </span>
+                      <span *ngIf="dispatchdata?.status == 'closed'">
+                        Completed
+                      </span>
+                      <span *ngIf="dispatchdata?.status == 'deleted'">
+                        Deleted
+                      </span>
+                      <span *ngIf="dispatchdata?.status == 'storesubmitted'">
+                        Store Approved
+                      </span>
+                      <span *ngIf="dispatchdata?.status == 'recalled'">
+                        Form Recalled
+                      </span> -->
+                  </div>
+                  <ng-container *ngIf="dispatchdata?.l4remarks">
+                    <div class="col-md-3 tablestyle">
+                      <p class="stylefont">L4 Remarks</p>
+                    </div>
+                    <div class="col-md-3 tablestyle">
+                      <span>{{dispatchdata?.l4remarks}}</span>
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf="dispatchdata?.l3remarks">
+                    <div class="col-md-3 tablestyle">
+                      <p  class="stylefont">L3 Remarks</p>
+                    </div>
+                    <div class="col-md-3 tablestyle">
+                      <span>{{dispatchdata?.l3remarks}}</span>
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf="dispatchdata?.storeremarks">
+                    <div class="col-md-3 tablestyle">
+                      <p  class="stylefont">Store Remarks</p>
+                    </div>
+                    <div class="col-md-3 tablestyle">
+                      <span>{{dispatchdata?.storeremarks}}</span>
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf="dispatchdata?.closedremarks">
+                    <div class="col-md-3 tablestyle">
+                      <p  class="stylefont">Closed Remarks</p>
+                    </div>
+                    <div class="col-md-3 tablestyle">
+                      <span>{{dispatchdata?.closedremarks}}</span>
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf="dispatchdata?.deletedremarks">
+                    <div class="col-md-3 tablestyle">
+                      <p  class="stylefont">Deleted Remarks</p>
+                    </div>
+                    <div class="col-md-3 tablestyle">
+                      <span>{{dispatchdata?.deletedremarks}}</span>
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf="dispatchdata?.docketno">
+                    <div class="col-md-3 tablestyle">
+                      <p  class="stylefont">Docket Number</p>
+                    </div>
+                    <div class="col-md-3 tablestyle">
+                      <span>{{dispatchdata?.docketno}}</span>
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf="dispatchdata?.transporter">
+                    <div class="col-md-3 tablestyle">
+                      <p  class="stylefont">Transporter</p>
+                    </div>
+                    <div class="col-md-3 tablestyle">
+                      <span>{{dispatchdata?.transporter}}</span>
+                    </div>
+                  </ng-container>
+
+                </div>
+              </div>
+              <table class="table table-striped" style="margin-top: 10px;">
+                <thead style="background-color: #ececec;">
+                  <tr>
+                    <th>S.No</th>
+                    <th>Part No</th>
+                    <th>Part Description</th>
+                    <th>HSN Code</th>
+                    <th>Quantity </th>
+                    <th> Unit </th>
+                    <th> Rate per Item</th>
+                    <th> Taxable Value</th>
+                    <th style="text-align: center;"> <span> CGST</span>
+                      <br>
+                      <table style="width:100%;">
+                        <tr>
+                          <td style="border: 1px solid transparent !important;">Rate</td>
+                          <td style="border: 1px solid transparent !important;">Amt</td>
+                        </tr>
+                      </table>
+                    </th>
+                    <th style="text-align: center;"> <span> SGST</span>
+                      <br>
+                      <table style="width:100%;">
+                        <tr>
+                          <td style="border: 1px solid transparent !important;">Rate</td>
+                          <td style="border: 1px solid transparent !important;">Amt</td>
+                        </tr>
+                      </table>
+                    </th>
+                    <th style="text-align: center;"> <span> IGST</span>
+                      <br>
+                      <table style="width:100%;">
+                        <tr>
+                          <td style="border: 1px solid transparent !important;">Rate</td>
+                          <td style="border: 1px solid transparent !important;">Amt</td>
+                        </tr>
+                      </table>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    *ngFor="let part of dispatchdata?.materialDispatchParts |  paginate: { itemsPerPage: 10, currentPage: p2,id: 'three'};let index=index;">
+                    <td>{{((p2- 1) * 10 + index+1)}}</td>
+                    <td>{{part.partnumber}}</td>
+                    <td>{{part.description}}</td>
+                    <td>{{part.hsncode}}</td>
+                    <td>{{part.quantity}}</td>
+                    <td>{{part.unit}}</td>
+                    <td>{{part.rateperitem}}</td>
+                    <td>
+                      <ng-container *ngIf="part?.taxablevalue == null || party?.taxablevalue == '' ">-</ng-container>
+                      <ng-container *ngIf="part?.taxablevalue != null || party?.taxablevalue != '' ">
+                        {{part.taxablevalue}}
+                      </ng-container>
+                    </td>
+                    <td style="text-align: center;">
+                      <table style="width:100%;">
+                        <tr>
+                          <td style="border: 1px solid transparent !important;">
+                            <ng-container *ngIf="part?.cgstrate == null || party?.cgstrate == '' ">-</ng-container>
+                            <ng-container *ngIf="part?.cgstrate != null || party?.cgstrate != '' ">
+                              {{part.cgstrate}}
+                            </ng-container>
+
+                          </td>
+                          <td style="border: 1px solid transparent !important;">
+                            <ng-container *ngIf="part?.cgstamt == null || party?.cgstamt == '' ">-</ng-container>
+                            <ng-container *ngIf="part?.cgstamt != null || party?.cgstamt != '' ">
+                              {{part.cgstamt}}
+                            </ng-container>
+
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                    <td style="text-align: center;">
+                      <table style="width:100%;">
+                        <tr>
+                          <td style="border: 1px solid transparent !important;">
+                            <ng-container *ngIf="part?.sgstrate == null || party?.sgstrate == '' ">-</ng-container>
+                            <ng-container *ngIf="part?.sgstrate != null || party?.sgstrate != '' ">
+                              {{part.sgstrate}}
+                            </ng-container>
+
+                          </td>
+                          <td style="border: 1px solid transparent !important;">
+                            <ng-container *ngIf="part?.sgstamt == null || party?.sgstamt == '' ">-</ng-container>
+                            <ng-container *ngIf="part?.sgstamt != null || party?.sgstamt != '' ">
+                              {{part.sgstamt}}
+                            </ng-container>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                    <td style="text-align: center;">
+                      <table style="width:100%;">
+                        <tr>
+                          <td style="border: 1px solid transparent !important;">
+                            <ng-container *ngIf="part?.igstrate == null || party?.igstrate == '' ">-</ng-container>
+                            <ng-container *ngIf="part?.igstrate != null || party?.igstrate != '' ">
+                              {{part.igstrate}}
+                            </ng-container>
+
+                          </td>
+                          <td style="border: 1px solid transparent !important;">
+                            <ng-container *ngIf="part?.igstamt == null || party?.igstamt == '' ">-</ng-container>
+                            <ng-container *ngIf="part?.igstamt != null || party?.igstamt != '' ">
+                              {{part.igstamt}}
+                            </ng-container>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div style="margin: 10px 0px;">
+                <pagination-controls *ngIf="dispatchdata?.materialDispatchParts.length!=0" style="text-align: right;"
+                  (pageChange)="p2 = $event" #api id="three">
+                </pagination-controls>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- set the delete remarks -->
+
+
+<div class="modal fade" id="deletelist" role="dialog">
+  <div class="modal-dialog modal-sm">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title" style="font-size: 15px;
+          ">Delete </h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class=" col-md-12 table-responsive">
+            <form [formGroup]="remarkform">
+              <div class="row mt-3">
+                <div class="col-md-12">
+                  <div>
+                    <div class="form-group text-field" style="font-size: 13px;">
+                      Remarks <dot> </dot>
+                      <textarea type="text" class="form-control" formControlName="remarks"
+                        style="font-weight: 400;"></textarea>
+                    </div>
+
+                    <small class="text-danger" *ngIf="
+                        !remarkform.controls.remarks.valid &&
+                        remarkform.controls.remarks.touched
+                      "> Remarks is required</small>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer" style="border-top: none;">
+
+        <button class="btn btn-danger btn-md" (click)="submitForm()" style="font-size: 12px;
+          ">Delete</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- set the Master -->
+
+
+<div class="modal fade" id="master" role="dialog">
+  <div class="modal-dialog modal-sm">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title" style="font-size: 15px;
+          ">Challan Details </h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class=" col-md-12 table-responsive">
+            <form [formGroup]="masterform">
+              <div class="row mt-3">
+                <div class="col-md-12">
+                  <div>
+                    <div class="form-group text-field" style="font-size: 13px;">
+                      Challan Number <dot> </dot>
+                      <input type="text" class="form-control" formControlName="challanno" maxlength="10"
+                        style="font-weight: 400;" (keypress)="AllowNumber($event)">
+                    </div>
+
+                    <!-- <small class="text-danger" *ngIf="
+                        !masterform.controls.challanno.valid &&
+                        masterform.controls.challanno.touched
+                      ">  Challan Number is required</small> -->
+                  </div>
+                </div>
+                <!-- <div class="col-md-6">
+                  <div>
+                    <div class="form-group text-field" style="font-size: 13px;">
+                      Current Year <dot> </dot>
+                      <input type="text" class="form-control" formControlName="year" style="font-weight: 400;" readonly>
+                    </div>
+
+                  
+                  </div>
+                </div> -->
+              </div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer" style="border-top: none;">
+
+        <button class="btn btn-primary btn-md" (click)="submit_Master_Challan()" style="font-size: 12px;
+          "><i class="fa fa-save"></i>&nbsp;&nbsp;Submit</button>
+      </div>
+    </div>
+
+  </div>
+</div>

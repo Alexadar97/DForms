@@ -1,0 +1,849 @@
+<app-spinner *ngIf="loading"></app-spinner>
+<div class="col-md-2" style="padding: 0;
+background-color: #242536; height: 100vh;">
+  <div style="margin-top: 15px;">
+    <p class="sidetext" (click)="protolists()" routerLinkActive="active"><i
+        class="fa fa-angle-double-right"></i>&nbsp;&nbsp;Proto List</p>
+    <p class="sidetext" (click)="addproto()" routerLinkActive="active"><i class="fa fa-plus"></i>&nbsp;&nbsp;New
+      Request</p>
+
+
+
+
+  </div>
+</div>
+<div class="col-md-10">
+  <div class="row">
+    <div class="col-md-10">
+      <h3 style="text-align:center;">Proto Retrofitment</h3>
+    </div>
+    <div class="col-md-2" style="padding-right: 25px;    padding-top: 18px;">
+
+    </div>
+  </div>
+  <div class="row" style="margin: 15px 10px;">
+    <form [formGroup]="ProtoReqForm">
+      <div class="row" style="margin-top:10px;">
+        <div class="col-md-6  table-responsive" style="overflow-x: inherit !important;">
+          <table id="prototable" class="table proto-table table-bordered">
+            <tr>
+              <th>Date of Request</th>
+              <td><input type="text" formControlName="createddate"
+                  style="border: none; background: transparent;width: 100%;" disabled></td>
+            </tr>
+            <tr>
+              <th>Form ID</th>
+              <td><input type="text" formControlName="prformid"
+                  style="border: none; background: transparent;width: 100%;" disabled></td>
+            </tr>
+            <tr>
+              <th>Requester Name</th>
+              <td><input type="text" formControlName="requestorname" style="border: none;
+                background: transparent;width: 100%;" disabled></td>
+            </tr>
+            <!-- <tr>
+            <th>Purpose</th>
+            <td><input type="text" formControlName="storagePurpose" style="border: none;
+                background: transparent;width: 100%;" disabled></td>
+          </tr> -->
+            <tr>
+              <th>Contact Number</th>
+              <td><input type="text" formControlName="contactno" style="border: none;
+                background: transparent;width: 100%;" disabled></td>
+            </tr>
+            <tr>
+              <th>Department</th>
+              <td><input type="text" formControlName="department" style="border: none;
+                background: transparent;width: 100%;" disabled></td>
+            </tr>
+            <tr>
+              <th>Function</th>
+              <td><input type="text" formControlName="supervisor" style="border: none;
+                background: transparent;width: 100%;" disabled></td>
+            </tr>
+            <tr>
+              <th>Sub Function</th>
+              <td>
+                <!-- <ng-container *ngIf=""></ng-container> -->
+                <ul class="list-group-category" style="padding-left: 14px;">
+                  <ng-container *ngFor="let data of arrlist ; let i =index ">
+                    <!-- <li class="list-group" style="margin-bottom: 8px;">{{data}}</li> -->
+                    <li class="list-group" *ngIf="data == 'hdtsupervisor'" style="margin-bottom: 8px;">Vehicle HDT</li>
+                    <li class="list-group" *ngIf="data == 'aggregateengine'" style="margin-bottom: 8px;">Aggregate
+                      Engine</li>
+                    <li class="list-group" *ngIf="data == 'aggregatetransmission'" style="margin-bottom: 8px;">Aggregate
+                      Transmission</li>
+                    <li class="list-group" *ngIf="data == 'aggregateaxle'" style="margin-bottom: 8px;">Aggregate Axle
+                    </li>
+                    <li class="list-group" *ngIf="data == 'eandesupervisor'" style="margin-bottom: 8px;">E&E</li>
+                    <li class="list-group" *ngIf="data == 'mdtsupervisor'" style="margin-bottom: 8px;">Vehicle MDT</li>
+                    <li class="list-group" *ngIf="data == 'ppssupervisor'" style="margin-bottom: 8px;">PPS</li>
+                    <li class="list-group" *ngIf="data == 'maintenancesupervisor'" style="margin-bottom: 8px;">
+                      Maintenance</li>
+                    <li class="list-group" *ngIf="data == 'mechanicalsupervisor'" style="margin-bottom: 8px;">Proto
+                      Mechanical Workshop</li>
+                  </ng-container>
+                </ul>
+
+
+                <ng-container
+                  *ngIf="formOwner == 1 && (supervisor == 'hdtsupervisor' || supervisor == 'mdtsupervisor')">
+                  <ng-multiselect-dropdown [data]="subfunction" [placeholder]="'Please Select Sub Function'"
+                    formControlName="subsupervisor" [settings]="dropdownSettings" (onSelect)="onItemSelect($event)"
+                    (onSelectAll)="onSelectAll($event)">
+                  </ng-multiselect-dropdown>
+                </ng-container>
+                <ng-container
+                  *ngIf="formOwner == 1 && (supervisor == 'aggregateengine' || supervisor == 'aggregatetransmission'  || supervisor == 'aggregateaxle')">
+                  <ng-multiselect-dropdown [data]="subfunctionlist" [placeholder]="'Please Select Sub Function'"
+                    formControlName="subsupervisor" [settings]="dropdownSettings" (onSelect)="onItemSelect($event)"
+                    (onSelectAll)="onSelectAll($event)">
+                  </ng-multiselect-dropdown>
+                </ng-container>
+                <ng-container *ngIf="formOwner == 1 && supervisor == 'ppssupervisor'">
+                  <ng-multiselect-dropdown [data]="subfunctionppslist" [placeholder]="'Please Select Sub Function'"
+                    formControlName="subsupervisor" [settings]="dropdownSettings" (onSelect)="onItemSelect($event)"
+                    (onSelectAll)="onSelectAll($event)">
+                  </ng-multiselect-dropdown>
+                </ng-container>
+               <label style="padding: 11px 0px 0px 0px;" *ngIf="selectedValue.length>0">Approved Sub Function</label>
+                <ul class="list-group-category" style="padding-left: 14px;">
+                  <ng-container *ngFor="let data of selectedValue ; let i =index ">
+                    <!-- <li class="list-group" style="margin-bottom: 8px;">{{data}}</li> -->
+                    <li class="list-group" style="margin-bottom: 8px;">{{data}}</li>
+                    <!-- <li class="list-group" *ngIf="data == 'aggregateengine'" style="margin-bottom: 8px;">Aggregate
+                      Engine</li>
+                    <li class="list-group" *ngIf="data == 'aggregatetransmission'" style="margin-bottom: 8px;">Aggregate
+                      Transmission</li>
+                    <li class="list-group" *ngIf="data == 'aggregateaxle'" style="margin-bottom: 8px;">Aggregate Axle
+                    </li>
+                    <li class="list-group" *ngIf="data == 'eandesupervisor'" style="margin-bottom: 8px;">E&E</li>
+                    <li class="list-group" *ngIf="data == 'mdtsupervisor'" style="margin-bottom: 8px;">Vehicle MDT</li>
+                    <li class="list-group" *ngIf="data == 'ppssupervisor'" style="margin-bottom: 8px;">PPS</li>
+                    <li class="list-group" *ngIf="data == 'maintenancesupervisor'" style="margin-bottom: 8px;">
+                      Maintenance</li>
+                    <li class="list-group" *ngIf="data == 'mechanicalsupervisor'" style="margin-bottom: 8px;">Proto
+                      Mechanical Workshop</li> -->
+                  </ng-container>
+                </ul>
+
+              </td>
+            </tr>
+            <tr>
+              <th>Category</th>
+              <td>
+                <!-- <textarea type="text" formControlName="workrequest" style="border: none;
+                background: transparent;width: 100%;" disabled></textarea> -->
+                <ul class="list-group-category" style="padding-left: 14px;">
+                  <ng-container *ngFor="let data of arrcategorylist ; let i =index ">
+                    <li class="list-group" style="margin-bottom: 8px;" *ngIf="data == 1">Retro Fitment</li>
+                    <li class="list-group" style="margin-bottom: 8px;" *ngIf="data == 2">Trail</li>
+                    <li class="list-group" style="margin-bottom: 8px;" *ngIf="data == 3">Failure</li>
+                    <li class="list-group" style="margin-bottom: 8px;" *ngIf="data == 4">
+                      {{otherCategory}}
+                    </li>
+                  </ng-container>
+                </ul>
+              </td>
+
+            </tr>
+          </table>
+        </div>
+        <div class="col-md-6  table-responsive" style="overflow-x: inherit !important;">
+          <table id="prototable" class="table proto-table table table-bordered">
+            <tr>
+              <th>Project Name</th>
+              <td><input type="text" formControlName="projectname" style="border: none;
+                    background: transparent;width: 100%;" disabled></td>
+            </tr>
+
+            <tr>
+              <th>
+                System Name</th>
+              <td><input type="text" formControlName="systemname" style="border: none;
+                  background: transparent;width: 100%;" disabled></td>
+            </tr>
+            <tr>
+              <th>
+                Activity</th>
+              <td><input type="text" formControlName="activity" style="border: none;
+                  background: transparent;width: 100%;" disabled></td>
+            </tr>
+            <tr>
+              <th>
+                Types of Activity</th>
+              <!-- <td><textarea type="text" formControlName="retrofitmenttype" style="border: none;
+                  background: transparent;width: 100%;" disabled></textarea></td> -->
+              <!-- <p (click)="prototypeact()">Click Here</p> -->
+              <td>
+                <ul class="list-group-category" style="padding-left: 14px;">
+                  <ng-container *ngFor="let data of arrlists ; let i =index ">
+                    <li class="list-group" style="margin-bottom: 8px;" *ngIf="data == 1">Retrofitment was planned
+                      at the time of vehicle sign off</li>
+                    <li class="list-group" style="margin-bottom: 8px;" *ngIf="data == 2">Retrofitment due to
+                      testing feedback</li>
+                    <li class="list-group" style="margin-bottom: 8px;" *ngIf="data == 3">Retrofitment due to Field
+                      Issue</li>
+                    <li class="list-group" style="margin-bottom: 8px;" *ngIf="data == 4">IMCS / Cost Reduction
+                      Proposal</li>
+                    <li class="list-group" style="margin-bottom: 8px;" *ngIf="data == 5">
+                      {{retrofitmentothers}}</li>
+                  </ng-container>
+                </ul>
+            </tr>
+            <tr>
+              <th style="padding: 0px 8px;">
+                <ng-container>
+                  AO Drawing Required
+                </ng-container>
+              </th>
+              <td style="padding: 0px !important;margin: 0px !important;">
+                <table class="table table-striped">
+                  <tr>
+                    <td style="width: 25%;padding: 12px !important;
+                        border-right: 1px solid #ccc !important;
+                        border-bottom-color: transparent !important;
+                        border-top-color: transparent !important;">
+                      <ng-container *ngIf="aodrawing == 1">
+                        Yes
+                      </ng-container>
+                      <ng-container *ngIf="aodrawing == 0">
+                        No
+                      </ng-container>
+                    </td>
+                    <th style="width: 25%;background: transparent;
+                      color: #000;
+                      padding: 8px !important;
+                      border-left: 1px solid #ccc !important;
+                      border-right: 1px solid #ccc !important;
+                      border-top: 1px solid transparent !important;
+                      border-bottom: 1px solid transparent !important;">
+                      <ng-container *ngIf="aodrawing == 0"> AO Drawing File</ng-container>
+                      <ng-container *ngIf="aodrawing == 1"> AO Drawing Number</ng-container>
+                    </th>
+                    <td style="width: 25%;padding: 12px !important;
+                        border-right: 1px solid #ccc !important;
+                        border-bottom-color: transparent !important;
+                        border-top-color: transparent !important;">
+                      <ng-container *ngIf="aodrawing == 0">
+                        <ul class="list-group-category" style="padding-left: 26px;">
+                          <ng-container *ngFor="let file of fileDownloadList ; let i =index">
+                            <li class="list-group" style="margin-bottom: 8px;">{{file.filename}}&nbsp;&nbsp;<i
+                                class="fa fa-download" (click)="downlaodfile(file.filename,file.id)"
+                                style="font-size: 15px;color: #130f0fb5;cursor: pointer;"></i></li>
+                          </ng-container>
+                        </ul>
+                      </ng-container>
+                      <ng-container *ngIf="aodrawing == 1">
+                        {{aodrawingtext}}
+                      </ng-container>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <th style="padding: 0px 8px;">Finas Update Required</th>
+              <td style="padding: 0px !important;margin: 0px !important;">
+                <table class="table table-striped">
+                  <tr>
+                    <td style="padding: 12px !important;
+                      border-right: 1px solid #ccc !important;
+                      border-bottom-color: transparent !important;
+                      border-top-color: transparent !important;">
+                      <ng-container *ngIf="finasupdate == 1">
+                        Yes
+                      </ng-container>
+                      <ng-container *ngIf="finasupdate == 0">
+                        No
+                      </ng-container>
+                    </td>
+                    <ng-container *ngIf="finasupdate == 0">
+                      <th style="background: transparent;
+                     color: #000;
+                     padding: 8px !important;
+                     border-left: 1px solid #ccc !important;
+                     border-right: 1px solid #ccc !important;
+                     border-top: 1px solid transparent !important;
+                     border-bottom: 1px solid transparent !important;">Remarks</th>
+                    </ng-container>
+                    <ng-container *ngIf="finasupdate == 0">
+                      <td style="width: 25%;padding: 12px !important;
+                        border-right: 1px solid #ccc !important;
+                        border-bottom-color: transparent !important;
+                        border-top-color: transparent !important;">
+                        <ng-container>
+                          {{finasupdateremarks}}
+                        </ng-container>
+                      </td>
+                    </ng-container>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <th style="padding: 0px 8px;">Fitment Report Required</th>
+              <td style="padding: 0px !important;margin: 0px !important;">
+                <table class="table table-striped">
+                  <tr>
+                    <td style="padding: 12px !important;
+                    border-right: 1px solid #ccc !important;
+                    border-bottom-color: transparent !important;
+                    border-top-color: transparent !important;">
+                      <ng-container *ngIf="fitmentreport == 1">
+                        Yes
+                      </ng-container>
+                      <ng-container *ngIf="fitmentreport == 0">
+                        No
+                      </ng-container>
+                    </td>
+                    <ng-container *ngIf="fitmentreport == 0">
+                      <th style="background: transparent;
+                   color: #000;
+                   padding: 8px !important;
+                   border-left: 1px solid #ccc !important;
+                   border-right: 1px solid #ccc !important;
+                   border-top: 1px solid transparent !important;
+                   border-bottom: 1px solid transparent !important;">Remarks</th>
+                    </ng-container>
+                    <ng-container *ngIf="fitmentreport == 0">
+                      <td style="width: 25%;padding: 12px !important;
+                      border-right: 1px solid #ccc !important;
+                      border-bottom-color: transparent !important;
+                      border-top-color: transparent !important;">
+                        <ng-container>
+                          {{fitmentremarks}}
+                        </ng-container>
+                      </td>
+                    </ng-container>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <ng-container *ngIf="(isfillworksheet == 1) && (notFormSupervisor == 0) && (status == 'vehicleownerapproved' || status == 'protol4approved' || status == 'supervisorpending'|| status == 'hdtsupervisorapproved'
+            || status == 'mdtsupervisorapproved'|| status == 'eandesupervisorapproved'|| status == 'ppssupervisorapproved'|| status == 'aggregatesupervisorapproved'
+            || status == 'mechanicalsupervisorapproved'|| status == 'maintenancesupervisorapproved')">
+              <tr>
+                <th>
+                  <ng-container *ngIf="userType == 'hdtsupervisor'">
+                    HDT Supervisor BCA Username
+                  </ng-container>
+                  <ng-container *ngIf="userType == 'mdtsupervisor'">
+                    MDT Supervisor BCA Username
+                  </ng-container>
+                  <ng-container *ngIf="userType == 'aggregatesupervisor'">
+                    Aggregate Supervisor BCA Username
+                  </ng-container>
+                  <ng-container *ngIf="userType == 'ppssupervisor'">
+                    PPS Supervisor BCA Username
+                  </ng-container>
+                  <ng-container *ngIf="userType == 'eandesupervisor'">
+                    E&E Supervisor BCA Username
+                  </ng-container>
+                  <ng-container *ngIf="userType == 'maintenancesupervisor'">
+                    Maintainence Supervisor BCA Username
+                  </ng-container>
+                  <ng-container *ngIf="userType == 'mechanicalsupervisor'">
+                    Mechanical Supervisor BCA Username
+                  </ng-container>
+                </th>
+                <td>
+                  <ng-container *ngIf="userType == 'hdtsupervisor'">
+                    {{supervisorList?.hdtbcashortid}}
+                  </ng-container>
+                  <ng-container *ngIf="userType == 'mdtsupervisor'">
+                    {{supervisorList?.mdtbcashortid}}
+                  </ng-container>
+                  <ng-container *ngIf="userType == 'aggregatesupervisor'">
+                    {{supervisorList?.aggregatebcashortid}}
+                  </ng-container>
+                  <ng-container *ngIf="userType == 'ppssupervisor'">
+                    {{supervisorList?.ppsbcashortid}}
+                  </ng-container>
+                  <ng-container *ngIf="userType == 'eandesupervisor'">
+                    {{supervisorList?.eandebcashortid}}
+                  </ng-container>
+                  <ng-container *ngIf="userType == 'maintenancesupervisor'">
+                    {{supervisorList?.maintenancebcashortid}}
+                  </ng-container>
+                  <ng-container *ngIf="userType == 'mechanicalsupervisor'">
+                    {{supervisorList?.mechanicalbcashortid}}
+                  </ng-container>
+
+                </td>
+              </tr>
+              <tr>
+                <th>
+                  <ng-container *ngIf="userType == 'hdtsupervisor'">
+                    HDT Supervisor BCA Password
+                  </ng-container>
+                  <ng-container *ngIf="userType == 'mdtsupervisor'">
+                    MDT Supervisor BCA Password
+                  </ng-container>
+                  <ng-container *ngIf="userType == 'aggregatesupervisor'">
+                    Aggregate Supervisor BCA Password
+                  </ng-container>
+                  <ng-container *ngIf="userType == 'ppssupervisor'">
+                    PPS Supervisor BCA Password
+                  </ng-container>
+                  <ng-container *ngIf="userType == 'eandesupervisor'">
+                    E&E Supervisor BCA Password
+                  </ng-container>
+                  <ng-container *ngIf="userType == 'maintenancesupervisor'">
+                    Maintainence Supervisor BCA Password
+                  </ng-container>
+                  <ng-container *ngIf="userType == 'mechanicalsupervisor'">
+                    Mechanical Supervisor BCA Password
+                  </ng-container>
+                </th>
+                <td>
+                  <ng-container *ngIf="userType == 'hdtsupervisor'">
+                    {{supervisorList?.hdtbcapassword}}
+                  </ng-container>
+                  <ng-container *ngIf="userType == 'mdtsupervisor'">
+                    {{supervisorList?.mdtbcapassword}}
+                  </ng-container>
+                  <ng-container *ngIf="userType == 'aggregatesupervisor'">
+                    {{supervisorList?.aggregatebcapassword}}
+                  </ng-container>
+                  <ng-container *ngIf="userType == 'ppssupervisor'">
+                    {{supervisorList?.ppsbcapassword}}
+                  </ng-container>
+                  <ng-container *ngIf="userType == 'eandesupervisor'">
+                    {{supervisorList?.eandebcapassword}}
+                  </ng-container>
+                  <ng-container *ngIf="userType == 'maintenancesupervisor'">
+                    {{supervisorList?.maintenancebcapassword}}
+                  </ng-container>
+                  <ng-container *ngIf="userType == 'mechanicalsupervisor'">
+                    {{supervisorList?.mechanicalbcapassword}}
+                  </ng-container>
+
+                </td>
+              </tr>
+            </ng-container>
+          </table>
+          <div style="margin: 10px 0px;">
+
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <h5 style="font-size: 16px;
+          padding: 10px 0px;">Part Details</h5>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 table-responsive" style="overflow-x: inherit !important;">
+          <table id="prototable" class="table part-table table table-bordered">
+            <tr>
+              <th>S.No</th>
+              <th>Finas Id</th>
+              <th>Part No</th>
+              <th>Description</th>
+              <th>ZGS</th>
+              <th>Quantity</th>
+              <th>To be Scrapped / Stored</th>
+            </tr>
+            <tbody formArrayName="umcsParts">
+              <tr *ngFor="let part of rowForms.controls;let i =index;" [formGroupName]="i">
+                <td style="text-align: center">{{(i+1)}}</td>
+                <td><input type="text" formControlName="finasid" id="finasid"
+                    style="background: transparent;width: 100%;border: 1px solid #adadad;border-radius: 5px;padding: 0px 7px;"
+                    *ngIf="ismiscreated == 1">
+                  <input type="text" formControlName="finasid" id="finasid" style="background: transparent;width: 100%;border:none"
+                    *ngIf="ismiscreated != 1" disabled>
+                </td>
+                <td><input type="text" formControlName="partnumber" style="border: none;
+                      background: transparent;width: 100%;" disabled></td>
+                <td><input type="text" formControlName="description" style="border: none;
+                      background: transparent;width: 100%;" disabled></td>
+                <td><input type="text" formControlName="zgs" style="border: none;
+                          background: transparent;width: 100%;" disabled></td>
+                <td><input type="text" formControlName="quantity" style="border: none;
+                      background: transparent;width: 100%;" disabled></td>
+                <td><input type="text" formControlName="scraporstored" style="border: none;
+                        background: transparent;width: 100%;" disabled></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <h5 style="font-size: 16px;
+          padding: 10px 0px;">No of Vehicle /Objects</h5>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12  table-responsive" style="overflow-x: inherit !important;">
+          <table id="prototable" class="table part-table table table-bordered">
+            <tr>
+              <th>S.No</th>
+              <th>Vehicle / Aggregate Number</th>
+              <th>Vehicle / Model Number</th>
+              <th>Vehicle / Aggregate Owner Name</th>
+              <th>Expected Start Date
+
+              </th>
+            </tr>
+            <tbody formArrayName="prvehiclemaster">
+              <tr *ngFor="let data of novehicle.controls;let i =index;" [formGroupName]="i">
+                <td style="text-align:center;">{{(i+1)}}</td>
+                <td>
+                  <ng-container *ngIf="userType == 'protovehicleowner'  && ( data.value.isVehicleOwner == 1 )">
+                    <input type="text" class="form-control" formControlName="vehicleaggregateno" style="width: 100%;">
+                  </ng-container>
+                  <ng-container *ngIf="userType == 'protovehicleowner' && ( data.value.isVehicleOwner != 1 )">
+                    <input type="text" class="form-control" formControlName="vehicleaggregateno" style="width: 100%;"
+                      disabled>
+                  </ng-container>
+                  <ng-container
+                    *ngIf="userType != 'protovehicleowner' && userType != 'budgetapprover' && userType != 'sm'
+                && userType != 'ipl'  && userType != 'store'   && userType != 'bca'
+                &&  userType != 'hdtsupervisor' && userType != 'mdtsupervisor' && userType != 'aggregatesupervisor'
+                && userType != 'eandesupervisor' && userType != 'ppssupervisor' && userType != 'maintenancesupervisor' && userType != 'mechanicalsupervisor'">
+                    <input type="text" formControlName="vehicleaggregateno" style="border: none;
+              background: transparent;width: 100%;" disabled>
+                  </ng-container>
+                  <ng-container
+                    *ngIf="userType == 'hdtsupervisor' || userType == 'mdtsupervisor' || userType == 'aggregatesupervisor'
+              || userType  =='eandesupervisor' || userType == 'ppssupervisor' || userType == 'maintenancesupervisor' || userType =='mechanicalsupervisor'">
+                    <input type="text" formControlName="vehicleaggregateno" style="border: none;
+            background: transparent;width: 100%;" disabled>
+                  </ng-container>
+                </td>
+                <td>
+                  <ng-container *ngIf="userType == 'protovehicleowner' && ( data.value.isVehicleOwner == 1 )">
+                    <input type="text" class="form-control" formControlName="modelnumber" style="width: 100%">
+                  </ng-container>
+                  <ng-container *ngIf="userType == 'protovehicleowner' && ( data.value.isVehicleOwner != 1 )">
+                    <input type="text" formControlName="modelnumber" class="form-control" style="width: 100%;" disabled>
+                  </ng-container>
+                  <ng-container
+                    *ngIf="userType == 'hdtsupervisor' || userType == 'mdtsupervisor' || userType == 'aggregatesupervisor'
+                || userType  =='eandesupervisor' || userType == 'ppssupervisor' || userType == 'maintenancesupervisor' || userType =='mechanicalsupervisor'">
+                    <input type="text" formControlName="modelnumber" style="border: none;
+              background: transparent;width: 100%;" disabled>
+                  </ng-container>
+                  <ng-container
+                    *ngIf="userType != 'protovehicleowner' && userType != 'budgetapprover' && userType != 'sm'
+                && userType != 'ipl'  && userType != 'store'   && userType != 'bca'
+                &&  userType != 'hdtsupervisor' && userType != 'mdtsupervisor' && userType != 'aggregatesupervisor'
+                && userType != 'eandesupervisor' && userType != 'ppssupervisor' && userType != 'maintenancesupervisor' && userType != 'mechanicalsupervisor'">
+                    <input type="text" formControlName="modelnumber" style="border: none;
+              background: transparent;width: 100%;" disabled>
+                  </ng-container>
+                </td>
+
+                <td><input type="text" formControlName="ownername" style="border: none;
+              background: transparent;width: 100%;" disabled></td>
+                <td>
+                  <ng-container *ngIf="userType == 'protovehicleowner' && ( data.value.isVehicleOwner == 1 )">
+                    <input type="text" class="form-control" formControlName="startdate" [minDate]="today"
+                      style="width: 100%;cursor: pointer;" bsDatepicker id="date{{i}}"
+                      [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }">
+                  </ng-container>
+                  <ng-container *ngIf="userType == 'protovehicleowner'  && ( data.value.isVehicleOwner != 1)">
+                    <input type="text" class="form-control" formControlName="startdate"
+                      style="width: 100%;cursor: pointer;" bsDatepicker id="date{{i}}"
+                      [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }" disabled>
+                  </ng-container>
+                  <ng-container *ngIf="!isApproved && (exigencycase == 1) && (formStatus == 'protol4approved' || formStatus == 'vehicleownerapproved'||formStatus == 'supervisorpending'|| formStatus == 'hdtsupervisorapproved'|| formStatus == 'mdtsupervisorapproved'
+                || formStatus == 'aggregatesupervisorapproved'|| formStatus == 'eandesupervisorapproved'|| formStatus == 'ppssupervisorapproved'|| formStatus == 'maintenancesupervisorapproved'||
+                formStatus == 'mechanicalsupervisorapproved') && (userType == 'hdtsupervisor' ||userType == 'mdtsupervisor'||userType == 'aggregatesupervisor' ||userType == 'eandesupervisor' ||userType == 'ppssupervisor'
+                ||userType == 'maintenancesupervisor' ||userType == 'mechanicalsupervisor')">
+                    <input type="text" class="form-control" formControlName="startdate"
+                      style="width: 100%;cursor: pointer;" bsDatepicker id="date{{i}}"
+                      [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }" disabled>
+                  </ng-container>
+                  <ng-container *ngIf="!isApproved &&  (exigencycase == 0) && (formStatus == 'protol4approved' || formStatus == 'vehicleownerapproved') && (userType == 'hdtsupervisor' ||userType == 'mdtsupervisor'||userType == 'aggregatesupervisor' ||userType == 'eandesupervisor' ||userType == 'ppssupervisor'
+                ||userType == 'maintenancesupervisor' ||userType == 'mechanicalsupervisor')">
+                    <input type="text" class="form-control" formControlName="startdate"
+                      style="width: 100%;cursor: pointer;" bsDatepicker id="date{{i}}"
+                      [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }">
+                  </ng-container>
+                  <ng-container *ngIf="!isApproved &&  (exigencycase == 0) && (formStatus == 'supervisorpending' ||  formStatus == 'hdtsupervisorapproved'|| formStatus == 'mdtsupervisorapproved'
+                || formStatus == 'aggregatesupervisorapproved'|| formStatus == 'eandesupervisorapproved'|| formStatus == 'ppssupervisorapproved'|| formStatus == 'maintenancesupervisorapproved'||
+                formStatus == 'mechanicalsupervisorapproved') && (userType == 'hdtsupervisor' ||userType == 'mdtsupervisor'||userType == 'aggregatesupervisor' ||userType == 'eandesupervisor' ||userType == 'ppssupervisor'
+                ||userType == 'maintenancesupervisor' ||userType == 'mechanicalsupervisor')">
+                    <input type="text" class="form-control" formControlName="startdate"
+                      style="width: 100%;cursor: pointer;" bsDatepicker id="date{{i}}"
+                      [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }" disabled>
+                  </ng-container>
+                  <!-- <ng-container *ngIf="!isApproved && (formStatus == 'protol4approved' || formStatus == 'vehicleownerapproved'||formStatus == 'supervisorpending'|| formStatus == 'hdtsupervisorapproved'|| formStatus == 'mdtsupervisorapproved'
+            | formStatus == 'aggregatesupervisorapproved'|| formStatus == 'eandesupervisorapproved'|| formStatus == 'ppssupervisorapproved'|| formStatus == 'maintenancesupervisorapproved'||
+                formStatus == 'mechanicalsupervisorapproved') && (exigencycase == 0) && (userType == 'hdtsupervisor' ||userType == 'mdtsupervisor'||userType == 'aggregatesupervisor' ||userType == 'eandesupervisor' ||userType == 'ppssupervisor'
+                ||userType == 'maintenancesupervisor' ||userType == 'mechanicalsupervisor')">
+                  <input type="text" class="form-control" formControlName="startdate"
+                  [minDate]="today"    style="width: 100%;cursor: pointer;" bsDatepicker id="date{{i}}"
+                    [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }">
+                </ng-container> -->
+
+                  <ng-container
+                    *ngIf="( data.value.ownerstatus != 'completed' ) &&userType != 'protovehicleowner' && userType != 'budgetapprover' && userType != 'sm'
+                && userType != 'ipl'  && userType != 'store'   && userType != 'bca'
+                &&  userType != 'hdtsupervisor' && userType != 'mdtsupervisor' && userType != 'aggregatesupervisor'
+                && userType != 'eandesupervisor' && userType != 'ppssupervisor' && userType != 'maintenancesupervisor' && userType != 'mechanicalsupervisor'">
+                    <input type="text" class="form-control" formControlName="startdate"
+                      style="width: 100%;cursor: pointer;" bsDatepicker id="date{{i}}" [minDate]="today"
+                      [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }">
+                  </ng-container>
+                  <ng-container
+                    *ngIf="( data.value.ownerstatus == 'completed' ) && (userType != 'protovehicleowner' && userType != 'budgetapprover' && userType != 'sm'
+              && userType != 'ipl'  && userType != 'store'   && userType != 'bca'
+              &&  userType != 'hdtsupervisor' && userType != 'mdtsupervisor' && userType != 'aggregatesupervisor'
+              && userType != 'eandesupervisor' && userType != 'ppssupervisor' && userType != 'maintenancesupervisor' && userType != 'mechanicalsupervisor')">
+                    <input type="text" class="form-control" formControlName="startdate"
+                      style="width: 100%;cursor: pointer;" bsDatepicker id="date{{i}}" [minDate]="today"
+                      [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }" disabled>
+                  </ng-container>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </form>
+    <br><br>
+
+    <div>
+
+      <form [formGroup]="approvalForm" class="row" style="margin: 20px 0px;">
+        <!-- <ng-container *ngIf="userType == 'protovehicleowner'">
+        <div class="col-md-4 col-md-offset-8">
+          Remarks <dot></dot>
+          <input type="text" class="form-control" value="" formControlName="remarks">
+
+          <br>
+          <small class="text-danger errormsg" *ngIf="
+              !approvalForm.controls.remarks.valid &&
+              approvalForm.controls.remarks.touched
+            ">Remarks is required</small>
+        </div>
+      </ng-container> -->
+        <ng-container *ngIf='formOwner == 1'>
+          <ng-container
+            *ngIf=" userType == 'hdtsupervisor' || userType == 'mdtsupervisor'  || userType == 'aggregatesupervisor'
+            || userType == 'eandesupervisor'  || userType == 'ppssupervisor'  || userType == 'maintenancesupervisor'  || userType == 'mechanicalsupervisor'">
+            <div class="col-md-4 col-md-offset-8">
+              Remarks <dot></dot>
+              <input type="text" class="form-control" value="" formControlName="remarks">
+
+              <br>
+              <small class="text-danger errormsg" *ngIf="
+                !approvalForm.controls.remarks.valid &&
+                approvalForm.controls.remarks.touched
+              ">Remarks is required</small>
+            </div>
+          </ng-container>
+        </ng-container>
+      </form>
+      <br>
+
+      <div class="row" style="float:right;  margin-bottom: 30px;">
+        <div class="col-md-12">
+
+          <!-- FOR PROTO VEHICLE OWNER APPROVAL AND REJECT-->
+
+          <ng-container
+            *ngIf="userType == 'protovehicleowner' && userType != 'budgetapprover' && userType != 'sm'
+          && userType != 'ipl'  && userType != 'store' && userType != 'bca'
+          &&  userType != 'hdtsupervisor' && userType != 'mdtsupervisor' && userType != 'aggregatesupervisor'
+          && userType != 'eandesupervisor' && userType != 'ppssupervisor' && userType != 'maintenancesupervisor' && userType != 'mechanicalsupervisor'">
+            <button class="btn btn-primary" style="background: green;border: none;width:100px;"
+              (click)="editVehicleApprove()">
+              <i class="fa fa-check"></i>&nbsp;&nbsp;Approve
+            </button>&nbsp;&nbsp;&nbsp;&nbsp;
+            <!-- <button class="btn btn-danger" style="border: none; background: #c9302c;;width:100px;"
+            (click)="editVehicleReject()">
+            <i class="icon-remove"></i>&nbsp;&nbsp;Reject
+          </button> -->
+          </ng-container>
+
+          <!-- FOR PROTO  SUPERVISOR FILL WORKSHEET-->
+          <ng-container *ngIf='isfillworksheet == 1'>
+            <ng-container
+              *ngIf="(isfillworksheet == 1) && (status == 'hdtsupervisorapproved'||status == 'mdtsupervisorapproved'||
+            status == 'aggregatesupervisorapproved' ||status == 'eandesupervisorapproved' ||status == 'ppssupervisorapproved' ||status == 'maintenancesupervisorapproved' ||status == 'mechanicalsupervisorapproved')">
+              <button class="btn btn-primary " (click)="protosupervisor()" style="border:none;">Fill
+                Worksheet</button>&nbsp;&nbsp;&nbsp;&nbsp;
+            </ng-container>
+          </ng-container>
+          <!-- FOR PROTO  SUBSUPERVISOR ADD FUNCTION-->
+          <ng-container *ngIf="isfillworksheet == 1">
+            <ng-container *ngIf="formOwner == 1">
+              <button class="btn btn-primary btn-md" (click)="addsubSupervisor()" style="border:none;"><i
+                  class="fa fa-save"></i>&nbsp;&nbsp;Add SubFunction</button>&nbsp;&nbsp;
+            </ng-container>
+          </ng-container>
+          <!--  FOR PROTO SUPERVISOR FORM OWNER AND EXIGENCYCASE ONE APPROVAL AND REJECT -->
+          <ng-container>
+            <ng-container
+              *ngIf="(formOwner == 1 && exigencycase == 1 && issupervisorapproved == 0) && ( status == 'protol4approved')">
+              <button class="btn btn-primary" style="background: green;border: none;width:100px;"
+                (click)="SupervisorApproveForm(true)">
+                <i class="fa fa-check"></i>&nbsp;&nbsp;Approve</button>&nbsp;&nbsp;
+              <button class="btn btn-danger" style="border: none; background: #c9302c;;width:100px;"
+                (click)="SupervisorApproveForm(false)">
+                <i class="fa fa-times"></i>&nbsp;&nbsp;Reject
+              </button>&nbsp;&nbsp;
+            </ng-container>
+          </ng-container>
+          <!-- FOR PROTO SUPERVISOR EXIGENCYCASE ZERO AND FORMOWNER ONE APPROVAL AND REJECT  -->
+          <ng-container>
+            <ng-container
+              *ngIf="(formOwner == 1 && exigencycase == 0 && issupervisorapproved == 0) && (status == 'vehicleownerapproved')">
+              <button class="btn btn-primary" style="background: green;border: none;width:100px;"
+                (click)="acceptForm()">
+                <i class="fa fa-check"></i>&nbsp;&nbsp;Approve
+              </button>&nbsp;&nbsp;&nbsp;&nbsp;
+              <button class="btn btn-danger" style="border: none; background: #c9302c;;width:100px;"
+                (click)="rejectForm()">
+                <i class="fa fa-times"></i>&nbsp;&nbsp;Reject
+              </button>&nbsp;&nbsp;
+            </ng-container>
+          </ng-container>
+
+          <!-- FOR PROTO SUPERVISOR REQUESTER CREATING THE FORM APPROVAL AND REJECT -->
+          <ng-container>
+            <ng-container
+              *ngIf="status == 'supervisorpending' && (userType == 'hdtsupervisor' || userType == 'mdtsupervisor' || userType == 'aggregatesupervisor'
+            || userType == 'eandesupervisor' || userType == 'ppssupervisor' || userType == 'maintenancesupervisor' || userType == 'mechanicalsupervisor')">
+              <button class="btn btn-primary" style="background: green;border: none;width:100px;"
+                (click)="SupervisorForm(true)">
+                <i class="fa fa-check"></i>&nbsp;&nbsp;Approve
+              </button>&nbsp;&nbsp;&nbsp;&nbsp;
+              <button class="btn btn-danger" style="border: none; background: #c9302c;;width:100px;"
+                (click)="SupervisorForm(false)">
+                <i class="fa fa-times"></i>&nbsp;&nbsp;Reject
+              </button>&nbsp;&nbsp;
+            </ng-container>
+          </ng-container>
+          <!-- HDTSTATE SHOW THE APPROVE AND REJECT BUTTON -->
+
+          <ng-container>
+            <ng-container *ngIf="formOwner == 0 && ((eandeval == 0 && userType == 'eandesupervisor') ||(mdtval == 0 && userType == 'mdtsupervisor')||(aggregateval == 0 && userType == 'aggregatesupervisor')
+          ||(hdtval == 0 && userType == 'hdtsupervisor')||(maintenanceval == 0 && userType == 'maintenancesupervisor')||(mechanicalval == 0 && userType == 'mechanicalsupervisor')
+          ||(ppsval == 0 && userType == 'ppssupervisor'))">
+              <button class="btn btn-primary" style="background: green;border: none;width:100px;"
+                (click)="formOwnerApprove(true)">
+                <i class="fa fa-check"></i>&nbsp;&nbsp;Approve
+              </button>&nbsp;&nbsp;&nbsp;&nbsp;
+              <button class="btn btn-danger" style="border: none; background: #c9302c;;width:100px;"
+                (click)="formOwnerApprove(false)">
+                <i class="fa fa-times"></i>&nbsp;&nbsp;Reject
+              </button>&nbsp;&nbsp;
+            </ng-container>
+
+          </ng-container>
+
+          <!-- FOR MIS BUTTON ONLY SHOW THE USERTYPE SUPERVISOR -->
+
+          <ng-container>
+            <ng-container *ngIf='isfillworksheet == 1'>
+              <ng-container
+              *ngIf="(ismiscreated != 1) && (status == 'hdtsupervisorapproved'||status == 'mdtsupervisorapproved'||
+            status == 'aggregatesupervisorapproved' ||status == 'eandesupervisorapproved' ||status == 'ppssupervisorapproved' ||status == 'maintenancesupervisorapproved' ||status == 'mechanicalsupervisorapproved')">
+              <button class="btn btn-primary btn-md" (click)="protoMIS(formId)" style="border:none;">&nbsp;&nbsp;Create
+                Material
+                Issue Slip</button>&nbsp;&nbsp;
+            </ng-container>
+            </ng-container>
+            <ng-container
+            *ngIf="ismiscreated == 1 && 'isfillworksheet == 1'">
+            <button class="btn btn-primary btn-md" (click)="supervisorSubmit()" style="border:none;"><i class="fa fa-save"></i>&nbsp;&nbsp;Submit</button>&nbsp;&nbsp;
+          </ng-container>
+          </ng-container>
+
+          <!-- FOR PROTO  SUPERVISOR  CLOSE -->
+          <ng-container>
+            <ng-container
+              *ngIf="formOwner == 1 && (status == 'hdtsupervisorapproved' || status == 'mdtsupervisorapproved' || status == 'aggregatesupervisorapproved'
+            || status == 'ppssupervisorapproved'|| status == 'eandesupervisorapproved'|| status == 'maintenancesupervisorapproved'|| status == 'mechanicalsupervisorapproved')">
+              <button class="btn btn-primary btn-md" (click)="submitClose()" style="border:none;"><i
+                  class="fa fa-times"></i>&nbsp;&nbsp;Close</button>&nbsp;&nbsp;
+            </ng-container>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOR PROTO  REQUESTER SUBMIT-->
+
+    <div class="row" style="float:right;margin: 15px 0px;">
+      <div class="col-md-12">
+        <ng-container
+          *ngIf="userType != 'protovehicleowner' && userType != 'budgetapprover' && userType != 'sm'
+        && userType != 'ipl'  && userType != 'store' && userType != 'bca'
+        &&  userType != 'hdtsupervisor' && userType != 'mdtsupervisor' && userType != 'aggregatesupervisor'
+        && userType != 'eandesupervisor' && userType != 'ppssupervisor' && userType != 'maintenancesupervisor' && userType != 'mechanicalsupervisor'">
+          <button class="btn btn-primary btn-md" (click)="submitForm()" style="margin: 0px 0px 40px 0px;"><i
+              class="fa fa-save"></i>&nbsp;&nbsp;Submit</button>
+        </ng-container>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<!-- confirm modal -->
+
+<div class="modal fade" id="confirmSubmit" role="dialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-10">
+            <p class="modalHeader" style="font-weight: 600;">Submit</p>
+          </div>
+          <div class="col-md-2">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <br>
+          <div class="col-md-12">
+            <p> Are you sure to submit the form ?</p>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-primary" data-dismiss="modal">No </button>
+        <button type="button" class="btn btn-sm btn-primary" (click)="submitRequster()">Yes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- confirm close modal -->
+
+<div class="modal fade" id="confirmClose" role="dialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-10">
+            <p class="modalHeader" style="font-weight: 600;">Close</p>
+          </div>
+          <div class="col-md-2">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <br>
+          <div class="col-md-12">
+            <p> Are you sure to close the form ?</p>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-primary" data-dismiss="modal">No </button>
+        <button type="button" class="btn btn-sm btn-primary" (click)="protoClose()">Yes</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,66 @@
+/* .lorryImg{
+    background: url('../../assets/images/login-img.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;width: 100vw;height:100vh;
+} */
+
+h3{
+    color: #fff;
+    font-size: 22px;
+    font-family: montserrat;
+    padding-top: 30px;
+}
+.input-form{
+    /* padding: 15px 15px; */
+}
+.form-control{
+    /* background-color: #fbf7edf2; */
+    border-radius: 2px;
+}
+
+.field-icon-start{
+    float: left;
+    margin-left: 0px;
+    margin-top: -34px;
+    margin-right: 26px;
+    position: relative;
+    z-index: 2;
+    color: #bebfc0;
+    padding-left: 11px;
+    color: #252525;
+    font-size: 18px;
+    padding-top: 8px;
+}
+.btn-submit{
+   
+    border-radius: 1px;
+    background: #026D9D;
+    color: #fff;
+    box-shadow: 0px 3px 0px 2px #1b1a1ac2;
+}
+.btn-submit:hover{
+    box-shadow: 0 0 3px #026D9D;
+}
+.form-align{
+    /* text-align: center;  */
+    margin: 0 25px;  
+    margin-top: 20%;
+    /* background: #1b1a1aad; */
+    padding: 40px 20px 60px 20px;
+}
+
+.field-icon{
+    margin-left: 0px;
+    margin-right: 19px;
+    position: relative;
+    left: 52px;
+    top:2px;
+    z-index: 2;
+    padding-left: 11px;
+    color: #252525;
+    font-size: 17px;
+    padding-top: 7px;
+    padding-bottom: 9px;
+    padding-right: 5px;
+    border-right: 2px solid;
+}

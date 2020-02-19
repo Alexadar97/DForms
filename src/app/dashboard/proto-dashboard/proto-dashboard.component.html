@@ -1,0 +1,193 @@
+<div class="container" style="margin-top: 40px;">
+    <div class="row" style="margin: 10px 0px;">
+        <div class="col-md-6">
+            <div class="high-chart">
+                <div class="col-md-12">
+                <div class="col-md-5" style="margin-top: 13px;">
+                    <h4 style="font-size: 16px;">Requests Yearly Trend</h4>
+                </div>
+                <div class="col-md-3" style="margin-top: 12px;">
+                    <select class="form-control" name="year" id="year" (change)="ChangeYear($event.target.value)">
+                        <ng-container *ngFor="let data of yearlist; let i=index">
+                            <option value={{data}}>{{data}}</option>
+                        </ng-container>
+                    </select>
+                </div>
+                <div class="col-md-4"></div>
+            </div>
+                <figure class="highcharts-figure" style="padding: 70px 0px !important;">
+                    <div [chart]="highChart" id="highChart-1"></div>
+                </figure>
+            </div>
+        </div>
+        <div class="col-md-6">
+                <div class="high-chart-figure">
+                    <div class="col-md-12" style="margin-top: 12px;">
+                        <div class="col-md-4">
+                            <h5 style="font-size: 16px;">Overall Trend</h5>
+                        </div>
+                        <div class="col-md-8"></div>
+                    </div>
+                    <figure class="highcharts-figure">
+                        <div [chart]="waterFallChart" id="highChart-3"></div>
+                    </figure>
+                </div>
+            </div>
+    </div>
+    <div class="row" style="margin:20px 0px;">
+        <div class="col-md-6">
+            <div class="high-chart-figure">
+                <div class="col-md-12" style="margin-top: 12px;">
+                    <div class="col-md-3">
+                        <h5 style="font-size: 14px;
+                        margin-top: 25px;">Requests Data</h5>
+                    </div>
+                    <div class="col-md-5">
+                        <p>Select Duration</p>
+                        <input class="form-control" bsDaterangepicker id="rangedagte" type="text" style="font-size: 12px;height: 25px;"
+                        [bsConfig]="bsConfig" [(ngModel)]="bsRangeValue"
+                        (bsValueChange)="SelectDate($event)" />
+                    </div>
+                    <div class="">
+                        Exigency
+                        <br>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label class="control control--radio">Yes
+                                    <input type="radio" id="yes" (change)="selectExigencyDate($event.target.value)" value="yes" name="yes" checked  />
+                                    <div class="control__indicator"></div>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label class="control control--radio">No
+                                    <input type="radio" id="no" (change)="selectExigencyDate($event.target.value)" value="no" name="yes"/>
+                                    <div class="control__indicator"></div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="col-md-3">
+                        <figure class="highcharts-figure">
+                            <div [chart]="singleDateTotal" id="bar-chart-1"></div>
+                        </figure>
+                    </div>
+                    <div class="col-md-9">
+                        <figure class="highcharts-figure">
+                            <div [chart]="pieChartReqDate" id="piechart-1"></div>
+                        </figure>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="high-chart-figure">
+                <div class="col-md-12" style="margin-top: 12px;">
+                    <div class="col-md-3">
+                        <h5 style="font-size: 14px;
+                        margin-top: 25px;">Requests Data</h5>
+                    </div>
+                    <div class="col-md-5">
+                       <select class="form-control" id="category"  (change)="selectCategory($event.target.value)">
+                           <option value="Retro Fitment" selected>Retro Fitment</option>
+                           <option value="Trail">Trail</option>
+                           <option value="Failure">Failure</option>
+                           <option value="Others">Others</option>
+                       </select>
+                    </div>
+                    <div class="">
+                        Exigency
+                        <br>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label class="control control--radio">Yes
+                                    <input type="radio" id="yes" checked  (change)="selectCatExigency($event.target.value)" value="yes" name="exi"/>
+                                    <div class="control__indicator"></div>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label class="control control--radio">No
+                                    <input type="radio" id="no" (change)="selectCatExigency($event.target.value)" value="no" name="exi" />
+                                    <div class="control__indicator"></div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="col-md-3">
+                        <figure class="highcharts-figure">
+                            <div [chart]="singleCategoryTotal" id="bar-chart-2"></div>
+                        </figure>
+                    </div>
+                    <div class="col-md-9">
+                        <figure class="highcharts-figure">
+                            <div [chart]="pieChartCategory" id="piechart-2"></div>
+                        </figure>
+                    </div>
+                </div>
+            </div>
+        </div>
+     </div>
+     <div class="row"  style="margin: 20px 0px;">
+        <div class="col-md-6">
+            <div class="high-chart-figure">
+                <div class="col-md-12" style="margin-top: 12px;">
+                    <div class="col-md-3">
+                        <h5 style="font-size: 14px;
+                        margin-top: 25px;">Requests Data</h5>
+                    </div>
+                    <div class="col-md-5">
+                        <select class="form-control" id="supervisor"  (change)="selectSupervisor($event.target.value)">
+                            <option value="hdtsupervisor" selected>Vehicle HDT</option>
+                            <option value="mdtsupervisor">Vehicle MDT</option>
+                            <option value="aggregateengine">Engine</option>
+                            <option value="aggregatetransmission">Transmission</option>
+                            <option value="aggregateaxle">Axle</option>
+                            <option value="ppssupervisor">PPS</option>
+                        </select>
+                    </div>
+                    <div class="">
+                        Exigency
+                        <br>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label class="control control--radio">Yes
+                                    <input type="radio" id="yes" checked  (change)="selectSupervisorExi($event.target.value)" value="yes" name="no"/>
+                                    <div class="control__indicator"></div>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label class="control control--radio">No
+                                    <input type="radio" id="no" (change)="selectSupervisorExi($event.target.value)" value="no" name="no" />
+                                    <div class="control__indicator"></div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="col-md-3">
+                        <figure class="highcharts-figure">
+                            <div [chart]="singleCategoryTotal" id="bar-chart-2"></div>
+                        </figure>
+                    </div>
+                    <div class="col-md-9">
+                        <figure class="highcharts-figure">
+                            <div [chart]="pieChartCategory" id="piechart-2"></div>
+                        </figure>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6"></div>
+     </div>
+</div>

@@ -1,0 +1,1203 @@
+<app-spinner *ngIf="loading"></app-spinner>
+<div class="col-md-2" style="padding: 0;
+background-color: #242536; height: 100vh;">
+
+    <div style="margin-top: 15px;">
+        <p class="active sidetext" routerLinkActive="active"><i class="fa fa-angle-double-right"></i>&nbsp;&nbsp;STO
+            List</p>
+        <p class="sidetext" (click)="addsto()" routerLinkActive="active"><i class="fa fa-plus"></i>&nbsp;&nbsp;New
+            Request</p>
+
+        <p class="sidetext" (click)="upload()" routerLinkActive="active"><i class="fa fa-upload"></i>&nbsp;&nbsp;Upload
+            Partlist</p>
+
+        <ng-container class="dropdown-item" *ngIf="isPartsplanner">
+            <p class="sidetext" (click)="uploadModal()" routerLinkActive="active"><i
+                    class="fa fa-upload"></i>&nbsp;&nbsp;Upload
+                Part Master</p>
+        </ng-container>
+
+        <p class="sidetext" (click)="downloadExcel('export.xlsx')" routerLinkActive="active"><i
+                class="fa fa-download"></i>
+            &nbsp;Download</p>
+
+
+    </div>
+</div>
+<div class="col-md-10">
+    <div class="col-md-12" style="margin-top:10px;">
+        <div class="col-md-4" style="padding: 0">
+            <h4>STO Request</h4>
+        </div>
+        <!-- <div class=" col-md-3 tablestyle col-md-offset-1">
+        <input type="text" class="form-control" placeholder="Search">
+    </div> -->
+        <div class="col-md-5">
+            <button class="btn btn-primary dropdown-item" (click)="downloadZip('Generate_ZIP.zip')"
+                routerLinkActive="active" style="width: 17%; float: right;">
+                <i class="fa fa-print"></i>
+                &nbsp;Print</button>
+
+        </div>
+        <div class="col-md-3">
+            <input type="text" class="form-control" placeholder="  Search  " name="search"
+                (input)="search($event.target.value)" #valsearchuser autocomplete="off"><i
+                class="fa fa-search search"></i>
+        </div>
+        <!-- <div class="col-md-1" style="text-align: right;"> -->
+
+        <!-- <input type="button" value="New Request" class="btn btn-primary" (click)="addsto()" style="margin-right: 0px;"> -->
+
+        <!-- <div class="dropdown">
+            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="true"> -->
+        <!-- <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> -->
+        <!-- <i class="fa fa-list"></i> -->
+        <!-- Actions -->
+        <!-- &nbsp;&nbsp;Menu &nbsp;<i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"
+                style="width: 50%;padding: 4px;background: #dedede;">
+                <button class="btn btn-primary dropdown-item" (click)="addsto()"><i
+                        class="fa fa-plus"></i>&nbsp;&nbsp;New Request</button>
+                <button class="btn btn-primary dropdown-item" (click)="upload()"><i
+                        class="fa fa-upload"></i>&nbsp;&nbsp;Upload
+                    Partlist</button>
+                <ng-container class="dropdown-item" *ngIf="isPartsplanner">
+                    <button class="btn btn-primary dropdown-item" (click)="uploadModal()"><i
+                            class="fa fa-upload"></i>&nbsp;&nbsp;Upload
+                        Part Master</button>
+                </ng-container> -->
+
+        <!-- <button class="btn btn-primary dropdown-item" (click)="downloadExcel('export.xlsx')"><i
+                        class="fa fa-download"></i>
+                    &nbsp;Download</button>
+                    <ng-container >
+                <button class="btn btn-primary dropdown-item" (click)="downloadZip('Generate_ZIP.zip')">
+                    <i class="fa fa-print"></i>
+                    &nbsp;Print</button>
+                    </ng-container> -->
+
+        <!-- </div>
+        </div> -->
+
+        <!-- </div> -->
+
+
+    </div>
+
+    <div class="col-md-12" style="margin-bottom: 40px;">
+
+        <!-- *ngFor="let data of allstoform | paginate: { itemsPerPage: 10, currentPage: p1,id: 'two'};let index=index" -->
+        <table id="stotable" class="table table-bordered table-striped" style="width:99%;">
+            <tr>
+                <th style="text-align: center;">Select All<br>
+                    <label class="control control--checkbox">
+                        <input type="checkbox" class="chkboxes" id="select-all" value="all"
+                            (click)="checkall($event.target.checked)">
+                        <div class="control__indicator changeindicator"></div>
+                    </label></th>
+                <th>S.No</th>
+                <th>Form ID</th>
+                <th>Exigency Case</th>
+                <th>Created On</th>
+                <th>Requester Name</th>
+                <th>Phone Number</th>
+                <th>Approver Name - L4</th>
+
+                <th>Approver Name - L3</th>
+                <!-- <th *ngIf="isBudgetApprover || isIpl || isPartsplanner">IO Number</th> -->
+
+                <!-- <th>Remarks</th> -->
+                <th>Status</th>
+                <th>View Form</th>
+                <th style="text-align: center">Action</th>
+                <!-- <th style="text-align: center">Parts</th> -->
+                <!-- <th>View</th> -->
+                <th
+                    *ngIf="usertype != 'budgetapprover' && usertype != 'sm'
+                && usertype != 'ipl'  &&  usertype != 'partsplanner' && usertype != 'store' && usertype !='protovehicleowner' && usertype !='hdtsupervisor' && usertype !='mdtsupervisor' && usertype !='aggregatesupervisor' && 
+                usertype !='eandesupervisor' && usertype !='ppssupervisor' && usertype !='mechanicalsupervisor' && usertype !='maintenancesupervisor'">
+                    Delete</th>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>
+                    <div class="row">
+                        <div class="col-lg-12 nopadding">
+                            <div class="button-group">
+                                <button type="button" class="btn btn-default btn-sm dropdown-toggle"
+                                    data-toggle="dropdown">Select
+                                    Exigency
+
+                                    <span class="caret"></span></button>
+                                <ul class="dropdown-menu filtermenu" style="height:12vh;
+                            position: absolute;
+                            transform: translate3d(1px, 32px, 0px);
+                            top: 0px;
+                            left: 0px;
+                            will-change: transform;">
+                                    <ng-container *ngFor="let data of getexigencycase;">
+                                        <li>
+                                            <label class="control control--checkbox">
+                                                <span *ngIf="data == 1">
+                                                    Yes
+                                                </span>
+                                                <span *ngIf="data == 0">
+                                                    No
+                                                </span>
+                                                <input type="checkbox" class="typeSelectBox" value={{data}}
+                                                    (change)="exigencyfilter($event,'exigency')">&nbsp;<span
+                                                    id="select"></span>
+                                                <div class="control__indicator filterchkbox"></div>
+                                            </label>
+                                        </li>
+                                    </ng-container>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="row">
+                        <div class="col-lg-12 nopadding">
+                            <input class="form-control" bsDaterangepicker id="rangedagte" type="text"
+                                style="font-size: 12px" placeholder="Select Created On" [bsConfig]="bsConfig"
+                                [(ngModel)]="bsRangeValue" (bsValueChange)="SelectDate($event,'createddate')" />
+                        </div>
+                    </div>
+                </td>
+                <td></td>
+                <td></td>
+                <td>
+                    <div class="row">
+                        <div class="col-lg-12 nopadding">
+                            <div class="button-group">
+                                <button type="button" class="btn btn-default btn-sm dropdown-toggle"
+                                    data-toggle="dropdown" style="width: 170px;">Select
+                                    Approver - L4
+
+                                    <span class="caret"></span></button>
+                                <ul class="dropdown-menu filtermenu" style="position: absolute;
+                            transform: translate3d(1px, 32px, 0px);
+                            top: 0px;
+                            left: 0px;
+                            will-change: transform;
+                            height: 12vh;
+                            overflow-x: hidden;
+                            overflow-y: auto;">
+                                    <ng-container *ngFor="let data of getapproverl4;">
+                                        <li>
+                                            <label class="control control--checkbox">
+                                                {{data}}
+                                                <input type="checkbox" class="typeSelectBox" value={{data}}
+                                                    (change)="approverl4ilter($event,'l4name')">&nbsp;<span
+                                                    id="select"></span>
+                                                <div class="control__indicator filterchkbox"></div>
+                                            </label>
+                                        </li>
+                                    </ng-container>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="row">
+                        <div class="col-lg-12 nopadding">
+                            <div class="button-group">
+                                <button type="button" class="btn btn-default btn-sm dropdown-toggle"
+                                    data-toggle="dropdown" style="width: 170px;">Select
+                                    Approver - L3
+                                    <span class="caret"></span></button>
+                                <ul class="dropdown-menu filtermenu" style="position: absolute;
+                            transform: translate3d(1px, 32px, 0px);
+                            top: 0px;
+                            left: 0px;
+                            will-change: transform;
+                            height: 12vh;
+                            overflow-x: hidden;
+                            overflow-y: auto;">
+                                    <ng-container *ngFor="let data of getapproverl3;">
+                                        <li>
+                                            <label class="control control--checkbox">
+                                                {{data}}
+                                                <input type="checkbox" class="typeSelectBox" value={{data}}
+                                                    (change)="approverl3filter($event,'l3name')">&nbsp;<span
+                                                    id="select"></span>
+                                                <div class="control__indicator filterchkbox"></div>
+                                            </label>
+                                        </li>
+                                    </ng-container>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="row">
+                        <div class="col-lg-12 nopadding">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-default btn-sm dropdown-toggle"
+                                    data-toggle="dropdown">Select
+                                    Status
+
+                                    <span class="caret"></span></button>
+                                <ul class="dropdown-menu filtermenu" role="menu" style="position: absolute;
+                            transform: translate3d(1px, 32px, 0px);
+                            top: 0px;
+                            left: 0px;
+                            will-change: transform;
+                            height: 22vh;
+                            overflow-x: hidden;
+                            min-width: 200px !important;
+                            overflow-y: auto;">
+                                    <ng-container *ngFor="let data of getstatus;">
+                                        <li>
+                                            <label class="control control--checkbox">
+                                                <ng-container *ngIf="data=='ppapproved'">
+                                                    <span>SM Approval Pending</span>
+                                                </ng-container>
+
+                                                <ng-container *ngIf="data=='pprejected' ">
+                                                    <span> Parts Planner Rejected</span>
+                                                </ng-container>
+                                                <!-- <ng-container *ngIf="data=='iplapproved'">
+                                                <span> IPL Dispatched</span>
+                                            </ng-container> -->
+                                                <ng-container *ngIf="data=='iplpartialapproved'">
+                                                    <span class="inprogress">IPL Processed Partial</span>
+                                                </ng-container>
+
+                                                <ng-container *ngIf="data=='iplapproved'">
+                                                    <span>IPL Approved (SM Partial Approved)</span>
+                                                </ng-container>
+                                                <ng-container *ngIf="data=='budgetrejected'">
+                                                    <span> Budget Rejected</span>
+                                                </ng-container>
+                                                <ng-container *ngIf="data=='l4approved'">
+                                                    <span>L3 Approval Pending</span>
+                                                </ng-container>
+                                                <ng-container *ngIf="data=='l4rejected'">
+                                                    <span> L4 Approval Rejected</span>
+                                                </ng-container>
+                                                <ng-container *ngIf="data=='l3rejected'">
+                                                    <span>L3 Approval Rejected</span>
+                                                </ng-container>
+                                                <ng-container *ngIf="data=='pending' || data=='l3approved'">
+                                                    <span>Budget Approval Pending</span>
+                                                </ng-container>
+                                                <ng-container *ngIf="data=='exigencyrequest'">
+
+                                                    <span>L4 Approval Pending</span>
+                                                </ng-container>
+                                                <ng-container *ngIf="data=='budgetapproved'">
+                                                    <span>Budget Approved</span>
+                                                </ng-container>
+                                                <ng-container *ngIf="data=='smapproved'">
+                                                    <span>SM Approved</span>
+                                                </ng-container>
+                                                <ng-container *ngIf="data=='smpartialapproved'">
+                                                    <span>SM Processed Partial</span>
+                                                </ng-container>
+                                                <ng-container *ngIf="data=='Storeapproved'">
+                                                    <span>Store Approved</span>
+                                                </ng-container>
+                                                <ng-container *ngIf="data=='closed'">
+                                                    <span>Completed</span>
+                                                </ng-container>
+                                                <ng-container *ngIf="data=='partialclosed'">
+                                                    <span>Partial Completed</span>
+                                                </ng-container>
+                                                <ng-container *ngIf="data=='Storepartialapproved'">
+                                                    <span>Store Partial Approved</span>
+                                                </ng-container>
+                                                <ng-container *ngIf="data=='recalled'">
+                                                    <span>Form Recalled</span>
+                                                </ng-container>
+                                                <input type="checkbox" class="typeSelectBox" value={{data}}
+                                                    (change)="statusfilter($event,'status')">&nbsp;<span
+                                                    id="select"></span>
+                                                <div class="control__indicator filterchkbox"></div>
+                                            </label>
+                                        </li>
+                                    </ng-container>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td></td>
+                <td></td>
+                <td
+                    *ngIf="usertype != 'budgetapprover' && usertype != 'sm'
+                && usertype != 'ipl'  && usertype != 'store' && usertype !='protovehicleowner' && usertype !='hdtsupervisor' && usertype !='mdtsupervisor' && usertype !='aggregatesupervisor' && 
+                usertype !='eandesupervisor' && usertype !='ppssupervisor' && usertype !='mechanicalsupervisor' && usertype !='maintenancesupervisor'">
+                </td>
+            </tr>
+            <tr *ngFor="let data of stolist| paginate: { itemsPerPage: 10, currentPage: p1,id: 'two'};let index=index">
+                <td style="text-align: center"><label class="control control--checkbox">
+                        <input type="checkbox" class="chkboxes checksingle" value="single"
+                            (click)="singlecheck($event,data.id)">
+                        <div class="control__indicator checkcolor "></div>
+                    </label></td>
+                <td>{{((currentPage- 1) * 10 + index+1)}}</td>
+                <td>{{(data?.stoformid != null) ? data?.stoformid : '-' }}</td>
+                <td>
+                    <ng-container *ngIf="data?.exigency==1">
+                        Yes
+                    </ng-container>
+                    <ng-container *ngIf="data?.exigency==0">
+                        No
+                    </ng-container>
+                </td>
+                <td>{{(data?.createddate != null) ? data?.createddate : '-' }}</td>
+                <td>{{(data?.creditorname != null) ? data?.creditorname : '-' }}</td>
+                <!-- <td> {{(data.costcenter != null) ? data.costcenter : '-' }}</td> -->
+                <td>{{(data?.phonenumber != null) ? data?.phonenumber : '-' }}</td>
+                <td>
+                    <ng-container *ngIf="data?.l4name != null "> {{(data?.l4name != null) ? data?.l4name : '-' }}
+                    </ng-container>
+                    <ng-container *ngIf="data?.l4name == null "> Not Applicable</ng-container>
+                </td>
+
+                <!-- <td *ngIf="data?.exigency==1" class="text-success"> Yes</td> -->
+                <!-- <td *ngIf="data?.exigency==0" class="text-danger">No</td> -->
+                <td>
+                    <ng-container *ngIf="data?.l3name != null "> {{(data?.l3name != null) ? data?.l3name : '-' }}
+                    </ng-container>
+                    <ng-container *ngIf="data?.l3name == null "> Not Applicable</ng-container>
+                </td>
+                <!-- <td *ngIf="isBudgetApprover || isIpl || isPartsplanner">
+                <ng-container *ngIf="data?.ionumber !='null'">
+                    {{(data?.ionumber != null) ? data?.ionumber : '-' }}
+                </ng-container>
+                <ng-container *ngIf="data?.ionumber =='null'">
+                    Nil
+                </ng-container>
+            </td> -->
+
+
+                <!-- <td> {{(data?.remarks != null) ? data?.remarks : '-' }} </td> -->
+
+
+                <td class="text-success">
+                    <span [style.color]="pickColor(data.statusLabel)">
+                        {{(data?.statusLabel != null) ? data?.statusLabel : '-' }}
+                    </span>
+                    <!-- <ng-container> -->
+                    <!-- <ng-container *ngIf="data?.status=='approved'  || data?.status=='l4approved' || data?.status=='L4 approved' || data?.status=='pending' || data?.status=='budgetapproved'"> -->
+                    <!-- {{(data?.status != null) ? data?.status : '-' }} -->
+                    <!-- <ng-container *ngIf="data?.status=='ppapproved'">
+                            <span class="inprogress">SM Approval Pending</span>
+
+                        </ng-container>
+
+                        <ng-container *ngIf="data?.status=='pprejected' ">
+                            <span class="rejected"> Parts Planner Rejected</span>
+
+                        </ng-container>
+
+                        <ng-container *ngIf="data?.status=='iplapproved' && data?.issmpartialapproved == '0'">
+                            <span class="inprogress"> Store Approval Pending</span>
+
+                        </ng-container>
+
+                        <ng-container *ngIf="data?.status=='iplpartialapproved' && data?.issmpartialapproved == '0'">
+                            <span class="inprogress">IPL Processed Partial</span>
+
+                        </ng-container>
+                        <ng-container *ngIf="data?.status=='iplpartialapproved' && data?.issmpartialapproved == '1'">
+                            <span class="inprogress">IPL Processed Partial</span>
+
+                        </ng-container>
+                        <ng-container *ngIf="data?.status=='iplapproved' && data?.issmpartialapproved == '1'">
+                            <span class="inprogress">Store Approval Pending (SM Partial Approved)</span>
+
+                        </ng-container>
+                        <ng-container *ngIf="data?.status=='budgetrejected'">
+                            <span class="rejected"> Budget Rejected</span>
+
+                        </ng-container>
+
+                        <ng-container *ngIf="data?.status=='l4approved'">
+                            <span class="inprogress">L3 Approval Pending</span>
+
+                        </ng-container>
+                        <ng-container *ngIf="data?.status=='l4rejected'">
+                            <span class="rejected"> L4 Approval Rejected</span>
+
+                        </ng-container>
+                        <ng-container *ngIf="data?.status=='l3rejected'">
+                            <span class="rejected">L3 Approval Rejected</span>
+
+
+                        </ng-container>
+
+                        <ng-container *ngIf="data?.status=='pending' || data?.status=='l3approved'">
+                            <span class="inprogress">Budget Approval Pending</span>
+
+                        </ng-container>
+
+                        <ng-container *ngIf="">
+                           {{data?.statusLabel'L4 Approval Pending'}}
+                         </ng-container>
+
+                        <ng-container *ngIf="data?.status=='budgetapproved'">
+                            <span class="inprogress">Parts Planner Approval Pending</span>
+
+                        </ng-container>
+
+                        <ng-container *ngIf="data?.status=='smapproved'">
+                            <span class="inprogress">IPL Dispatch Pending</span>
+
+                        </ng-container>
+
+                        <ng-container *ngIf="data?.status=='smpartialapproved'">
+                            <span class="inprogress">SM Processed Partial</span>
+
+                        </ng-container>
+                        <ng-container *ngIf="data?.status=='Storeapproved'">
+                            <span class="inprogress">Store Approved</span>
+
+                        </ng-container>
+
+                        <ng-container *ngIf="data?.status=='closed'">
+                            <span class="completed">Completed</span>
+
+                        </ng-container>
+                        <ng-container *ngIf="data?.status=='partialclosed'">
+                            <span class="inprogress">Partial Completed</span>
+
+                        </ng-container>
+                        <ng-container *ngIf="data?.status=='Storepartialapproved'">
+                            <span class="inprogress">Store Partial Approved</span>
+
+                        </ng-container>
+                        <ng-container *ngIf="data?.status=='recalled'">
+                            <span class="inprogress">Form Recalled</span>
+
+                        </ng-container>
+                    </ng-container> -->
+
+                </td>
+                <td style="text-align: center">
+                    <button class="btn btn-default" (click)="view(data)">
+                        <i class="fa fa-eye"></i>&nbsp;&nbsp;View
+                    </button>
+                </td>
+
+                <td style="text-align: center">
+                    <!-- //budgetapproved
+                    //l4approved
+                    //l3approved
+                    //approved -->
+                    <!-- <button class="btn btn-primary" (click)="Edit(data)">
+                Edit
+            </button> -->
+                    <!-- <button *ngIf="data?.status=='exigencyrequest' || data?.status=='pending'"
+            class="btn btn-primary" (click)="Edit(data,'budgetapprover')">
+            Recall
+        </button> -->
+                    <button *ngIf="isBudgetApprover && (data?.status=='pending' || data?.status=='l3approved')"
+                        class="btn btn-primary btn-sm" (click)="Edit(data,'budgetapprover')">
+                        Edit
+                    </button>
+
+                    <button *ngIf="isPartsplanner && ( data?.status=='budgetapproved')" class="btn btn-primary  btn-sm"
+                        (click)="Edit(data,'partsplanner')">
+                        Edit
+                        <!-- -- ppapproved  [change sm][sm editable] -->
+                        <!-- close -->
+                    </button>
+
+                    <button
+                        *ngIf="isPartsplanner && (data?.status=='Storeapproved' || data?.status=='Storepartialapproved' )"
+                        class="btn btn-primary  btn-sm" (click)="Edit(data,'partsplanner')">
+                        Edit
+                        <!-- -- ppapproved  [change sm][sm editable] -->
+                        <!-- close -->
+                    </button>
+                    <button
+                        *ngIf="isPartsplanner && (data?.status=='pending' || data?.status=='l4approved'|| data?.status=='l3approved' || data?.status=='exigencyrequest' || data?.status=='ppapproved')"
+                        class="btn btn-primary  btn-sm" (click)="Edit(data,'partsplanner')">
+                        Edit
+                        <!-- -- ppapproved  [change sm][sm editable] -->
+                        <!-- close -->
+                    </button>
+                    <!-- 
+                <button *ngIf=" isSm && Shortid == data?.stoParts[index].smid" class="btn btn-primary" (click)="Edit(data,'sm')">
+                    Edit
+                  
+                </button> -->
+                    <button *ngIf=" isSm   && (data?.formsmedit == 0)" class="btn btn-primary  btn-sm"
+                        (click)="Edit(data,'sm')">
+                        Edit
+
+                    </button>
+                    <!-- <button *ngIf="isIpl && data?.status=='smapproved'" class="btn btn-primary" (click)="Edit(data)"> -->
+                    <button *ngIf="isIpl  && (data?.formIPLedit == 0)" class="btn btn-primary  btn-sm"
+                        (click)="Edit(data,'ipl')">
+                        Edit
+                        <!-- - ipl quantity -->
+                    </button>
+
+                    <!-- //iplapproved
+                    //changes as completed -->
+
+                    <button
+                        *ngIf="isStoreUser  && (data?.status =='iplapproved' || data?.status =='iplpartialapproved')"
+                        class="btn btn-primary  btn-sm" (click)="Edit(data,'store')">
+                        Edit
+                        <!-- - ipl quantity -->
+                    </button>
+                    <ng-container *ngIf="(data?.status=='exigencyrequest'|| data?.status=='pending') && ( usertype != 'budgetapprover' && usertype != 'sm'
+                    && usertype != 'ipl'  && usertype != 'store'&& usertype != 'partsplanner' && status !='protovehicleowner' && status !='hdtsupervisor'
+                    && status !='mdtsupervisor' && status !='ppssupervisor' && status !='maintenancesupervisor' && status !='mechanicalsupervisor'
+                    && status !='eandesupervisor'&& status !='aggregatesupervisor')">
+                        <button class="btn btn-primary  btn-sm" (click)="Recall(data.id)">
+                            Recall
+                        </button>
+                    </ng-container>
+                    <ng-container *ngIf="data?.status=='recalled' && ( usertype != 'budgetapprover' && usertype != 'sm'
+                          && usertype != 'ipl'  && usertype != 'store' && usertype != 'partsplanner' && status !='protovehicleowner' && status !='hdtsupervisor'
+                          && status !='mdtsupervisor' && status !='ppssupervisor' && status !='maintenancesupervisor' && status !='mechanicalsupervisor'
+                          && status !='eandesupervisor'&& status !='aggregatesupervisor')">
+                        <button class="btn btn-primary  btn-sm" (click)="RecallEdit(data.id)">
+                            Edit
+                        </button>
+                    </ng-container>
+
+                </td>
+                <td style="text-align: center;"
+                    *ngIf="usertype != 'budgetapprover' && usertype != 'sm'
+                && usertype != 'ipl'  && usertype != 'store' && usertype !='protovehicleowner'  && usertype !='partsplanner' 
+                 && usertype !='hdtsupervisor' && usertype !='mdtsupervisor' && usertype !='aggregatesupervisor' && 
+                usertype !='eandesupervisor' && usertype !='ppssupervisor' && usertype !='mechanicalsupervisor' && usertype !='maintenancesupervisor'">
+                    <ng-container *ngIf="data?.status != 'deleted' && data?.status != 'closed'">
+                        <button class="btn btn-default  btn-sm" (click)="stoDelete(data.id,data)"
+                            style="border-radius: 6px;">
+                            <i class="fas fa-trash" style="font-size: 16px;"></i>
+                        </button>
+                    </ng-container>
+                </td>
+            </tr>
+        </table>
+        <!-- <br> -->
+        <h4 *ngIf="stolist?.length==0" class="text-center">No STO created yet!</h4>
+
+        <!-- <pagination-controls *ngIf="stolist?.length!=0" style="text-align: right;" (pageChange)="p1 = $event" #api id="two">
+    </pagination-controls> -->
+        <div style="float: right;margin-bottom: 35px;" *ngIf="stolist?.length!=0">
+            <button [disabled]="currentPage == 1" class="btn btn-default paginationbtn"
+                (click)="paginatePartList('prev')"><i class="fa fa-chevron-left"></i></button>
+            <span style="font-size: 15px;
+            padding: 10px;">
+                <!-- {{currentPage}} -->
+                <input id="currentPageInput" class="paginatecontrol" type="text" value="{{currentPage}}"
+                    style="width: 50px;">
+                <!-- <i class="icon-search" (click)="searchPage()" class="searchbtn"></i> -->
+                <i class="fa fa-search searchbtn" (click)="searchPage()"></i>
+                of
+                {{totalPages}}
+            </span>
+
+            <button [disabled]="currentPage == totalPages" class="btn btn-default paginationbtn"
+                (click)="paginatePartList('next')"><i class="fa fa-chevron-right"></i></button>
+        </div>
+        <br>
+        <br>
+    </div>
+</div>
+<!-- parts list model -->
+
+<div class="modal fade" id="editmodal" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg" style="    width: 80%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Form Details </h4>
+            </div>
+            <div class="modal-body">
+
+                <s-update [arr]="updateForm"></s-update>
+
+                <div class=" modal-table">
+                    <div class="row viewpara">
+                        <div class="col-md-12 ">
+                            <div class=" col-md-3 tablestyle ">
+                                <p class="text-color">STO Form ID</p>
+                            </div>
+                            <div class=" col-md-3 tablestyle ">
+                                <span> {{stoData?.stoformid  }}</span>
+                            </div>
+                            <div class=" col-md-3 tablestyle">
+                                <p class="text-color">Requester Name</p>
+                            </div>
+                            <div class=" col-md-3 tablestyle">
+                                <span>{{stoData?.creditorname}}</span>
+                            </div>
+                            <div class=" col-md-3 tablestyle ">
+                                <p class="text-color">Created On</p>
+                            </div>
+                            <div class=" col-md-3 tablestyle ">
+                                <span> {{stoData?.createddate }}</span>
+                            </div>
+
+                            <div class=" col-md-3 tablestyle ">
+                                <p class="text-color">Closed On</p>
+                            </div>
+                            <div class=" col-md-3 tablestyle">
+                                <ng-container *ngIf="stoData?.closeddate != null">
+                                    <span> {{stoData?.closeddate }}</span>
+                                </ng-container>
+                                <ng-container *ngIf="stoData?.closeddate == null">
+                                    <span> - </span>
+                                </ng-container>
+                            </div>
+
+
+
+                            <div class=" col-md-3 tablestyle">
+                                <p class="text-color"> Purpose</p>
+                            </div>
+                            <div class=" col-md-3 tablestyle" style="overflow:auto;">
+                                <span>{{stoData?.purpose}}</span>
+                            </div>
+
+                            <ng-container *ngIf="isBudgetApprover || isIpl || isPartsplanner">
+                                <div class=" col-md-3 tablestyle">
+                                    <p class="text-color">IO Number</p>
+                                </div>
+
+                                <div class=" col-md-3 tablestyle">
+                                    <ng-container *ngIf="stoData?.ionumber != 'null'">
+                                        <span>{{stoData?.ionumber}}</span>
+                                    </ng-container>
+                                    <ng-container *ngIf="stoData?.ionumber == 'null'">
+                                        <span>Nil</span>
+                                    </ng-container>
+                                </div>
+
+                            </ng-container>
+                            <ng-container *ngIf="usertype != 'sm' && usertype != 'ipl' && usertype != 'store'">
+                                <div class=" col-md-3 tablestyle">
+                                    <p class="text-color">Value</p>
+                                </div>
+
+                                <div class=" col-md-3 tablestyle">
+                                    <span>{{stoData?.value}}</span>
+                                </div>
+                            </ng-container>
+                            <div class=" col-md-3 tablestyle">
+                                <p class="text-color">Department</p>
+                            </div>
+                            <div class=" col-md-3 tablestyle">
+                                <span>{{stoData?.department}}</span>
+                            </div>
+                            <div class=" col-md-3 tablestyle">
+                                <p class="text-color">Phone Number</p>
+                            </div>
+                            <div class=" col-md-3 tablestyle">
+                                <span> {{stoData?.phonenumber}}</span>
+                            </div>
+
+                            <div class=" col-md-3 tablestyle">
+                                <p class="text-color">Status</p>
+                            </div>
+                            <div class=" col-md-3 tablestyle">
+                                <span> {{stoData?.statusLabel}}</span>
+                                <!-- <ng-container>
+
+                                    <ng-container *ngIf="stoData?.status=='ppapproved'">
+                                        <span> SM Approval Pending</span>
+
+                                    </ng-container>
+
+                                    <ng-container *ngIf="stoData?.status=='pprejected'">
+                                        <span> Parts Planner Rejected</span>
+
+                                    </ng-container>
+                                    <ng-container
+                                        *ngIf="stoData?.status=='iplapproved' && stoData?.issmpartialapproved == '0'">
+                                       Store Approval Pending
+                                    </ng-container>
+
+                                    <ng-container
+                                        *ngIf="stoData?.status=='iplpartialapproved' && stoData?.issmpartialapproved == '0'">
+                                        IPL Processed Partial
+
+                                    </ng-container>
+                                    <ng-container
+                                        *ngIf="stoData?.status=='iplpartialapproved' && stoData?.issmpartialapproved == '1'">
+                                        IPL Processed Partial
+
+                                    </ng-container>
+                                    <ng-container
+                                        *ngIf="stoData?.status=='iplapproved' && stoData?.issmpartialapproved == '1'">
+                                        Store Approval Pending (SM Partial Approved)
+
+                                    </ng-container>
+                                    <ng-container *ngIf="stoData?.status=='budgetrejected'">
+                                        <span>Budget Rejected</span>
+
+                                    </ng-container>
+
+                                    <ng-container *ngIf="stoData?.status=='l4approved'">
+                                        <span>L3 Approval Pending</span>
+
+                                    </ng-container>
+                                    <ng-container *ngIf="stoData?.status=='l4rejected'">
+                                        <span>L4 Approval Rejected</span>
+
+                                    </ng-container>
+                                    <ng-container *ngIf="stoData?.status=='l3rejected'">
+                                        <span>L3 Approval Rejected</span>
+
+
+                                    </ng-container>
+
+                                    <ng-container *ngIf="stoData?.status=='pending' || stoData?.status=='l3approved'">
+                                        <span>Budget Approval Pending</span>
+
+                                    </ng-container>
+
+                                    <ng-container *ngIf="stoData?.status=='exigencyrequest'">
+                                      
+                                        <span>L4 Approval Pending</span>
+
+                                    </ng-container>
+
+                                    <ng-container *ngIf="stoData?.status=='budgetapproved'">
+                                        <span>Parts Planner Pending</span> 
+
+                                    </ng-container>
+
+                                    <ng-container *ngIf="stoData?.status=='smapproved'">
+                                        <span>IPL Dispatch Pending</span>
+
+                                    </ng-container>
+
+                                    <ng-container *ngIf="stoData?.status=='smpartialapproved'">
+                                        <span>SM Processed Partial</span>
+
+                                    </ng-container>
+                                    <ng-container *ngIf="stoData?.status=='Storeapproved'">
+                                        <span>Store Approved</span>
+
+                                    </ng-container>
+
+                                    <ng-container *ngIf="stoData?.status=='closed'">
+                                        <span>Completed</span>
+
+                                    </ng-container>
+
+                                    <ng-container *ngIf="stoData?.status=='partialclosed'">
+                                        <span> Partial Completed</span>
+
+                                    </ng-container>
+                                    <ng-container *ngIf="stoData?.status=='Storepartialapproved'">
+                                        <span> Store Partial Approved</span>
+
+                                    </ng-container>
+                                    <ng-container *ngIf="stoData?.status=='recalled'">
+                                        <span> Form Recalled</span>
+
+                                    </ng-container>
+                                </ng-container> -->
+                            </div>
+
+                            <ng-container *ngIf="stoData?.l3remarks">
+                                <div class=" col-md-3 tablestyle">
+                                    <p class="text-color">L3 Remarks</p>
+                                </div>
+                                <div class=" col-md-3 tablestyle" style="overflow:auto;">
+                                    <span>{{stoData?.l3remarks}}</span>
+                                </div>
+                            </ng-container>
+                            <ng-container *ngIf="stoData?.l4remarks">
+                                <div class=" col-md-3 tablestyle">
+                                    <p class="text-color">L4 Remarks</p>
+                                </div>
+                                <div class=" col-md-3 tablestyle" style="overflow:auto;">
+                                    <span>{{stoData?.l4remarks}}</span>
+                                </div>
+                            </ng-container>
+                            <ng-container *ngIf="stoData?.budgetremarks">
+                                <div class=" col-md-3 tablestyle">
+                                    <p class="text-color">Budget Approver Remarks</p>
+                                </div>
+                                <div class=" col-md-3 tablestyle" style="overflow:auto;">
+                                    <span>{{stoData?.budgetremarks}}</span>
+
+                                </div>
+                            </ng-container>
+                            <ng-container *ngIf="stoData?.iplpartialremarks">
+                                <div class=" col-md-3 tablestyle">
+                                    <p class="text-color">IPL Partial Dispatched Remarks</p>
+                                </div>
+                                <div class=" col-md-3 tablestyle" style="overflow:auto;">
+                                    <span>{{stoData?.iplpartialremarks}}</span>
+                                </div>
+                            </ng-container>
+                            <ng-container *ngIf="stoData?.iplremarks">
+                                <div class=" col-md-3 tablestyle">
+                                    <p class="text-color">IPL Dispatched Remarks</p>
+                                </div>
+                                <div class=" col-md-3 tablestyle" style="overflow:auto;">
+                                    <span>{{stoData?.iplremarks}}</span>
+                                </div>
+                            </ng-container>
+                            <ng-container *ngIf="stoData?.smremarks">
+                                <div class=" col-md-3 tablestyle">
+                                    <p class="text-color">SM Remarks</p>
+                                </div>
+                                <div class=" col-md-3 tablestyle" style="overflow:auto;">
+
+                                    <span>{{stoData?.smremarks}}</span>
+                                </div>
+                            </ng-container>
+                            <ng-container *ngIf="stoData?.ppremarks">
+                                <div class=" col-md-3 tablestyle">
+                                    <p class="text-color">Parts Planner Remarks</p>
+                                </div>
+                                <div class=" col-md-3 tablestyle" style="overflow:auto;">
+                                    <span>{{stoData?.ppremarks}}</span>
+                                </div>
+                            </ng-container>
+                            <ng-container *ngIf="stoData?.storeremarks">
+                                <div class=" col-md-3 tablestyle">
+                                    <p class="text-color">Store Remarks</p>
+                                </div>
+                                <div class=" col-md-3 tablestyle" style="overflow:auto;">
+                                    <span>{{stoData?.storeremarks}}</span>
+                                </div>
+
+                            </ng-container>
+                            <ng-container *ngIf="stoData?.closedremarks">
+
+                                <div class=" col-md-3 tablestyle">
+                                    <p class="text-color">Part Planner Closed Remarks</p>
+                                </div>
+                                <div class=" col-md-3 tablestyle" style="overflow:auto;">
+                                    <span>{{stoData?.closedremarks}}</span>
+                                </div>
+                            </ng-container>
+                            <ng-container *ngIf="stoData?.deletedremarks">
+
+                                <div class=" col-md-3 tablestyle">
+                                    <p class="text-color">Deleted Remarks</p>
+                                </div>
+                                <div class=" col-md-3 tablestyle" style="overflow:auto;">
+                                    <span>{{stoData?.deletedremarks}}</span>
+                                </div>
+                            </ng-container>
+                        </div>
+
+
+                        <div class=" col-md-12 table-responsive">
+                            <table class="table viewmodaltable">
+                                <thead style="background-color: #ececec;">
+                                    <tr>
+                                        <th>S.No</th>
+                                        <th>Part No</th>
+                                        <th>Part Description</th>
+                                        <th *ngIf="!isStoreUser && !isIpl && !isSm">Quantity</th>
+                                        <!-- <th   *ngIf="stoData?.status !='pending' && stoData?.status !='exigencyrequest' && stoData?.status !='l3approved' && stoData?.status !='l4approved'">Budget Approved Quantity</th> -->
+                                        <th>Price Per Quantity</th>
+                                        <th>Total Value</th>
+                                        <th>Budget Approved Quantity</th>
+                                        <th>SM Approved Quantity</th>
+                                        <th>IPL Dispatched Quantity</th>
+                                        <th>Unit</th>
+                                        <th>SM Name</th>
+                                        <th *ngIf=" usertype=='sm' || usertype=='partsplanner'">Vendor Code</th>
+                                        <th *ngIf=" usertype=='sm' || usertype=='partsplanner'">Vendor Name</th>
+                                        <th *ngIf=" usertype=='ipl' || usertype=='partsplanner'">Location</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr
+                                        *ngFor="let part of partsList | paginate: { itemsPerPage: 10, currentPage: p2,id: 'three'};let index=index;">
+
+                                        <td>{{((p2- 1) * 10 + index+1)}}</td>
+
+                                        <td>
+                                            {{part.partnumber}}
+                                        </td>
+                                        <td>
+                                            {{part.description}}
+                                        </td>
+                                        <td *ngIf="!isStoreUser && !isIpl && !isSm">
+                                            {{part.reqquantity}}
+                                        </td>
+                                        <td>
+                                            {{part.priceperqty}}
+                                        </td>
+                                        <td>
+                                            {{part.priceperpart}}
+                                        </td>
+                                        <!-- <td  *ngIf="stoData?.status !='pending' && stoData?.status !='exigencyrequest'&& stoData?.status !='l3approved' && stoData?.status !='l4approved'">{{part.baquantity}}</td> -->
+                                        <td>{{part.baquantity}}</td>
+                                        <td>{{part.smquantity}}</td>
+                                        <td>{{part.iplquantity}}</td>
+                                        <td>
+                                            {{part.unit}}
+                                        </td>
+                                        <td>
+                                            <ng-container *ngIf="part.sm == 'null null'">
+                                                --
+                                            </ng-container>
+                                            <ng-container *ngIf="part.sm != 'null null'">
+                                                {{part.sm}}
+                                            </ng-container>
+                                        </td>
+                                        <td *ngIf=" usertype=='sm' || usertype=='partsplanner'">
+                                            {{part.stoLocations[0].location}}
+                                        </td>
+                                        <td *ngIf=" usertype=='sm' || usertype=='partsplanner'">
+                                            {{part.stoLocations[0].location}}
+                                        </td>
+                                        <td *ngIf="usertype=='ipl' ||  usertype=='partsplanner'">
+                                            {{part.stoLocations[0].location}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+
+                            </table>
+                            <div class="page">
+                                <pagination-controls *ngIf="partsList?.length!=0" style="text-align: right;"
+                                    (pageChange)="p2 = $event" #api id="three">
+                                </pagination-controls>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <!-- <button type="button" class="btn btn-md  btn-black" (click)="confirmAddcostcenter()">Submit</button>
+          <button type="button" class="btn btn-md btn-black" data-dismiss="modal">Cancel </button> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- parts list model -->
+
+<div class="modal fade" id="partMasterModal" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Parts List </h4>
+            </div>
+            <form [formGroup]="uploadform">
+                <div class="modal-body" style="text-align: center;margin-top: 13px;">
+                    <!-- <input type="file"> -->
+                    <!-- <input type="file" id="uploadFilePartidl" #uploadFilePartid style="" formControlName="filepath"
+                        (change)="uploadfile($event)"
+                        accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"> -->
+
+                        <label for="uploadFilePartidl" class="btn btn-md addnew btn-primary">
+                            Upload Part Master</label>
+                            <input type="file" style="display: none;" id="uploadFilePartidl" #uploadFilePartid formControlName="filepath"
+                            (change)="uploadfile($event)"
+                            accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"><br>
+                          <span class="filename"> {{fileName}}</span>
+                    <div class="col-md-12" style="margin-top: 9px;">
+                        <!-- <i download href="assets/STO_template.xlsx">Download Template<i class="fa fa-cloud-download"  style="font-size: 16px;color: #000000;"></i></a> -->
+                        <a download href="assets/Partmaster_template.xlsx">Download Template <i
+                                class="fas fa-cloud-download-alt" style="font-size: 16px;color: #000000;"></i></a>
+                    </div>
+                </div>
+            </form>
+            <div class="modal-footer" style="border: none !important;">
+                <button type="button" class="btn btn-md  btn-black" (click)="uploadPartMaster()">Upload</button>
+                <button type="button" class="btn btn-md btn-black" data-dismiss="modal" (click)="cancelModal()">Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- show the vendor code in modal -->
+
+<div class="modal fade" id="vendorcode" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Vendor Code</h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-table">
+                    <div class="row">
+                        <div class="col-md-12 table-responsive">
+                            <table class="table">
+                                <thead style="background-color: #ececec;">
+                                    <tr>
+                                        <th>S.No</th>
+                                        <th>Vendor Code</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr
+                                        *ngFor="let data of vendorVal| paginate: { itemsPerPage: 10, currentPage: p4,id: 'name'};let index=index">
+                                        <td>{{(index+1)}}</td>
+                                        <td>{{data.vendorcode}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <br>
+                            <pagination-controls *ngIf="vendorVal?.length!=0" style="text-align: right;"
+                                (pageChange)="p4 = $event" #api id="name">
+                            </pagination-controls>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- show the vendor name in modal -->
+
+<div class="modal fade" id="vendorname" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Vendor Name</h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-table">
+                    <div class="row">
+                        <div class="col-md-12 table-responsive">
+                            <table class="table">
+                                <thead style="background-color: #ececec;">
+                                    <tr>
+                                        <th>S.No</th>
+                                        <th>Vendor Name</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr
+                                        *ngFor="let data of vendorName| paginate: { itemsPerPage: 10, currentPage: p3,id: 'code'};let index=index">
+                                        <td>{{(index+1)}}</td>
+                                        <td>{{data.vendorname}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <br>
+                            <pagination-controls *ngIf="vendorVal?.length!=0" style="text-align: right;"
+                                (pageChange)="p3 = $event" #api id="code">
+                            </pagination-controls>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- show the location  in modal -->
+
+<div class="modal fade" id="location" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Location</h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-table">
+                    <div class="row">
+                        <div class="col-md-12 table-responsive">
+                            <table class="table">
+                                <thead style="background-color: #ececec;">
+                                    <tr>
+                                        <th>S.No</th>
+                                        <th>Location</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr
+                                        *ngFor="let data of LocationVal| paginate: { itemsPerPage: 10, currentPage: p5,id: 'locate'};let index=index">
+                                        <td>{{(index+1)}}</td>
+                                        <td>{{data.location}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <br>
+                            <pagination-controls *ngIf="vendorVal?.length!=0" style="text-align: right;"
+                                (pageChange)="p5 = $event" #api id="locate">
+                            </pagination-controls>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+<!-- set the delete remarks -->
+
+
+<div class="modal fade" id="deletelist" role="dialog">
+    <div class="modal-dialog modal-sm">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" style="font-size: 15px;
+          ">Delete </h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class=" col-md-12 table-responsive">
+                        <form [formGroup]="remarkform">
+                            <div class="row mt-3">
+                                <div class="col-md-12">
+                                    <div>
+                                        <div class="form-group text-field" style="font-size: 13px;">
+                                            Remarks <dot> </dot>
+                                            <textarea type="text" class="form-control" formControlName="remarks"
+                                                style="font-weight: 400;"></textarea>
+                                        </div>
+
+                                        <small class="text-danger" *ngIf="
+                        !remarkform.controls.remarks.valid &&
+                        remarkform.controls.remarks.touched
+                      "> Remarks is required</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer" style="border-top: none;">
+
+                <button class="btn btn-danger btn-md" (click)="submitForm()" style="font-size: 12px;
+          ">Delete</button>
+            </div>
+        </div>
+
+    </div>
+</div>

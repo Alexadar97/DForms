@@ -1,0 +1,209 @@
+<nav class="site-navbar navbar navbar-default navbar-fixed-top navbar-mega" role="navigation">
+
+    <div _ngcontent-c4="" class="innerhead">
+        <img class="innerpgtop" src="assets/images/innerpagetopbg.jpg">
+        <img class="innerpglogo" (click)="home()" src="assets/images/loginpglogo.png">
+        <!-- <div class="homeicon" (click)="home()">
+            <i class="fa fa-home" ></i></div> -->
+    </div>
+    <div>
+   
+        <div style="position: absolute;
+        right: 100px;
+        top: 22px;
+        color: #fff;">
+        <i class="fa fa-home" (click)="home()" style="cursor: pointer;"></i>
+        | <i class="fa fa-user" style="font-size: 14px;"></i> |
+         Welcome | {{username}}
+            <!-- [{{userdetail.usertype}}] -->
+        </div>
+
+        <button class="btn btn-default " data-toggle="tooltip" title="Logout" data-placement="bottom" (click)="logout()"
+            style="position: absolute;
+            right: 30px;top: 17px;   padding: 4px 5px 2px 5px;"><i class="fa fa-power-off" style="    font-size: 19px;
+    color: #6d6d6d;"></i></button>
+        <!-- <div class="setting-icon mr-5">
+        <i class="fa fa-gear" style="    font-size: 22px;
+        color: #6d6d6d;"></i>
+            <div class="settings-content pl-3"> -->
+        <!-- <a href="#" class="text-center">Hi Admin</a> -->
+
+        <!-- <div>
+                  <a routerLink="../ticketstab/newtickets" class="text-center">Issues</a>
+                </div> -->
+        <!-- <p style="    margin: 0;
+              padding-top: 11px;">
+                <a (click)="logout()" routerLink="../login" class="text-center logoff">
+                  <i class="fa fa-power-off"></i>&nbsp; Logout</a>
+              </p>
+            </div>
+          </div> -->
+    </div>
+</nav>
+
+<div class="row" style="height:90vh;margin-top: 64px;">
+    <!-- <div class="col-md-2" style="height:90vh;padding: 0px;">
+        <ul class="list-group" style="padding-left: 10px;box-shadow: 1px 1px 1px 1px #f1f0f0;cursor: pointer;">
+
+            <li class="list-group-item " routerLinkActive="active" *ngIf="showtabs == true || showlocaltabs== true">
+                <a routerLink="metric" class=" waves-effect waves-classic">
+                    <span class="site-menu-title">Dashboard</span>
+                </a>
+            </li>
+            <li class="list-group-item " routerLinkActive="active" *ngIf="showtabs == true || showlocaltabs== true">
+                <a routerLink="stolist" class=" waves-effect waves-classic">
+                    <span class="site-menu-title">STO </span>
+                </a>
+            </li>
+
+            <li class="list-group-item " routerLinkActive="active" *ngIf="showtabs == true || showlocaltabs== true">
+                <a routerLink="mcslist" class=" waves-effect waves-classic">
+                    <span class="site-menu-title">New Material Credit Slip</span>
+                </a>
+            </li>
+
+            <li class="list-group-item " routerLinkActive="active" *ngIf="showtabs == true || showlocaltabs== true">
+                <a routerLink="umcslist" class=" waves-effect waves-classic">
+                    <span class="site-menu-title">Used Material Credit Slip</span>
+                </a>
+            </li>
+            <li class="list-group-item " routerLinkActive="active" *ngIf="showtabs == true ||  showlocaltabs== true">
+                <a routerLink="protolist" class=" waves-effect waves-classic">
+                    <span class="site-menu-title">Proto Retrofitment</span>
+                </a>
+            </li>
+            <li class="list-group-item " routerLinkActive="active" *ngIf="showtabs == true ||  showlocaltabs== true">
+                <a routerLink="materialissuesliplist" class=" waves-effect waves-classic">
+                    <span class="site-menu-title">Material Issue Slip</span>
+                </a>
+            </li>
+            <li class="list-group-item " routerLinkActive="active" *ngIf="showtabs == false || showlocaltabs== true">
+                <a routerLink="matdislist" class=" waves-effect waves-classic">
+                    <span class="site-menu-title">Material Dispatch</span>
+                </a>
+            </li>
+            <li class="list-group-item " routerLinkActive="active" *ngIf="showtabs == false || showlocaltabs== true">
+                <a routerLink="pmworkreqlist" class=" waves-effect waves-classic">
+                    <span class="site-menu-title">Machine Shop Work</span>
+                </a>
+            </li>
+            <li class="list-group-item " routerLinkActive="active" *ngIf="showtabs == false || showlocaltabs== true">
+                <a routerLink="tcplist" class=" waves-effect waves-classic">
+                    <span class="site-menu-title">TC Plates</span>
+                </a>
+            </li>
+            <li class="list-group-item " routerLinkActive="active"
+                *ngIf="userdetail.usertype == 'admin' && (showtabs == true ||  showlocaltabs== true)">
+                <a routerLink="usermanagement" class=" waves-effect waves-classic">
+                    <span class="site-menu-title">User Management</span>
+                </a>
+            </li>
+            <li class="list-group-item " routerLinkActive="active" *ngIf="showtabs == false || showlocaltabs== true">
+                <a routerLink="protodashboard" class=" waves-effect waves-classic">
+                    <span class="site-menu-title">Proto Dashboard</span>
+                </a>
+            </li>
+            <li class="list-group-item " routerLinkActive="active" *ngIf="showtabs == false || showlocaltabs== true">
+                <a routerLink="pmworkdashboard" class=" waves-effect waves-classic">
+                    <span class="site-menu-title">PM Work Dashboard</span>
+                </a>
+            </li>
+            <li class="list-group-item " routerLinkActive="active" *ngIf="showtabs == false || showlocaltabs== true">
+                <a routerLink="materialdashboard" class=" waves-effect waves-classic">
+                    <span class="site-menu-title">Material Issue Slip</span>
+                </a>
+            </li>
+            <li class="list-group-item " routerLinkActive="active">
+            <a routerLink="nmcs-dashbaord" class=" waves-effect waves-classic">
+                <span class="site-menu-title">NMCS Dashboard</span>
+            </a>
+            <li class="list-group-item " routerLinkActive="active">
+                <a routerLink="umcs-dashbaord" class=" waves-effect waves-classic">
+                    <span class="site-menu-title">UMCS Dashboard</span>
+                </a>
+        </li>
+        <li class="list-group-item " routerLinkActive="active">
+            <a routerLink="material-dispatch" class=" waves-effect waves-classic">
+                <span class="site-menu-title">Material Dispatch</span>
+            </a>
+    </li>
+            <li class="list-group-item " routerLinkActive="active"*ngIf="showtabs == false || showlocaltabs== true">
+                <a routerLink="sto-dashboard" class=" waves-effect waves-classic">
+                    <span class="site-menu-title">sto-dashboard</span>
+                </a>
+            </li>
+            <li class="list-group-item " routerLinkActive="active"*ngIf="showtabs == false || showlocaltabs== true">
+                <a routerLink="tcp-dashboard" class=" waves-effect waves-classic">
+                    <span class="site-menu-title">tcp-dashboard</span>
+                </a>
+            </li> -->
+            <!-- <li class="list-group-item " routerLinkActive="active" *ngIf="showtabs == true || showlocaltabs== true">
+                <a routerLink="tcplist" class=" waves-effect waves-classic">
+                    <span class="site-menu-title">TC Plates</span>
+                </a>
+            </li> -->
+            <!-- <li class="list-group-item " routerLinkActive="active" *ngIf="showtabs == false || showlocaltabs== true" >
+                <a routerLink="retrofitmentnew" class=" waves-effect waves-classic">
+                    <span class="site-menu-title">Fitment Report</span>
+                </a>
+            </li>  -->
+            <!-- <li class="list-group-item " routerLinkActive="active" >
+                <a routerLink="reports" class=" waves-effect waves-classic">
+                    <span class="site-menu-title">Reports</span>
+                </a>
+            </li> -->
+            <!-- <li class="list-group-item " routerLinkActive="active"  *ngIf="showtabs == false || showlocaltabs== true">
+              <a routerLink="pmworkreqlist" class=" waves-effect waves-classic">
+                  <span class="site-menu-title">Machine Shop Work</span>
+              </a>
+             </li> -->
+
+            <!-- <li class="list-group-item " routerLinkActive="active" *ngIf="showtabs == false || showlocaltabs== true">
+                <a routerLink="matdislist" class=" waves-effect waves-classic">
+                    <span class="site-menu-title">Material Dispatch</span>
+                </a>
+            </li>
+            <li class="list-group-item " routerLinkActive="active" *ngIf="showtabs == false || showlocaltabs== true">
+                <a routerLink="tcplist" class=" waves-effect waves-classic">
+                    <span class="site-menu-title">TC Plates</span>
+                </a>
+            </li>
+            
+            </li> -->
+            <!-- <li class="list-group-item " routerLinkActive="active"  *ngIf="showtabs == false || showlocaltabs== true">
+            <a routerLink="vehiclesignofflist" class=" waves-effect waves-classic">
+                <span class="site-menu-title">Vehicle Signoff Sheet</span>
+            </a>
+        </li>
+       <li class="list-group-item " routerLinkActive="active" *ngIf="showtabs == false || showlocaltabs== true">
+                <a routerLink="finasworklist" class=" waves-effect waves-classic">
+                    <span class="site-menu-title">Finas Work Order</span>
+                </a>
+            </li>
+            <li class="list-group-item " routerLinkActive="active" *ngIf="showtabs == false || showlocaltabs== true">
+                <a routerLink="finaidgenerationlist" class=" waves-effect waves-classic">
+                    <span class="site-menu-title">Finas ID Generation</span>
+                </a>
+            </li> -->
+        <!-- </ul>
+    </div> -->
+    <div class="col-md-12 dashboardArea" style="height:90vh">
+
+        <router-outlet></router-outlet>
+        
+    </div>
+
+</div>
+
+<footer class="main-footer fixed-btm" style="position: fixed;
+bottom: 0px;
+left: 0px;
+right: 0px;
+background: #e7e7e7;
+padding: 4px;">
+    <div class="container-fluid">
+        <span class="copyright">
+            <a href=" " class="footercontent">Copyright&copy; 2019, All Rights Reserved - Daimler </a>
+        </span>
+    </div>
+</footer>

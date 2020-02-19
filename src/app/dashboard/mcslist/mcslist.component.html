@@ -1,0 +1,875 @@
+<app-spinner *ngIf="loading"></app-spinner>
+<div class="col-md-2" style="padding: 0;
+background-color: #242536; height: 100vh;">
+<div style="margin-top: 15px;">
+    <p class="sidetext active"  routerLinkActive="active"(click)="nmcslist()" ><i class="fa fa-angle-double-right"></i>&nbsp;&nbsp;NMCS List</p>
+    <p class="sidetext" *ngIf="!isStoreLogin" (click)="addsto()"routerLinkActive="active" ><i class="fa fa-plus"></i>&nbsp;&nbsp;New
+                Request</p>
+     
+            <p class="sidetext" *ngIf="!isStoreLogin"(click)="upload()" routerLinkActive="active"><i class="fa fa-upload"></i>&nbsp;&nbsp;Upload
+                Partlist</p>
+            <p class="sidetext" (click)="downloadExcel('export.xlsx')" routerLinkActive="active"><i class="fa fa-download"></i>
+                &nbsp;Download</p>
+        
+           
+    </div>
+</div>
+<div class="col-md-10">
+<div class="col-md-12" style="margin-top:10px;">
+    <div class="col-md-4" style="padding: 0">
+        <h4>New Material Credit List</h4>
+    </div>
+    <div class="col-md-5">
+        <button class="btn btn-primary dropdown-item" (click)="downloadZip('Generate_ZIP.zip')" routerLinkActive="active" style="    width: 17%;float: right;">
+            <i class="fa fa-print"></i>
+            &nbsp;Print</button>
+        <!-- <button class="btn btn-primary dropdown-item" (click)="backHome()" >
+            <i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Back</button> -->
+    </div>
+    <div class="col-md-3">
+        <input type="text" class="form-control" placeholder="  Search  " name="search"
+            (input)="search($event.target.value)" #valsearchuser autocomplete="off"><i class="fa fa-search search"></i>
+    </div>
+    <!-- <div class="col-md-6" style="text-align: right;">
+        <button  *ngIf="!isStoreLogin" class="btn btn-primary" (click)="addsto()"><i class="icon-plus"></i>&nbsp;&nbsp;New Request</button>
+
+            &nbsp;&nbsp;&nbsp;
+            <button *ngIf="!isStoreLogin" class="btn btn-primary" (click)="upload()"><i class="icon-upload-alt"></i>&nbsp;&nbsp;Upload Partlist</button>
+            &nbsp;&nbsp;&nbsp;
+        <input type="button" value="Download" class="btn btn-primary " (click)="download('export.xlsx')">
+    </div> -->
+    <!-- <div class="col-md-1" style="text-align: right;"> -->
+
+        <!-- <input type="button" value="New Request" class="btn btn-primary" (click)="addsto()" style="margin-right: 0px;"> -->
+<!-- 
+        <div class="dropdown">
+            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="true"> -->
+                <!-- <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> -->
+                <!-- <i class="fa fa-list"></i> -->
+                <!-- Actions -->
+                <!-- &nbsp;&nbsp;Menu &nbsp;<i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"
+                style="width: 30%;padding: 4px;background: #dedede;">
+                <button *ngIf="!isStoreLogin" class="btn btn-primary dropdown-item" (click)="addsto()"><i
+                        class="fa fa-plus"></i>&nbsp;&nbsp;New Request</button>
+                <button *ngIf="!isStoreLogin" class="btn btn-primary dropdown-item" (click)="upload()"><i
+                        class="fa fa-upload"></i>&nbsp;&nbsp;Upload Partlist</button>
+                        <button class="btn btn-primary dropdown-item" (click)="downloadExcel('export.xlsx')"><i
+                            class="fa fa-download"></i>
+                        &nbsp;Download</button>
+                        <ng-container>
+                            <button class="btn btn-primary dropdown-item" (click)="downloadZip('Generate_ZIP.zip')">
+                                <i class="fa fa-print"></i>
+                                &nbsp;Print</button>
+                                </ng-container>
+            </div>
+        </div>
+
+    </div> -->
+
+</div>
+
+<div class="col-md-12">
+
+    <!-- *ngFor="let data of allstoform | paginate: { itemsPerPage: 10, currentPage: p1,id: 'two'};let index=index" -->
+    <table class="table table-bordered table-striped"  style="width:99%">
+        <tr>
+            <th style="text-align: center;width: 8%;">Select All<br>
+                <label class="control control--checkbox">
+                    <input type="checkbox" class="chkboxes" id="select-all" value="all"
+                    (click)="checkall($event.target.checked)">
+                    <div class="control__indicator changeindicator"></div>
+                </label></th>
+            <th>S.No</th>
+            <th>Form ID </th>
+            <th>Created On</th>
+            <th>Creditor Name </th>
+            <th>HR ID</th>
+            <th>Department</th>
+            <th>Approver </th>
+            <th>Status</th>
+            <th style="text-align: center">View Form</th>
+            <th>Action</th>
+            <th *ngIf="usertype != 'store'">Delete</th>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+                <div class="row">
+                    <div class="col-lg-12 nopadding">
+                        <input class="form-control" bsDaterangepicker id="rangedagte" type="text"
+                            style="font-size: 12px" placeholder="Select Created On" 
+                             (bsValueChange)="SelectDate($event,'createddate')" />
+                    </div>
+                </div>
+            </td>
+            <td></td>
+            <td></td>
+            <td>
+                <div class="row">
+                    <div class="col-lg-12 nopadding">
+                        <div class="button-group">
+                            <button type="button" class="btn btn-default btn-sm dropdown-toggle"
+                                data-toggle="dropdown">Select
+                                Department
+                                &nbsp;&nbsp;
+                                <span class="caret"></span></button>
+                            <ul class="dropdown-menu filtermenu" style="position: absolute;
+                            transform: translate3d(1px, 32px, 0px);
+                            top: 0px;
+                            left: 0px;
+                            will-change: transform;
+                            height: 12vh;
+                            overflow-x: hidden;
+                            overflow-y: auto;">
+                                <ng-container *ngFor="let data of getdepartment;">
+                                    <li>
+                                        <label class="control control--checkbox">
+                                            <input type="checkbox" class="typeSelectBox" value={{data}}
+                                                (change)="departmentfilter($event,'department')">&nbsp;<span
+                                                id="select">{{data}}</span>
+                                            <div class="control__indicator filterchkbox"></div>
+                                        </label>
+                                    </li>
+                                </ng-container>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="row">
+                    <div class="col-lg-12 nopadding">
+                        <div class="button-group">
+                            <button type="button" class="btn btn-default btn-sm dropdown-toggle"
+                                data-toggle="dropdown">Select
+                                Approver
+                                &nbsp;&nbsp;
+                                <span class="caret"></span></button>
+                            <ul class="dropdown-menu filtermenu" style="position: absolute;
+                            transform: translate3d(1px, 32px, 0px);
+                            top: 0px;
+                            left: 0px;
+                            will-change: transform;
+                            height: 15vh;
+                            overflow-x: hidden;
+                            overflow-y: auto;">
+                                <ng-container *ngFor="let data of getapprover;">
+                                    <li>
+                                        <label class="control control--checkbox">{{data}}
+                                            <input type="checkbox" class="typeSelectBox" value={{data}}
+                                                (change)="approverfilter($event,'approvername')">
+                                            <div class="control__indicator filterchkbox"></div>
+                                        </label>
+                                    </li>
+                                </ng-container>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="row">
+                    <div class="col-lg-12 nopadding">
+                        <div class="button-group">
+                            <button type="button" class="btn btn-default btn-sm dropdown-toggle"
+                                data-toggle="dropdown">Select
+                                Status
+                                &nbsp;&nbsp;
+                                <span class="caret"></span></button>
+                            <ul class="dropdown-menu filtermenu" style="position: absolute;
+                            transform: translate3d(1px, 32px, 0px);
+                            top: 0px;
+                            left: 0px;
+                            min-width: 200px !important;
+                            will-change: transform;
+                            height: 22vh;
+                            overflow-x: hidden;
+                            overflow-y: auto;">
+                                <ng-container *ngFor="let data of getstatus;">
+                                    <li>
+                                        <label class="control control--checkbox">
+                                            <span *ngIf="data == 'storerejected'">
+                                                Store Approval Rejected
+                                            </span>
+
+                                            <span *ngIf="data == 'accepted'">
+                                                Store Approval Accepted
+                                            </span>
+
+                                            <span *ngIf="data == 'approved'">
+                                                Deputy Proto L4 Approved
+                                            </span>
+                                            <span *ngIf="data == 'rejected'">
+                                                Deputy Proto L4 Rejected
+                                            </span>
+                                            <span *ngIf="data == 'approved'">
+                                                Proto L4 Approved
+                                            </span>
+                                            <span *ngIf="data == 'rejected'">
+                                                Proto L4 Rejected
+                                            </span>
+
+                                            <span *ngIf="data == 'pending'">
+                                                Store Approval Pending
+                                            </span>
+                                            <span *ngIf="data == 'closed'">
+                                                Completed
+                                            </span>
+
+                                            <span *ngIf="data == 'locationupdated'">
+                                                Store Location Updated
+                                            </span>
+                                            <span *ngIf="data == 'recalled'">
+                                             Form  Recalled
+                                            </span>
+                                            <span *ngIf="data == 'mispending'">
+                                                Material Issue Pending
+                                            </span>
+                                            <input type="checkbox" class="typeSelectBox" value={{data}}
+                                                (change)="statusfilter($event,'status')">
+                                            <div class="control__indicator filterchkbox"></div>
+                                        </label>
+                                    </li>
+                                </ng-container>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </td>
+            <td></td>
+            <td></td>
+            <td *ngIf="usertype != 'store'"></td>
+        </tr>
+
+        <tr *ngFor="let data of mcslist| paginate: { itemsPerPage: 10, currentPage: p1,id: 'two'};let index=index">
+            <td style="text-align: center"><label class="control control--checkbox">
+                    <input type="checkbox" class="chkboxes checksingle" value="single"
+                        (click)="singlecheck($event,data.id)">
+                    <div class="control__indicator checkcolor "></div>
+                </label></td>
+            <td>{{((currentPage - 1) * 10 + index+1)}}</td>
+            <td>{{data?.nmcsformid}}</td>
+            <td>{{(data?.createddate != null) ? data?.createddate : '-' }}</td>
+            <td> {{(data.creditorname != null) ? data.creditorname : '-' }}</td>
+            <td>{{(data?.hrid != null) ? data?.hrid : '-' }}</td>
+            <td>{{(data?.department != null) ? data?.department : '-' }}</td>
+            <td>{{(data?.approvername != null) ? data?.approvername : '-' }}</td>
+
+            <td class="text-default">
+
+                <span [style.color]="pickColor(data.statusLabel)">
+                    {{(data?.statusLabel != null) ? data?.statusLabel : '-' }}
+                </span>
+
+                <!-- <span class="rejected" *ngIf="data.status == 'storerejected'">
+                    Store Approval Rejected
+                </span>
+                   <span *ngIf="data.approvertype =='ProtoL4' && data.status == 'accepted'"  class="inprogress">
+                      Proto L4 Approval Pending
+                </span>
+                <span *ngIf="data.approvertype =='DeputyProtoL4' && data.status == 'accepted'"  class="inprogress">
+                    Deputy Proto L4 Approval Pending
+                </span>
+                <span *ngIf="data.approvertype =='ProtoL4'">
+                    Deputy Proto L4 Approval Pending
+                </span>
+                <span *ngIf="data.status == 'approved'  && data.approvertype =='DeputyProtoL4'" class="inprogress" >
+                    Store Location Update Pending
+                </span>
+                <span *ngIf="data.status == 'rejected' && data.approvertype =='DeputyProtoL4'" class="rejected">
+                    Deputy Proto L4 Rejected
+                </span>
+                <span *ngIf="data.status == 'approved' && data.approvertype =='ProtoL4'" class="inprogress">
+                    Store Location Update Pending
+                </span>
+                <span *ngIf="data.status == 'rejected' && data.approvertype =='ProtoL4'" class="rejected">
+                    Proto L4 Rejected
+                </span>
+
+                <span *ngIf="data.status == 'pending'" class="inprogress">
+                    Store Approval Pending
+                </span>
+                <span class="completed" *ngIf="data.status == 'closed'">
+                    Completed
+                </span>
+
+                <span *ngIf="data.status == 'locationupdated'" class="inprogress">
+                    Store Location Updated
+                </span>
+                <span *ngIf="data.status == 'mispending'" class="inprogress">
+                    Material Issue Pending
+                </span>
+                <span *ngIf="data.status == 'recalled'" class="inprogress">
+                  Form Recalled
+                </span> -->
+            </td>
+            <td style="text-align: center"> <button class="btn btn-default" (click)="openParts(data)">
+                    <i class="fa fa-eye"></i>&nbsp;&nbsp;View
+                </button></td>
+            <!-- <td *ngIf="isStoreLogin">
+                <button class="btn btn-default" (click)="viewAction(data.id)">
+                        <i class="icon-pencil"></i>&nbsp;&nbsp;Edit
+                </button>
+            </td> -->
+            <td>
+                <button *ngIf="isStoreLogin && data.status=='approved' " class="btn btn-primary btn-sm" (click)="viewAction(data.id)">
+                   Edit
+                </button>
+                <button *ngIf="isStoreLogin &&  data.status == 'mispending'" class="btn btn-primary  btn-sm" (click)="viewAction(data.id)">
+                    Edit
+                </button>
+                <button *ngIf="isStoreLogin && data.status=='pending'" class="btn btn-default col-md-12"
+                    (click)="approvelreject(data.id,data)">
+                    Approval
+                </button>
+                <ng-container *ngIf="data?.status=='pending' && ( usertype != 'budgetapprover' && usertype != 'sm'
+                && usertype != 'ipl'  && usertype != 'store' && status !='protovehicleowner' && status !='hdtsupervisor'
+                && status !='mdtsupervisor' && status !='ppssupervisor' && status !='maintenancesupervisor' && status !='mechanicalsupervisor'
+                && status !='eandesupervisor'&& status !='aggregatesupervisor')">
+                    <button class="btn btn-primary  btn-sm" (click)="Recall(data.id)">
+                        Recall
+                    </button>
+                </ng-container>
+                <ng-container *ngIf="data?.status=='recalled' && ( usertype != 'budgetapprover' && usertype != 'sm'
+                      && usertype != 'ipl'  && usertype != 'store' && status !='protovehicleowner' && status !='hdtsupervisor'
+                      && status !='mdtsupervisor' && status !='ppssupervisor' && status !='maintenancesupervisor' && status !='mechanicalsupervisor'
+                      && status !='eandesupervisor'&& status !='aggregatesupervisor')">
+                    <button class="btn btn-primary  btn-sm" (click)="RecallEdit(data.id)">
+                        Edit
+                    </button>
+                </ng-container>
+            </td>
+<td style="text-align: center;" *ngIf="usertype != 'store'">
+    <ng-container *ngIf="data?.status != 'deleted' && data?.status != 'closed'">
+    <button class="btn btn-default  btn-sm" (click)="nmcsDelete(data.id,data)" style="border-radius: 6px;">
+      <i class="fas fa-trash" style="font-size: 16px;"></i>
+    </button>
+    </ng-container>
+</td>
+
+            <!-- <td *ngIf="isStoreLogin">
+                <button *ngIf="data.status=='pending'" class="btn btn-default col-md-12"
+                    (click)="storeResponse(data.id,true)">
+                    Accept
+                </button>
+                <br>
+
+                <button *ngIf="data.status=='pending'" class="btn btn-default col-md-12"
+                    (click)="storeResponse(data.id,false)">
+                    Reject
+                </button>
+            </td> -->
+            <!-- <td *ngIf="isStoreLogin">
+                <button *ngIf="data.status=='pending'" class="btn btn-default col-md-12"
+                    (click)="approvelreject(data.id,data)">
+                    Approval
+                </button>
+            </td> -->
+
+        </tr>
+    </table>
+    <br>
+    <h4 *ngIf="mcslist?.length==0" class="text-center">No New Material Credit Slip created yet!</h4>
+
+    <!-- <pagination-controls style="text-align: right;" *ngIf="mcslist?.length!=0" (pageChange)="p1 = $event" #api id="two">
+    </pagination-controls> -->
+
+    <div style="float: right;margin-bottom: 35px;" *ngIf="mcslist?.length!=0">
+        <button [disabled]="currentPage == 1" class="btn btn-default paginationbtn"
+            (click)="paginatePartList('prev')"><i class="fa fa-chevron-left"></i></button>
+        <span style="font-size: 15px;
+            padding: 10px;">
+            <!-- {{currentPage}} -->
+            <input id="currentPageInput" class="paginatecontrol" type="text" value="{{currentPage}}"
+                style="width: 50px;">
+            <!-- <i class="icon-search" (click)="searchPage()" class="searchbtn"></i> -->
+            <i class="fa fa-search searchbtn" (click)="searchPage()"></i>
+            of
+            {{totalPages}}
+        </span>
+
+        <button [disabled]="currentPage == totalPages" class="btn btn-default paginationbtn"
+            (click)="paginatePartList('next')"><i class="fa fa-chevron-right"></i></button>
+    </div>
+</div>
+</div>
+<div class="modal fade" id="approvalreject" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header" style="border-bottom: none;">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Acceptance</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h4 class="modal-title">NMCS</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class=" col-md-12 table-responsive">
+                        <table class="table">
+                            <thead style="background-color: #ececec;">
+                                <tr>
+                                    <th>S.No</th>
+                                    <th>Creditor</th>
+                                    <th>Created On</th>
+                                    <th>Department</th>
+                                    <th>HR ID</th>
+                                    <!-- <th>Storage Duration</th> -->
+                                    <th>Approver</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let data of mcsmodallist;let index=index;">
+                                    <td>
+                                        {{index+1}}
+                                    </td>
+                                    <td>
+                                        {{data.creditorname}}
+                                    </td>
+                                    <td>
+                                        {{data.createddate}}
+                                    </td>
+                                    <td>
+                                        {{data.department}}
+                                    </td>
+                                    <td>
+                                        {{data.hrid}}
+                                    </td>
+                                    <!-- <td>
+                                            <ng-container *ngIf="data.storagePeriod == '1month'">
+                                                Less than 1 month
+
+                                            </ng-container>
+                                            <ng-container *ngIf="data.storagePeriod == '2months'">
+                                                More than 1 month and less than 3 months
+
+                                            </ng-container>
+                                            <ng-container *ngIf="data.storagePeriod == '3months'">
+                                                Greater than 3 months
+                                            </ng-container>
+                                        </td> -->
+                                    <td>
+                                        {{data.approvername}}
+                                    </td>
+                                    <td>
+                                        {{data.status}}
+                                    </td>
+
+                                </tr>
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-12">
+                        <h4 class="modal-title">Part List</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class=" col-md-12 table-responsive">
+                        <table class="table">
+                            <thead style="background-color: #ececec;">
+                                <tr>
+                                    <th>S.No</th>
+                                    <!-- <th>Finas ID</th> -->
+                                    <th>Part Number</th>
+                                    <th>Description</th>
+                                    <th>Issue Slip No</th>
+
+                                    <th>Quantity</th>
+                                    <th>ZGS</th>
+                                    <th>Location</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let part of partsList;let index=index;">
+                                    <td>
+                                        {{index+1}}
+                                    </td>
+                                    <!-- <td>
+                                        {{part.finasid}}
+                                    </td> -->
+                                    <td>
+                                        {{part.partnumber}}
+                                    </td>
+                                    <td>
+                                        {{part.description}}
+                                    </td>
+                                    <td>
+                                        {{part.issueslipno}}
+                                    </td>
+
+                                    <td>
+                                        {{part.quantity}}
+
+                                        <!-- <div *ngFor="let finas in part.nmcsPartFinas">
+                                            {{finas.finasid}}
+                                            <br>
+                                        </div> -->
+                                    </td>
+                                    <td>
+                                        {{part.zgs}}
+                                    </td>
+                                    <td>
+                                        {{part.location}}
+                                    </td>
+
+                                </tr>
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+                <form [formGroup]="remarkform">
+                    <div class="row mt-3">
+                        <div class="col-md-12">
+                            <div>
+                                <h4 class="modal-title">Remarks</h4>
+                                <textarea class="remark" id="remarks" formControlName="remarks"></textarea>
+
+                                <small class="text-danger" *ngIf="
+                        !remarkform.controls.remarks.valid &&
+                        remarkform.controls.remarks.touched
+                      "> Remarks is required</small>
+                            </div>
+                            <ng-container>
+                                <input type="checkbox" (change)="deputyvalues($event)" id="deputyl4"
+                                    style="cursor: pointer;" formControlName="check">&nbsp;&nbsp;
+
+                                <label for="deputyl4" style="font-weight: 100;cursor: pointer;"> Assign to DeputyProto
+                                    L4</label>
+                            </ng-container>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" style="border-top: none;">
+                <button type="button" class="btn btn-default" data-dismiss="modal" (click)="storeResponse(true)"
+                    style="background: green;color: #fff;border:none;"><i
+                        class="icon-ok"></i>&nbsp;&nbsp;Accept</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" (click)="storeResponse(false)"
+                    style="background: #c9302c;color: #fff;border:none;"><i
+                        class="icon-remove"></i>&nbsp;&nbsp;Reject</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="addcostcenter" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg" style="    width: 80%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Form Details </h4>
+            </div>
+            <div class="modal-body">
+                <s-update [arr]="updateForm"></s-update>
+                <div class=" modal-table">
+                    <div class="row viewpara">
+                        <div class="col-md-12 ">
+                            <div class="col-md-3 tablestyle">
+                                <p>NMCS Form ID</p>
+                            </div>
+                            <div class="col-md-3 tablestyle">
+                                <span> {{mcsdata?.nmcsformid  }}</span>
+                            </div>
+                            <div class="col-md-3 tablestyle">
+                                <p>HR ID</p>
+                            </div>
+                            <div class="col-md-3 tablestyle">
+                                <span> {{mcsdata?.hrid}}</span>
+                            </div>
+                            <div class="col-md-3 tablestyle">
+                                <p>Create Date</p>
+                            </div>
+                            <div class="col-md-3 tablestyle">
+                                <span> {{mcsdata?.createddate}}</span>
+                            </div>
+
+                            <div class="col-md-3 tablestyle">
+                                <p>Creditor Name</p>
+                            </div>
+                            <div class="col-md-3 tablestyle">
+                                <span>{{mcsdata?.creditorname}}</span>
+                            </div>
+                            <div class=" col-md-3 tablestyle">
+                                <p> Purpose</p>
+                            </div>
+                            <div class=" col-md-3 tablestyle" style="overflow:auto;">
+                                <span>{{mcsdata?.storagePurpose}}</span>
+                            </div>
+                            <div class="col-md-3 tablestyle">
+                                <p>Department</p>
+                            </div>
+                            <div class="col-md-3 tablestyle">
+                                <span>{{mcsdata?.department}}</span>
+                            </div>
+                            <div class="col-md-3 tablestyle">
+                                <p>Phone Number</p>
+                            </div>
+                            <div class="col-md-3 tablestyle">
+                                <span> {{mcsdata?.contactno}}</span>
+                            </div>
+
+                            <div class="col-md-3 tablestyle">
+                                <p>Status</p>
+                            </div>
+                            <div class="col-md-3 tablestyle" style="overflow:auto;">
+                                <span> {{mcsdata?.statusLabel}}</span>
+                                <!-- <ng-container>
+                                    <span *ngIf="mcsdata?.status == 'storerejected'">
+                                        Store Approval Rejected
+                                    </span>
+
+                                    <span *ngIf="mcsdata?.status == 'accepted' && mcsdata?.approvertype == 'ProtoL4'">
+                                        Proto L4 Approval Pending
+                                    </span>
+                                    <span *ngIf="mcsdata?.status == 'accepted' && mcsdata?.approvertype == 'DeputyProtoL4'">
+                                        Deputy ProtoL4 Approval Pending
+                                    </span>
+                                     <span
+                                        *ngIf="mcsdata?.status == 'approved' && mcsdata?.approvertype =='DeputyProtoL4'">
+                                        Store Location Update Pending
+                                    </span>
+                                    <span *ngIf="mcsdata?.status == 'approved' && mcsdata?.approvertype == 'ProtoL4'">
+                                        Store Location Update Pending
+                                    </span>
+
+                                    <span *ngIf="mcsdata?.status == 'pending'">
+                                        Store Approval Pending
+                                    </span>
+                                    <span *ngIf="mcsdata?.status == 'closed'">
+                                        Completed
+                                    </span>
+                                    <span *ngIf="mcsdata?.status == 'locationupdated'">
+                                        Store Location Updated
+                                    </span>
+                                    <span *ngIf="mcsdata?.status == 'mispending'">
+                                        Material Issue Pending
+                                    </span>
+                                    <span *ngIf="mcsdata?.status == 'recalled'">
+                                      Form  Recalled
+                                    </span>
+                                </ng-container> -->
+                            </div>
+
+                            <ng-container *ngIf="mcsdata?.l4approveremarks">
+                                <div class="col-md-3 tablestyle">
+                                    <p>L4 Approve Remarks</p>
+                                </div>
+                                <div class="col-md-3 tablestyle" style="overflow:auto;">
+                                    <span>{{mcsdata?.l4approveremarks}}</span>
+                                </div>
+                            </ng-container>
+
+                            <ng-container *ngIf="mcsdata?.storeupdateremarks">
+                                <div class="col-md-3 tablestyle">
+                                    <p>Store Update Remarks</p>
+                                </div>
+                                <div class="col-md-3 tablestyle" style="overflow:auto;">
+                                    <span>{{mcsdata?.storeupdateremarks}}</span>
+                                </div>
+                            </ng-container>
+                            <ng-container *ngIf="mcsdata?.storeacceptremarks">
+                                <div class="col-md-3 tablestyle">
+                                    <p>Store Acceptance Remarks</p>
+                                </div>
+                                <div class="col-md-3 tablestyle" style="overflow:auto;">
+                                    <span>{{mcsdata?.storeacceptremarks}}</span>
+                                </div>
+                            </ng-container>
+                            <ng-container *ngIf="mcsdata?.deletedremarks">
+
+                                <div class=" col-md-3 tablestyle">
+                                    <p class="text-color">Deleted Remarks</p>
+                                </div>
+                                <div class=" col-md-3 tablestyle" style="overflow:auto;">
+                                    <span>{{mcsdata?.deletedremarks}}</span>
+                                </div>
+                            </ng-container>
+                        </div>
+                        <div class=" col-md-12 table-responsive">
+                            <table class="table">
+                                <thead style="background-color: #ececec;">
+                                    <tr>
+                                        <th>S.No</th>
+                                        <!-- <th>Finas ID</th> -->
+
+                                        <th>Part Number</th>
+                                        <th>Description</th>
+                                        <th>Quantity</th>
+                                        <th>Issue Slip No</th>
+                                        <th style="text-align: center">Finas ID</th>
+                                        <th>ZGS</th>
+                                        <th>Location</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr
+                                        *ngFor="let part of partsList | paginate: { itemsPerPage: 10, currentPage: p2,id: 'three'};let index=index;">
+                                        <td>
+                                            {{((p2- 1) * 10 + index+1)}}
+                                        </td>
+                                        <!-- <td>
+                                            {{part.finasid}}
+                                        </td> -->
+                                        <td>
+                                            {{part.partnumber}}
+                                        </td>
+                                        <td>
+                                            {{part.description}}
+                                        </td>
+
+                                        <td>
+                                            {{part.quantity}}
+                                            <!-- {{part.nmcsPartFinas}} -->
+                                            <!-- <ng-container *ngIf="part.nmcsPartFinas">
+                                                    <div class="display:block" *ngFor="let finas of part.nmcsPartFinas">
+                                                            Finas Id: {{finas.finasid}}
+                                                            
+                                                    </div>
+                                            </ng-container> -->
+
+                                        </td>
+                                        <td>{{part.issueslipno}}</td>
+                                        <td style="text-align: center"><button class="btn btn-sm btn-default"
+                                                (click)="finasmodal(part.nmcsPartFinas)"><i
+                                                    class="fa fa-eye"></i>&nbsp;&nbsp;View</button></td>
+                                        <td>
+                                            {{part.zgs}}
+                                        </td>
+                                        <td>
+                                            {{part.location}}
+                                        </td>
+
+                                    </tr>
+
+                                </tbody>
+
+                            </table>
+                            <br>
+                            <pagination-controls style="text-align: right;" *ngIf="partsList?.length!=0"
+                                (pageChange)="p2 = $event" #api id="three">
+                            </pagination-controls>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <!-- <button type="button" class="btn btn-md  btn-black" (click)="confirmAddcostcenter()">Submit</button>
+          <button type="button" class="btn btn-md btn-black" data-dismiss="modal">Cancel </button> -->
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="addfinasid" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Finas ID</h4>
+            </div>
+            <div class="modal-body">
+                <div class="">
+                    <div class="row">
+                        <div class=" col-md-12 table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            S.No
+                                        </th>
+                                        <th>Finas ID</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <ng-container
+                                        *ngFor="let data of finasidval | paginate: { itemsPerPage: 10, currentPage: p1,id: 'two'};let index=index;">
+                                        <tr>
+                                            <td> {{index+1}}</td>
+                                            <td>{{data.finasid}}</td>
+                                        </tr>
+                                    </ng-container>
+                                </tbody>
+                            </table>
+                            <br>
+                            <pagination-controls style="text-align: right;" *ngIf="finasidval?.length!=0"
+                                (pageChange)="p1 = $event" #api id="two">
+                            </pagination-controls>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <!-- <button type="button" class="btn btn-md  btn-black" (click)="confirmAddcostcenter()">Submit</button>
+              <button type="button" class="btn btn-md btn-black" data-dismiss="modal">Cancel </button> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- set the delete remarks -->
+
+
+<div class="modal fade" id="deletelist" role="dialog">
+    <div class="modal-dialog modal-sm">
+  
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title" style="font-size: 15px;
+          ">Delete </h4>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class=" col-md-12 table-responsive">
+              <form [formGroup]="remarkform">
+                <div class="row mt-3">
+                  <div class="col-md-12">
+                    <div>
+                      <div class="form-group text-field" style="font-size: 13px;">
+                        Remarks <dot> </dot>
+                        <textarea type="text" class="form-control" formControlName="remarks"
+                          style="font-weight: 400;"></textarea>
+                      </div>
+  
+                      <small class="text-danger" *ngIf="
+                        !remarkform.controls.remarks.valid &&
+                        remarkform.controls.remarks.touched
+                      "> Remarks is required</small>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+  
+        </div>
+        <div class="modal-footer" style="border-top: none;">
+  
+          <button class="btn btn-danger btn-md" (click)="submitForm()" style="font-size: 12px;
+          ">Delete</button>
+        </div>
+      </div>
+  
+    </div>
+  </div>

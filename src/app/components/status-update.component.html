@@ -1,0 +1,21 @@
+<div class="updateContainer">
+    <div class="progress" [style.width.%]="progress" ></div>
+
+    <div *ngFor="let dot of dotArr; let i = index" class="dotbox" [ngStyle]="{
+        'left.%':i*(100/(dotArr.length-1))
+    }" >
+        <!-- <span [style.visibility]="i>=0 ? 'hidden' : 'visible'"  class="dotlabel2">
+            {{dot.label}}
+
+        </span> -->
+        <div class="dot dot-{{dot.status}}">
+
+        </div>
+        <span class="dotlabel">
+            {{dot.label}}
+
+        </span>
+    </div>
+
+   
+</div>

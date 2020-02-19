@@ -1,0 +1,261 @@
+<app-spinner *ngIf="loading"></app-spinner>
+<div class="col-md-2" style="padding: 0;
+background-color: #242536; height: 100vh;">
+    <div style="margin-top: 15px;">
+        <p class="sidetext" (click)="pmlists()" routerLinkActive="active"><i
+                class="fa fa-angle-double-right"></i>&nbsp;&nbsp;Machine Shop Work List</p>
+        <p class="sidetext" (click)="addpmwork()" routerLinkActive="active"><i class="fa fa-plus"></i>&nbsp;&nbsp;New
+            Request</p>
+            <p class="sidetext" routerLinkActive="active"><i class="fa fa-upload"></i>&nbsp;&nbsp;Upload
+                Partlist</p>
+
+        <!-- <p  (click)="Material_master()"
+                *ngIf="usertype == 'mechanicalsupervisor'">Material Cost Master</p> -->
+    </div>
+</div>
+<div class="col-md-10">
+    <div class="row">
+        <div class="col-md-10">
+            <h4>Machine Shop Work</h4>
+        </div>
+        <div class="col-md-2" style="padding-right: 30px;">
+        </div>
+    </div>
+    <form [formGroup]="pmworkreqform" style="padding: 10px;width: 100%;">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group">
+                    Project Name<dot></dot>
+                    <input type="text" class="form-control" id="Project" formControlName="projectname"
+                        *ngIf="showeditvalue== false">
+                    <input type="text" class="form-control" id="Project" formControlName="projectname"
+                        *ngIf="showeditvalue== true" disabled>
+                    <small class="text-danger" *ngIf="
+                                          !pmworkreqform.controls.projectname.valid &&
+                                          pmworkreqform.controls.projectname.touched
+                                        ">Project is required</small>
+                </div>
+
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    Purpose of Activity<dot></dot>
+                    <input class="form-control" type="text" formControlName="storagePurpose"
+                        *ngIf="showeditvalue== false">
+                    <input class="form-control" type="text" formControlName="storagePurpose"
+                        *ngIf="showeditvalue== true" disabled>
+                </div>
+                <small class="text-danger" *ngIf="
+      !pmworkreqform.controls.storagePurpose.valid &&
+      pmworkreqform.controls.storagePurpose.touched
+    ">Purpose of Activity is required</small>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-group  text-field">
+                    Approver L4<dot></dot>
+                    <select class="form-control" formControlName="l4" *ngIf="showeditvalue== false">
+                        <option value=null selected disabled>Select Approver L4 </option>
+                        <option value="{{data.shortid}}" *ngFor="let data of l4ProtoUsers">{{data.firstname}}
+                            {{data.lastname}}
+                        </option>
+                    </select>
+                    <select class="form-control" formControlName="l4" *ngIf="showeditvalue== true" disabled>
+                        <option value=null selected disabled>Select Approver L4 </option>
+                        <option value="{{data.shortid}}" *ngFor="let data of l4ProtoUsers">{{data.firstname}}
+                            {{data.lastname}}
+                        </option>
+                    </select>
+                </div>
+                <small class="text-danger" *ngIf="
+        !pmworkreqform.controls.l4.valid &&
+        pmworkreqform.controls.l4.touched
+      "> L4 is required</small>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    Cost Center<dot></dot>
+                    <input type="text" class="form-control" id="costcenter" formControlName="costcenter"
+                        *ngIf="showeditvalue== false">
+                    <input type="text" class="form-control" id="costcenter" formControlName="costcenter"
+                        *ngIf="showeditvalue== true" disabled>
+                    <small class="text-danger" *ngIf="
+                                          !pmworkreqform.controls.costcenter.valid &&
+                                          pmworkreqform.controls.costcenter.touched
+                                        ">Cost Center is required</small>
+                </div>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group">
+                    Activity Description<dot></dot>
+                    <textarea style="height: 63px;" class="form-control" type="text" formControlName="activity"
+                        *ngIf="showeditvalue== false"></textarea>
+                    <textarea style="height: 63px;" class="form-control" type="text" formControlName="activity"
+                        *ngIf="showeditvalue== true" disabled></textarea>
+                </div>
+                <small class="text-danger" *ngIf="
+          !pmworkreqform.controls.activity.valid &&
+          pmworkreqform.controls.activity.touched
+        ">Activity Description is required</small>
+            </div>
+            <div class="col-md-4">
+                <div class="row">
+                    <div class="col-sm-5">
+                        <div class="form-group" style="padding: 7px 0px 0px 0px;">
+                            <label>CAD<dot></dot></label>
+                            <div class="radio-group">
+                                <label class="control control--radio" *ngIf="showeditvalue== false">Yes
+                                    <input type="radio" value="1" formControlName="iscad"
+                                        (change)="aodrawyes($event.target.value)" />
+                                    <div class="control__indicator"></div>
+                                </label>
+                                <label class="control control--radio" *ngIf="showeditvalue== true">Yes
+                                    <input type="radio" value="1" formControlName="iscad"
+                                        (change)="aodrawyes($event.target.value)" disabled />
+                                    <div class="control__indicator"></div>
+                                </label>
+                                <label class="control control--radio" *ngIf="showeditvalue== false">No
+                                    <input type="radio" value="0" formControlName="iscad"
+                                        (change)="aodrawyes($event.target.value)" />
+                                    <div class="control__indicator"></div>
+                                </label>
+                                <label class="control control--radio" *ngIf="showeditvalue== true">No
+                                    <input type="radio" value="0" formControlName="iscad"
+                                        (change)="aodrawyes($event.target.value)" disabled />
+                                    <div class="control__indicator"></div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-7">
+                        <div class="form-group" style="padding: 3px 0px 0px 0px;">
+                            <ng-container *ngIf='showeditvalue == false'>
+                                <label *ngIf="aono" style="font-size: 12px;width: 130px;font-weight: 600;">Attach File
+                                    <br>
+                                    <label class="btn btn-sm btn-primary" for="aonofield">Select Multiple Files</label>
+                                    <input class="form-control" id="aonofield" type="file" accept=".xlsx,.xls,.pdf"
+                                        (change)="uploadfile($event)" multiple></label>
+                            </ng-container>
+                            <label *ngIf="aoyes" id="card_desc">
+                                <label style="margin: 0px;">Remarks<dot></dot></label>
+                                <textarea id="cadtext" class="form-control" type="text" formControlName="cadtext"
+                                    style="width: 304px;height: 63px;" *ngIf="showeditvalue == false"></textarea>
+                                <textarea id="cadtext" class="form-control" type="text" formControlName="cadtext"
+                                    style="width: 304px;height: 63px;" *ngIf="showeditvalue == true"
+                                    disabled></textarea>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group" style="padding: 7px 0px 0px 0px;" *ngIf="aono">
+                    <section class="file-scroll" *ngIf='showeditvalue == false'>
+                        <ng-container *ngFor="let data of fileUploadArr;let i=index">
+                            <p class="filename" style="font-size: 12px;
+               font-weight: 600;" id="upload{{i}}">{{data.filename}}.{{data.fileformat}} &nbsp;&nbsp;<i
+                                    class="fa fa-times" (click)="deleteUpload(i)"
+                                    style="font-size: 14px;cursor: pointer;"></i></p>
+                        </ng-container>
+                    </section>
+                    <section class="file-scroll" *ngIf='showeditvalue == true'>
+                        <ng-container *ngFor="let data of fileUploadArr;let i=index">
+                            <p class="filename" style="font-size: 12px;
+               font-weight: 600;" id="upload{{i}}">{{data.filename}}.{{data.fileformat}} &nbsp;&nbsp;</p>
+                        </ng-container>
+                    </section>
+                </div>
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <section style="padding: 34px 0px;" *ngIf="showeditvalue == false">
+                    <div class="col-md-12">
+                        <label for="uploadFilePartidl" class="btn btn-md addnew btn-primary">
+                            Select File</label>
+                        <input type="file" id="uploadFilePartidl" #uploadFilePartid style="display: none;"
+                            (change)="uploadfile1($event)"
+                            accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel">
+                        <span class="filename"> {{fileName1}}</span>
+                    </div>
+
+                    <div class="col-md-12">
+                        <a download href="assets/excel/MSW_template.xlsx">Download Template <i
+                                class="fas fa-cloud-download-alt" style="font-size: 16px;color: #000000;"></i></a>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </form>
+    <div class="col-md-12" style="text-align: right;margin: 20px 0px;">
+        <button class="btn btn-primary btn-md" (click)="submitForm()" *ngIf='showeditvalue == false'>Preview</button>
+        <ng-container *ngIf='showeditvalue == true'>
+            <button class="btn btn-primary btn-md" (click)="uploadCancel()"><i
+                    class="fa fa-times"></i>&nbsp;&nbsp;Cancel</button>
+            &nbsp;&nbsp;&nbsp;
+            <button class="btn btn-primary btn-md" (click)="uploadConfirm()"><i
+                    class="fa fa-save"></i>&nbsp;&nbsp;Confirm</button>
+        </ng-container>
+    </div>
+</div>
+
+
+
+
+<!-- confirm modal -->
+
+<div class="modal fade" id="confirmSubmit" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-10">
+                        <p class="modalHeader" style="font-weight: 600;">Preview</p>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <br>
+                    <div class="col-md-12">
+                        <p> Are you sure to preview the form ?</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-primary" data-dismiss="modal">No </button>
+                <button type="button" class="btn btn-sm btn-primary" (click)="save()">Yes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- upload confirm modal -->
+
+<div class="modal fade" id="confirmUpload" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-10">
+              <p class="modalHeader" style="font-weight: 600;">Confirm</p>
+            </div>
+            <div class="col-md-2">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <br>
+            <div class="col-md-12">
+              <p> Are you sure to confirm the form ?</p>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-sm btn-primary" data-dismiss="modal">No </button>
+          <button type="button" class="btn btn-sm btn-primary" (click)="confirmUploadForm()">Yes</button>
+        </div>
+      </div>
+    </div>
+  </div>

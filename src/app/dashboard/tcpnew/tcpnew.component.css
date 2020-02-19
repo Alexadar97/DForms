@@ -1,0 +1,10 @@
+img#spring_calendar {
+    position: absolute;
+    top: 8px;
+    right: 7px;
+  }
+
+  input#aonofield {
+    border: none;
+    display: none;
+}

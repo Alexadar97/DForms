@@ -1,0 +1,73 @@
+
+<app-spinner *ngIf="loading"></app-spinner>
+
+<div class="col-md-12" style="margin-top:10px;">
+    <div class="col-md-4">
+        <h4>Finas Work Order</h4>
+    </div>
+    <div class="col-md-5">
+        <button class="btn btn-primary dropdown-item" (click)="backHome()" style="    width: 15%;float: right;">
+            <i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Back</button>
+    </div>
+    <div class="col-md-4" style="text-align: right;">
+        
+            <!-- <input type="button" value="New Request" class="btn btn-primary" (click)="addsto()" style="margin-right: 0px;"> -->
+           
+                <div class="dropdown">
+                        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    <!-- <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> -->
+                            <i class="icon-list"></i>
+                            <!-- Actions -->
+                            &nbsp;&nbsp;Menu &nbsp;<i class="icon-caret-down"></i>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="width: 30%;padding: 4px;background: #dedede;">
+                            <button  *ngIf="!isStoreLogin" class="btn btn-primary dropdown-item" (click)="finaslist()"><i class="icon-plus"></i>&nbsp;&nbsp;New Request</button>
+                       <!-- <a class="dropdown-item" href="#">Action</a>
+                      <a class="dropdown-item" href="#">Another action</a>
+                      <a class="dropdown-item" href="#">Something else here</a> -->
+                    </div>
+                  </div>    
+      
+        </div>
+    </div>
+    <div class="col-md-12">
+
+
+            <table class="table table-bordered table-striped" *ngIf="finasworkorderlist?.length!=0" style="width:99%">
+                <tr>
+                    <th>S.No</th>
+                    <th>Vehicle Category</th>
+                    <th>Object Category </th>
+                    <th>Work Category</th>
+    
+                    <th>Object/Vehicle Finas ID</th>
+                    <th>Vehicle No </th>
+                    <th>Vehicle KM</th>
+                    <th>Vehicle Owner Name</th>
+                    <th>Vehicle Due Date</th>
+                </tr>
+                <tbody>
+                    <tr
+                        *ngFor="let data of finasworkorderlist| paginate: { itemsPerPage: 10, currentPage: p1,id: 'two'};let index=index">
+                        <td>{{(index+1)}}</td>
+                        <td>{{(data?.vehiclecategory != null) ? data?.vehiclecategory : '-' }}</td>
+                        <td>{{(data?.objectcategory != null) ? data?.objectcategory : '-' }}</td>
+                        <td>{{(data?.objectcategory != null) ? data?.objectcategory : '-' }}</td>
+                        <td>{{(data?.finasid != null) ? data?.finasid : '-' }}</td>
+                        <td>{{(data?.vehicleno != null) ? data?.vehicleno : '-' }}</td>
+                        <td>{{(data?.vehiclekm != null) ? data?.vehiclekm : '-' }}</td>
+                        <td>{{(data?.vehicleownername != null) ? data?.vehicleownername : '-' }}</td>
+                        <td>{{(data?.vehicleduedate != null) ? data?.vehicleduedate : '-' }}</td>
+    
+    
+                       
+                    </tr>
+                </tbody>
+    
+            </table>
+            <pagination-controls *ngIf="finasworkorderlist?.length!=0" style="text-align: right;" (pageChange)="p1 = $event" #api
+                id="two">
+            </pagination-controls>
+        </div>
+
+

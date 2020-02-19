@@ -1,0 +1,790 @@
+<app-spinner *ngIf="loading"></app-spinner>
+<div class="col-md-2" style="padding: 0;
+background-color: #242536; height: 100vh;">
+  <div style="margin-top: 15px;">
+    <p class="sidetext active" (click)="pmlists()"><i
+        class="fa fa-angle-double-right"></i>&nbsp;&nbsp;Machine Shop Work List</p>
+    <p class="sidetext" (click)="addpmwork()"><i class="fa fa-plus"></i>&nbsp;&nbsp;New
+      Request</p>
+      <!-- <p class="sidetext" routerLinkActive="active" (click)="fileupload()"><i class="fa fa-upload"></i>&nbsp;&nbsp;Upload
+        Partlist</p> -->
+    <p class="sidetext" (click)="downloadExcel('export.xlsx')" routerLinkActive="active"><i
+      class="fa fa-download"></i>
+  &nbsp;Download</p>
+    <p class="sidetext" (click)="Material_master()" *ngIf="usertype == 'mechanicalsupervisor'">Material Cost Master</p>
+  </div>
+</div>
+<!-- <div class="col-md-10">
+<div class="col-md-12" style="margin-top:10px;">
+  <div class="col-md-4" style="padding-left: 0px;">
+    <h4>Machine Shop Work List
+    </h4>
+  </div>
+  <div class="col-md-5">
+   
+</div>
+  <div class="col-md-3">
+    <div style="position: relative;">
+      <input type="text" class="form-control" placeholder="  Search  " name="search"
+      (input)="search($event.target.value)" #valsearchuser autocomplete="off">
+      <i class="fa fa-search search" style="    position: absolute;top: 10px;right: 9px;"></i>
+  <div style="margin-top: 15px;">
+    <p (click)="addpmwork()" routerLinkActive="active"><i class="fa fa-plus"></i>&nbsp;&nbsp;New
+      Request</p>
+      <p (click)="downloadZip('Generate_ZIP.zip')" routerLinkActive="active">
+        <i class="fa fa-print"></i>
+        &nbsp;Print</p>
+    <p (click)="Material_master()" *ngIf="usertype == 'mechanicalsupervisor'">Material Cost Master</p>
+  </div>
+</div> -->
+<div class="col-md-10" style="margin-top:10px;">
+  <div class="col-md-4" style="padding-left: 0px;">
+    <h4>Machine Shop Work List
+    </h4>
+  </div>
+  <div class="col-md-5">
+    <button class="btn btn-primary dropdown-item" style="    width: 17%;float: right;"
+      (click)="downloadZip('Generate_ZIP.zip')" routerLinkActive="active">
+      <i class="fa fa-print"></i>
+      &nbsp;Print</button>
+  </div>
+  <div class="col-md-3">
+    <div style="position: relative;">
+      <input type="text" class="form-control" placeholder="  Search  " name="search"
+        (input)="search($event.target.value)" #valsearchuser autocomplete="off">
+      <i class="fa fa-search search" style="    position: absolute;top: 10px;right: 9px;"></i>
+    </div>
+  </div>
+  <!-- <div class="col-md-4" style="text-align: right;">
+    <button class="btn btn-primary" (click)="addpmwork()"><i class="icon-plus"></i>&nbsp;&nbsp;New Request</button>
+  </div> -->
+
+  <!-- <div class="col-md-1" style="text-align: right;"> -->
+
+  <!-- <input type="button" value="New Request" class="btn btn-primary" (click)="addsto()" style="margin-right: 0px;"> -->
+
+  <!-- <div class="dropdown">
+      <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown"
+        aria-haspopup="true" aria-expanded="true"> -->
+  <!-- <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> -->
+  <!-- <i class="fa fa-list"></i> -->
+  <!-- Actions -->
+  <!-- &nbsp;&nbsp;Menu &nbsp;<i class="icon-caret-down"></i>
+      </button>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"
+        style="width: 30%;padding: 4px;background: #dedede;">
+        <button class="btn btn-primary dropdown-item" (click)="addpmwork()"><i
+          class="fa fa-plus"></i>&nbsp;&nbsp;New
+          Request</button>
+        <button class="btn btn-primary dropdown-item" (click)="Material_master()"
+          *ngIf="usertype == 'mechanicalsupervisor'">Material Cost Master</button> -->
+  <!-- <button class="btn btn-primary dropdown-item" (click)="downloadExcel('export.xlsx')"><i
+            class="fa fa-download"></i>
+          &nbsp;Download</button> -->
+  <!-- </div>
+    </div>
+
+  </div> -->
+
+</div>
+
+<div class="col-md-10">
+  <div class="table-responsive" style="overflow-x: unset;">
+    <!-- *ngFor="let data of allstoform | paginate: { itemsPerPage: 10, currentPage: p1,id: 'two'};let index=index" -->
+    <table id="prototable" class="table table-bordered table-striped" style="width:99%">
+      <tr>
+        <th style="text-align:center;">Select All
+          <br>
+          <label class="control control--checkbox">
+              <input type="checkbox" class="chk" id="select-all"  (click)="checkall($event.target.checked)">
+              <div class="control__indicator" style="left: 28px !important;"></div>
+            </label>
+        </th>
+        <th>S.No</th>
+        <th>Form ID</th>
+        <th>Exigency Case</th>
+        <th>Project Name</th>
+        <th>Approver Name - L4</th>
+        <th>Date of Request</th>
+        <th>Requester Name</th>
+        <th>Department </th>
+        <th>Status</th>
+        <th>View Form</th>
+        <th>
+          Action
+        </th>
+        <th *ngIf="usertype == 'requester'">Delete</th>
+      </tr>
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>
+          <div class="row">
+            <div class="col-lg-12 nopadding">
+                <div class="button-group">
+                    <button type="button" class="btn btn-default btn-sm dropdown-toggle"
+                        data-toggle="dropdown" style="width: 170px;">Select
+                        Approver - L4
+
+                        <span class="caret"></span></button>
+                    <ul class="dropdown-menu filtermenu" style="position: absolute;
+                transform: translate3d(1px, 32px, 0px);
+                top: 0px;
+                left: 0px;
+                will-change: transform;
+                height: 12vh;
+                overflow-x: hidden;
+                overflow-y: auto;">
+                        <ng-container *ngFor="let data of l4nameList;">
+                            <li>
+                                <label class="control control--checkbox">
+                                    {{data}}
+                                    <input type="checkbox" class="typeSelectBox" value={{data}}
+                                        (change)="approverl4ilter($event,'l4name')">&nbsp;<span
+                                        id="select"></span>
+                                    <div class="control__indicator filterchkbox"></div>
+                                </label>
+                            </li>
+                        </ng-container>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        </td>
+        <td>
+          <input class="form-control" placeholder="Select Date" bsDaterangepicker id="rangedagte" type="text"
+            style="font-size: 12px;height: 28px;margin: 7px 0px;" (bsValueChange)="SelectDate($event)" />
+        </td>
+        <td></td>
+        <td>
+          <div class="row">
+            <div class="col-lg-12 nopadding">
+              <div class="button-group">
+                <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">Select
+                  Department &nbsp;&nbsp;
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu filtermenu" style="position: absolute;
+                transform: translate3d(1px, 32px, 0px);
+                top: 0px;
+                left: 0px !important;
+                will-change: transform;
+                height: 15vh;
+                overflow-x: hidden;
+                overflow-y: auto;">
+                  <ng-container *ngFor="let data of getdepartment;">
+                    <li>
+                      <label class="control control--checkbox">
+                        <input type="checkbox" class="typeSelectBox" value={{data}}
+                          (change)="departmentfilter($event,'department')">&nbsp;<span id="select">{{data}}</span>
+                        <div class="control__indicator filterchkbox"></div>
+                      </label>
+                    </li>
+                  </ng-container>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </td>
+        <td>
+          <div class="row">
+            <div class="col-lg-12 nopadding">
+              <div class="button-group">
+                <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">Select
+                  Status
+                  &nbsp;&nbsp;
+                  <span class="caret"></span></button>
+                <ul class="dropdown-menu filtermenu" style="position: absolute;
+                transform: translate3d(1px, 32px, 0px);
+                top: 0px;
+                left: 0px !important;
+                will-change: transform;
+                height: 22vh;
+                overflow-x: hidden;
+                min-width: 190px !important;
+                overflow-y: auto;">
+                  <ng-container *ngFor="let data of getstatus;">
+                    <li>
+                      <label class="control control--checkbox">
+                        <span *ngIf="data == 'pending'">
+                          Requestor L4 Approval Pending
+                        </span>
+                        <span *ngIf="data == 'l4approved'">
+                         Proto L4 Approval Pending
+                        </span>
+                        <span *ngIf="data == 'l4rejected'">
+                          Requestor L4 Approval Rejected
+                        </span>
+                        <span *ngIf="data == 'protol4approved'">
+                          Machine Shop Supervisor Approval Pending
+                        </span>
+                        <span *ngIf="data == 'protol4rejected'">
+                          Proto L4 Approval Rejected
+                        </span>
+                        <span *ngIf="data == 'mechsupervisorapproved'">
+                          Machine Shop Supervisor Approved
+                        </span>
+                        <span *ngIf="data == 'mechsupervisorrejected'">
+                         Machine Shop Supervisor Rejected
+                        </span>
+                        <span *ngIf="data == 'deleted'">
+                          Deleted
+                        </span>
+                        <span *ngIf="data == 'recalled'">
+                          Forms Recalled
+                        </span>
+                        <span class="completed" *ngIf="data.status == 'closed'">
+                          Completed
+                        </span>
+                        <input type="checkbox" class="typeSelectBox" value={{data}}
+                          (change)="statusfilter($event,'status')">
+                        <div class="control__indicator filterchkbox"></div>
+                      </label>
+                    </li>
+                  </ng-container>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </td>
+        <td></td>
+        <td></td>
+        <td *ngIf="usertype == 'requester'"></td>
+      </tr>
+      <tbody>
+        <tr *ngFor="let data of pmwrListData| paginate: { itemsPerPage: 10, currentPage: p1,id: 'one'};let index=index">
+          <td style="text-align:center;"> <label class="control control--checkbox">
+            <input type="checkbox" class="chkboxes checksingle" value="single" (click)="singlecheck($event,data.id)">
+            <div class="control__indicator checkcolor "></div>
+          </label></td>
+          <td style="text-align: center;">{{((currentPage - 1) * 10 + index+1)}}</td>
+          <td>
+            <ng-container *ngIf="data.status == 'mechsupervisorapproved' || data.status == 'closed'">
+              <span class="bcaformhover" style="white-space: nowrap; color: #337ab7; cursor: pointer;" (click)="pmwrData(data.id)">{{(data?.mswformid !=null) ? data?.mswformid : '_'}}</span>
+            </ng-container>
+            <ng-container *ngIf="data.status != 'mechsupervisorapproved' && data.status != 'closed'">
+              <span>{{(data?.mswformid !=null) ? data?.mswformid : '_'}}</span>
+            </ng-container>
+            </td>
+          <td>
+            <span *ngIf="data.exigencycase == 1">Unplanned</span>
+            <span *ngIf="data.exigencycase == 0">Planned</span>
+          </td>
+          <td>{{(data?.projectname !=null) ? data?.projectname : '_'}}</td>
+          <td>{{(data?.l4name !=null) ? data?.l4name : '_'}}</td>
+          <td>{{(data?.createddate !=null) ? data?.createddate : '_'}}</td>
+          <td>{{(data?.requestername !=null) ? data?.requestername : '_'}}</td>
+          <td>{{(data?.department !=null) ? data?.department : '_'}}</td>
+          <td>
+            <!-- <span class="inprogress" *ngIf="data.status != 'deleted'">
+              <ng-container *ngIf="data.status == 'pending'">
+                Requestor L4 Approval Pending
+              </ng-container>
+              <ng-container *ngIf="data.status == 'l4approved'">
+                <span *ngIf="data.exigencycase == 1">Proto L4 Approval Pending</span>
+                <span *ngIf="data.exigencycase == 0">Machine Shop Supervisor Approval Pending</span>
+              </ng-container>
+              <ng-container *ngIf="data.status == 'l4rejected'">
+                <span style="color: red;">Requestor L4 Approval Rejected</span>
+              </ng-container>
+              <ng-container *ngIf="data.status == 'protol4approved'">
+                <span>Machine Shop Supervisor Approval Pending</span>
+              </ng-container>
+              <ng-container *ngIf="data.status == 'protol4rejected'">
+                <span style="color: red;">Proto L4 Approval Rejected</span>
+              </ng-container>
+              <ng-container *ngIf="data.status == 'mechsupervisorapproved'">
+                Machine Shop Supervisor Approved
+              </ng-container>
+              <ng-container *ngIf="data.status == 'mechsupervisorrejected'">
+                <span style="color: red;">Machine Shop Supervisor Approval Rejected</span>
+              </ng-container>
+              <ng-container *ngIf="data.status == 'closed'">
+                <span style="color: green;">Completed</span>
+              </ng-container>
+              <ng-container *ngIf="data.status == 'recalled'">
+                <span>Forms Recalled</span>
+              </ng-container>
+            </span> -->
+            <span [style.color]="pickColor(data.statusLabel)">
+              {{(data?.statusLabel != null) ? data?.statusLabel : '-' }}
+          </span>
+            <!-- <span class="inprogressRed" *ngIf="data.status == 'deleted'">Deleted</span> -->
+          </td>
+          <td style="text-align: center;"><button class="btn btn-default btn-sm" style="background: rgba(96, 96, 96, 0.28);
+            border: none;" (click)="viewForm(data)">
+              <i class="icon-eye-open"></i>&nbsp;&nbsp;View
+            </button></td>
+          <td>
+            <ng-container *ngIf="usertype == 'L4' && data.status == 'pending' && data.isreqapproved ==1">
+              <button class="btn btn-primary btn-sm" (click)="edit(data.id)">Edit</button>
+            </ng-container>
+
+            <ng-container
+              *ngIf="usertype == 'protoL4' && data.exigencycase == 1 && data.isreqapproved == 1 && data.status == 'l4approved'">
+              <button class="btn btn-primary btn-sm" (click)="edit(data.id)">Edit</button>
+            </ng-container>
+
+            <ng-container
+              *ngIf="(usertype == 'requester' || usertype == '') && (data.isreqapproved == 0 && data.status == 'protol4approved')">
+              <button class="btn btn-primary btn-sm" (click)="edit(data.id)">Edit</button>
+            </ng-container>
+
+            <ng-container
+              *ngIf="(usertype == 'requester' || usertype == '') && (data.isreqapproved == 0 && data.status == 'mechsupervisorapproved')">
+              <button class="btn btn-primary btn-sm" (click)="edit(data.id)">Edit</button>
+            </ng-container>
+
+            <ng-container *ngIf="usertype == 'mechanicalsupervisor' && data.isSupervisorEdit == 1">
+              <button class="btn btn-primary btn-sm" (click)="edit_Sup(data.id)"
+                style="border-radius: 6px;">Edit</button>
+            </ng-container>
+            <ng-container *ngIf="(data.status=='pending') && (usertype == 'requester' || usertype == '')">
+              <button class="btn btn-primary  btn-sm" (click)="MSW_Recall(data.id)">
+                Recall
+              </button>
+            </ng-container>
+            <ng-container *ngIf="(data.status=='recalled') && (usertype == 'requester' || usertype == '')">
+              <button class="btn btn-primary  btn-sm" (click)="MSW_Edit(data.id)">
+                Edit
+              </button>
+            </ng-container>
+
+            <!-- <ng-container *ngIf="usertype == 'pmwrbca'">
+              <button class="btn btn-primary btn-sm" (click)="edit_bca(data.id)"
+                style="border-radius: 6px;">Edit</button>
+            </ng-container> -->
+          </td>
+          <td *ngIf="usertype == 'requester' || usertype == ''" style="text-align: center;">
+            <ng-container *ngIf="data?.status != 'deleted' && data?.status != 'closed'">
+              <button class="btn btn-default  btn-sm" (click)="Delete(data.id)" style="border-radius: 6px;">
+                <i class="fas fa-trash" style="
+                     font-size: 16px;"></i>
+              </button>
+            </ng-container>
+           
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <br>
+  <h4 *ngIf="pmwrListData?.length==0" class="text-center">No New Retrofitment Request created yet!</h4>
+  <!-- <div style="float: right;margin-bottom: 35px;" *ngIf="pmwrListData?.length!=0">
+    <button [disabled]="currentPage == 1" class="btn btn-default paginationbtn" (click)="paginatePartList('prev')"><i
+        class="icon-chevron-left"></i></button>
+    <span style="font-size: 15px;
+          padding: 10px;">
+      <input id="currentPageInput" class="paginatecontrol" type="text" value="{{currentPage}}" style="width: 50px;">
+      <i class="fa fa-search searchbtn" (click)="searchPage()"></i>
+      of
+      {{totalPages}}
+    </span>
+
+    <button [disabled]="currentPage == totalPages" class="btn btn-default paginationbtn"
+      (click)="paginatePartList('next')"><i class="icon-chevron-right"></i></button>
+  </div> -->
+  <div style="float: right;margin-bottom: 35px;" *ngIf="pmwrListData?.length!=0">
+    <button [disabled]="currentPage == 1" class="btn btn-default paginationbtn" (click)="paginatePartList('prev')"><i
+        class="fa fa-chevron-left"></i></button>
+    <span style="font-size: 15px;
+          padding: 10px;">
+      <!-- {{currentPage}} -->
+      <input id="currentPageInput" class="paginatecontrol" type="text" value="{{currentPage}}" style="width: 50px;">
+      <!-- <i class="icon-search" (click)="searchPage()" class="searchbtn"></i> -->
+      <i class="fa fa-search searchbtn" (click)="searchPage()"></i>
+      of
+      {{totalPages}}
+    </span>
+
+    <button [disabled]="currentPage == totalPages" class="btn btn-default paginationbtn"
+      (click)="paginatePartList('next')"><i class="fa fa-chevron-right"></i></button>
+  </div>
+</div>
+
+
+
+<!-- Total forms view model -->
+
+
+
+<div class="modal fade" id="mswparts" role="dialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-lg" style="width: 80%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Form Details</h4>
+      </div>
+      <div class="modal-body">
+        <s-update [arr]="updateForm"></s-update>
+        <div class="modal-table">
+          <div class="row">
+            <div class="col-md-12 table-responsive">
+              <table class="table table-striped" id="misform">
+                <tbody>
+                  <tr>
+                    <th style="width: 25%;">Form ID</th>
+                    <td colspan="3" style="width: 25%;">{{ViewListModal?.mswformid}}</td>
+                    <th style="width: 25%;">Date of Request </th>
+                    <td style="width: 25%;">{{ViewListModal?.createddate}}</td>
+                  </tr>
+                  <tr>
+                    <th style="width: 25%;">Request Name</th>
+                    <td colspan="3" style="width: 25%;">{{ViewListModal?.requestername}}</td>
+                    <th style="width: 25%;">Department</th>
+                    <td style="width: 25%;">{{ViewListModal?.department}}</td>
+                  </tr>
+                  <tr>
+                    <th style="width: 25%;">Project Name</th>
+                    <td colspan="3" style="width: 25%;">{{ViewListModal?.projectname}}</td>
+                    <th style="width: 25%;">Purpose of Activity</th>
+                    <td style="width: 25%;">{{ViewListModal?.storagePurpose}}</td>
+                  </tr>
+                  <tr>
+                    <th style="width: 25%;">Activity Description</th>
+                    <td colspan="3" style="width: 25%;">{{ViewListModal?.activity}}</td>
+                    <th style="width: 25%;">Status</th>
+                    <td style="width: 25%;">
+                      {{ViewListModal?.statusLabel}}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th style="width: 6%;vertical-align: middle;">CAD</th>
+                    <td style="vertical-align: middle;">
+                      <ng-container *ngIf="card == 1">
+                        Yes
+                      </ng-container>
+                      <ng-container *ngIf="card == 0">
+                        No
+                      </ng-container>
+                    </td>
+                    <th style="vertical-align: middle;" *ngIf="card == 1">Attechment Files</th>
+                    <th style="vertical-align: middle;" *ngIf="card == 0">CAD Remarks</th>
+                    <td style="vertical-align: middle;" style="width: 26%;padding: 5px">
+                      <div *ngIf="card == 1" style="height: 14vh;overflow: auto;">
+                        <table>
+                          <ng-container *ngFor="let fileList of pmwrFileListData">
+                            <tr>
+                              <td style="border: none;padding:0px 0px 10px 0px">{{fileList.filename}}</td>
+                              <td style="border: none;padding:0px 0px 10px 0px;width: 8%"><i class="fa fa-download"
+                                  (click)="downlaodfile(fileList.filename+'.'+fileList.fileformat ,fileList.id)"
+                                  style="font-size: 15px;color: #130f0fb5;cursor: pointer;"></i></td>
+                            </tr>
+                          </ng-container>
+                        </table>
+                      </div>
+                      <ng-container *ngIf="card == 0">
+                        <div style="word-break: break-all;">{{ViewListModal?.cadtext}}</div>
+                      </ng-container>
+                    </td>
+                    <th>Cost Center</th>
+                    <td>{{ViewListModal?.costcenter}}</td>
+                  </tr>
+                  <tr>
+                    <ng-container *ngIf="remarks != null">
+                      <th>L4 Remarks</th>
+                      <td colspan="3">{{ViewListModal?.l4remarks}}</td>
+                    </ng-container>
+                    <ng-container *ngIf="ViewListModal?.protol4remarks != null">
+                      <th>Proto L4 Remarks</th>
+                      <td colspan="2">{{ViewListModal?.protol4remarks}}</td>
+                    </ng-container>
+                    <ng-container *ngIf="ViewListModal?.deletedremarks != null && ViewListModal?.protol4remarks == null">
+                      <th>Deleted Remarks</th>
+                      <td>{{ViewListModal?.deletedremarks}}</td>
+                    </ng-container>
+                  </tr>
+                  <tr>
+                    <ng-container *ngIf="ViewListModal?.supervisorremarks != null">
+                      <th>Supervisor Remarks</th>
+                      <td colspan="3">{{ViewListModal?.supervisorremarks}}</td>
+                    </ng-container>
+                    <ng-container *ngIf="ViewListModal?.closedremarks != null">
+                      <th>Closed Remarks</th>
+                      <td colspan="2">{{ViewListModal?.closedremarks}}</td>
+                    </ng-container>
+                  </tr>
+                  <tr>
+                    <ng-container *ngIf="ViewListModal?.deletedremarks != null && ViewListModal?.protol4remarks != null">
+                      <th>Deleted Remarks</th>
+                      <td>{{ViewListModal?.deletedremarks}}</td>
+                    </ng-container>
+                  </tr>
+                </tbody>
+              </table>
+              <!-- Add Row Values -->
+              <table class="table table-striped" style="margin-top: 35px;border-top: 1px solid #cccccc;">
+                <thead style="background-color: #ececec;">
+                  <tr>
+                    <th>S.No</th>
+                    <th>Work Category </th>
+                    <th>Sub Category</th>
+                    <th>Part Number</th>
+                    <th>Part Description </th>
+                    <th>Vehicle number</th>
+                    <th>Quantity</th>
+                    <th>Expected Delivery Date</th>
+
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    *ngFor="let part of ViewListModal?.mswParts |  paginate: { itemsPerPage: 10, currentPage: p2,id: 'two'};let index=index;">
+                    <td>{{((p2- 1) * 10 + index+1)}}</td>
+                    <td>
+                      <ng-container *ngIf="part.workcategory == 'servicesutilization'">
+                        Services Utilization
+                      </ng-container>
+                      <ng-container *ngIf="part.workcategory == 'partfabrication'">
+                        Part Fabrication
+                      </ng-container>
+                    </td>
+                    <td>{{part.worksubcategory}}</td>
+                    <td>{{part.partnumber}}</td>
+                    <td>{{part.description}}</td>
+                    <td>{{part.vehicleno}}</td>
+                    <td>{{part.quantity}}</td>
+                    <td>{{part.startdate}}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div style="margin: 10px 0px;">
+                <pagination-controls *ngIf=" ViewListModal?.mswParts!=0" style="text-align: right;"
+                  (pageChange)="p2 = $event" #api id="two">
+                </pagination-controls>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- pmw modal -->
+<div class="modal fade" id="pmwr" role="dialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Material Cost Master</h4>
+      </div>
+      <div class="modal-body">
+        <div class="modal-table">
+          <div class="row" style="margin-bottom: 26px;">
+            <div class="col-md-12  table-responsive">
+              <table id="table" class="table responsive table-bordered">
+                <tr id="dime">
+                  <td style="position: relative; text-align: left;width: 13%;
+                    background: linear-gradient(17deg,rgb(235,235,235) 47%,#aaa 50%,rgb(235,235,235) 52%);">
+                    <span class="dime">Dimension(mm)</span>
+                    <div class="one"> <span class="material">Material</span></div>
+                  </td>
+                  <td>Length</td>
+                  <td>Width</td>
+                  <td>Thickness</td>
+                  <td>Density</td>
+                  <td>Cost/Kg</td>
+                </tr>
+                <tr class="tablerow" [formGroup]="master_Form1">
+                  <th class="dim_head">Sheet Metal</th>
+                  <td><input type="text" id="damin_input" value="1" class="form-control" disabled></td>
+                  <td><input type="text" id="damin_input" value="1" class="form-control" disabled></td>
+                  <td><input type="text" id="damin_input" value="1" class="form-control" disabled></td>
+                  <td><input type="text" id="damin_input" value="1" class="form-control" disabled></td>
+                  <td><input type="number" id="damin_input" class="form-control" formControlName="costperkg">
+                    <small class="text-danger" *ngIf="
+                    !master_Form1.controls.costperkg.valid &&
+                    master_Form1.controls.costperkg.touched
+                  ">Cost/Kg is required</small>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+          <div class="row" style="margin-bottom: 26px;">
+            <div class="col-md-12  table-responsive">
+              <table id="table" class="table responsive table-bordered">
+                <tr id="dime">
+                  <td style="position: relative; text-align: left;width: 13%;
+                      background: linear-gradient(17deg,rgb(235,235,235) 47%,#aaa 50%,rgb(235,235,235) 52%);">
+                    <span class="dime">Dimension(mm)</span>
+                    <div class="one"> <span class="material">Material</span></div>
+                  </td>
+                  <td style="width: 28%;">Diameter</td>
+                  <td style="width: 24%;">Length</td>
+                  <td>Density</td>
+                  <td>Cost/Kg</td>
+                </tr>
+                <tr class="tablerow" [formGroup]="master_Form2">
+                  <th class="dim_head">Rod</th>
+                  <td><input type="text" id="damin_input" value="1" class="form-control" disabled></td>
+                  <td><input type="text" id="damin_input" value="1" class="form-control" disabled></td>
+                  <td><input type="text" id="damin_input" value="1" class="form-control" disabled></td>
+                  <td><input type="number" id="damin_input" class="form-control" formControlName="costperkg">
+                    <small class="text-danger" *ngIf="
+                      !master_Form2.controls.costperkg.valid &&
+                      master_Form2.controls.costperkg.touched
+                    ">Cost/Kg is required</small>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+          <div class="row" style="margin-bottom: 26px;">
+            <div class="col-md-12  table-responsive">
+              <table id="table" class="table responsive table-bordered">
+                <tr id="dime">
+                  <td style="position: relative; text-align: left;width: 13%;
+                        background: linear-gradient(17deg,rgb(235,235,235) 47%,#aaa 50%,rgb(235,235,235) 52%);">
+                    <span class="dime">Dimension(mm)</span>
+                    <div class="one"> <span class="material">Material</span></div>
+                  </td>
+                  <td>Outer Diameter</td>
+                  <td>Length</td>
+                  <td>Thickness</td>
+                  <td>Density</td>
+                  <td>Cost/Kg</td>
+                </tr>
+                <tr class="tablerow" [formGroup]="master_Form3">
+                  <th class="dim_head">Pipe</th>
+                  <td><input type="text" id="damin_input" value="1" class="form-control" disabled></td>
+                  <td><input type="text" id="damin_input" value="1" class="form-control" disabled></td>
+                  <td><input type="text" id="damin_input" value="1" class="form-control" disabled></td>
+                  <td><input type="text" id="damin_input" value="1" class="form-control" disabled></td>
+                  <td><input type="number" id="damin_input" class="form-control" formControlName="costperkg">
+                    <small class="text-danger" *ngIf="
+                      !master_Form3.controls.costperkg.valid &&
+                      master_Form3.controls.costperkg.touched
+                    ">Cost/Kg is required</small>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+          <div class="row" style="margin-bottom: 26px;">
+            <div class="col-md-12  table-responsive">
+              <table id="table" class="table responsive table-bordered">
+                <tr id="dime">
+                  <td style="position: relative; text-align: left;width: 13%;
+                          background: linear-gradient(17deg,rgb(235,235,235) 47%,#aaa 50%,rgb(235,235,235) 52%);">
+                    <span class="dime">Dimension(mm)</span>
+                    <div class="one"> <span class="material">Material</span></div>
+                  </td>
+                  <td>Length</td>
+                  <td>Thickness</td>
+                  <td>Side A + Side B</td>
+                  <td>Density</td>
+                  <td>Cost/Kg</td>
+                </tr>
+                <tr class="tablerow" [formGroup]="master_Form4">
+                  <th class="dim_head">L-angle</th>
+                  <td><input type="text" id="damin_input" value="1" class="form-control" disabled></td>
+                  <td><input type="text" id="damin_input" value="1" class="form-control" disabled></td>
+                  <td><input type="text" id="damin_input" value="1" class="form-control" disabled></td>
+                  <td><input type="text" id="damin_input" value="1" class="form-control" disabled></td>
+                  <td><input type="number" id="damin_input" class="form-control" formControlName="costperkg">
+                    <small class="text-danger" *ngIf="
+                      !master_Form4.controls.costperkg.valid &&
+                      master_Form4.controls.costperkg.touched
+                    ">Cost/Kg is required</small>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+          <div class="row" style="margin-bottom: 26px;">
+            <div class="col-md-12  table-responsive">
+              <table id="table" class="table responsive table-bordered">
+                <tr id="dime">
+                  <td style="position: relative; text-align: left;width: 13%;
+                            background: linear-gradient(17deg,rgb(235,235,235) 47%,#aaa 50%,rgb(235,235,235) 52%);">
+                    <span class="dime">Dimension(mm)</span>
+                    <div class="one"> <span class="material">Material</span></div>
+                  </td>
+                  <td>Thickness</td>
+                  <td>Width</td>
+                  <td>Length</td>
+                  <td>Density</td>
+                  <td>Cost/Kg</td>
+                </tr>
+                <tr class="tablerow" [formGroup]="master_Form5">
+                  <th class="dim_head">Square Tube</th>
+                  <td><input type="text" id="damin_input" value="1" class="form-control" disabled></td>
+                  <td><input type="text" id="damin_input" value="1" class="form-control" disabled></td>
+                  <td><input type="text" id="damin_input" value="1" class="form-control" disabled></td>
+                  <td><input type="text" id="damin_input" value="1" class="form-control" disabled></td>
+                  <td><input type="number" id="damin_input" class="form-control" formControlName="costperkg">
+                    <small class="text-danger" *ngIf="
+                      !master_Form5.controls.costperkg.valid &&
+                      master_Form5.controls.costperkg.touched
+                    ">Cost/Kg is required</small>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+          <div class="row" style="margin-bottom: 81px;">
+            <div class="col-md-12" style="text-align: right;">
+              <!-- <button class="btn-clear" data-dismiss="modal">Clear</button> -->
+              <button class="btn-submit" (click)="master_submit()">Submit</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Delete Remark -->
+
+
+
+<div class="modal fade" id="deletelist" role="dialog">
+  <div class="modal-dialog modal-sm">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title" style="font-size: 15px;
+          ">Delete </h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class=" col-md-12 table-responsive">
+            <form [formGroup]="remarkform">
+              <div class="row mt-3">
+                <div class="col-md-12">
+                  <div>
+                    <div class="form-group text-field" style="font-size: 13px;">
+                      Remarks <dot> </dot>
+                      <textarea type="text" class="form-control" formControlName="remarks"
+                        style="font-weight: 400;"></textarea>
+                    </div>
+
+                    <small class="text-danger" *ngIf="
+                        !remarkform.controls.remarks.valid &&
+                        remarkform.controls.remarks.touched
+                      "> Remarks is required</small>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer" style="border-top: none;">
+
+        <button class="btn btn-primary btn-md" (click)="ConfirmDelete()" style="font-size: 12px;
+          "><i class="icon-save"></i>&nbsp;&nbsp;Submit</button>
+      </div>
+    </div>
+
+  </div>
+</div>

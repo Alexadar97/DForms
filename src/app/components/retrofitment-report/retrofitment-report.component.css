@@ -1,0 +1,78 @@
+.tablerow > td{
+    padding: 6px 6px;
+    /* background: #f3f3f3ad; */
+    background: #fff;
+}
+.tableheader>th{
+    padding: 6px 6px;
+    /* background: #f3f3f3ad; */
+    background: rgb(235,235,235);
+}
+
+label{
+  font-weight: 400;
+}
+#paddingleft{
+padding-left:0px;
+}
+/* #h5 {
+    font-size: 17px;
+} */
+#border{
+    border-top: 1px solid #cacaca;
+}
+#bottom{
+    padding-bottom: 20px;
+}
+#margintop{
+    margin-top: 17px;
+}
+#padding{
+    padding:10px;
+}
+#center{
+    text-align: center;
+}
+
+.mat-radio-button.mat-accent .mat-radio-inner-circle, .mat-radio-button.mat-accent .mat-radio-ripple .mat-ripple-element:not(.mat-radio-persistent-ripple), .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-persistent-ripple, .mat-radio-button.mat-accent:active .mat-radio-persistent-ripple{
+    background-color: #337ab7;
+}
+
+.ds-td{
+    width:50%;padding-top:8px;
+}
+
+.mat-checkbox-background{
+    background-color: #337ab7;
+}
+
+md-checkbox.md-checked.green .md-icon {
+    background-color: rgba(0, 255, 0, 0.87);
+}
+
+.material-radio-btn{
+    margin-right:10px;
+}
+
+.sidetext{
+    color: #fff;
+    padding: 7px 20px;
+    margin: 8px 0;
+    cursor: pointer;
+  }
+  p.active{
+    background: #030305;
+    color: #fff;
+    box-shadow: 0 0 2px 0 #828387;
+    border-left: 4px solid #ffb946;
+    margin-left: 6px;
+    white-space: nowrap;
+  }
+  p.sidetext:hover{
+    background: #030305;
+    color: #fff;
+    box-shadow: 0 0 2px 0 #828387;
+    border-left: 4px solid #ffb946;
+    /* margin-left: 6px; */
+    white-space: nowrap;
+  }

@@ -1,0 +1,31 @@
+<nav class="site-navbar navbar navbar-default navbar-fixed-top navbar-mega" role="navigation">
+
+  <div _ngcontent-c4="" class="innerhead">
+    <img class="innerpgtop" src="assets/images/innerpagetopbg.jpg" style="height: 50px;
+        width: 100%;">
+    <img class="innerpglogo" src="assets/images/loginpglogo.png">
+  </div>
+</nav>
+<div class="container" style="margin-top:60px;">
+  <div *ngIf="formType == 'umcs'" class="row">
+      <app-umcs-approval></app-umcs-approval>
+   </div>
+   <div *ngIf="formType == 'nmcs'" class="row">
+      <app-nmcs-approval></app-nmcs-approval>
+   </div>
+   <div *ngIf="formType == 'sto'" class="row">
+      <app-sto-approval></app-sto-approval>
+   </div>
+   <div *ngIf="formType == 'proto'" class="row" >
+    <app-proto-approval></app-proto-approval>
+ </div>
+ <div *ngIf="formType == 'materialdispatch'" class="row" >
+    <app-mis-patch-approval></app-mis-patch-approval>
+ </div>
+ <div *ngIf="formType == 'msw'" class="row" >
+    <app-pmwr-approval></app-pmwr-approval>
+ </div>
+</div>
+
+
+  <!-- MCS FORM -->

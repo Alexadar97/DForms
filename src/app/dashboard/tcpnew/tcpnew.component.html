@@ -1,0 +1,227 @@
+<app-spinner *ngIf="loading"></app-spinner>
+<div class="col-md-12" style="margin-top:15px">
+    <div class="col-md-6">
+        <h4>TC Plate Information</h4>
+    </div>
+    <div class="col-md-6">
+        <button class="btn btn-default" style="float: right" (click)="goBack()"><i
+                class="fas fa-angle-left"></i>&nbsp;&nbsp;Back</button>
+    </div>
+</div>
+<div class="col-md-12">
+    <div class="table-tcp table-responsive">
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <th>TC Plate Number</th>
+                    <td>{{tcpname}} </td>
+                    <th>TC Expiry Date</th>
+                    <td>{{tcpExpiry}}</td>
+                    <th>TC Plate Document</th>
+                    <td><a (click)="downloadExpiry()" style="cursor: pointer;"><i
+                                class="fa fa-download"></i>&nbsp;&nbsp; Download</a></td>
+                </tr>
+                <tr>
+                    <th>Insurance Number</th>
+                    <td>{{insnumber}}</td>
+                    <th>Insurance Expiry Date</th>
+                    <td>{{tcpinsurence}}</td>
+                    <th>Insurance Document</th>
+                    <td><a (click)="downloadInsurence()" style="cursor: pointer;"><i
+                                class="fa fa-download"></i>&nbsp;&nbsp; Download</a></td>
+                </tr>
+                <tr>
+                    <th>Remarks</th>
+                    <td>{{remarks}}</td>
+                    <th>Assign Remarks</th>
+                    <td>{{assignremarks}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="col-md-12">
+    <ng-container *ngIf="istcplate != true">
+        <div class="col-md-6">
+            <h4>Form 19</h4>
+        </div>
+        <div class="col-md-3" style="text-align: right;">
+            <span><a download href="assets/TCP_Plate_template.xlsx">Download Template &nbsp;<i
+                        class="fas fa-cloud-download-alt" style="font-size: 16px;color: #000000;"></i></a>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <label class="btn btn-md btn-primary" for="aonofield"><i
+                        class="fa fa-upload"></i>&nbsp;&nbsp;Upload</label>
+                <input class="form-control" id="aonofield" type="file" #aodrawupload accept=".xlsx,.xls" value=""
+                    formControlName="filepath" (change)="uploadfile($event)">&nbsp;&nbsp;&nbsp;</span>
+            <p>{{fileName}}</p>
+
+        </div>
+        <!-- <div class="col-md-2" style="text-align: right;">
+          
+           
+        </div> -->
+        <!-- <div class="col-md-1" style="text-align: right">
+         
+        </div>  -->
+        <div class="col-md-3" style="text-align: right">
+            <button class="btn btn-primary btn-md btn-primbtn" style="" (click)="form19Download('export.xlsx')"><i
+                    class="fa fa-download"></i>
+                &nbsp;Download</button> &nbsp; &nbsp; &nbsp;
+            <button class="btn btn-primary btn-md btn-primbtn" style="" (click)="AddTc19()">+ &nbsp;Add Form
+                19</button>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="istcplate == true">
+        <div class="col-md-12">
+            <div class="" style="text-align: right">
+                <button class="btn btn-primary btn-md btn-primbtn" style="" (click)="form19Download('export.xlsx')"><i
+                        class="fa fa-download"></i>
+                    &nbsp;Download</button>
+            </div>
+        </div>
+    </ng-container>
+    <div class="col-md-12 table-responsive tablelist" style="padding: 0px;margin-top:20px">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>S.No</th>
+                    <th>Form 19 Sr. No</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Driver Name</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Start ODO</th>
+                    <th>End ODO</th>
+                    <th>Remarks</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of TCPlistTrip;let i=index">
+                    <td>{{i+1}}</td>
+                    <td (click)="openform19()">{{data.form19srno}} </td>
+                    <td>{{data.startdate}}</td>
+                    <td>{{data.enddate}}</td>
+                    <td>{{data.drivername}}</td>
+                    <td>{{data.fromloc}}</td>
+                    <td>{{data.toloc}}</td>
+                    <td>{{data.startodo}}</td>
+                    <td>{{data.endodo}}</td>
+                    <td>{{data.remarks}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="modal fade" id="AddTc19" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg" [formGroup]="TCPlateInfoForm">
+        <div class="modal-content" style="background: #F7F7F7;">
+            <div class="modal-header" style="padding: 15px 0; border-bottom: 2px solid #979797;margin: 0px 45px;">
+                <h4 class="modal-title">TC Plate Information</h4>
+            </div>
+
+            <div class="modal-body" style="border:none">
+                <div class="col-md-12" style="margin: 20px 0 0 0;">
+                    <div class="col-md-4">
+                        <label>Form 19 Sr. No.<dot></dot></label>
+                        <input type="text" class="form-control" formControlName="form19srno">
+                        <small class="text-danger" *ngIf="
+                            !TCPlateInfoForm.controls.form19srno.valid &&
+                            TCPlateInfoForm.controls.form19srno.touched
+                          ">Form 19 Sr. No is required</small>
+                    </div>
+                    <div class="col-md-4">
+                        <label>Start Date<dot></dot></label>
+                        <div style="position: relative;">
+                            <input type="text" placeholder="DD-MM-YYYY" class="form-control" bsDatepicker
+                                autocomplete="off"
+                                [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY', showWeekNumbers:false }"
+                                id="dates" [minDate]="today" formControlName="startdate">
+                            <img id="spring_calendar" src="assets/images/spring-calendar.svg">
+                        </div>
+                        <small class="text-danger" *ngIf="
+                            !TCPlateInfoForm.controls.startdate.valid &&
+                            TCPlateInfoForm.controls.startdate.touched
+                          ">Start Date is required</small>
+                    </div>
+                    <div class="col-md-4">
+                        <label>End Date<dot></dot></label>
+                        <div style="position: relative;">
+                            <input type="text" placeholder="DD-MM-YYYY" class="form-control" bsDatepicker
+                                autocomplete="off"
+                                [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY', showWeekNumbers:false }"
+                                id="dates2" [minDate]="today" formControlName="enddate">
+                            <img id="spring_calendar" src="assets/images/spring-calendar.svg">
+                            <small class="text-danger" *ngIf="
+                                !TCPlateInfoForm.controls.enddate.valid &&
+                                TCPlateInfoForm.controls.enddate.touched
+                              ">End Date is required</small>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-md-12" style="margin: 20px 0 0 0;">
+                    <div class="col-md-4">
+                        <label>Driver Name<dot></dot></label>
+                        <input type="text" class="form-control" formControlName="drivername">
+                        <small class="text-danger" *ngIf="
+                            !TCPlateInfoForm.controls.drivername.valid &&
+                            TCPlateInfoForm.controls.drivername.touched
+                          ">Driver Name is required</small>
+                    </div>
+                    <div class="col-md-4">
+                        <label>From<dot></dot></label>
+                        <input type="text" class="form-control" formControlName="fromloc">
+                        <small class="text-danger" *ngIf="
+                            !TCPlateInfoForm.controls.fromloc.valid &&
+                            TCPlateInfoForm.controls.fromloc.touched
+                          ">From is required</small>
+                    </div>
+                    <div class="col-md-4">
+                        <label>To<dot></dot></label>
+                        <input type="text" class="form-control" formControlName="toloc">
+                        <small class="text-danger" *ngIf="
+                            !TCPlateInfoForm.controls.toloc.valid &&
+                            TCPlateInfoForm.controls.toloc.touched
+                          ">To is required</small>
+                    </div>
+                </div>
+                <div class="col-md-12" style="margin: 20px 0 0 0;">
+                    <div class="col-md-4">
+                        <label>Start ODO<dot></dot></label>
+                        <input type="text" class="form-control" formControlName="startodo">
+                        <small class="text-danger" *ngIf="
+                            !TCPlateInfoForm.controls.startodo.valid &&
+                            TCPlateInfoForm.controls.startodo.touched
+                          ">Start ODO is required</small>
+                    </div>
+                    <div class="col-md-4">
+                        <label>End ODO<dot></dot></label>
+                        <input type="text" class="form-control" formControlName="endodo">
+                        <small class="text-danger" *ngIf="
+                            !TCPlateInfoForm.controls.endodo.valid &&
+                            TCPlateInfoForm.controls.endodo.touched
+                          ">End ODO is required</small>
+                    </div>
+                    <div class="col-md-4">
+                        <label>Remarks<dot></dot></label>
+                        <input type="text" class="form-control" formControlName="remarks">
+                        <small class="text-danger" *ngIf="
+                            !TCPlateInfoForm.controls.remarks.valid &&
+                            TCPlateInfoForm.controls.remarks.touched
+                          ">Remarks is required</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer" style="border-top: none;padding:0px 41px">
+                <button type="button" class="btn btn-md btn-black" data-dismiss="modal"
+                    style="background:#276090;color: #fff;">Cancel
+                </button>
+                <button type="button" class="btn btn-md  btn-black"
+                    style="background:#276090;color: #fff;margin:29px 0px 29px 11px"
+                    (click)="submitForm()">Save&nbsp;&nbsp;<i class="icon-save"></i></button>
+            </div>
+        </div>
+    </div>
+</div>

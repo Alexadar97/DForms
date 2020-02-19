@@ -1,0 +1,222 @@
+<app-spinner *ngIf="loading"></app-spinner>
+<div class="col-md-2" style="padding: 0;
+background-color: #242536; height: 100vh;">
+<div style="margin-top: 15px;">
+  <p class="sidetext"(click)="umcslists()"  routerLinkActive="active" ><i class="fa fa-angle-double-right"></i>&nbsp;&nbsp;UMCS List</p>
+    <p class="sidetext" (click)="addsto()"routerLinkActive="active" ><i class="fa fa-plus"></i>&nbsp;&nbsp;New
+                Request</p>
+     
+            <p class="sidetext" *ngIf="!isStoreLogin"(click)="upload()" routerLinkActive="active"><i class="fa fa-upload"></i>&nbsp;&nbsp;Upload
+                Partlist</p>
+
+        
+          
+    </div>
+</div>
+<div class="col-md-10">
+<div class="row">
+    <div class="col-md-4">
+      <h4>Used Material Credit Slip</h4>
+    </div>
+    <div class="col-md-4"></div>
+    <div class="col-md-4" >
+     
+    </div>
+  </div>
+  <div class="row" style="box-shadow: 1px 1px 1px 1px #d6d6d6;
+  padding: 10px;
+  width: 100%;">
+
+    <form [formGroup]="form">
+
+      <div class="">
+        <div class="row">
+
+
+
+          <div class="col-md-3">  
+
+            Purpose
+            <input readonly type="text" class="form-control" value="" formControlName="storagePurpose">
+
+          </div>
+
+          <div class="col-md-3">
+
+            HR ID
+            <input readonly type="text" class="form-control" value="" formControlName="hrid">
+            <br>
+            <small class="text-danger errormsg" *ngIf="
+            !form.controls.hrid.valid &&
+            form.controls.hrid.touched
+          ">HR ID is required</small>
+
+          </div>
+   <div class="col-md-3">
+
+    Contact Number
+    <input type="text" class="form-control" value="" formControlName="contactno" maxlength="10"  (keypress)="keyAlpha($event)" disabled>
+
+    <small class="text-danger errormsg" *ngIf="
+          !form.controls.contactno.valid &&
+          form.controls.contactno.touched">
+    </small>
+          </div>
+          <div class="col-md-3">
+
+              Department
+              <!-- <select class="form-control" name="" id=""  formControlName="deptid">
+                <ng-container *ngFor="let data of deptList;let index = index ; ">
+                    <option value={{data?.id}}>{{data.name}}</option>
+                  </ng-container>
+              </select> -->
+
+              <input type="text" class="form-control" value="" formControlName="department" readonly>
+            </div>
+
+
+          <!-- <div class="col-md-3 ">
+
+            Approver
+            <input type="text" class="form-control" value="" formControlName="appproverid">
+
+          </div> -->
+        </div>
+           <div class="row">
+          <div class="col-md-3">
+            <div class="delp">
+              Period of Storage
+
+              <select name="" id="" class="form-control" formControlName="storagePeriod" disabled>
+              <option value=null selected disabled>Select Period of Storage </option>
+              <option value="1month">Less than 1 Month</option>
+              <option value="2months">More than 1 Month and Less than 3 Months</option>
+              <option value="3months">Greater than 3 Months</option>
+          </select>
+
+                <!-- <input type="text" class="form-control" value="" formControlName="storagePeriod" readonly> -->
+
+            </div>
+
+
+        </div>
+        </div>
+
+      </div>
+
+      <hr>
+      <!-- <h4>{{form.value|json}}</h4>
+      <hr> -->
+      <div class="row">
+        <div class="col-md-12">
+          <table id="umcs_table" class="table table-bordered">
+            <tr class="tableheader">
+              <th>S.No</th>
+              <th>Part No</th>
+              <th>Description</th>
+              <th>Parts Removed From Vehicle No</th>
+              <th>Quantity</th>
+              <!-- <th>Delete</th> -->
+              <th>Location</th>
+            </tr>
+            <tbody formArrayName="umcsParts">
+              <tr class="tablerow" *ngFor="let row of rowForms.controls;let i =index" [formGroupName]="i">
+                <td style="text-align: center;">
+                  {{(i+1)}}
+                </td>
+
+                <td>
+                  <input type="text" class="form-control" formControlName="partnumber" readonly>
+                </td>
+                <td>
+                  <input type="text" class="form-control" formControlName="description" readonly>
+                </td>
+                <td> <input type="text" class="form-control" formControlName="vehicleno" readonly></td>
+
+                <td> <input type="number" class="form-control" formControlName="quantity" readonly></td>
+                <!-- <td> <button *ngIf="i!=0" class="btn btn-default" (click)="deleteRow(i)"><i class="fas fa-trash"></i></button> </td> -->
+                <td >
+                  <ng-container *ngIf="isExpired">
+                      <input type="text" class="form-control" formControlName="location" disabled >
+                  </ng-container>
+                  <ng-container *ngIf="!isExpired">
+                      <input type="text" class="form-control" formControlName="location" >
+                    </ng-container>
+
+                </td>
+              </tr>
+            </tbody>
+
+
+
+          </table>
+
+        </div>
+      </div>
+
+      <div class="row" *ngIf="isExpired">
+          <div  class="col-md-8"></div>
+                    <div class="col-md-4">
+
+
+                      Remarks:
+                      <input type="text" class="form-control" value="" formControlName="remarks" >
+                      <br>
+                      <small class="text-danger errormsg" *ngIf="
+                          !form.controls.remarks.valid &&
+                          form.controls.remarks.touched
+                        ">Remark is required</small>
+
+                    </div>
+                  </div>
+
+    </form>
+    <br><br>
+
+
+
+  <!-- <div class="button" style="float:right;margin: 20px 0px;">
+
+    <button  class="btn btn-primary btn-md" (click)="acceptLocation()">
+        Submit
+    </button>
+</div> -->
+<div style="text-align: right;margin: 0px 0px 20px 0px;padding-right: 30px;">
+    <button class="btn btn-primary btn-md" (click)="submitForm()" style="margin: 0px 0px 40px 0px;"><i
+          class="fa fa-save"></i>&nbsp;&nbsp;Submit</button>
+        </div>
+
+
+  </div>
+</div>
+
+
+
+
+
+<!-- confirm modal -->
+
+<div class="modal fade" id="confirmSubmit" role="dialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-10">
+            <p class="modalHeader"  style="font-weight: 600;">Submit</p>
+          </div>
+          <div class="col-md-2">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <br>
+          <div class="col-md-12">
+            <p> Are you sure to submit the form ?</p>
+          </div>
+        </div>
+      </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-sm btn-primary" data-dismiss="modal">No </button>
+      <button type="button" class="btn btn-sm btn-primary" (click)="acceptLocation()">Yes</button>
+    </div>
+  </div>
+  </div>
+</div>

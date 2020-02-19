@@ -1,0 +1,54 @@
+<div class='container' style="margin-bottom:20px ">
+<br>
+    <div class="col-md-12">
+        <div class="col-md-2">
+            <h4>Dashboard</h4>
+        </div>
+        <div class="col-md-10">
+            <div style="width: 50%;float: left;">
+                <select class="form-control" (change)="SelectForms($event.target.value)">
+                    <option value="1" selected>Stock Transfer  Order</option>
+                    <option value="2">New Material Credit</option>
+                    <option value="3">Used Material Credit</option>
+                    <option value="4">Proto Work Order</option>
+                    <option value="5">Material Issue Slip</option>
+                    <option value="6">Material Dispatch</option>
+                    <option value="7">Machine shop work order</option>
+                    <option value="8">Trade Certificate Plates</option>
+                </select>
+            </div>
+            <!-- <button class="btn btn-primary dropdown-item" (click)="backHome()" style="    width: 8%;float: right;">
+                <i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Back</button> -->
+        </div>
+    </div>
+   
+    <div class="col-md-12">
+        <ng-container *ngIf="Formvalue == 1">
+            <app-sto-dashboard></app-sto-dashboard>
+        </ng-container>
+        <ng-container *ngIf="Formvalue == 2">
+          <app-nmcs-dashboard></app-nmcs-dashboard>
+        </ng-container>
+        <ng-container *ngIf="Formvalue == 3">
+          <app-umcs-dashboard></app-umcs-dashboard>
+        </ng-container>
+        <ng-container *ngIf="Formvalue == 4">
+          <app-proto-dashboard></app-proto-dashboard>
+        </ng-container>
+        <ng-container *ngIf="Formvalue == 5">
+          <app-material-dashboard></app-material-dashboard>
+        </ng-container>
+        <ng-container *ngIf="Formvalue == 6">
+          <app-material-dispatch-dashboard></app-material-dispatch-dashboard>
+        </ng-container>
+        <ng-container *ngIf="Formvalue == 7">
+          <app-pmwork-dashboard></app-pmwork-dashboard>
+        </ng-container>
+        <ng-container *ngIf="Formvalue == 8">
+          <app-tcp-dashboard></app-tcp-dashboard>
+        </ng-container>
+    </div>
+
+
+
+</div>

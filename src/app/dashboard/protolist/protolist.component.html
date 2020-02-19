@@ -1,0 +1,1416 @@
+<app-spinner *ngIf="loading"></app-spinner>
+
+<div class="col-md-2" style="padding: 0;
+background-color: #242536; height: 100vh;">
+  <div style="margin-top: 15px;">
+    <p (click)="protolists()" class="sidetext active" routerLinkActive="active"><i
+        class="fa fa-angle-double-right"></i>&nbsp;&nbsp;Proto List</p>
+    <p class="sidetext" (click)="addproto()" routerLinkActive="active"><i class="fa fa-plus"></i>&nbsp;&nbsp;New
+      Request</p>
+
+    <p class="sidetext" *ngIf="isOFMVisible" (click)="showOFM()"><i class="fa fa-calendar"></i>&nbsp;&nbsp;OFM</p>
+    <p class="sidetext" (click)="downloadExcel('export.xlsx')" routerLinkActive="active"><i class="fa fa-download"></i>
+      &nbsp;Download</p>
+
+
+  </div>
+</div>
+<div class="col-md-10">
+
+  <div class="col-md-12" style="margin-top:10px;">  
+    <div class="col-md-5">
+      <h4>Proto Retrofitment</h4>
+    </div>
+    <div class="col-md-5">
+      <button class="btn btn-primary dropdown-item" style="    width: 17%;float: right;"
+        (click)="downloadZip('Generate_ZIP.zip')" routerLinkActive="active">
+        <i class="fa fa-print"></i>
+        &nbsp;Print</button>
+
+    </div>
+    <div class="col-md-2">
+      <input type="text" class="form-control" placeholder="  Search  " name="search"
+        (input)="search($event.target.value)" #valsearchuser autocomplete="off"><i class="fa fa-search search"></i>
+    </div>
+  
+  </div>
+  <div class="col-md-12" style="padding-bottom: 30px;">
+    <div class="table-responsive" style="overflow-x: inherit !important;">
+      <table id="prototable" class="table table-bordered table-striped" style="width:99%">
+        <tr>
+          <th style="text-align:center;">Select All
+            <br>
+            <label class="control control--checkbox">
+                <input type="checkbox" class="chk" id="select-all"  (click)="checkall($event.target.checked)">
+                <div class="control__indicator" style="left: 28px !important;"></div>
+              </label>
+          </th>
+          <th> S.No </th>
+          <th>Form ID</th>
+          <th>Exigency Case</th>
+          <th>Date of Request</th>
+          <th>Requester Name</th>
+          <th>Approver Name - L4</th>
+          <th>Function</th>
+          <th>No of Vehicle / Object </th>
+          <th>Part Details</th>
+          <th>Status</th>
+          <th>View Form</th>
+          <th style="text-align: center;">
+            UMCS Status
+          </th>
+          <th>Action</th>
+          <!-- <th *ngIf="(usertype != 'budgetapprover' && usertype != 'sm'
+          && usertype != 'ipl'  && usertype != 'store' && usertype !='protovehicleowner')|| (usertype =='hdtsupervisor'||usertype =='mdtsupervisor'||usertype =='aggregatesupervisor'||
+          usertype =='eandesupervisor'||usertype =='ppssupervisor'||usertype =='mechanicalsupervisor'|| usertype =='maintenancesupervisor')">
+            Delete</th> -->
+          <th >Delete</th >
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>
+            <div class="row">
+              <div class="col-lg-12 nopadding">
+                <input class="form-control" bsDaterangepicker id="rangedagte" type="text" style="font-size: 12px"
+                  placeholder="Select Created On" (bsValueChange)="SelectDate($event,'createddate')" autocomplete="off"/>
+              </div>
+            </div>
+          </td>
+          <td>
+           
+          </td>
+          <td>
+            <div class="row">
+              <div class="col-lg-12 nopadding">
+                  <div class="button-group">
+                      <button type="button" class="btn btn-default btn-sm dropdown-toggle"
+                          data-toggle="dropdown" style="width: 170px;">Select
+                          Approver - L4
+
+                          <span class="caret"></span></button>
+                      <ul class="dropdown-menu filtermenu" style="position: absolute;
+                  transform: translate3d(1px, 32px, 0px);
+                  top: 0px;
+                  left: 0px;
+                  will-change: transform;
+                  height: 12vh;
+                  overflow-x: hidden;
+                  overflow-y: auto;">
+                          <ng-container *ngFor="let data of getapproverl4;">
+                              <li>
+                                  <label class="control control--checkbox">
+                                      {{data}}
+                                      <input type="checkbox" class="typeSelectBox" value={{data}}
+                                          (change)="approverl4ilter($event,'l4name')">&nbsp;<span
+                                          id="select"></span>
+                                      <div class="control__indicator filterchkbox"></div>
+                                  </label>
+                              </li>
+                          </ng-container>
+                      </ul>
+                  </div>
+              </div>
+          </div>
+          </td>
+          <td>
+            <div class="row">
+              <div class="col-lg-12 nopadding">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">Select
+                    Function
+                    &nbsp;&nbsp;
+                    <span class="caret"></span></button>
+                  <ul class="dropdown-menu filtermenu" style="position: absolute;
+                        transform: translate3d(1px, 32px, 0px);
+                        top: 0px;
+                        left: 0px;
+                        will-change: transform;
+                        height: 15vh;
+                        overflow-x: hidden;
+                        overflow-y: auto;">
+                    <ng-container *ngFor="let data of getfunction;">
+                      <li>
+                        <label class="control control--checkbox">
+                          <!-- {{data}} -->
+                          <ng-container *ngIf="data == 'aggregateengine'">
+                            Engine
+                          </ng-container>
+                          <ng-container *ngIf="data == 'mdtsupervisor'">
+                            Vehicle MDT
+                          </ng-container>
+                          <ng-container *ngIf="data == 'hdtsupervisor'">
+                            Vehicle HDT
+                          </ng-container>
+                          <ng-container *ngIf="data == 'ppssupervisor'">
+                            PPS
+                          </ng-container>
+                          <ng-container *ngIf="data == 'aggregatetransmission'">
+                            Transmission
+                          </ng-container>
+                          <ng-container *ngIf="data == 'aggregateaxle'">
+                            Axle
+                          </ng-container>
+                          <input type="checkbox" class="typeSelectBox" value={{data}}
+                            (change)="functionfilter($event,'supervisor')">&nbsp;<span id="select"></span>
+                          <div class="control__indicator filterchkbox"></div>
+                        </label>
+                      </li>
+                    </ng-container>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td> </td>
+          <td> </td>
+          <td>
+            <div class="row">
+              <div class="col-lg-12 nopadding">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">Select
+                    Status
+                    &nbsp;&nbsp;
+                    <span class="caret"></span></button>
+                  <ul class="dropdown-menu filtermenu" role="menu" style="position: absolute;
+                            transform: translate3d(1px, 32px, 0px);
+                            top: 0px;
+                            left: 0px;
+                            will-change: transform;
+                            min-width: 240px!important;
+                            height: 22vh;
+                            overflow-x: hidden;
+                            overflow-y: auto;">
+                    <ng-container *ngFor="let data of getstatus;">
+                      <li>
+                        <label class="control control--checkbox">
+                          <ng-container *ngIf="data=='pending'">
+                            Requester L4 Approval Pending
+                          </ng-container>
+                          <ng-container *ngIf="data=='recalled'">
+                            Form Recalled
+                          </ng-container>
+                          <ng-container *ngIf="data=='l4approved'">
+                            Vehicle Owner Approval Pending
+                          </ng-container>
+                          <ng-container *ngIf="data=='l4rejected'">
+                            Requester L4 Approval Rejected
+                          </ng-container>
+                          <ng-container *ngIf="data=='vehicleownerapproved'">
+                            Vehicle Owner Approved
+                          </ng-container>
+                          <ng-container *ngIf="data=='protol4approved'">
+                            Proto L4 Approved
+                          </ng-container>
+                          <ng-container *ngIf="data=='protol4rejected'">
+                            Proto L4 Rejected
+                          </ng-container>
+                          <ng-container *ngIf="data=='mdtsupervisorapproved'">
+                            MDT Supervisor Approved
+                          </ng-container>
+                          <ng-container *ngIf="data=='mdtsupervisorrejected'">
+                            MDT Supervisor Rejected
+                          </ng-container>
+                          <ng-container *ngIf="data=='hdtsupervisorapproved'">
+                            HDT Supervisor Approved
+                          </ng-container>
+                          <ng-container *ngIf="data=='hdtsupervisorrejected'">
+                            HDT Supervisor Rejected
+                          </ng-container>
+                          <ng-container *ngIf="data=='aggregatesupervisorapproved'">
+                            Aggregate Supervisor Approved
+                          </ng-container>
+                          <ng-container *ngIf="data=='aggregatesupervisorrejected'">
+                            Aggregate Supervisor Rejected
+                          </ng-container>
+                          <ng-container *ngIf="data=='ppssupervisorapproved'">
+                            PPS Supervisor Approved
+                          </ng-container>
+                          <ng-container *ngIf="data=='ppssupervisorrejected'">
+                            PPS Supervisor Rejected
+                          </ng-container>
+                          <ng-container *ngIf="data=='eandesupervisorapproved'">
+                            E&E Supervisor Approved
+                          </ng-container>
+                          <ng-container *ngIf="data=='eandesupervisorrejected'">
+                            E&E Supervisor Rejected
+                          </ng-container>
+                          <ng-container *ngIf="data=='maintenancesupervisorapproved'">
+                            Maintenance Supervisor Approved
+                          </ng-container>
+                          <ng-container *ngIf="data=='maintenancesupervisorrejected'">
+                            Maintenance Supervisor Rejected
+                          </ng-container>
+                          <ng-container *ngIf="data=='mechanicalsupervisorapproved'">
+                            Mechanical Supervisor Approved
+                          </ng-container>
+                          <ng-container *ngIf="data=='mechanicalsupervisorrejected'">
+                            Mechanical Supervisor Rejected
+                          </ng-container>
+                          <ng-container *ngIf="data=='closed'">
+                            Completed
+                          </ng-container>
+                          <ng-container *ngIf="data=='supervisorpending'">
+                            Supervisor Approval Pending
+                          </ng-container>
+                          <ng-container *ngIf="data=='deleted'">
+                            Deleted
+                          </ng-container>
+                          <input type="checkbox" class="typeSelectBox" value={{data}}
+                            (change)="statusfilter($event,'status')">&nbsp;<span id="select"></span>
+                          <div class="control__indicator filterchkbox"></div>
+                        </label>
+                      </li>
+                    </ng-container>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </td>
+         <td></td>
+          <td>
+            <div class="row">
+              <div class="col-lg-12 nopadding">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">Select
+                    UMCS Status
+                    &nbsp;&nbsp;
+                    <span class="caret"></span></button>
+                  <ul class="dropdown-menu filtermenu" role="menu" style="position: absolute;
+                            transform: translate3d(1px, 32px, 0px);
+                            top: 0px;
+                            left: 0px;
+                            will-change: transform;
+                            height: 15vh;
+                            overflow-x: hidden;
+                            overflow-y: auto;">
+                    <ng-container *ngFor="let data of getumcsstatus;">
+                      <li>
+                        <label class="control control--checkbox">
+                          {{data}}
+                          <input type="checkbox" class="typeSelectBox" value={{data}}
+                            (change)="umcsstatusfilter($event,'umcsstatus')">&nbsp;<span id="select"></span>
+                          <div class="control__indicator filterchkbox"></div>
+                        </label>
+                      </li>
+                    </ng-container>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td></td>
+          <td></td>
+
+        </tr>
+
+        <tr *ngFor="let data of protolist;let index=index">
+          <td style="text-align:center;"> <label class="control control--checkbox">
+              <input type="checkbox" class="chkboxes checksingle" value="single" (click)="singlecheck($event,data.id)">
+              <div class="control__indicator checkcolor "></div>
+            </label></td>
+          <td>
+            {{((currentPage- 1) * 10 + index+1)}}
+          </td>
+          <td style="white-space: nowrap;">
+            <ng-container *ngIf="data?.editbcasheet == 1">
+              <span class="bcaformhover" style="white-space: nowrap; color: #337ab7; cursor: pointer;"
+                (click)="protoBCAForm(data)">
+                {{(data?.prformid != null) ? data?.prformid : '-' }}
+              </span>
+            </ng-container>
+            <ng-container *ngIf="data?.editbcasheet == 0">
+              <span style="white-space: nowrap; ">
+                {{(data?.prformid != null) ? data?.prformid : '-' }}
+              </span>
+            </ng-container>
+          </td>
+          <td>
+            <span *ngIf="data.exigencycase == 1">Unplanned</span>
+            <span *ngIf="data.exigencycase == 0">Planned</span>
+          </td>
+          <td style="white-space: nowrap;">{{(data?.createddate != null) ? data?.createddate : '-' }}</td>
+          <td>{{(data?.requestorname != null) ? data?.requestorname : '-' }}</td>
+          <td>{{(data?.l4name != null) ? data?.l4name : '-' }}</td>
+          <td>
+            <ng-container *ngIf="data?.supervisor == 'mdtsupervisor'">
+              Vehicle MDT
+            </ng-container>
+            <ng-container *ngIf="data?.supervisor == 'hdtsupervisor'">
+              Vehicle HDT
+            </ng-container>
+            <ng-container *ngIf="data?.supervisor == 'aggregateengine'">
+              Engine
+            </ng-container>
+            <ng-container *ngIf="data?.supervisor == 'ppssupervisor'">
+              PPS
+            </ng-container>
+            <ng-container *ngIf="data?.supervisor == 'aggregatetransmission'">
+              Transmission
+            </ng-container>
+            <ng-container *ngIf="data?.supervisor == 'aggregateaxle'">
+              Axle
+            </ng-container>
+          </td>
+          <td>{{(data?.noofvehicleorobj != null) ? data?.noofvehicleorobj : '-' }}</td>
+          <td>{{(data?.noofparts != null) ? data?.noofparts : '-' }}</td>
+          <td>
+            <span [style.color]="pickColor(data.statusLabel)">
+              {{(data?.statusLabel != null) ? data?.statusLabel : '-' }}
+          </span>
+            <!-- <span *ngIf="data?.status=='pending' && data?.isreqapproved == 1 " class="inprogress">
+              Requester L4 Approval Pending
+            </span>
+            <span *ngIf="data?.status=='l4approved' && data?.isreqapproved == 0" class="inprogress">
+              Date changed by Requester L4 Approval Pending
+            </span>
+            <span *ngIf="data?.status=='l4approved' && data?.isreqapproved == 1" class="inprogress">
+              Vehicle Owner Approval Pending
+            </span>
+            <span *ngIf="data?.status=='vehicleownerapproved' && data?.isreqapproved == 0" class="inprogress">
+              Date changed by Vehicle Owner Approval Pending
+            </span>
+            <span *ngIf="data?.status=='l4rejected'" class="rejected">
+              Requester L4 Rejected
+            </span>
+            <span *ngIf="data?.status=='vehicleownerapproved' && data?.isreqapproved == 1" >
+              <span *ngIf="data?.exigencycase=='1'"  class="inprogress">  Proto L4 Approval pending </span>
+              <span *ngIf="data?.supervisor=='hdtsupervisor'&& data?.exigencycase=='0'"  class="inprogress">HDT Supervisor Approval  Pending</span>
+              <span *ngIf="data?.supervisor=='mdtsupervisor'&& data?.exigencycase=='0'"  class="inprogress">MDT Supervisor Approval  Pending</span>
+              <span *ngIf="(data?.supervisor=='aggregateengine' || data?.supervisor=='aggregatetransmission' || data?.supervisor=='aggregateaxle') && (data?.exigencycase=='0')"  class="inprogress">
+                Aggregate Supervisor Approval  Pending</span>
+              <span *ngIf="data?.supervisor=='ppssupervisor' && data?.exigencycase=='0'"  class="inprogress">PPS Supervisor Approval  Pending</span>
+            </span>
+            <span *ngIf="data?.status=='protol4approved' && data?.isreqapproved == 1" class="inprogress">
+              <span *ngIf="data?.supervisor=='hdtsupervisor' && data?.exigencycase=='1'"  class="inprogress">HDT Supervisor Approval  Pending</span>
+              <span *ngIf="data?.supervisor=='mdtsupervisor' && data?.exigencycase=='1'"  class="inprogress">MDT Supervisor Approval  Pending</span>
+              <span  class="inprogress" *ngIf="(data?.supervisor=='aggregateengine' || data?.supervisor=='aggregatetransmission' || data?.supervisor=='aggregateaxle') && (data?.exigencycase=='1')">
+                Aggregate Supervisor Approval  Pending</span>
+              <span  class="inprogress" *ngIf="data?.supervisor=='ppssupervisor' && data?.exigencycase=='1'">PPS Supervisor Approval  Pending</span>
+            </span>
+            <span *ngIf="data?.status=='protol4approved' && data?.isreqapproved == 0" class="inprogress">
+              Date changed by Proto L4
+            </span>
+            <span *ngIf="data?.status=='protol4rejected'" class="rejected">
+              Proto L4 Rejected
+            </span>
+            <span *ngIf="data?.status=='mdtsupervisorapproved'&& data?.isreqapproved == 1" class="inprogress">
+              MDT Supervisor Approved
+            </span>
+            <span *ngIf="data?.status=='mdtsupervisorapproved'&& data?.isreqapproved == 0" class="inprogress">
+              Date changed by MDT Supervisor
+            </span>
+            <span *ngIf="data?.status=='mdtsupervisorrejected'" class="rejected">
+              MDT Supervisor Rejected
+            </span>
+            <span *ngIf="data?.status=='hdtsupervisorapproved' && data?.isreqapproved == 1" class="inprogress">
+              HDT Supervisor Approved
+            </span>
+            <span *ngIf="data?.status=='hdtsupervisorapproved' && data?.isreqapproved == 0" class="inprogress">
+              Date changed by HDT Supervisor
+            </span>
+            <span *ngIf="data?.status=='hdtsupervisorrejected'" class="rejected">
+              HDT Supervisor Rejected
+            </span>
+            <span *ngIf="data?.status=='aggregatesupervisorapproved'  && data?.isreqapproved == 1" class="inprogress">
+              Aggregate Supervisor Approved
+            </span>
+            <span *ngIf="data?.status=='aggregatesupervisorapproved'  && data?.isreqapproved == 0" class="inprogress">
+              Date changed by Aggregate Supervisor
+            </span>
+            <span *ngIf="data?.status=='aggregatesupervisorrejected'" class="rejected">
+              Aggregate Supervisor Rejected
+            </span>
+            <span *ngIf="data?.status =='ppssupervisorapproved' && data?.isreqapproved == 1" class="inprogress">
+              PPS Supervisor Approved
+            </span>
+            <span *ngIf="data?.status=='ppssupervisorapproved' && data?.isreqapproved == 0" class="inprogress">
+              Date changed by PPS Supervisor
+            </span>
+            <span *ngIf="data?.status=='ppssupervisorrejected'" class="rejected">
+              PPS Supervisor Rejected
+            </span>
+            <span *ngIf="data?.status=='eandesupervisorapproved'&& data?.isreqapproved == 1" class="inprogress">
+              E&E Supervisor Approved
+            </span>
+            <span *ngIf="data?.status=='eandesupervisorapproved'&& data?.isreqapproved == 0" class="inprogress">
+              Date changed by E&E Supervisor
+            </span>
+            <span *ngIf="data?.status=='eandesupervisorrejected'" class="rejected">
+              E&E Supervisor Rejected
+            </span>
+            <span *ngIf="data?.status=='maintenancesupervisorapproved'&& data?.isreqapproved == 1" class="inprogress">
+              Maintenance Supervisor Approved
+            </span>
+            <span *ngIf="data?.status=='maintenancesupervisorapproved' && data?.isreqapproved ==0" class="inprogress">
+              Date changed by Maintenance Supervisor
+            </span>
+            <span *ngIf="data?.status=='maintenancesupervisorrejected'" class="rejected">
+              Maintenance Supervisor Rejected
+            </span>
+            <span *ngIf="data?.status=='mechanicalsupervisorapproved' && data?.isreqapproved ==1" class="inprogress">
+              Mechanical Supervisor Approved
+            </span>
+            <span *ngIf="data?.status=='mechanicalsupervisorapproved' && data?.isreqapproved ==0" class="inprogress">
+              Date changed by Mechanical Supervisor
+            </span>
+            <span *ngIf="data?.status=='mechanicalsupervisorrejected'" class="rejected">
+              Mechanical Supervisor Rejected
+            </span>
+            <span *ngIf="data?.status=='recalled'" class="inprogress">
+              Form Recalled
+            </span>
+            <span *ngIf="data?.status=='closed'" class="completed">
+              Completed
+            </span>
+            <span *ngIf="data?.status=='deleted'" class="rejected">
+              Deleted
+            </span>
+            <span *ngIf="data?.status=='supervisorpending'" class="inprogress">
+              Supervisor Approval Pending
+            </span> -->
+          </td>
+          <td><button class="btn btn-default btn-sm" style="background: rgba(96, 96, 96, 0.28);
+              border: none;" (click)="viewForm(data)">
+              <i class="fa fa-eye"></i>&nbsp;&nbsp;View
+            </button></td>
+          <td style="text-align: center;">
+            <ng-container
+              *ngIf="data?.umcsstatus =='umcsNotRaised'">
+              <button class="btn btn-default  btn-sm" style="background: rgba(96, 96, 96, 0.28);
+                border: none;" (click)="umcsInitiate(data.id)">Initiate</button>
+            </ng-container>
+            <ng-container *ngIf="data?.umcsstatus !='umcsNotRaised'">
+              <span [style.color]="umcsColor(data.umcsstatus)">
+                {{(data?.umcsstatus != null) ? data?.umcsstatus : '-' }}
+            </span>
+            </ng-container>
+           
+            <!-- <ng-container
+              *ngIf=" usertype == 'protovehicleowner'|| usertype =='hdtsupervisor'||usertype =='mdtsupervisor'||usertype =='aggregatesupervisor'||
+              usertype =='eandesupervisor'||usertype =='ppssupervisor'||usertype =='mechanicalsupervisor'|| usertype =='maintenancesupervisor'">
+              <ng-container *ngIf="data?.umcsstatus =='umcsNotRaised' && (data?.status != 'supervisorpending')">
+                UMCS Not Raised
+              </ng-container>
+            </ng-container> -->
+          </td>
+          <td>
+
+            <!-- usertype vehicleowner edit -->
+
+            <ng-container
+              *ngIf="isProtoVehicleOwner && (data?.isreqapproved == 1 && data?.status =='l4approved' && data?.formVOedit == 0) ">
+              <button class="btn btn-primary btn-sm" (click)="EditProtovehicle(data,'protovehicleowner')">
+                Edit
+              </button>
+            </ng-container>
+
+            <!-- exigencycase based on usertype hdtsupervisor edit-->
+
+            <ng-container *ngIf="isProtoHDTSupervisor && (data?.exigencycase == 0 && data?.isreqapproved == 1 && data?.notformsupervisor == 0) && (data?.status=='vehicleownerapproved' || data?.status=='supervisorpending'|| data?.status  == 'hdtsupervisorapproved' || data?.status  == 'mdtsupervisorapproved'||
+                data?.status  == 'aggregatesupervisorapproved'|| data?.status  == 'eandesupervisorapproved'|| data?.status  == 'ppssupervisorapproved'|| data?.status  == 'maintenancesupervisorapproved'||
+                data?.status  == 'mechanicalsupervisorapproved')">
+              <button class="btn btn-primary btn-sm" (click)="EditProtoSupervisor(data,'hdtsupervisor')">
+                Edit
+              </button>
+            </ng-container>
+            <ng-container *ngIf="isProtoHDTSupervisor && (data?.exigencycase == 1 && data?.isreqapproved == 1 && data?.notformsupervisor == 0) && (data?.status=='protol4approved' || data?.status=='supervisorpending'|| data?.status  == 'hdtsupervisorapproved' || data?.status  == 'mdtsupervisorapproved'||
+              data?.status  == 'aggregatesupervisorapproved'|| data?.status  == 'eandesupervisorapproved'|| data?.status  == 'ppssupervisorapproved'|| data?.status  == 'maintenancesupervisorapproved'||
+              data?.status  == 'mechanicalsupervisorapproved')">
+              <button class="btn btn-primary btn-sm" (click)="EditProtoSupervisor(data,'hdtsupervisor')">
+                Edit
+              </button>
+            </ng-container>
+
+            <!-- exigencycase based on usertype mdtsupervisor edit-->
+
+            <ng-container *ngIf="isProtoMDTSupervisor && (data?.exigencycase == 0 && data?.isreqapproved == 1 && data?.notformsupervisor == 0) && (data?.status=='vehicleownerapproved' || data?.status=='supervisorpending'|| data?.status  == 'hdtsupervisorapproved' || data?.status  == 'mdtsupervisorapproved'||
+              data?.status  == 'aggregatesupervisorapproved'|| data?.status  == 'eandesupervisorapproved'|| data?.status  == 'ppssupervisorapproved'|| data?.status  == 'maintenancesupervisorapproved'||
+              data?.status  == 'mechanicalsupervisorapproved')">
+              <button class="btn btn-primary btn-sm" (click)="EditProtoSupervisor(data,'mdtsupervisor')">
+                Edit
+              </button>
+            </ng-container>
+            <ng-container *ngIf="isProtoMDTSupervisor && (data?.exigencycase == 1 && data?.isreqapproved == 1 && data?.notformsupervisor == 0) && ( data?.status=='protol4approved' || data?.status=='supervisorpending'|| data?.status  == 'hdtsupervisorapproved' || data?.status  == 'mdtsupervisorapproved'||
+              data?.status  == 'aggregatesupervisorapproved'|| data?.status  == 'eandesupervisorapproved'|| data?.status  == 'ppssupervisorapproved'|| data?.status  == 'maintenancesupervisorapproved'||
+              data?.status  == 'mechanicalsupervisorapproved')">
+              <button class="btn btn-primary btn-sm" (click)="EditProtoSupervisor(data,'mdtsupervisor')">
+                Edit
+              </button>
+            </ng-container>
+
+            <!-- exigencycase based on usertype aggregatesupervisor edit-->
+
+            <ng-container *ngIf="isProtoAggregateSupervisor && (data?.exigencycase == 0 && data?.isreqapproved == 1 && data?.notformsupervisor == 0)&& (data?.status=='vehicleownerapproved' || data?.status=='supervisorpending'|| data?.status  == 'hdtsupervisorapproved' || data?.status  == 'mdtsupervisorapproved'||
+              data?.status  == 'aggregatesupervisorapproved'|| data?.status  == 'eandesupervisorapproved'|| data?.status  == 'ppssupervisorapproved'|| data?.status  == 'maintenancesupervisorapproved'||
+              data?.status  == 'mechanicalsupervisorapproved')">
+              <button class="btn btn-primary btn-sm" (click)="EditProtoSupervisor(data,'aggregatesupervisor')">
+                Edit
+              </button>
+            </ng-container>
+            <ng-container *ngIf="isProtoAggregateSupervisor && (data?.exigencycase == 1 && data?.isreqapproved == 1 && data?.notformsupervisor == 0)&& (data?.status=='protol4approved' || data?.status=='supervisorpending'|| data?.status  == 'hdtsupervisorapproved' || data?.status  == 'mdtsupervisorapproved'||
+              data?.status  == 'aggregatesupervisorapproved'|| data?.status  == 'eandesupervisorapproved'|| data?.status  == 'ppssupervisorapproved'|| data?.status  == 'maintenancesupervisorapproved'||
+              data?.status  == 'mechanicalsupervisorapproved')">
+              <button class="btn btn-primary btn-sm" (click)="EditProtoSupervisor(data,'aggregatesupervisor')">
+                Edit
+              </button>
+            </ng-container>
+
+            <!-- exigencycase based on usertype ppssupervisor edit-->
+
+            <ng-container *ngIf="isProtoPPSSupervisor  && (data?.exigencycase == 0 && data?.isreqapproved == 1 && data?.notformsupervisor == 0) && (data?.status=='vehicleownerapproved' || data?.status=='supervisorpending'|| data?.status  == 'hdtsupervisorapproved' || data?.status  == 'mdtsupervisorapproved'||
+                data?.status  == 'aggregatesupervisorapproved'|| data?.status  == 'eandesupervisorapproved'|| data?.status  == 'ppssupervisorapproved'|| data?.status  == 'maintenancesupervisorapproved'||
+                data?.status  == 'mechanicalsupervisorapproved')">
+              <button class="btn btn-primary btn-sm" (click)="EditProtoSupervisor(data,'ppssupervisor')">
+                Edit
+              </button>
+            </ng-container>
+
+            <ng-container *ngIf="isProtoPPSSupervisor  && (data?.exigencycase == 1 && data?.isreqapproved == 1 && data?.notformsupervisor == 0) && (data?.status=='protol4approved' || data?.status=='supervisorpending'|| data?.status  == 'hdtsupervisorapproved' || data?.status  == 'mdtsupervisorapproved'||
+              data?.status  == 'aggregatesupervisorapproved'|| data?.status  == 'eandesupervisorapproved'|| data?.status  == 'ppssupervisorapproved'|| data?.status  == 'maintenancesupervisorapproved'||
+              data?.status  == 'mechanicalsupervisorapproved')">
+              <button class="btn btn-primary btn-sm" (click)="EditProtoSupervisor(data,'ppssupervisor')">
+                Edit
+              </button>
+            </ng-container>
+
+            <!-- exigencycase based on usertype eandesupervisor edit-->
+
+            <ng-container *ngIf="isProtoEandESupervisor  && (data?.exigencycase == 0 && data?.isreqapproved == 1 && data?.notformsupervisor == 0) && (data?.status=='vehicleownerapproved' || data?.status=='supervisorpending'|| data?.status  == 'hdtsupervisorapproved' || data?.status  == 'mdtsupervisorapproved'||
+              data?.status  == 'aggregatesupervisorapproved'|| data?.status  == 'eandesupervisorapproved'|| data?.status  == 'ppssupervisorapproved'|| data?.status  == 'maintenancesupervisorapproved'||
+              data?.status  == 'mechanicalsupervisorapproved')">
+              <button class="btn btn-primary btn-sm" (click)="EditProtoSupervisor(data,'eandesupervisor')">
+                Edit
+              </button>
+            </ng-container>
+
+            <ng-container *ngIf="isProtoEandESupervisor  && (data?.exigencycase == 1 && data?.isreqapproved == 1 && data?.notformsupervisor == 0) && (data?.status=='protol4approved' || data?.status=='supervisorpending'|| data?.status  == 'hdtsupervisorapproved' || data?.status  == 'mdtsupervisorapproved'||
+                  data?.status  == 'aggregatesupervisorapproved'|| data?.status  == 'eandesupervisorapproved'|| data?.status  == 'ppssupervisorapproved'|| data?.status  == 'maintenancesupervisorapproved'||
+                  data?.status  == 'mechanicalsupervisorapproved')">
+              <button class="btn btn-primary btn-sm" (click)="EditProtoSupervisor(data,'eandesupervisor')">
+                Edit
+              </button>
+            </ng-container>
+
+            <!-- exigencycase based on usertype maintenancesupervisor edit-->
+
+            <ng-container *ngIf="isProtoMaintenanceSupervisor  && (data?.exigencycase == 0 && data?.isreqapproved == 1 && data?.notformsupervisor == 0) && (data?.status=='vehicleownerapproved' || data?.status=='supervisorpending'|| data?.status  == 'hdtsupervisorapproved' || data?.status  == 'mdtsupervisorapproved'||
+                data?.status  == 'aggregatesupervisorapproved'|| data?.status  == 'eandesupervisorapproved'|| data?.status  == 'ppssupervisorapproved'|| data?.status  == 'maintenancesupervisorapproved'||
+                data?.status  == 'mechanicalsupervisorapproved')">
+              <button class="btn btn-primary btn-sm" (click)="EditProtoSupervisor(data,'maintenancesupervisor')">
+                Edit
+              </button>
+            </ng-container>
+
+            <ng-container *ngIf="isProtoMaintenanceSupervisor  && (data?.exigencycase == 1 && data?.isreqapproved == 1 && data?.notformsupervisor == 0) && (data?.status=='protol4approved' || data?.status=='supervisorpending'|| data?.status  == 'hdtsupervisorapproved' || data?.status  == 'mdtsupervisorapproved'||
+                data?.status  == 'aggregatesupervisorapproved'|| data?.status  == 'eandesupervisorapproved'|| data?.status  == 'ppssupervisorapproved'|| data?.status  == 'maintenancesupervisorapproved'||
+                data?.status  == 'mechanicalsupervisorapproved')">
+              <button class="btn btn-primary btn-sm" (click)="EditProtoSupervisor(data,'maintenancesupervisor')">
+                Edit
+              </button>
+            </ng-container>
+
+            <!-- exigencycase based on usertype mechanicalsupervisor edit-->
+
+            <ng-container *ngIf="isProtoMechanicalSupervisor  && (data?.exigencycase == 0 && data?.isreqapproved == 1 && data?.notformsupervisor == 0) && ( data?.status=='vehicleownerapproved' || data?.status=='supervisorpending'|| data?.status  == 'hdtsupervisorapproved' || data?.status  == 'mdtsupervisorapproved'||
+                data?.status  == 'aggregatesupervisorapproved'|| data?.status  == 'eandesupervisorapproved'|| data?.status  == 'ppssupervisorapproved'|| data?.status  == 'maintenancesupervisorapproved'||
+                data?.status  == 'mechanicalsupervisorapproved')">
+              <button class="btn btn-primary btn-sm" (click)="EditProtoSupervisor(data,'mechanicalsupervisor')">
+                Edit
+              </button>
+            </ng-container>
+            <ng-container *ngIf="isProtoMechanicalSupervisor  && (data?.exigencycase == 1 && data?.isreqapproved == 1 && data?.notformsupervisor == 0) && ( data?.status=='protol4approved' || data?.status=='supervisorpending'|| data?.status  == 'hdtsupervisorapproved' || data?.status  == 'mdtsupervisorapproved'||
+              data?.status  == 'aggregatesupervisorapproved'|| data?.status  == 'eandesupervisorapproved'|| data?.status  == 'ppssupervisorapproved'|| data?.status  == 'maintenancesupervisorapproved'||
+              data?.status  == 'mechanicalsupervisorapproved')">
+              <button class="btn btn-primary btn-sm" (click)="EditProtoSupervisor(data,'mechanicalsupervisor')">
+                Edit
+              </button>
+            </ng-container>
+
+            <!-- datechanged any usertype based on edit-->
+
+            <ng-container *ngIf="data?.isreqapproved == 0 && (data?.status=='l4approved' || data?.status=='vehicleownerapproved' ||data?.status=='protol4approved'||data?.status=='hdtsupervisorapproved'||data?.status=='mdtsupervisorapproved'
+              ||data?.status=='aggregatesupervisorapproved'||data?.status=='eandesupervisorapproved' ||data?.status=='ppssupervisorapproved'||data?.status=='maintenancesupervisorapproved'||data?.status=='mechanicalsupervisorapproved') && (status !='protovehicleowner' && status !='hdtsupervisor'
+              && status !='mdtsupervisor' && status !='ppssupervisor' && status !='maintenancesupervisor' && status !='mechanicalsupervisor'
+              && status !='eandesupervisor'&& status !='aggregatesupervisor' )">
+              <button class="btn btn-primary btn-sm" (click)="EditProto(data,'requster')">
+                Edit
+              </button>
+            </ng-container>
+            <ng-container *ngIf="data?.status=='pending' && (data?.isreqapproved == 1 && usertype != 'budgetapprover' && usertype != 'sm'
+        && usertype != 'ipl'  && usertype != 'store' && status !='protovehicleowner' && status !='hdtsupervisor'
+        && status !='mdtsupervisor' && status !='ppssupervisor' && status !='maintenancesupervisor' && status !='mechanicalsupervisor'
+        && status !='eandesupervisor'&& status !='aggregatesupervisor')">
+              <button class="btn btn-primary  btn-sm" (click)="protoRecall(data.id)">
+                Recall
+              </button>
+            </ng-container>
+            <ng-container *ngIf="data?.status=='recalled' && ( usertype != 'budgetapprover' && usertype != 'sm'
+              && usertype != 'ipl'  && usertype != 'store' && status !='protovehicleowner' && status !='hdtsupervisor'
+              && status !='mdtsupervisor' && status !='ppssupervisor' && status !='maintenancesupervisor' && status !='mechanicalsupervisor'
+              && status !='eandesupervisor'&& status !='aggregatesupervisor')">
+              <button class="btn btn-primary  btn-sm" (click)="protoRecallEdit(data.id)">
+                Edit
+              </button>
+            </ng-container>
+          </td>
+          <td style="text-align: center;">
+            <ng-container *ngIf="data?.status != 'deleted' && data?.status != 'closed'">
+              <ng-container
+              *ngIf="usertype != 'budgetapprover' && usertype != 'sm'
+              && usertype != 'ipl'  && usertype != 'store' && usertype !='protovehicleowner' && usertype !='hdtsupervisor' && usertype !='mdtsupervisor' && usertype !='aggregatesupervisor' && 
+              usertype !='eandesupervisor' && usertype !='ppssupervisor' && usertype !='mechanicalsupervisor' && usertype !='maintenancesupervisor'">
+              <button class="btn btn-default  btn-sm" (click)="protoDelete(data.id,data)" style="border-radius: 6px;">
+                <i class="fas fa-trash" style="font-size: 16px;"></i>
+              </button>
+            </ng-container>
+            <ng-container
+              *ngIf="data?.isreqsupervisor != 0 &&  (usertype =='hdtsupervisor' || usertype =='mdtsupervisor'||usertype =='aggregatesupervisor'||
+            usertype =='eandesupervisor'||usertype =='ppssupervisor'||usertype =='mechanicalsupervisor'|| usertype =='maintenancesupervisor')">
+              <button class="btn btn-default  btn-sm" (click)="protoDelete(data.id,data)" style="border-radius: 6px;">
+                <i class="fas fa-trash" style="font-size: 16px;"></i>
+              </button>
+            </ng-container>
+            </ng-container>
+           
+
+          </td>
+        </tr>
+      </table>
+    </div>
+    <br>
+    <h4 *ngIf="protolist?.length==0" class="text-center">No New Proto Retrofitment created yet!</h4>
+    <!-- <pagination-controls *ngIf="protolist?.length!=0" style="text-align: right;" (pageChange)="p1 = $event" #api id="two">
+    </pagination-controls> -->
+
+    <div style="float: right;margin-bottom: 35px;" *ngIf="protolist?.length!=0">
+      <button [disabled]="currentPage == 1" class="btn btn-default paginationbtn" (click)="paginatePartList('prev')"><i
+          class="fa fa-chevron-left"></i></button>
+      <span style="font-size: 15px;
+            padding: 10px;">
+        <!-- {{currentPage}} -->
+        <input id="currentPageInput" class="paginatecontrol" type="text" value="{{currentPage}}" style="width: 50px;">
+        <!-- <i class="icon-search" (click)="searchPage()" class="searchbtn"></i> -->
+        <i class="fa fa-search searchbtn" (click)="searchPage()"></i>
+        of
+        {{totalPages}}
+      </span>
+
+      <button [disabled]="currentPage == totalPages" class="btn btn-default paginationbtn"
+        (click)="paginatePartList('next')"><i class="fa fa-chevron-right"></i></button>
+    </div>
+  </div>
+</div>
+
+
+<!-- Total Form View -->
+
+
+<div class="modal fade" id="protototalform" role="dialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-lg" style="width: 80%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title" style="font-size: 16px;">Form Details</h4>
+      </div>
+      <div class="modal-body">
+        <s-update [arr]="updateForm"></s-update>
+        <div class="modal-table">
+          <div class="row">
+            <div class="col-md-12 table-responsive">
+              <table class="table table-striped" id="protototalform">
+                <tbody>
+                  <tr>
+                    <th style="width: 25%;">Form ID</th>
+                    <td style="width: 25%;">{{protoData?.prformid}}</td>
+                    <th style="width: 25%;">Date of Request</th>
+                    <td style="width: 25%;">{{protoData?.createddate}}</td>
+                  </tr>
+                  <tr>
+                    <th style="width: 25%;">Requester Name</th>
+                    <td style="width: 25%;">{{protoData?.requestorname}}</td>
+                    <th style="width: 25%;">Closed Date</th>
+                    <td>
+                      <ng-container *ngIf="protoData?.closeddate == null">-</ng-container>
+                      <ng-container *ngIf="protoData?.closeddate != null">{{protoData?.closeddate}}</ng-container>
+                    </td>
+
+                  </tr>
+                  <tr>
+                    <th style="width: 25%;">Department</th>
+                    <td style="width: 25%;">{{protoData?.department}}</td>
+                    <th style="width: 25%;">Contact Number</th>
+                    <td style="width: 25%;">{{protoData?.contactno}}</td>
+
+                  </tr>
+                  <tr>
+                    <th style="width: 25%;">Project Name</th>
+                    <td style="width: 25%;">{{protoData?.projectname}}</td>
+                    <th style="width: 25%;">Activity</th>
+                    <td style="width: 25%;">{{protoData?.activity}}</td>
+
+                  </tr>
+                  <tr>
+                    <th style="width: 25%;">Purpose of Activity </th>
+                    <td style="width: 25%;">{{protoData?.storagePurpose}}</td>
+                    <th style="padding: 0px 8px;width: 25%;">System Name</th>
+                    <td style="width: 25%;">{{protoData?.systemname}}</td>
+
+                  </tr>
+                  <tr>
+                    <th style="padding: 0px 8px;width: 25%;">
+                      <ng-container>
+                        AO Drawing Required
+                      </ng-container>
+                    </th>
+                    <td style="padding: 0px !important;margin: 0px !important;width: 25%;">
+                      <div>
+                        <table class="table table-striped">
+                          <tr>
+                            <td style="padding: 12px !important;
+                          border-right: 1px solid #ccc !important;
+                          border-bottom-color: transparent !important;
+                          border-top-color: transparent !important;">
+                              <ng-container *ngIf="protoData?.aodrawing == 1">
+                                Yes
+                              </ng-container>
+                              <ng-container *ngIf="protoData?.aodrawing == 0">
+                                No
+                              </ng-container>
+                            </td>
+                            <th style="background: transparent;
+                            color: #000;
+                            padding: 8px !important;
+                            border-left: 1px solid #ccc !important;
+                            border-right: 1px solid #ccc !important;
+                            border-top: 1px solid transparent !important;
+                            border-bottom: 1px solid transparent !important;">
+                              <ng-container *ngIf="protoData?.aodrawing == 0"> AO Drawing File</ng-container>
+                              <ng-container *ngIf="protoData?.aodrawing == 1"> AO Drawing Number</ng-container>
+                            </th>
+                            <td style="padding: 0px !important;margin: 0px !important;width: 25%;" style="width: 25%;padding: 12px !important;
+                          border-right: 1px solid #ccc !important;
+                          border-bottom-color: transparent !important;
+                          border-top-color: transparent !important;">
+                              <ng-container *ngIf="protoData?.aodrawing == 0">
+                                <!-- <a data-toggle="tooltip" title="Download" data-placement="bottom">
+                                    <i class="fa fa-download"
+
+                                      style="font-size: 15px;color: #130f0fb5;cursor: pointer;"></i></a> -->
+                                <ul class="list-group-category" style="padding-left: 26px;height: 20vh;
+                              overflow: auto;">
+                                  <ng-container *ngFor="let file of fileDownloadList ; let i =index">
+                                    <li class="list-group" style="margin-bottom: 8px;">{{file.filename}}&nbsp;&nbsp;<i
+                                        class="fa fa-download" (click)="downlaodfile(file.filename,file.id)"
+                                        style="font-size: 15px;color: #130f0fb5;cursor: pointer;"></i></li>
+                                  </ng-container>
+                                </ul>
+                              </ng-container>
+                              <ng-container *ngIf="protoData?.aodrawing == 1">
+                                {{protoData?.aodrawingtext}}
+                              </ng-container>
+                            </td>
+                          </tr>
+                        </table>
+                      </div>
+                    </td>
+                    <th style="width: 25%;">Function</th>
+                    <td style="width: 25%;">
+                      <!-- {{protoData?.supervisor}} -->
+                      <ng-container *ngIf="protoData?.supervisor == 'mdtsupervisor'">
+                        Vehicle MDT
+                      </ng-container>
+                      <ng-container *ngIf="protoData?.supervisor == 'hdtsupervisor'">
+                        Vehicle HDT
+                      </ng-container>
+                      <ng-container *ngIf="protoData?.supervisor == 'aggregateengine'">
+                        Engine
+                      </ng-container>
+                      <ng-container *ngIf="protoData?.supervisor == 'ppssupervisor'">
+                        PPS
+                      </ng-container>
+                      <ng-container *ngIf="protoData?.supervisor == 'aggregatetransmission'">
+                        Transmission
+                      </ng-container>
+                      <ng-container *ngIf="protoData?.supervisor == 'aggregateaxle'">
+                        Axle
+                      </ng-container>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th style="padding: 0px 8px;width: 25%;">Fitment Report Required</th>
+                    <td style="padding: 0px !important;margin: 0px !important;width: 25%;">
+                      <table class="table table-striped">
+                        <tr>
+                          <td style="padding: 12px !important;border-right: 1px solid #ccc !important;border-bottom-color: transparent !important;
+                          border-top-color: transparent !important;">
+                            <ng-container *ngIf="protoData?.fitmentreport == 1">
+                              Yes
+                            </ng-container>
+                            <ng-container *ngIf="protoData?.fitmentreport == 0">
+                              No
+                            </ng-container>
+                          </td>
+                          <ng-container *ngIf="protoData?.fitmentreport == 0">
+                            <th style="background: transparent;
+                         color: #000;
+                         padding: 8px !important;
+                         border-left: 1px solid #ccc !important;
+                         border-right: 1px solid #ccc !important;
+                         border-top: 1px solid transparent !important;
+                         border-bottom: 1px solid transparent !important;">Remarks</th>
+                          </ng-container>
+                          <ng-container *ngIf="protoData?.fitmentreport == 0">
+                            <td style="padding: 12px !important;border-right: 1px solid #ccc !important;border-bottom-color: transparent !important;
+                            border-top-color: transparent !important;">
+                              <ng-container>
+                                {{protoData?.fitmentremarks}}
+                              </ng-container>
+                            </td>
+                          </ng-container>
+                        </tr>
+                      </table>
+                    </td>
+                    <th style="padding: 0px 8px;width: 25%;">Finas Update Required</th>
+                    <td style="padding: 0px !important;margin: 0px !important;width: 25%;">
+                      <table class="table table-striped">
+                        <tr>
+                          <td style="padding: 12px !important;
+                          border-right: 1px solid #ccc !important;
+                          border-bottom-color: transparent !important;
+                          border-top-color: transparent !important;">
+                            <ng-container *ngIf="protoData?.finasupdate == 1">
+                              Yes
+                            </ng-container>
+                            <ng-container *ngIf="protoData?.finasupdate == 0">
+                              No
+                            </ng-container>
+                          </td>
+                          <ng-container *ngIf="protoData?.finasupdate == 0">
+                            <th style="background: transparent;
+                         color: #000;
+                         padding: 8px !important;
+                         border-left: 1px solid #ccc !important;
+                         border-right: 1px solid #ccc !important;
+                         border-top: 1px solid transparent !important;
+                         border-bottom: 1px solid transparent !important;">Remarks</th>
+                          </ng-container>
+                          <ng-container *ngIf="protoData?.finasupdate == 0">
+                            <td style="padding: 12px !important;
+                            border-right: 1px solid #ccc !important;
+                            border-bottom-color: transparent !important;
+                            border-top-color: transparent !important;">
+                              <ng-container>
+                                {{protoData?.finasupdateremarks}}
+                              </ng-container>
+                            </td>
+                          </ng-container>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th style="width: 25%;">Sub Function</th>
+                    <td style="width: 25%;">
+                      <ul class="list-group-category" style="padding-left: 14px;height: 18vh;
+                      overflow: auto;">
+                        <ng-container *ngFor="let data of arrlist ; let i =index ">
+                          <!-- <li class="list-group" style="margin-bottom: 8px;">{{data}}</li> -->
+                          <div class="col-md-12">
+                            <li class="list-group" *ngIf="data == 'mdtsupervisor'" style="margin-bottom: 8px;">
+                              <div class="col-md-4">Vehicle MDT</div>
+                              <div class="col-md-1" *ngIf="protoData?.mdtstate != null">-</div>
+                              <div class="col-md-6">
+                                <ng-container *ngIf="protoData?.mdtstate == 'mdtsupervisorapproved'">MDT Supervisor
+                                  Approved</ng-container>
+                                <ng-container *ngIf="protoData?.mdtstate == 'mdtsupervisorrejected'">MDT Supervisor
+                                  Rejected</ng-container>
+                              </div>
+                            </li>
+                          </div>
+                          <div class="col-md-12">
+                            <li class="list-group" *ngIf="data == 'hdtsupervisor'" style="margin-bottom: 8px;">
+                              <div class="col-md-4">Vehicle HDT</div>
+                              <div class="col-md-1" *ngIf="protoData?.hdtstate != null">-</div>
+                              <div class="col-md-6">
+                                <ng-container *ngIf="protoData?.hdtstate == 'hdtsupervisorapproved'">HDT Supervisor
+                                  Approved</ng-container>
+                                <ng-container *ngIf="protoData?.hdtstate == 'hdtsupervisorrejected'">HDT Supervisor
+                                  Rejected</ng-container>
+                              </div>
+                            </li>
+                          </div>
+                          <div class="col-md-12">
+                            <li class="list-group" *ngIf="data == 'aggregateengine'" style="margin-bottom: 8px;">
+                              <div class="col-md-4">Aggregate Engine</div>
+                              <div class="col-md-1" *ngIf="protoData?.aggregatestate != null">-</div>
+                              <div class="col-md-6">
+                                <ng-container *ngIf="protoData?.aggregatestate =='aggregatesupervisorapproved' ">
+                                  Aggregate Supervisor Approved
+                                </ng-container>
+                                <ng-container *ngIf="protoData?.aggregatestate =='aggregatesupervisorrejected' ">
+                                  Aggregate Supervisor Rejected
+                                </ng-container>
+                              </div>
+                            </li>
+                          </div>
+                          <div class="col-md-12">
+                            <li class="list-group" *ngIf="data == 'aggregateaxle'" style="margin-bottom: 8px;">
+                              <div class="col-md-4">Aggregate Axle</div>
+                              <div class="col-md-1" *ngIf="protoData?.aggregatestate != null">-</div>
+                              <div class="col-md-6">
+                                <ng-container *ngIf="protoData?.aggregatestate =='aggregatesupervisorapproved' ">
+                                  Aggregate Supervisor Approved
+                                </ng-container>
+                                <ng-container *ngIf="protoData?.aggregatestate =='aggregatesupervisorrejected' ">
+                                  Aggregate Supervisor Rejected
+                                </ng-container>
+                              </div>
+                            </li>
+                          </div>
+                          <div class="col-md-12">
+                            <li class="list-group" *ngIf="data == 'aggregatetransmission'" style="margin-bottom: 8px;">
+                              <div class="col-md-4">Aggregate Transmission</div>
+                              <div class="col-md-1" *ngIf="protoData?.aggregatestate != null">-</div>
+                              <div class="col-md-6">
+                                <ng-container *ngIf="protoData?.aggregatestate =='aggregatesupervisorapproved' ">
+                                  Aggregate Supervisor Approved
+                                </ng-container>
+                                <ng-container *ngIf="protoData?.aggregatestate =='aggregatesupervisorrejected' ">
+                                  Aggregate Supervisor Rejected
+                                </ng-container>
+                              </div>
+                            </li>
+                          </div>
+                          <div class="col-md-12">
+                            <li class="list-group" *ngIf="data == 'eandesupervisor'" style="margin-bottom: 8px;">
+                              <div class="col-md-4">
+                                E&E</div>
+                              <div class="col-md-1" *ngIf="protoData?.eandestate != null">-</div>
+                              <div class="col-md-6">
+                                <ng-container *ngIf="protoData?.eandestate == 'eandesupervisorapproved'"> E&E Supervisor
+                                  Approved
+                                </ng-container>
+                                <ng-container *ngIf="protoData?.eandestate == 'eandesupervisorrejected'"> E&E Supervisor
+                                  Rejected
+                                </ng-container>
+                              </div>
+                            </li>
+                          </div>
+
+                          <div class="col-md-12">
+                            <li class="list-group" *ngIf="data == 'ppssupervisor'" style="margin-bottom: 8px;">
+                              <div class="col-md-4">
+                                PPS</div>
+                              <div class="col-md-1" *ngIf="protoData?.ppsstate != null">-</div>
+                              <div class="col-md-6">
+                                <ng-container *ngIf="protoData?.ppsstate == 'ppssupervisorapproved'">PPS Supervisor
+                                  Approved
+                                </ng-container>
+                                <ng-container *ngIf="protoData?.ppsstate == 'ppssupervisorrejected'"> PPS Supervisor
+                                  Rejected
+                                </ng-container>
+                              </div>
+                            </li>
+                          </div>
+                          <div class="col-md-12">
+                            <li class="list-group" *ngIf="data == 'mechanicalsupervisor'" style="margin-bottom: 8px;">
+                              <div class="col-md-4">
+                                Proto Mechanical Workshop</div>
+                              <div class="col-md-1" *ngIf="protoData?.mechanicalstate != null">-</div>
+                              <div class="col-md-6">
+                                <ng-container *ngIf="protoData?.mechanicalstate == 'mechanicalsupervisorapproved'">
+                                  Mechanical Supervisor Approved
+                                </ng-container>
+                                <ng-container *ngIf="protoData?.mechanicalstate == 'mechanicalsupervisorrejected'">
+                                  Mechanical Supervisor Rejected
+                                </ng-container>
+                              </div>
+                            </li>
+                          </div>
+                          <div class="col-md-12">
+                            <li class="list-group" *ngIf="data == 'maintenancesupervisor'" style="margin-bottom: 8px;">
+                              <div class="col-md-4">
+                                Maintenance</div>
+                              <div class="col-md-1" *ngIf="protoData?.maintenancestate != null">-</div>
+                              <div class="col-md-6">
+                                <ng-container *ngIf="protoData?.maintenancestate == 'maintenancesupervisorapproved'">
+                                  Maintenance Supervisor
+                                  Approved</ng-container>
+                                <ng-container *ngIf="protoData?.maintenancestate == 'maintenancesupervisorrejected'">
+                                  Maintenance Supervisor
+                                  Rejected</ng-container>
+                              </div>
+                            </li>
+                          </div>
+                          <!-- <li class="list-group" *ngIf="data == 'mdtsupervisor'" style="margin-bottom: 8px;">Vehicle MDT</li>
+                          <li class="list-group" *ngIf="data == 'aggregateengine'" style="margin-bottom: 8px;">Aggregate Engine</li> -->
+                          <!-- <li class="list-group" *ngIf="data == 'aggregatetransmission'" style="margin-bottom: 8px;">
+                            Aggregate Transmission</li> -->
+                          <!-- <li class="list-group" *ngIf="data == 'aggregateaxle'" style="margin-bottom: 8px;">Aggregate
+                            Axle</li> -->
+                          <!-- <li class="list-group" *ngIf="data == 'eandesupervisor'" style="margin-bottom: 8px;">E&E</li>
+                          <li class="list-group" *ngIf="data == 'mdtsupervisor'" style="margin-bottom: 8px;">Vehicle MDT
+                          </li> -->
+                          <!-- <li class="list-group" *ngIf="data == 'ppssupervisor'" style="margin-bottom: 8px;">PPS</li> -->
+                          <!-- <li class="list-group" *ngIf="data == 'maintenancesupervisor'" style="margin-bottom: 8px;">
+                            Maintainence</li>
+                          <li class="list-group" *ngIf="data == 'mechanicalsupervisor'" style="margin-bottom: 8px;">
+                            Proto Mechanical Workshop</li> -->
+                        </ng-container>
+                      </ul>
+                    </td>
+                    <th style="width: 25%;">Types of Activity </th>
+                    <td style="width: 25%;">
+                      <ul class="list-group-category" style="padding-left: 14px;">
+                        <ng-container *ngFor="let data of arrlists ; let i =index ">
+                          <li class="list-group" style="margin-bottom: 8px;" *ngIf="data == 1">Retrofitment was planned
+                            at the time of vehicle sign off</li>
+                          <li class="list-group" style="margin-bottom: 8px;" *ngIf="data == 2">Retrofitment due to
+                            testing feedback</li>
+                          <li class="list-group" style="margin-bottom: 8px;" *ngIf="data == 3">Retrofitment due to Field
+                            Issue</li>
+                          <li class="list-group" style="margin-bottom: 8px;" *ngIf="data == 4">IMCS / Cost Reduction
+                            Proposal</li>
+                          <li class="list-group" style="margin-bottom: 8px;" *ngIf="data == 5">
+                            {{protoData?.retrofitmentothers}}</li>
+                        </ng-container>
+                      </ul>
+                    </td>
+
+                  </tr>
+                  <tr>
+                    <th style="width: 25%;">Category</th>
+                    <!-- <td>{{protoList?.category}}</td> -->
+                    <td style="width: 25%;">
+                      <ul class="list-group-category" style="padding-left: 14px;">
+                        <ng-container *ngFor="let data of arrcategorylist ; let i =index ">
+                          <!-- <li class="list-group" style="margin-bottom: 8px;">{{data}}</li> -->
+                          <li class="list-group" style="margin-bottom: 8px;" *ngIf="data == 1">Retro Fitment</li>
+                          <li class="list-group" style="margin-bottom: 8px;" *ngIf="data == 2">Trail</li>
+                          <li class="list-group" style="margin-bottom: 8px;" *ngIf="data == 3">Failure</li>
+                          <li class="list-group" style="margin-bottom: 8px;" *ngIf="data == 4">
+                            {{protoData?.categoryothers}}
+                          </li>
+                        </ng-container>
+                      </ul>
+                    </td>
+                    <th style="width: 25%;">Status</th>
+                    <td style="width: 25%;">
+                      <span> {{protoData?.statusLabel}}</span>
+                      <!-- <ng-container *ngIf="protoData?.status=='pending'">
+                        Requester L4 Approval Pending
+                      </ng-container>
+                      <ng-container *ngIf="protoData?.status=='l4approved'">
+                        Vehicle Owner Approval Pending
+                      </ng-container>
+                      <ng-container *ngIf="protoData?.status=='l4rejected'">
+                        Requestor L4 Rejected
+                      </ng-container>
+                      <ng-container *ngIf="protoData?.status=='vehicleownerapproved'">
+                        <span *ngIf="protoData?.exigencycase=='1'">  Proto L4 Approval pending </span>
+                        <span *ngIf="protoData?.supervisor=='hdtsupervisor'&& protoData?.exigencycase=='0'">HDT Supervisor Approval Pending</span>
+                        <span *ngIf="protoData?.supervisor=='mdtsupervisor'&& protoData?.exigencycase=='0'">MDT Supervisor Approval  Pending</span>
+                        <span *ngIf="(protoData?.supervisor=='aggregateengine' || protoData?.supervisor=='aggregatetransmission' || protoData?.supervisor=='aggregateaxle') && (protoData?.exigencycase=='0')">
+                          Aggregate Supervisor Approval  Pending</span>
+                          <span *ngIf="protoData?.supervisor=='ppssupervisor'&& protoData?.exigencycase=='0'">PPS Supervisor Approval  Pending</span>
+                      </ng-container>
+                      <ng-container *ngIf="protoData?.status=='recalled'">
+                        Form Recalled
+                      </ng-container>
+                      <ng-container *ngIf="protoData?.status=='protol4approved'">
+
+                        <span *ngIf="protoData?.supervisor=='hdtsupervisor'&& protoData?.exigencycase=='1'">HDT Supervisor Approval  Pending</span>
+                        <span *ngIf="protoData?.supervisor=='mdtsupervisor'&& protoData?.exigencycase=='1'">MDT Supervisor Approval  Pending</span>
+                        <span *ngIf="(protoData?.supervisor=='aggregateengine' || protoData?.supervisor=='aggregatetransmission' || protoData?.supervisor=='aggregateaxle') && (protoData?.exigencycase=='1')">
+                          Aggregate Supervisor Approval  Pending</span>
+                          <span *ngIf="protoData?.supervisor=='ppssupervisor'&& protoData?.exigencycase=='1'">PPS Supervisor Approval Pending</span>
+                      </ng-container>
+                      <ng-container *ngIf="protoData?.status=='protol4rejected'">
+                        Proto L4 Rejected
+                      </ng-container>
+                      <ng-container *ngIf="protoData?.status=='mdtsupervisorapproved'">
+                        MDT Supervisor Approved
+                      </ng-container>
+                      <ng-container *ngIf="protoData?.status=='mdtsupervisorrejected'">
+                        MDT Supervisor Rejected
+                      </ng-container>
+                      <ng-container *ngIf="protoData?.status=='hdtsupervisorapproved'">
+                        HDT Supervisor Approved
+                      </ng-container>
+                      <ng-container *ngIf="protoData?.status=='hdtsupervisorrejected'">
+                        HDT Supervisor Rejected
+                      </ng-container>
+                      <ng-container *ngIf="protoData?.status=='aggregatesupervisorapproved'">
+                        Aggregate Supervisor Approved
+                      </ng-container>
+                      <ng-container *ngIf="protoData?.status=='aggregatesupervisorrejected'">
+                        Aggregate Supervisor Rejected
+                      </ng-container>
+                      <ng-container *ngIf="protoData?.status=='ppssupervisorapproved'">
+                        PPS Supervisor Approved
+                      </ng-container>
+                      <ng-container *ngIf="protoData?.status=='ppssupervisorrejected'">
+                        PPS Supervisor Rejected
+                      </ng-container>
+                      <ng-container *ngIf="protoData?.status=='eandesupervisorapproved'">
+                        E&E Supervisor Approved
+                      </ng-container>
+                      <ng-container *ngIf="protoData?.status=='eandesupervisorrejected'">
+                        E&E Supervisor Rejected
+                      </ng-container>
+                      <ng-container *ngIf="protoData?.status=='maintenancesupervisorapproved'">
+                        Maintenance Supervisor Approved
+                      </ng-container>
+                      <ng-container *ngIf="protoData?.status=='maintenancesupervisorrejected'">
+                        Maintenance Supervisor Rejected
+                      </ng-container>
+                      <ng-container *ngIf="protoData?.status=='mechanicalsupervisorapproved'">
+                        Mechanical Supervisor Approved
+                      </ng-container>
+                      <ng-container *ngIf="protoData?.status=='mechanicalsupervisorrejected'">
+                        Mechanical Supervisor Rejected
+                      </ng-container>
+                      <ng-container *ngIf="protoData?.status=='closed'">
+                        Completed
+                      </ng-container>
+                      <ng-container *ngIf="protoData?.status=='deleted'">
+                        Deleted
+                      </ng-container>
+                      <ng-container *ngIf="protoData?.status=='supervisorpending'">
+                        Supervisor Approval Pending
+                      </ng-container> -->
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="row viewpara">
+                <div class="col-md-12">
+
+
+                  <!-- <ng-container *ngIf="protoData?.voremarks">
+                      <div class="col-md-3 tablestyle">
+                        <p> Vehicle Owner Remarks</p>
+                      </div>
+                      <div class="col-md-3 tablestyle">
+                        <span>{{protoData?.voremarks}}</span>
+                      </div>
+                    </ng-container> -->
+                  <ng-container *ngIf="protoData?.l4remarks">
+                    <div class="col-md-3 tablestyle">
+                      <p> Requester L4 Remarks</p>
+                    </div>
+                    <div class="col-md-3 tablestyle">
+                      <span>{{protoData?.l4remarks}}</span>
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf="protoData?.protol4remarks">
+                    <div class="col-md-3 tablestyle">
+                      <p> Protol4 Remarks</p>
+                    </div>
+                    <div class="col-md-3 tablestyle">
+                      <span>{{protoData?.protol4remarks}}</span>
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf="protoData?.supervisorremarks">
+                    <div class="col-md-3 tablestyle">
+                      <p> Supervisor Remarks</p>
+                    </div>
+                    <div class="col-md-3 tablestyle">
+                      <span>{{protoData?.supervisorremarks}}</span>
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf="protoData?.hdtremarks">
+                    <div class="col-md-3 tablestyle">
+                      <p> HDT Supervisor Remarks</p>
+                    </div>
+                    <div class="col-md-3 tablestyle">
+                      <span>{{protoData?.hdtremarks}}</span>
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf="protoData?.mdtremarks">
+                    <div class="col-md-3 tablestyle">
+                      <p> MDT Supervisor Remarks</p>
+                    </div>
+                    <div class="col-md-3 tablestyle">
+                      <span>{{protoData?.mdtremarks}}</span>
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf="protoData?.mechanicalremarks">
+                    <div class="col-md-3 tablestyle">
+                      <p> Proto Mechanical Workshop Supervisor Remarks</p>
+                    </div>
+                    <div class="col-md-3 tablestyle">
+                      <span>{{protoData?.mechanicalremarks}}</span>
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf="protoData?.maintenanceremarks">
+                    <div class="col-md-3 tablestyle">
+                      <p> Maintenance Supervisor Remarks</p>
+                    </div>
+                    <div class="col-md-3 tablestyle">
+                      <span>{{protoData?.maintenanceremarks}}</span>
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf="protoData?.aggregateremarks">
+                    <div class="col-md-3 tablestyle">
+                      <p> Aggregate Supervisor Remarks</p>
+                    </div>
+                    <div class="col-md-3 tablestyle">
+                      <span>{{protoData?.aggregateremarks}}</span>
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf="protoData?.eanderemarks">
+                    <div class="col-md-3 tablestyle">
+                      <p> E&E Supervisor Remarks</p>
+                    </div>
+                    <div class="col-md-3 tablestyle">
+                      <span>{{protoData?.eanderemarks}}</span>
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf="protoData?.ppsremarks">
+                    <div class="col-md-3 tablestyle">
+                      <p> PPS Supervisor Remarks</p>
+                    </div>
+                    <div class="col-md-3 tablestyle">
+                      <span>{{protoData?.ppsremarks}}</span>
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf="protoData?.closedremarks">
+                    <div class="col-md-3 tablestyle">
+                      <p>Supervisor Closed Remarks</p>
+                    </div>
+                    <div class="col-md-3 tablestyle">
+                      <span>{{protoData?.closedremarks}}</span>
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf="protoData?.deletedremarks">
+
+                    <div class=" col-md-3 tablestyle">
+                        <p class="text-color">Deleted Remarks</p>
+                    </div>
+                    <div class=" col-md-3 tablestyle" style="overflow:auto;">
+                        <span>{{protoData?.deletedremarks}}</span>
+                    </div>
+                </ng-container>
+                </div>
+              </div>
+              <!--No of Vehicle /Objects Lists -->
+              <table class="table table-striped" style="margin-top: 10px;">
+                <thead style="background-color: #ececec;">
+                  <tr>
+                    <th>S.No</th>
+                    <th>Finas Id </th>
+                    <th>Part Number</th>
+                    <th>Description</th>
+                    <th>Quantity </th>
+                    <th>ZGS</th>
+                    <th>To be Scrapped / Stored</th>
+
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    *ngFor="let part of protoData?.umcsParts |  paginate: { itemsPerPage: 10, currentPage: p2,id: 'three'};let index=index;">
+                    <td>{{((p2- 1) * 10 + index+1)}}</td>
+                    <td>{{part.finasid}}</td>
+                    <td>{{part.partnumber}}</td>
+                    <td>{{part.description}}</td>
+                    <td>{{part.quantity}}</td>
+                    <td>{{part.zgs}}</td>
+                    <td>{{part.scraporstored}}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div style="margin: 10px 0px;">
+                <pagination-controls *ngIf="protoData?.umcsParts.length!=0" style="text-align: right;"
+                  (pageChange)="p2 = $event" #api id="three">
+                </pagination-controls>
+              </div>
+
+              <table class="table table-striped">
+                <thead style="background-color: #ececec;">
+                  <tr>
+                    <th>S.No</th>
+                    <th>Vehicle / Aggregate Number</th>
+                    <th>Vehicle / Model Number
+                    </th>
+                    <th>Vehicle / Aggregate Owner Name </th>
+                    <th>Expected Start Date </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    *ngFor="let vehicle of protoData?.prvehiclemaster |  paginate: { itemsPerPage: 10, currentPage: p3,id: 'four'};let index=index;">
+                    <td>{{((p3- 1) * 10 + index+1)}}</td>
+                    <td>{{vehicle.vehicleaggregateno}}</td>
+                    <td>{{vehicle.modelnumber}}</td>
+                    <td>{{vehicle.ownername}}</td>
+                    <td>{{vehicle.startdate}}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div style="margin: 10px 0px;">
+                <pagination-controls *ngIf="protoData?.umcsParts.length!=0" style="text-align: right;"
+                  (pageChange)="p3 = $event" #api id="four">
+                </pagination-controls>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- <div class="modal-footer"></div> -->
+</div>
+
+
+<!-- set the delete remarks -->
+
+
+<div class="modal fade" id="deletelist" role="dialog">
+  <div class="modal-dialog modal-sm">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title" style="font-size: 15px;
+        ">Delete </h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class=" col-md-12 table-responsive">
+            <form [formGroup]="remarkform">
+              <div class="row mt-3">
+                <div class="col-md-12">
+                  <div>
+                    <div class="form-group text-field" style="font-size: 13px;">
+                      Remarks <dot> </dot>
+                      <textarea type="text" class="form-control" formControlName="remarks"
+                        style="font-weight: 400;"></textarea>
+                    </div>
+
+                    <small class="text-danger" *ngIf="
+                      !remarkform.controls.remarks.valid &&
+                      remarkform.controls.remarks.touched
+                    "> Remarks is required</small>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer" style="border-top: none;">
+
+        <button class="btn btn-danger btn-md" (click)="submitForm()" style="font-size: 12px;
+        ">Delete</button>
+      </div>
+    </div>
+
+  </div>
+</div>

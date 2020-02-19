@@ -1,0 +1,286 @@
+
+.list-group-item > a:active{
+    color: #fff !important;
+}
+
+.table > tr > th{
+    border:1px solid #2c3e50;;
+    padding: 6px;
+    background-color: #2c3e50;;
+    color: #fff;
+}
+
+.table > tr > td{
+    border:1px solid #efefef;
+    padding: 1px;
+    color:#3e3d3d;
+}
+
+tr > th{
+    /* text-align: center !important; */
+    padding: 6px;
+}
+tr > td{
+    /* text-align: center !important; */
+    padding: 6px;
+}
+
+table.table-bordered{
+    background: #fff;
+}
+.modal-table{
+    border-top: 1px solid #ccc;
+   
+}
+.modal-table th{
+    border: 1px solid #ccc;
+}
+.modal-table td{
+    border: 1px solid #ccc;
+}
+.table{
+    margin-bottom: 0px;
+}
+img.img-fluid {
+    width: 25px;
+}
+table.table,  td, th{
+    margin-bottom: 0px;
+    border: 1px solid #cccccc;
+}
+textarea.remark{
+    width: 100%;
+    height: 113px;
+    border: 1px solid #cccccc;
+}
+.dropdown-menu{
+    right:0;
+    left:auto !important;
+
+}
+.dropdown-item{
+    width:100%;
+    margin-bottom: 2px;
+    text-align: left;
+    font-size: 12px;
+
+}
+.viewpara p{
+    margin: 0;
+    padding: 6px 0;
+    font-weight: 600;
+}
+.viewpara span{
+    margin: 0;
+    padding: 6px 0;
+    font-weight: 100;
+}
+.tablestyle{
+    border: 1px solid #ddd;
+    padding: 6px 10px;   
+     height: 40px;
+     /* overflow: auto; */
+}
+.rejected{
+    color:red
+    }
+    .completed{
+    color: green
+    }
+    .inprogress{
+        color: #ca9a0b
+    }
+
+    .paginatecontrol{
+        height: 34px;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.42857143;
+        color: #555;
+        background-color: #fff;
+        background-image: none;
+        border: 1px solid #ccc;
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+        box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+        -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+        -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+        transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    }
+    
+    .searchbtn{
+        padding: 8px 8px;
+        position: relative;
+        height: 34px;
+        cursor: pointer;
+        border: 1px solid #ccc;
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+        background: #ddd;
+    }
+
+    i.fa.fa-search.search {
+        /* border-left: 1px solid #ddd; */
+        padding: 8px 8px;
+        position: relative;
+        bottom: 33px;
+        height: 32px;
+        float: right;
+        cursor: pointer;
+        color: #9E9E9E;
+      }
+
+
+
+      
+      .control {
+        display: block;
+        position: relative;
+        padding-left: 30px;
+        margin-bottom: 15px;
+        cursor: pointer;
+        font-size: 12px;
+    font-weight: 500;
+      }
+      .control input {
+        position: absolute;
+        z-index: -1;
+        opacity: 0;
+      }
+      .control__indicator {
+        position: absolute;
+        left: 45px;
+        height: 15px;
+        width: 15px;
+        background: #9E9E9E;
+      }
+      .control:hover input ~ .control__indicator,
+      .control input:focus ~ .control__indicator {
+        background: #ccc;
+      }
+      .control input:checked ~ .control__indicator {
+        background: #2c3e50;;;
+      }
+      .control input:disabled ~ .control__indicator {
+        background: #e6e6e6;
+        opacity: 0.6;
+        pointer-events: none;
+      }
+      .control__indicator:after {
+        content: '';
+        position: absolute;
+        display: none;
+      }
+      .control input:checked ~ .control__indicator:after {
+        display: block;
+      }
+      .control--checkbox .control__indicator:after {
+        left: 6px;
+          top: 2px;
+          width: 4px;
+          height: 8px;
+        border: solid #fff;
+        border-width: 0 2px 2px 0;
+        transform: rotate(45deg);
+      }
+      .changeindicator {
+        position: absolute;
+        top: 3px;
+        left: 40px;
+        height: 15px;
+          width: 15px;
+        background: #9E9E9E;
+      }
+      .control--checkbox input:disabled ~ .control__indicator:after {
+        border-color: #7b7b7b;
+      }
+      .control--radio .control__indicator {
+        border-radius: 50%;
+      }
+      .control--radio .control__indicator:after {
+        left: 4px;
+        top: 4px;
+        height: 7px;
+        width: 7px;
+        border-radius: 50%;
+        background: #fff;
+      }
+
+      .control__indicator.filterchkbox{
+        position: absolute;
+        left: 8px;
+        height: 15px;
+        width: 15px;
+        background: #9E9E9E;
+        bottom: 3px;
+    }
+
+      
+
+      label.control-label{
+        padding:0px !important;
+        font-family: corpoS-normal;
+        font-size: 17px;
+      }
+      .text-bold{
+        font-weight: bold
+      }
+      tr:nth-child(even) {background: #F0F0F0}
+      tr:nth-child(odd) {background: #fff}
+      #img-fluid {
+        width: 19px;
+      }
+      select.form-control {
+        width: 96px;
+      }
+      select.form-control:not([size]):not([multiple]) {
+        height: calc(2.5rem + -16px);
+        padding: 0px 0px 0px 2px !important;
+      }
+     
+      button.btn.btn-default.btn-sm.dropdown-toggle:focus {
+        box-shadow: none;
+      }
+      ul.dropdown-menu.show {
+        padding: 10px;
+        height: auto;
+        overflow: auto;
+      }
+      .dropdown-menu.filtermenu {
+        right: inherit !important;
+        left: inherit !important;
+        min-width: 180px !important;
+    }
+      ul.dropdown-menu.show li {
+        cursor: pointer;
+        font-weight: normal;
+        display: block;
+        white-space: pre;
+        min-height: 1.2em;
+        padding: 0px 2px 1px;
+      }
+
+      .sidetext{
+        color: #fff;
+        padding: 7px 20px;
+        margin: 8px 0;
+        cursor: pointer;
+        border-left: 4px solid #242536;
+      }
+      .active{
+        background: #030305;
+        color: #fff;
+        box-shadow: 0 0 2px 0 #828387;
+        border-left: 4px solid #ffb946;
+        /* margin-left: 6px; */
+        white-space: nowrap;
+      }
+      p.sidetext:hover{
+        background: #030305;
+        color: #fff;
+        box-shadow: 0 0 2px 0 #828387;
+        border-left: 4px solid #ffb946;
+        /* margin-left: 6px; */
+        white-space: nowrap;
+      }

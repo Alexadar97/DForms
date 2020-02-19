@@ -1,0 +1,258 @@
+
+.proto-table > tr > th{
+    /* border: 1px solid #9e9e9e3d !important; */
+    padding: 12px;
+    /* color: #000; */
+    width: 50%;
+   background: rgb(235,235,235);
+    border: 1px solid rgb(220,220,220);
+  
+    font-weight: 600;
+  
+  }
+  .part-table > tr > th{
+    /* border: 1px solid #9e9e9e3d !important; */
+    padding: 12px;
+    background: rgb(235,235,235);
+    border: 1px solid rgb(220,220,220);
+    font-size: 12px;
+    font-weight: 600;
+  
+  }
+  
+  .proto-table > tr > td{
+    border: 1px solid rgb(220,220,220);
+    padding: 0px;
+    font-weight: 500;
+    width: 50%;
+    font-size: 12px;
+  }
+  .part-table > tr > td{
+    border: 1px solid rgb(220,220,220);
+    padding: 12px;
+    font-weight: 500;
+    border: 1px solid #ddd !important;
+    font-size: 12px;
+  }
+  
+   td {
+    border: 1px solid rgb(220,220,220);
+  }
+  table.table,  td, th{
+    margin-bottom: 0px;
+    border: 1px solid rgb(220,220,220);
+    font-size: 12px;
+  }
+  input#date:focus {
+    outline: none;
+  }
+  textarea {
+    resize: none;
+    outline: none;
+  }
+  #input{
+    border: none;
+    background: #fff !important;
+    width: 100%;
+    cursor: auto;
+    box-shadow: none;
+}
+#table > tr#dime > td {
+  background: rgb(235,235,235);
+  border: 1px solid rgb(220,220,220);
+  padding: 12px;
+  text-align: center;
+}
+#table > tr > td{
+  background: rgba(235, 235, 235, 0.15);
+  border: 1px solid rgb(220,220,220);
+  padding: 12px;
+}
+#damin_input{
+
+}
+tr.tablerow > th{
+  text-align: left !important;
+  padding: 0px 14px;
+}
+span.dime{
+  position: absolute;
+    top: 0px;
+    right: 8px;
+}
+span.material{
+  position: absolute;
+  left: 6px;
+}
+.clear_td{
+  border-top: 1px solid rgb(255, 255, 255) !important;
+    background: #fff !important;
+    border-bottom: 1px solid rgb(255, 255, 255) !important;
+}
+button.btn-clear {
+  border: none;
+  background: #B2B2B2;
+  padding: 3px 17px;
+  color: #fff;
+}
+button.btn-submit {
+  border: none;
+  background: #01677F;
+    color: #fff;
+    margin: 0px 0px 0px 13px;
+    padding: 3px 13px;
+}
+button.btn-clear:focus, button.btn-submit:focus{
+  outline: none;
+}
+.first_head{
+  font-size: 20px;
+  color: #000;
+  font-weight: 600;
+}
+.sec_head{
+  border-bottom: 1px solid #979797;
+  padding: 0px 0px 10px 0px;
+  color: #070707;
+}
+#operations > th{
+  background: rgb(235,235,235);
+  border: 1px solid rgb(220,220,220);
+  padding: 12px;
+  color: #070707;
+}
+.workcat {
+  color: #070707;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 21px;
+}
+button.btn-entires{
+  box-sizing: border-box;
+  border: 1px solid #D1D1D1;
+  background: linear-gradient(180deg, #F9F9F9 0%, #F0F0F0 100%);
+  color: #000;
+  font-weight: 600;
+  width: 70%;
+    text-align: left;
+}
+#sub-card {
+    padding:4px 16px;
+    overflow: auto;
+    height: 221px;
+    margin-bottom: 23px
+  }
+  #card{
+    margin: 39px 0px 0px 0px;
+    background-color: #F5F5F5;
+    box-shadow: 0 5px 8px 2px rgba(0,0,0,0.12);
+    box-sizing: border-box;
+    border: 1px solid #D6D6D6;
+    position: relative;
+  }
+  button.addnew {
+    color: #4A90E2;
+    font-size: 12px;
+    cursor: pointer;
+    border: none;
+    background: unset;
+}
+button.addnew:focus {
+  outline: none;
+}
+p.workHrs {
+  color: #8A8A8A;
+    font-size: 12px;
+    margin: 2px;
+}
+#img{
+  position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 15px;
+}
+table#addTable {
+  border: none;
+}
+#addTable > input{
+  border: none
+}
+#Catinput, input#adddate{
+  padding: 0px 0px 0px 7px;
+    height: 28px;
+    font-size: 12px;
+    border: 1px solid #ccc;
+    background: white !important;
+}
+span.remove{
+  font-weight: bold;
+    color: #D23838;
+    margin: 2px 0px 0px 0px;
+    cursor: pointer;
+}
+p.closecat {
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+  text-align: right;
+  background: #fff;
+  margin: 0px;
+  padding:2px 13px;
+  width: 100%;
+}
+p.closecat > span{
+  cursor: pointer;
+  color: #000;
+}
+#go{
+  position: absolute;
+    left: 4px;
+    height: 34px !important;
+    margin: 0px;
+    padding: 3px;
+    font-size: 11px;
+    border-radius: 2px;
+}
+p.form-control.oprs {
+  padding: 3px 0px 0px 7px;
+  height: 28px;
+}
+.nopadding{
+  padding: 0px !important;
+}
+.fa-caret-right{
+  margin-left: 6px;
+  font-size: 15px;
+}
+/* For Firefox */
+input[type='number'] {
+  -moz-appearance:textfield;
+}
+/* Webkit browsers like Safari and Chrome */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+p.sidetext{
+  color: #fff;
+  padding: 7px 20px;
+  margin: 8px 0;
+  cursor: pointer;
+  border-left: 4px solid #242536;
+}
+/* p.active{
+  background: #030305;
+  color: #fff;
+  box-shadow: 0 0 2px 0 #828387;
+  border-left: 4px solid #ffb946;
+  /* margin-left: 6px; */
+  /* white-space: nowrap;
+} */
+p.sidetext:hover{
+  background: #030305;
+  color: #fff;
+  box-shadow: 0 0 2px 0 #828387;
+  border-left: 4px solid #ffb946;
+  white-space: nowrap;
+}

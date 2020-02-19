@@ -1,0 +1,330 @@
+<app-spinner *ngIf="loading"></app-spinner>
+<div class="col-md-12" style="padding-left: 0px;">
+  <h4>Material Dispatch</h4>
+</div>
+<div class="row" style="box-shadow: 1px 1px 1px 1px #d6d6d6;
+  padding: 10px;
+  width: 100%;background: #fbfbfb;">
+  <form [formGroup]="form" style="margin:5px;">
+    <div class="row" style="margin-top:10px;">
+      <div class="col-md-6  table-responsive">
+        <table id="prototable" class="table proto-table table-bordered">
+          <tr>
+            <th>Created On</th>
+
+            <td>
+              <ng-container *ngIf="createddate == null">-</ng-container>
+              <ng-container *ngIf="createddate != null">
+                <input type="text" formControlName="createddate"
+                  style="border: none; background: transparent;width: 100%;" disabled>
+              </ng-container>
+            </td>
+          </tr>
+          <tr>
+            <th>Form ID</th>
+            <td><input type="text" formControlName="mdformid" style="border: none; background: transparent;width: 100%;"
+                disabled></td>
+          </tr>
+          <tr>
+            <th>Requester Name</th>
+            <td><input type="text" formControlName="requestername" style="border: none;
+              background: transparent;width: 100%;" disabled></td>
+          </tr>
+          <tr>
+            <th>Department</th>
+            <td><input type="text" formControlName="department" style="border: none;
+              background: transparent;width: 100%;" disabled></td>
+          </tr>
+          <tr>
+            <th>Mode of Transport </th>
+            <td>
+              <ng-container *ngIf="transportmode == 1">Road</ng-container>
+              <ng-container *ngIf="transportmode == 2">Air</ng-container>
+            </td>
+          </tr>
+          <!-- <tr *ngIf="formStatus == 'packsubmitted'">
+            <th> Delivery Challan  Date</th>
+            <td>  <input formControlName="expectchallandate" type="text" placeholder="DD/MM/YYYY"  
+              id="challandate" bsDatepicker [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }"
+              style="border: none;
+              background: transparent;width: 100%;" disabled></td>
+          </tr> -->
+          <tr>
+            <th>SAP Reference of Original Document</th>
+            <td>
+              <ul class="list-group-category" style="padding-left: 14px;">
+                <ng-container *ngFor="let data of sapreferenceArrList ; let i =index ">
+                  <li class="list-group" style="margin-bottom: 8px;" *ngIf="data == 1">Purchase Returns</li>
+                  <li class="list-group" style="margin-bottom: 8px;" *ngIf="data == 2">Job Work</li>
+                  <li class="list-group" style="margin-bottom: 8px;" *ngIf="data == 3">FOC</li>
+                  <li class="list-group" style="margin-bottom: 8px;" *ngIf="data == 4">{{sapotherstext}}</li>
+                </ng-container>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <th>HR ID </th>
+            <td>
+              <input type="text" formControlName="hrid" style="border: none;
+                background: transparent;width: 100%;" disabled>
+            </td>
+          </tr>
+          <tr>
+            <th>Prepared By</th>
+            <td>
+              <input type="text" formControlName="preparedby" style="border: none;
+              background: transparent;width: 100%;" disabled>
+            </td>
+          </tr>
+          <tr>
+            <th>Cost Center / IO</th>
+            <td><input type="text" formControlName="costcenter" style="border: none;
+                    background: transparent;width: 100%;" disabled></td>
+          </tr>
+        </table>
+      </div>
+      <div class="col-md-6  table-responsive">
+        <table id="prototable" class="table proto-table table table-bordered">
+          <tr>
+            <th>
+              Vehicle Number</th>
+            <td><input type="text" formControlName="vehicleno" style="border: none;
+                      background: transparent;width: 100%;" disabled></td>
+          </tr>
+          <tr>
+            <th>
+              Purpose of Dispatch</th>
+            <td><input type="text" formControlName="dispatchpurpose" style="border: none;
+                      background: transparent;width: 100%;" disabled></td>
+          </tr>
+          <tr>
+            <th>
+              GST Unique Number</th>
+            <td>
+              <input type="text" formControlName="gstinuniqueno" style="border: none;
+                      background: transparent;width: 100%;" disabled>
+            </td>
+          </tr>
+          <tr>
+            <th> Name </th>
+            <td>
+              <input type="text" formControlName="recipientname" style="border: none;
+                background: transparent;width: 100%;" disabled>
+            </td>
+          </tr>
+          <tr>
+            <th> Address </th>
+            <td> <input type="text" formControlName="recipientaddress" style="border: none;
+              background: transparent;width: 100%;" disabled></td>
+          </tr>
+          <tr>
+            <th> State </th>
+            <td>
+              <input type="text" formControlName="state" style="border: none;
+                background: transparent;width: 100%;" disabled>
+            </td>
+          </tr>
+          <tr>
+            <th> Pin Code </th>
+            <td>
+              <input type="text" formControlName="statecode" style="border: none;
+                background: transparent;width: 100%;" disabled>
+            </td>
+          </tr>
+          <tr>
+            <th> Expected Date of Arriving </th>
+            <td>
+              <ng-container *ngIf="expectedreturndate == null || expectedreturndate == ''">Not Applicable</ng-container>
+              <ng-container *ngIf="expectedreturndate != null || expectedreturndate != ''">
+                <input type="text" formControlName="expectedreturndate" style="border: none;
+                background: transparent;width: 100%;" disabled>
+              </ng-container>
+            </td>
+          </tr>
+          <tr>
+            <th> Expected Date of Scrapping </th>
+            <td>
+              <ng-container *ngIf="expectedscrappingdate == null || expectedscrappingdate == ''">Not Applicable</ng-container>
+              <ng-container *ngIf="expectedscrappingdate != null || expectedscrappingdate != ''">
+                <input type="text" formControlName="expectedscrappingdate" style="border: none;
+                background: transparent;width: 100%;" disabled>
+              </ng-container>
+            </td>
+          </tr>
+          <tr>
+            <th>Purpose of Shipment </th>
+            <td>
+              <ng-container *ngIf="purposeofship == null || purposeofship == ''">-</ng-container>
+              <ng-container *ngIf="purposeofship != null || purposeofship != ''">
+                <ng-container *ngFor="let data of purposeofshipmentArrlist ; let i =index ">
+                  <li class="list-group" style="margin-bottom: 8px;" *ngIf="data == 1">Failed Parts Analysis</li>
+                  <li class="list-group" style="margin-bottom: 8px;" *ngIf="data == 2">Destructive Testing</li>
+                  <li class="list-group" style="margin-bottom: 8px;" *ngIf="data == 3">Fitment Trail</li>
+                  <li class="list-group" style="margin-bottom: 8px;" *ngIf="data == 4">Sample Testing</li>
+                  <li class="list-group" style="margin-bottom: 8px;" *ngIf="data == 5">New Development reference</li>
+                </ng-container>
+              </ng-container>
+            </td>
+          </tr>
+          <tr>
+            <th>Remarks</th>
+            <td> <input type="text" formControlName="reqremarks" style="border: none;
+              background: transparent;width: 100%;" disabled></td>
+          </tr>
+          <tr *ngIf="formStatus == 'l4approved'">
+            <th>L4 Remarks</th>
+            <td> <input type="text" formControlName="l4remarks" style="border: none;
+              background: transparent;width: 100%;" disabled></td>
+          </tr>
+          <tr *ngIf="formStatus == 'packdispatched' || formStatus == 'l4dispatchapproved'">
+              <th>Dispatch Remarks</th>
+              <td> <input type="text" formControlName="storeremarks"  style="border: none;
+                background: transparent;width: 100%;" disabled></td>
+            </tr>
+        </table>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <h5 style="font-size: 16px;
+        padding: 10px 0px;">Part Details</h5>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12 table-responsive">
+        <table id="prototable" class="table part-table table table-bordered">
+          <tr>
+            <th>S.No</th>
+            <th>Part No</th>
+            <th>Part Description</th>
+            <th>HSN Code</th>
+            <th>Quantity </th>
+            <th> Unit </th>
+            <th> Rate per Item</th>
+            <th *ngIf="formStatus == 'packdispatched' || formStatus == 'l4dispatchapproved'"> Taxable Value</th>
+            <th *ngIf="formStatus == 'packdispatched' || formStatus == 'l4dispatchapproved'" style="text-align: center;"><span> CGST</span>
+              <br>
+              <table style="width:100%;">
+                <tr>
+                  <td style="border: 1px solid transparent !important;">Rate</td>
+                  <td style="border: 1px solid transparent !important;">Amt</td>
+                </tr>
+              </table>
+            </th>
+            <th *ngIf="formStatus == 'packdispatched' || formStatus == 'l4dispatchapproved'" style="text-align: center;"> <span> SGST</span>
+              <br>
+              <table style="width:100%;">
+                <tr>
+                  <td style="border: 1px solid transparent !important;">Rate</td>
+                  <td style="border: 1px solid transparent !important;">Amt</td>
+                </tr>
+              </table>
+            </th>
+            <th *ngIf="formStatus == 'packdispatched' || formStatus == 'l4dispatchapproved'" style="text-align: center;"> <span> IGST</span>
+              <br>
+              <table style="width:100%;">
+                <tr>
+                  <td style="border: 1px solid transparent !important;">Rate</td>
+                  <td style="border: 1px solid transparent !important;">Amt</td>
+                </tr>
+              </table>
+            </th>
+          </tr>
+          <tbody formArrayName="materialDispatchParts">
+            <tr *ngFor="let part of rowForms.controls;let i =index;" [formGroupName]="i">
+              <td style="text-align: center">{{(i+1)}}</td>
+              <td><input type="text" formControlName="partnumber" style="border: none;
+                    background: transparent;width: 100%;" disabled></td>
+              <td><input type="text" formControlName="description" style="border: none;
+                    background: transparent;width: 100%;" disabled></td>
+              <td><input type="text" formControlName="hsncode" style="border: none;
+                    background: transparent;width: 100%;" disabled></td>
+              <td><input type="text" formControlName="quantity" style="border: none;
+                      background: transparent;width: 100%;" disabled></td>
+              <td><input type="text" formControlName="unit" style="border: none;
+                      background: transparent;width: 100%;" disabled></td>
+              <td><input type="text" formControlName="rateperitem" style="border: none;
+                          background: transparent;width: 100%;" disabled></td>
+              <td *ngIf="formStatus == 'packdispatched' || formStatus == 'l4dispatchapproved'"><input type="text" formControlName="taxablevalue" style="border: none;
+                            background: transparent;width: 100%;" disabled></td>
+              <td *ngIf="formStatus == 'packdispatched' || formStatus == 'l4dispatchapproved'">
+                <table style="width:100%;">
+                  <tr>
+                    <td style="border: 1px solid transparent !important;">
+                      <input type="text" formControlName="cgstrate" style="border: none;
+                                                background: transparent;width: 100%;text-align: center;" disabled>
+                    </td>
+                    <td style="border: 1px solid transparent !important;">
+                      <input type="text" formControlName="cgstamt" style="border: none;
+                                            background: transparent;width: 100%;text-align: center;" disabled>
+                    </td>
+                  </tr>
+                </table>
+
+              </td>
+              <td *ngIf="formStatus == 'packdispatched' || formStatus == 'l4dispatchapproved'">
+                <table style="width:100%;">
+                  <tr>
+                    <td style="border: 1px solid transparent !important;">
+                      <input type="text" formControlName="sgstrate" style="border: none;
+                                                  background: transparent;width: 100%;text-align: center;" disabled>
+                    </td>
+                    <td style="border: 1px solid transparent !important;">
+                      <input type="text" formControlName="sgstamt" style="border: none;
+                                              background: transparent;width: 100%;text-align: center;" disabled>
+                    </td>
+                  </tr>
+                </table>
+
+              </td>
+              <td *ngIf="formStatus == 'packdispatched' || formStatus == 'l4dispatchapproved'">
+                <table style="width:100%;">
+                  <tr>
+                    <td style="border: 1px solid transparent !important;">
+                      <input type="text" formControlName="igstrate" style="border: none;
+                                                    background: transparent;width: 100%;text-align: center;" disabled>
+                    </td>
+                    <td style="border: 1px solid transparent !important;">
+                      <input type="text" formControlName="igstamt" style="border: none;
+                                                background: transparent;width: 100%;text-align: center;" disabled>
+                    </td>
+                  </tr>
+                </table>
+
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </form>
+  <br><br>
+  <ng-container *ngIf="!isApproved && (isexpired == 0)">
+    <form [formGroup]="approvalForm" class="row">
+      <div class="col-md-4 col-md-offset-8">
+
+        Remarks:
+        <input type="text" class="form-control" value="" formControlName="remarks">
+        <br>
+        <small class="text-danger errormsg" *ngIf="
+            !approvalForm.controls.remarks.valid &&
+            approvalForm.controls.remarks.touched
+          ">Remarks is required</small>
+
+      </div>
+    </form>
+    <div class="row" style="float:right;">
+      <div class="col-md-12">
+        <button class="btn btn-primary btn-" style="background: green;border: none;width:100px;"
+          (click)="acceptForm(true)">
+          <i class="fa fa-check"></i>&nbsp;&nbsp;Approve
+        </button>&nbsp;&nbsp;&nbsp;&nbsp;
+        <button class="btn btn-danger" style="border: none; background: #c9302c;;width:100px;"
+          (click)="acceptForm(false)">
+          <i class="fa fa-times"></i>&nbsp;&nbsp;Reject
+        </button>
+      </div>
+    </div>
+  </ng-container>
+
+</div>

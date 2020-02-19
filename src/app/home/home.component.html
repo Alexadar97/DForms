@@ -1,0 +1,122 @@
+<nav class="site-navbar navbar navbar-default navbar-fixed-top navbar-mega" role="navigation">
+
+    <div _ngcontent-c4="" class="innerhead">
+        <img class="innerpgtop" src="assets/images/innerpagetopbg.jpg">
+        <img class="innerpglogo" src="assets/images/loginpglogo.png">
+        <!-- <img class="innerpglogo2" src="assets/images/logo2.png"> -->
+    </div>
+    <div>
+        <div style="position: absolute;
+        right: 100px;
+        top: 22px;
+        color: #fff;cursor: pointer;">
+       
+        <i class="fa fa-home" (click)="home()" style="cursor: pointer;"></i>
+       | <i class="fa fa-user" style="font-size: 14px;"></i> |
+        Welcome | {{username}}
+            <!-- [{{userdetail.usertype}}] -->
+        </div>
+
+        <button class="btn btn-default " data-toggle="tooltip" title="Logout" data-placement="bottom" (click)="logout()"
+            style="position: absolute;
+            right: 30px;top: 17px;   padding: 4px 5px 2px 5px;"><i class="fa fa-power-off" style="    font-size: 19px;
+    color: #6d6d6d;"></i></button>
+        <!-- <div class="setting-icon mr-5">
+        <i class="fa fa-gear" style="    font-size: 22px;
+        color: #6d6d6d;"></i>
+            <div class="settings-content pl-3"> -->
+        <!-- <a href="#" class="text-center">Hi Admin</a> -->
+
+        <!-- <div>
+                  <a routerLink="../ticketstab/newtickets" class="text-center">Issues</a>
+                </div> -->
+        <!-- <p style="    margin: 0;
+              padding-top: 11px;">
+                <a (click)="logout()" routerLink="../login" class="text-center logoff">
+                  <i class="fa fa-power-off"></i>&nbsp; Logout</a>
+              </p>
+            </div>
+          </div> -->
+    </div>
+</nav>
+
+<div class="container-fluid bgimg" >
+    <div class="row" style="    text-align: center;
+    margin: 150px 0px 50px 0px;
+    padding: 0 150px;"  >
+        <div class="col-md-12">
+            <div class="col-md-1"></div>
+        <div class="col-md-2">
+            <div class="card"  routerLink="/dashboard/metric" routerLinkActive="active">
+                <img src="assets/images/dash-img.png">
+                <p class="form-name">Dashboard</p>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card" routerLinkActive="active" routerLink="/dashboard/stolist">
+                <img src="assets/images/sto-img.png">
+                <p class="form-name">Stock Transfer
+                    Order</p>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card" routerLinkActive="active" routerLink="/dashboard/mcslist" >
+                <img src="assets/images/umcs-img.png">
+                <p class="form-name">New Material Credit</p>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card" routerLinkActive="active" routerLink="/dashboard/umcslist">
+                <img src="assets/images/umcs-img.png">
+                 <p class="form-name">Used Material Credit</p>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card" routerLinkActive="active" routerLink="/dashboard/protolist" >
+                <img src="assets/images/pwo-img.png" style="width: 100px;">
+                 <p class="form-name">Proto Work Order</p>
+            </div>
+        </div>
+        <div class="col-md-1"></div>
+        </div>
+        <div class="col-md-12" style=" margin-top: 30px;">
+            <div class="col-md-1"></div>
+        <div class="col-md-2">
+            <div class="card" routerLinkActive="active" routerLink="/dashboard/materialissuesliplist">
+                <img src="assets/images/mis-img.png" style="width: 100px;">
+                <p class="form-name">Material Issue Slip</p>
+            </div>
+        </div>
+     
+      
+        <div class="col-md-2">
+            <div class="card"routerLinkActive="active" routerLink="/dashboard/matdislist" >
+                <img src="assets/images/MD-img.png">
+                 <p class="form-name">Material Dispatch</p>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card" routerLinkActive="active" routerLink="/dashboard/pmworkreqlist">
+                <img src="assets/images/mswo.png" style="width: 100px;">
+                 <p class="form-name">Machine Shop
+                    Work Order</p>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card" routerLinkActive="active" routerLink="/dashboard/tcplist">
+                <img src="assets/images/tc-pate-new.png" style="width: 100px;">
+                <p class="form-name">Trade Certificate
+                    Plates</p>
+            </div>
+        </div>
+        <div class="col-md-2" *ngIf="userdetail.usertype == 'admin'">
+            <div class="card"routerLinkActive="active" routerLink="/dashboard/usermanagement" >
+                <img src="assets/images/userM-img.png">
+                 <p class="form-name">User Management</p>
+            </div>
+        </div>
+        <div class="col-md-1"></div>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,262 @@
+<app-spinner *ngIf="loading" ></app-spinner>
+
+<div class="col-md-2" style="padding: 0;
+background-color: #242536; height: 100vh;">
+<div style="margin-top: 15px;">
+  <p class="sidetext" routerLinkActive="active"(click)="nmcslist()" ><i class="fa fa-angle-double-right"></i>&nbsp;&nbsp;NMCS List</p>
+    <p  class="sidetext active"  *ngIf="!isStoreLogin" (click)="addsto()"routerLinkActive="active" ><i class="fa fa-plus"></i>&nbsp;&nbsp;New
+                Request</p>
+     
+            <p class="sidetext" *ngIf="!isStoreLogin"(click)="upload()" routerLinkActive="active"><i class="fa fa-upload"></i>&nbsp;&nbsp;Upload
+                Partlist</p>
+       
+        
+           
+    </div>
+</div>
+<div class="col-md-10">
+<div class="row">
+  <div class="col-md-4">
+    <h4>New Material Credit Slip</h4>
+  </div>
+  <div class="col-md-5"></div>
+  <div class="col-md-3" style="padding-right: 40px;">
+    <!-- <button class="btn btn-primary btn-md" (click)="submitForm()" style="width: 110px;"><i class="icon-save"></i>&nbsp;&nbsp;Submit</button> -->
+  </div>
+</div>
+
+<div class="row" style="
+padding: 10px;
+width: 100%;">
+
+  <form [formGroup]="form">
+
+    <div class="">
+      <div class="row">
+
+          <div class="col-md-3">
+
+              Storage Type
+              <dot></dot>
+
+              <select class="form-control" name="" id=""  formControlName="storagetype">
+                <option value=null selected disabled>Select Storage Type</option>
+                <option value="Unused">Unused</option>
+                <option value="Made in Mechanical Workshop">Made in Mechanical Workshop</option>
+              </select>
+              <br>
+            <small class="text-danger errormsg" *ngIf="
+            !form.controls.storagetype.valid &&
+            form.controls.storagetype.touched
+          ">Storage Type is required</small>
+
+
+            </div>
+        <div class="col-md-3">
+
+          Purpose
+          <dot></dot>
+
+          <input type="text" class="form-control" value="" formControlName="storagePurpose" placeholder="Purpose/Project">
+          <small class="text-danger errormsg" *ngIf="
+                !form.controls.storagePurpose.valid &&
+                form.controls.storagePurpose.touched
+              ">Purpose is required</small>
+        </div>
+
+        <div class="col-md-3">
+
+          HR ID
+          <dot></dot>
+
+          <input type="text" class="form-control" value="" formControlName="hrid" placeholder="HR/1234">
+          <small class="text-danger errormsg" *ngIf="
+          !form.controls.hrid.valid &&
+          form.controls.hrid.touched
+        "> HR ID is required</small>
+        </div>
+
+        <div class="col-md-3">
+
+          Contact Mobile Number
+          <dot></dot>
+
+          <input type="text" class="form-control" value="" formControlName="contactno"  maxlength="10" (keypress)="keyAlpha($event)">
+          <small class="text-danger errormsg" *ngIf="
+          !form.controls.contactno.valid &&
+          form.controls.contactno.touched
+        ">Contact Mobile Number is not valid</small>
+
+
+        </div>
+
+      </div>
+
+      <div class="row">
+
+       
+
+
+
+
+      </div>
+
+    </div>
+
+    <hr>
+    <!-- <h4>{{form.value|json}}</h4>
+    <hr> -->
+    <div class="row">
+      <div class="col-md-12">
+        <table class="table table-bordered">
+          <tr class="tableheader">
+            <th>S.No</th>
+            <!-- <th>Finas Id<dot></dot>
+            </th> -->
+            <th>Part No<dot></dot>
+            </th>
+            <th>Description<dot></dot>
+            </th>
+            <th>ZGS<dot></dot>
+            </th>
+            <!-- <th>Issue Slip No.<dot></dot>
+            </th> -->
+            <th>Quantity<dot></dot>
+            </th>
+            <th>Delete</th>
+          </tr>
+          <tbody formArrayName="nmcsParts">
+            <ng-container *ngFor="let row of rowForms.controls;let i =index" [formGroupName]="i">
+           
+              <tr class="tablerow" >
+                <td style="text-align: center;">
+                  {{(i+1)}}
+
+                
+                </td>
+                <!-- <td>
+                  <input type="text" class="form-control" formControlName="finasid">
+                  <small class="text-danger errormsg" *ngIf="
+                  !row.controls.finasid.valid &&
+                  row.controls.finasid.touched
+                ">Finas ID is required</small>
+                </td> -->
+                <td>
+                  <input type="text" class="form-control" formControlName="partnumber" minlength="8" maxlength="15" (keypress)="nospace($event)">
+                  <small class="text-danger errormsg" *ngIf="
+                  !row.controls.partnumber.valid &&
+                  row.controls.partnumber.touched
+                ">Part Number is required <br> (Should be minimum 8 characters)</small>
+                </td>
+                <td>
+                  <input type="text" class="form-control" formControlName="description">
+                  <small class="text-danger errormsg" *ngIf="
+                  !row.controls.description.valid &&
+                  row.controls.description.touched
+                ">Description is required</small>
+                </td>
+                <td> <input type="text" class="form-control" formControlName="zgs" (keypress)="keyAlpha($event)">
+                  <small class="text-danger errormsg" *ngIf="
+            !row.controls.zgs.valid &&
+            row.controls.zgs.touched
+          ">ZGS is required</small></td>
+
+                <!-- <td> <input type="text" class="form-control" formControlName="issueslipno">  <small class="text-danger errormsg" *ngIf="
+                  !row.controls.issueslipno.valid &&
+                  row.controls.issueslipno.touched
+                ">Issue Slip No is required</small></td> -->
+                <td>
+                  <div class="row">
+                    <div class="col-md-12">
+                        <button class="btn btn-default col-md-2" (click)="removePart(row.controls.nmcsPartFinas)"><i class="fa fa-minus"></i></button>
+                        <div class="col-md-8">
+                            <input disabled type="number" class="form-control" formControlName="quantity" minlength="1" [value]="row.controls.nmcsPartFinas.length"
+                            (change)="changeQuantity($event,i)">
+                        </div>
+                        
+                        <button class="btn btn-default  col-md-2" (click)="addPart(row.controls.nmcsPartFinas)"><i class="fa fa-plus"></i></button>
+                   
+                    </div>
+                      </div>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <br>
+                        <ng-container *ngIf="row.controls.nmcsPartFinas.controls">
+                      
+                            <div *ngFor="let finas of row.controls.nmcsPartFinas.value?.reverse()" class="finascontainer" >
+                                
+                               Finas ID:
+                                <input disabled type="text" class="form-control"   value="{{finas.finasid}}">
+                                <!-- {{finas.controls | json}} -->
+                                <!-- {{finas.partName}} -->
+                                <!-- {{finas.controls.partName}} -->
+  
+                            </div>
+                        </ng-container>
+                    </div>
+                     
+                  </div>
+                
+                </td>
+                <td class="text-center"> <button *ngIf="rowForms.controls.length >1" class="btn btn-default" (click)="deleteRow(i)"><i class="fas fa-trash"></i></button> </td>
+              </tr>
+             
+              
+             
+          </ng-container>
+          </tbody>
+
+
+
+        </table>
+
+      </div>
+    </div>
+
+
+
+  </form>
+  <div style="text-align: right;">
+
+      <button class="btn btn-default btn-md" (click)="addRow()" style="width: 110px;"><i class="fa fa-plus"></i>&nbsp;&nbsp;Add Row</button>
+
+    </div>
+    <br>
+  <div style="text-align: right;">
+
+    <button class="btn btn-primary btn-md" (click)="submitForm()" style="width: 110px;"><i class="fa fa-save"></i>&nbsp;&nbsp;Submit</button>
+
+  </div>
+
+
+</div>
+</div>
+
+
+
+<!-- confirm modal -->
+
+<div class="modal fade" id="confirmSubmit" role="dialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-10">
+            <p class="modalHeader" style="font-weight: 600;">Submit</p>
+          </div>
+          <div class="col-md-2">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <br>
+          <div class="col-md-12">
+            <p> Are you sure to submit the form ?</p>
+          </div>
+        </div>
+      </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-sm btn-primary" data-dismiss="modal">No </button>
+      <button type="button" class="btn btn-sm btn-primary" (click)="confirmSubmit()">Yes</button>
+    </div>
+  </div>
+  </div>
+</div>

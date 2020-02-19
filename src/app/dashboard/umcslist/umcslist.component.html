@@ -1,0 +1,949 @@
+<app-spinner *ngIf="loading"></app-spinner>
+
+<div class="col-md-2" style="padding: 0;
+background-color: #242536; height: 100vh;">
+<div style="margin-top: 15px;">
+  <p class="sidetext active"  routerLinkActive="active" ><i class="fa fa-angle-double-right"></i>&nbsp;&nbsp;UMCS List</p>
+    <p class="sidetext" (click)="addsto()"routerLinkActive="active" ><i class="fa fa-plus"></i>&nbsp;&nbsp;New
+                Request</p>
+     
+            <p class="sidetext" *ngIf="!isStoreLogin"(click)="upload()" routerLinkActive="active"><i class="fa fa-upload"></i>&nbsp;&nbsp;Upload
+                Partlist</p >
+            <p  class="sidetext"(click)="downloadExcel('export.xlsx')" routerLinkActive="active"><i class="fa fa-download"></i>
+                &nbsp;Download</p>
+        
+           
+    </div>
+</div>
+<div class="col-md-10">
+<div class="col-md-12" style="margin-top:10px;">
+  <div class="col-md-4" style="padding: 0">
+    <h4>Used Material Credit Slip</h4>
+  </div>
+  <div class="col-md-5">
+    <button class="btn btn-primary dropdown-item" (click)="downloadZip('Generate_ZIP.zip')" routerLinkActive="active" style="width: 17%;float: right;">
+      <i class="fa fa-print"></i>
+      &nbsp;Print</button>
+    
+</div>
+  <!-- <div class="col-md-6" style="text-align: right;">
+    <button class="btn btn-primary" (click)="addsto()"><i class="icon-plus"></i>&nbsp;&nbsp;New Request</button>
+
+
+    &nbsp;&nbsp;&nbsp;
+
+    <button *ngIf="!isStoreLogin" class="btn btn-primary" (click)="upload()"><i
+        class="icon-upload-alt"></i>&nbsp;&nbsp;Upload Partlist</button>
+
+    &nbsp;&nbsp;&nbsp;
+    <input type="button" value="Download" class="btn btn-primary " (click)="download('export.xlsx')">
+  </div> -->
+  <div class="col-md-3">
+    <input type="text" class="form-control" placeholder="  Search  " name="search" (input)="search($event.target.value)"
+      #valsearchuser autocomplete="off"><i class="fa fa-search search"></i>
+  </div>
+  <!-- <div class="col-md-1" style="text-align: right;"> -->
+
+    <!-- <input type="button" value="New Request" class="btn btn-primary" (click)="addsto()" style="margin-right: 0px;"> -->
+
+    <!-- <div class="dropdown">
+      <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown"
+        aria-haspopup="true" aria-expanded="true"> -->
+        <!-- <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> -->
+        <!-- <i class="fa fa-list"></i> -->
+        <!-- Actions -->
+        <!-- &nbsp;&nbsp;Menu &nbsp;<i class="fa fa-caret-down"></i>
+      </button>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"
+        style="width: 30%;padding: 4px;background: #dedede;">
+        <button class="btn btn-primary dropdown-item" (click)="addsto()"><i class="fa fa-plus"></i>&nbsp;&nbsp;New
+          Request</button>
+        <button *ngIf="!isStoreLogin" class="btn btn-primary dropdown-item" (click)="upload()"><i
+            class="fa fa-upload"></i>&nbsp;&nbsp;Upload Partlist</button>
+        <button class="btn btn-primary dropdown-item" (click)="downloadExcel('export.xlsx')"><i
+            class="fa fa-download"></i>
+          &nbsp;Download</button>
+        <button class="btn btn-primary dropdown-item" (click)="downloadZip('Generate_ZIP.zip')">
+          <i class="fa fa-print"></i>
+          &nbsp;Print</button> -->
+        <!-- <a class="dropdown-item" href="#">Action</a>
+                <a class="dropdown-item" href="#">Another action</a>
+                <a class="dropdown-item" href="#">Something else here</a> -->
+      <!-- </div>
+    </div>
+
+  </div> -->
+
+</div>
+
+<div class="col-md-12">
+
+  <!-- *ngFor="let data of allstoform | paginate: { itemsPerPage: 10, currentPage: p1,id: 'two'};let index=index" -->
+  <table class="table table-bordered table-striped" style="width:99%">
+    <tr>
+      <th style="text-align: center;width: 8%;">Select All<br>
+        <label class="control control--checkbox">
+          <input type="checkbox" class="chkboxes" id="select-all" value="all" (click)="checkall($event.target.checked)">
+          <div class="control__indicator changeindicator"></div>
+        </label></th>
+      <th>S.No</th>
+      <th>Form ID </th>
+      <th>Created On</th>
+      <th> Creditor Name</th>
+      <th>HR ID</th>
+      <th>Department</th>
+      <th>Approver</th>
+      <th>Status</th>
+      <th style="text-align: center">Action</th>
+      <th style="text-align: center">View Form</th>
+      <!-- <th *ngIf="isStoreLogin">Acceptance</th> -->
+      <th>Scrap Note</th>
+      <!-- <th>Action</th> -->
+        <th *ngIf="usertype != 'store'">Delete</th>
+    </tr>
+    <!-- <tr *ngFor="let data of allinternalTemplate| paginate: { itemsPerPage: 10, currentPage:p9,id: 'internalone'};let index = index ;">
+            <td>{{((p9- 1) * 10 + index+1)}}</td> -->
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>
+        <div class="row">
+          <div class="col-lg-12 nopadding">
+              <input class="form-control" bsDaterangepicker id="rangedagte" type="text"
+                  style="font-size: 12px" placeholder="Select Created On"  (bsValueChange)="SelectDate($event,'createddate')" />
+          </div>
+      </div>
+      </td>
+      <td></td>
+      <td></td>
+      <td>
+        <div class="row">
+          <div class="col-lg-12 nopadding">
+            <div class="button-group">
+              <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">Select
+                Department &nbsp;&nbsp;
+                <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu filtermenu" style="position: absolute;
+              transform: translate3d(1px, 32px, 0px);
+              top: 0px;
+              left: 0px;
+              will-change: transform;
+              height: 15vh;
+              overflow-x: hidden;
+              overflow-y: auto;">
+                <ng-container *ngFor="let data of getdepartment;">
+                  <li>
+                    <label class="control control--checkbox">
+                      <input type="checkbox" class="typeSelectBox" value={{data}}
+                        (change)="departmentfilter($event,'department')">&nbsp;<span id="select">{{data}}</span>
+                      <div class="control__indicator filterchkbox"></div>
+                    </label>
+                  </li>
+                </ng-container>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </td>
+      <td>
+        <div class="row">
+          <div class="col-lg-12 nopadding">
+            <div class="button-group">
+              <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">Select
+                Approver
+                &nbsp;&nbsp;
+                <span class="caret"></span></button>
+              <ul class="dropdown-menu filtermenu" style="position: absolute;
+                  transform: translate3d(1px, 32px, 0px);
+                  top: 0px;
+                  left: 0px;
+                  will-change: transform;
+                  height: 18vh;
+                  overflow-x: hidden;
+                  overflow-y: auto;">
+                <ng-container *ngFor="let data of getapprover;">
+                  <li>
+                    <label class="control control--checkbox">{{data}}
+                      <input type="checkbox" class="typeSelectBox" value={{data}}
+                        (change)="approverfilter($event,'approvername')">
+                      <div class="control__indicator filterchkbox"></div>
+                    </label>
+                  </li>
+                </ng-container>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </td>
+      <td>
+        <div class="row">
+          <div class="col-lg-12 nopadding">
+            <div class="button-group">
+              <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">Select
+                Status
+                &nbsp;&nbsp;
+                <span class="caret"></span></button>
+              <ul class="dropdown-menu filtermenu" style="position: absolute;
+              transform: translate3d(1px, 32px, 0px);
+              top: 0px;
+              left: 0px;
+              will-change: transform;
+              height: 22vh;
+              overflow-x: hidden;
+              min-width: 190px !important;
+              overflow-y: auto;">
+                <ng-container *ngFor="let data of getstatus;">
+                  <li>
+                    <label class="control control--checkbox">
+                      <span *ngIf="data== 'storerejected'">
+                        Store Approval Rejected
+                      </span>
+                      <span *ngIf="data == 'pending'">
+                        Store Approval Pending
+                      </span>
+                      <span *ngIf="data == 'accepted'">
+                        L4 Approval Pending
+                      </span>
+
+                      <span *ngIf="data == 'l4approved'">
+                        Location Update Pending
+                      </span>
+                      <span *ngIf="data == 'l4approved'">
+                        L3 Approval Pending
+                      </span>
+                      <span *ngIf="data == 'l3approved'">
+                        Location Update Pending
+                      </span>
+                      <span *ngIf="data == 'l3approved'">
+                        L2 Approval Pending
+                      </span>
+                      <span *ngIf="data == 'l2approved' ">
+                        Location Update Pending
+                      </span>
+                      <span class="completed" *ngIf="data.status == 'closed'">
+                        Completed
+                      </span>
+                      <span *ngIf="data == 'locationupdated'">
+                        Location Updated
+                      </span>
+                      <span *ngIf="data == 'l2rejected'">
+                        L2 Approval Rejected
+                      </span>
+                      <span *ngIf="data == 'l3rejected'">
+                        L3 Approval Rejected
+                      </span>
+                      <span *ngIf="data == 'l4rejected'">
+                        L4 Approval Rejected
+                      </span>
+                      <span *ngIf="data == 'expired'">
+                        Expired
+                      </span>
+                      <span *ngIf="data == 'recalled'">
+                        Form Recalled
+                      </span>
+                      <span *ngIf="data == 'scrapmoved'">
+                        Scrap Moved
+                      </span> 
+                      <input type="checkbox" class="typeSelectBox" value={{data}}
+                        (change)="statusfilter($event,'status')">
+                      <div class="control__indicator filterchkbox"></div>
+                    </label>
+                  </li>
+                </ng-container>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td *ngIf="usertype != 'store'"></td>
+    </tr>
+    <tr *ngFor="let data of umcslist| paginate: { itemsPerPage: 10, currentPage: p1,id: 'two'};let index=index">
+      <td style="text-align: center"><label class="control control--checkbox">
+          <input type="checkbox" class="chkboxes checksingle" value="single" (click)="singlecheck($event,data.id)">
+          <div class="control__indicator checkcolor "></div>
+        </label></td>
+      <td>{{((currentPage- 1) * 10 + index+1)}}</td>
+      <td>{{(data?.umcsformid != null) ? data?.umcsformid : '-' }}
+
+      </td>
+      <td> {{(data.createddate != null) ? data.createddate : '-' }}</td>
+      <td> {{(data.creditorname != null) ? data.creditorname : '-' }}</td>
+      <td>{{(data?.hrid != null) ? data?.hrid : '-' }}</td>
+
+      <td>{{(data?.department != null) ? data?.department : '-' }}</td>
+      <td>{{(data?.approvername != null)? data?.approvername : '-'}}</td>
+      <td class="text-default">
+
+        <span [style.color]="pickColor(data.statusLabel)">
+          {{(data?.statusLabel != null) ? data?.statusLabel : '-' }}
+      </span>
+
+        <!-- <span class="rejected" *ngIf="data.status == 'storerejected'">
+          Store Approval Rejected
+        </span>
+        <span *ngIf="data.status == 'pending'" class="inprogress">
+          Store Approval Pending
+        </span>
+        <span *ngIf="data.status == 'accepted'" class="inprogress">
+          L4 Approval Pending
+        </span>
+
+        <span *ngIf="data.status == 'l4approved' && data.storagePeriod == '1month'" class="inprogress">
+          Location Update Pending
+        </span>
+        <span class="inprogress"
+          *ngIf="data.status == 'l4approved' && (data.storagePeriod == '2months' || data.storagePeriod == '3months')">
+          L3 Approval Pending
+        </span>
+        <span class="inprogress" *ngIf="data.status == 'l3approved' && data.storagePeriod == '2months'">
+          Location Update Pending
+        </span>
+        <span class="inprogress" *ngIf="data.status == 'l3approved' && data.storagePeriod == '3months'">
+          L2 Approval Pending
+        </span>
+        <span class="inprogress" *ngIf="data.status == 'l2approved' && data.storagePeriod == '3months'">
+          Location Update Pending
+        </span>
+        <span class="completed" *ngIf="data.status == 'closed'">
+          Completed
+        </span>
+        <span class="inprogress" *ngIf="data.status == 'locationupdated'">
+          Location Updated
+        </span>
+        <span class="rejected" class="inprogress" *ngIf="data.status == 'l2rejected'">
+          L2 Approval Rejected
+        </span>
+        <span class="rejected" *ngIf="data.status == 'l3rejected'">
+          L3 Approval Rejected
+        </span>
+        <span class="rejected" class="inprogress" *ngIf="data.status == 'l4rejected'">
+          L4 Approval Rejected
+        </span>
+        <span class="rejected" class="inprogress" *ngIf="data.status == 'expired'">
+          Expired
+        </span>
+        <span class="inprogress" *ngIf="data.status == 'recalled'">
+          Form Recalled
+        </span>
+        <span class="inprogress" *ngIf="data.status == 'scrapmoved'">
+          Scrap Moved
+        </span> -->
+      </td>
+      <td style="text-align: center">
+        <ng-container *ngIf="usertype == 'store'">
+        <button
+          *ngIf=" (data.status == 'l3approved' && data.storagePeriod == '2months') || (data.status == 'l2approved' && data.storagePeriod == '3months') || (data.status == 'l4approved' && data.storagePeriod == '1month')"
+          class="btn btn-primary" (click)="viewAction(data.id)">
+          &nbsp;&nbsp;Edit
+        </button>
+      </ng-container>
+        <!-- <button  *ngIf="!isStoreLogin && (data.status == 'pending' || data.status == 'accepted')"
+          class="btn btn-primary" (click)="Recallaction(data.id)">&nbsp;&nbsp;Recall</button>
+          <button  *ngIf="!isStoreLogin && data.status == 'recalled' "
+          class="btn btn-primary" (click)="recalledit(data.id)">&nbsp;&nbsp;Edit</button> -->
+        <button *ngIf=" isStoreLogin && (data.status == 'expired')" class="btn btn-default"
+          (click)="viewScrapAction(data.id)">
+          <i class="icon-pencil"></i>&nbsp;&nbsp;Move to Scrap
+        </button>
+        <button *ngIf="isStoreLogin && data.status=='pending'" class="btn btn-default col-md-12"
+          (click)="approvelreject(data,data.id,index)">
+          Approval
+        </button>
+        <ng-container *ngIf="data?.status=='pending' && ( usertype != 'budgetapprover' && usertype != 'sm'
+        && usertype != 'ipl'  && usertype != 'store' && status !='protovehicleowner' && status !='hdtsupervisor'
+        && status !='mdtsupervisor' && status !='ppssupervisor' && status !='maintenancesupervisor' && status !='mechanicalsupervisor'
+        && status !='eandesupervisor'&& status !='aggregatesupervisor')">
+            <button class="btn btn-primary  btn-sm" (click)="Recall(data.id)">
+                Recall
+            </button>
+        </ng-container>
+        <ng-container *ngIf="data?.status=='recalled' && ( usertype != 'budgetapprover' && usertype != 'sm'
+              && usertype != 'ipl'  && usertype != 'store' && status !='protovehicleowner' && status !='hdtsupervisor'
+              && status !='mdtsupervisor' && status !='ppssupervisor' && status !='maintenancesupervisor' && status !='mechanicalsupervisor'
+              && status !='eandesupervisor'&& status !='aggregatesupervisor')">
+            <button class="btn btn-primary  btn-sm" (click)="RecallEdit(data.id)">
+                Edit
+            </button>
+        </ng-container>
+      </td>
+      <td style="text-align: center">
+        <button class="btn btn-default" (click)="openParts(data)">
+          <i class="fa fa-eye"></i>&nbsp;&nbsp;View
+        </button>
+      </td>
+      <!-- <td *ngIf="isStoreLogin">
+        <button *ngIf="data.status=='pending'" class="btn btn-default col-md-12"
+          (click)="approvelreject(data,data.id,index)">
+          Approval
+        </button>
+      </td> -->
+      <td style="text-align: center;">
+        <img class="img-fluid" src="assets/images/pdficon.png"
+          (click)="Pdfdownlaod(data.umcsformid + '.pdf',data.id)" style="cursor: pointer"></td>
+
+          <td style="text-align: center;" *ngIf="usertype != 'store'">
+            <ng-container *ngIf="data?.status != 'deleted' && data?.status != 'closed'">
+              <button class="btn btn-default  btn-sm" (click)="umcsDelete(data.id,data)" style="border-radius: 6px;">
+                <i class="fas fa-trash" style="font-size: 16px;"></i>
+              </button>
+            </ng-container>
+        </td>
+      
+      </tr>
+  </table>
+  <br>
+  <h4 *ngIf="umcslist?.length==0" class="text-center">No Used Material Credit Slip created yet!</h4>
+
+  <!-- <pagination-controls style="text-align: right;" *ngIf="umcslist?.length!=0" (pageChange)="p1 = $event" #api id="two">
+  </pagination-controls> -->
+  <div style="float: right;margin-bottom: 35px;" *ngIf="umcslist?.length!=0">
+    <button [disabled]="currentPage == 1" class="btn btn-default paginationbtn" (click)="paginatePartList('prev')"><i
+        class="fa fa-chevron-left"></i></button>
+    <span style="font-size: 15px;
+      padding: 10px;">
+      <!-- {{currentPage}} -->
+      <input id="currentPageInput" class="paginatecontrol" type="text" value="{{currentPage}}" style="width: 50px;">
+      <!-- <i class="icon-search" (click)="searchPage()" class="searchbtn"></i> -->
+      <i class="fa fa-search searchbtn" (click)="searchPage()"></i>
+      of
+      {{totalPages}}
+    </span>
+
+    <button [disabled]="currentPage == totalPages" class="btn btn-default paginationbtn"
+      (click)="paginatePartList('next')"><i class="fa fa-chevron-right"></i></button>
+  </div>
+</div>
+</div>
+<form [formGroup]="form">
+  <div class="modal fade" id="approvalreject" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header" style="border-bottom: none;">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Acceptance</h4>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-12">
+              <h4 class="modal-title">UMCS</h4>
+            </div>
+          </div>
+          <div class="row">
+            <div class=" col-md-12 table-responsive">
+              <table class="table">
+                <thead style="background-color: #ececec;">
+                  <tr>
+                    <th>S.No</th>
+
+                    <th>Created On</th>
+                    <th>Creditor Name</th>
+                    <th>HR ID</th>
+                    <th>Department</th>
+                    <th>Storage Duration</th>
+                    <th>Approver</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of umcsmodallist;let index=index;">
+                    <td>
+                      {{(index+1)}}
+                    </td>
+                    <td>
+                      {{data.createddate}}
+                    </td>
+                    <td>
+                      {{data.creditorname}}
+                    </td>
+                    <td>
+                      {{data.hrid}}
+                    </td>
+                    <td>
+                      {{data.department}}
+                    </td>
+
+                    <td>
+
+                      <ng-container *ngIf="data.storagePeriod == '1month'">
+                        Less than 1 month
+
+                      </ng-container>
+                      <ng-container *ngIf="data.storagePeriod == '2months'">
+                        More than 1 month and less than 3 months
+
+                      </ng-container>
+                      <ng-container *ngIf="data.storagePeriod == '3months'">
+                        Greater than 3 months
+                      </ng-container>
+                    </td>
+                    <td>
+                      {{data.approvername}}
+                    </td>
+                    <td>
+                      {{data.status}}
+                    </td>
+
+                  </tr>
+                </tbody>
+
+              </table>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-md-12">
+              <h4 class="modal-title">Part List</h4>
+            </div>
+          </div>
+          <div class="row">
+            <div class=" col-md-12 table-responsive">
+              <table class="table">
+                <thead style="background-color: #ececec;">
+                  <tr>
+                    <th>S.No</th>
+
+                    <th>Part Number</th>
+                    <th>Description</th>
+                    <th>Vehicle Number</th>
+                    <th>Quantity</th>
+                    <th>Location</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let part of partsListdata;let index=index;">
+                    <td>
+                      {{index+1}}
+                    </td>
+
+                    <td>
+                      {{part.partnumber}}
+                    </td>
+                    <td>
+                      {{part.description}}
+                    </td>
+                    <td>
+                      {{part.vehicleno}}
+                    </td>
+                    <td>
+                      {{part.quantity}}
+                    </td>
+                    <td>
+                      {{part.location}}
+                    </td>
+                  </tr>
+                </tbody>
+
+              </table>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-md-12">
+              <h4 class="modal-title">Remarks</h4>
+              <div>
+                <textarea class="remark" formControlName="remarks" id="remarks"></textarea>
+                <small class="text-danger" *ngIf="
+                !form.controls.remarks.valid &&
+                form.controls.remarks.touched
+              "> Remarks is required</small>
+              </div>
+              <ng-container>
+                <input type="checkbox" value="" id="l4proto" (change)="deputyvalues($event)" style="cursor: pointer;"
+                  formControlName="deputyprotol4">&nbsp;&nbsp;
+
+                <label for="l4proto" style="font-weight: 100;cursor: pointer;">Assign to DeputyProtoL4</label>
+                <br>
+                <span *ngIf="periodOfStorage != '1month'">
+                  <input type="checkbox" value="" id="l3proto" (change)="deputyprotovalues($event)"
+                    style="cursor: pointer;" formControlName="deputyprotol3">&nbsp;&nbsp;
+
+                  <label for="l3proto" style="font-weight: 100;cursor: pointer;">Assign to DeputyProtoL3</label>
+                </span>
+
+              </ng-container>
+
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer" style="border-top: none;">
+          <button type="button" class="btn btn-default" (click)="storeResponse(true)"
+            style="background: green;color: #fff;border:none;" data-dismiss="modal"><i
+              class="fa fa-check"></i>&nbsp;&nbsp;Accept</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal" (click)="storeResponse(false)"
+            style="background: #c9302c;color: #fff;border:none;"> <i class="fa fa-times"></i>&nbsp;&nbsp;Reject</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+
+
+<div class="modal fade" id="addcostcenter" role="dialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-md" style="width:80%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Form Details </h4>
+      </div>
+      <div class="modal-body">
+        <s-update [arr]="updateForm"></s-update>
+        <div class=" modal-table">
+          <div class="row viewpara">
+            <div class="col-md-12 ">
+              <div class="col-md-3 tablestyle">
+                <p>UMCS Form ID</p>
+              </div>
+              <div class="col-md-3 tablestyle">
+                <span> {{umcsdata?.umcsformid  }}</span>
+              </div>
+              <div class="col-md-3 tablestyle">
+                <p>HR ID</p>
+              </div>
+              <div class="col-md-3 tablestyle">
+                <span> {{umcsdata?.hrid}}</span>
+              </div>
+              <div class="col-md-3 tablestyle">
+                <p>Create Date</p>
+              </div>
+              <div class="col-md-3 tablestyle">
+                <span> {{umcsdata?.createddate}}</span>
+              </div>
+
+              <div class="col-md-3 tablestyle">
+                <p>Creditor Name</p>
+              </div>
+              <div class="col-md-3 tablestyle">
+                <span>{{umcsdata?.creditorname}}</span>
+              </div>
+
+              <div class="col-md-3 tablestyle">
+                <p>Department</p>
+              </div>
+              <div class="col-md-3 tablestyle">
+                <span>{{umcsdata?.department}}</span>
+              </div>
+              <div class=" col-md-3 tablestyle">
+                <p> Purpose</p>
+              </div>
+              <div class=" col-md-3 tablestyle" style="overflow:auto;">
+                <span>{{umcsdata?.storagePurpose}}</span>
+              </div>
+              <div class=" col-md-3 tablestyle">
+                <p> Storage Period</p>
+              </div>
+              <div class=" col-md-3 tablestyle" style="overflow:auto;">
+                <span *ngIf="umcsdata?.storagePeriod == '1month'">
+                  Less than 1 Month
+                </span>
+                <span *ngIf="umcsdata?.storagePeriod == '2months'">
+                  More than 1 Month and Less than 3 Months
+                </span>
+                <span *ngIf="umcsdata?.storagePeriod == '3months'">
+                  Greater than 3 Months
+                </span>
+              </div>
+              <div class="col-md-3 tablestyle">
+                <p>Phone Number</p>
+              </div>
+              <div class="col-md-3 tablestyle">
+                <span> {{umcsdata?.contactno}}</span>
+              </div>
+
+              <div class="col-md-3 tablestyle">
+                <p>Status</p>
+              </div>
+              <div class="col-md-3 tablestyle">
+                <ng-container>
+                  <span *ngIf="umcsdata?.status == 'storerejected'">
+                    {{umcsdata?.statusLabel}}
+                  </span>
+                    <!-- Store Approval Rejected
+                  </span>
+                  <span *ngIf="umcsdata?.status == 'pending'">
+                    Store Approval Pending
+                  </span>
+                  <span *ngIf="umcsdata?.status == 'accepted'">
+                    L4 Approval Pending
+                  </span>
+
+                  <span *ngIf="umcsdata?.status == 'l4approved' && umcsdata?.storagePeriod == '1month'">
+                    Location Update Pending
+                  </span>
+                  <span
+                    *ngIf="umcsdata?.status == 'l4approved' && (umcsdata?.storagePeriod == '2months' || umcsdata?.storagePeriod == '3months')">
+                    L3 Approval Pending
+                  </span>
+                  <span *ngIf="umcsdata?.status == 'l3approved' && umcsdata?.storagePeriod == '2months'">
+                    Location Update Pending
+                  </span>
+                  <span *ngIf="umcsdata?.status == 'l3approved' && umcsdata?.storagePeriod == '3months'">
+                    L2 Approval Pending
+                  </span>
+                  <span *ngIf="umcsdata?.status == 'l2approved' && umcsdata?.storagePeriod == '3months'">
+                    Location Update Pending
+                  </span>
+                  <span *ngIf="umcsdata?.status == 'closed'">
+                    Completed
+                  </span>
+                  <span *ngIf="umcsdata?.status == 'locationupdated'">
+                    Location Updated
+                  </span>
+                  <span *ngIf="umcsdata?.status == 'l2rejected'">
+                    L2 Approval Rejected
+                  </span>
+                  <span *ngIf="umcsdata?.status == 'l3rejected'">
+                    L3 Approval Rejected
+                  </span>
+                  <span *ngIf="umcsdata?.status == 'l4rejected'">
+                    L4 Approval Rejected
+                  </span>
+                  <span *ngIf="umcsdata?.status == 'expired'">
+                    Expired
+                  </span>
+                  <span *ngIf="umcsdata?.status == 'scrapmoved'">
+                    Scrap Moved
+                  </span> -->
+
+                </ng-container>
+              </div>
+
+              <ng-container *ngIf="umcsdata?.l3remarks">
+                <div class="col-md-3 tablestyle">
+                  <p>Proto L3 Remarks</p>
+                </div>
+                <div class="col-md-3 tablestyle" style="overflow:auto;">
+                  <span>{{umcsdata.l3remarks}}</span>
+                </div>
+              </ng-container>
+              <ng-container *ngIf="umcsdata?.l4remarks">
+                <div class="col-md-3 tablestyle">
+                  <p>Proto L4 Remarks</p>
+                </div>
+                <div class="col-md-3 tablestyle" style="overflow:auto;">
+                  <span>{{umcsdata.l4remarks}}</span>
+                </div>
+              </ng-container>
+              <ng-container *ngIf="umcsdata?.budgetremarks">
+                <div class="col-md-3 tablestyle">
+                  <p>Budget Remarks</p>
+                </div>
+                <div class="col-md-3 tablestyle" style="overflow:auto;">
+                  <span>{{umcsdata.budgetremarks}}</span>
+                </div>
+              </ng-container>
+              <ng-container *ngIf="umcsdata?.iplremarks">
+                <div class="col-md-3 tablestyle">
+                  <p>IPL Remarks</p>
+                </div>
+                <div class="col-md-3 tablestyle" style="overflow:auto;">
+                  <span>{{umcsdata.iplremarks}}</span>
+                </div>
+              </ng-container>
+              <ng-container *ngIf="umcsdata?.smremarks">
+                <div class="col-md-3 tablestyle">
+                  <p>SM Remarks</p>
+                </div>
+                <div class="col-md-3 tablestyle" style="overflow:auto;">
+                  <span>{{umcsdata.smremarks}}</span>
+                </div>
+              </ng-container>
+              <ng-container *ngIf="umcsdata?.storeupdateremarks">
+                <div class="col-md-3 tablestyle">
+                  <p>Store Update Remarks</p>
+                </div>
+                <div class="col-md-3 tablestyle" style="overflow:auto;">
+                  <span>{{umcsdata.storeupdateremarks}}</span>
+                </div>
+              </ng-container>
+              <ng-container *ngIf="umcsdata?.storeacceptremarks">
+                <div class="col-md-3 tablestyle">
+                  <p>Store Acceptance Remarks</p>
+                </div>
+                <div class="col-md-3 tablestyle" style="overflow:auto;">
+                  <span>{{umcsdata.storeacceptremarks}}</span>
+                </div>
+              </ng-container>
+              <ng-container *ngIf="umcsdata?.deletedremarks">
+
+                <div class=" col-md-3 tablestyle">
+                    <p class="text-color">Deleted Remarks</p>
+                </div>
+                <div class=" col-md-3 tablestyle" style="overflow:auto;">
+                    <span>{{umcsdata?.deletedremarks}}</span>
+                </div>
+            </ng-container>
+            </div>
+            <br>
+            <div class="col-md-12 table-responsive">
+              <table class="table">
+                <thead style="    background-color: #ececec;">
+                  <tr>
+                    <th>S.No</th>
+
+                    <th>Part Number</th>
+                    <th>Description</th>
+                    <th>Vehicle Number</th>
+                    <th>Quantity</th>
+                    <th>Location</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    *ngFor="let part of partsList?.umcsParts  | paginate: { itemsPerPage: 10, currentPage: p2,id: 'three'};let index=index;">
+                    <td>
+                      {{((p2- 1) * 10 + index+1)}}
+                    </td>
+                    <td>
+                      {{part?.partnumber}}
+                    </td>
+                    <td>
+                      {{part?.description}}
+                    </td>
+                    <td>
+                      {{part?.vehicleno}}
+                    </td>
+                    <td>
+                      {{part?.quantity}}
+                    </td>
+
+                    <td>
+                      {{part?.location}}
+                    </td>
+
+                  </tr>
+                </tbody>
+
+
+              </table>
+              <pagination-controls *ngIf="partsList?.umcsParts.length!=0" style="text-align: right;"
+                (pageChange)="p2 = $event" #api id="three">
+              </pagination-controls>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <!-- <button type="button" class="btn btn-md  btn-black" (click)="confirmAddcostcenter()">Submit</button>
+              <button type="button" class="btn btn-md btn-black" data-dismiss="modal">Cancel </button> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="storeResponse" role="dialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Parts List </h4>
+      </div>
+      <div class="modal-body">
+        <div class=" modal-table">
+          <div class="row">
+
+            <div class="col-md-12 table-responsive">
+              <table class="table">
+                <thead style="    background-color: #ececec;">
+                  <tr>
+                    <th>S.No</th>
+                    <th>Part Number</th>
+                    <th>Description</th>
+                    <th>Vehicle Number</th>
+                    <th>Quantity</th>
+                    <th>Location</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let part of partsList;let index=index;">
+                    <td>
+                      {{index+1}}
+                    </td>
+                    <td>
+                      {{part.partnumber}}
+                    </td>
+                    <td>
+                      {{part.description}}
+                    </td>
+                    <td>
+                      {{part.vehicleno}}
+                    </td>
+                    <td>
+                      {{part.quantity}}
+                    </td>
+
+                    <td>
+                      {{part.location}}
+                    </td>
+
+                  </tr>
+                </tbody>
+
+
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <!-- <button type="button" class="btn btn-md  btn-black" (click)="confirmAddcostcenter()">Submit</button>
+                  <button type="button" class="btn btn-md btn-black" data-dismiss="modal">Cancel </button> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- set the delete remarks -->
+
+
+<div class="modal fade" id="deletelist" role="dialog">
+  <div class="modal-dialog modal-sm">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title" style="font-size: 15px;
+        ">Delete </h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class=" col-md-12 table-responsive">
+            <form [formGroup]="remarkform">
+              <div class="row mt-3">
+                <div class="col-md-12">
+                  <div>
+                    <div class="form-group text-field" style="font-size: 13px;">
+                      Remarks <dot> </dot>
+                      <textarea type="text" class="form-control" formControlName="remarks"
+                        style="font-weight: 400;"></textarea>
+                    </div>
+
+                    <small class="text-danger" *ngIf="
+                      !remarkform.controls.remarks.valid &&
+                      remarkform.controls.remarks.touched
+                    "> Remarks is required</small>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer" style="border-top: none;">
+
+        <button class="btn btn-danger btn-md" (click)="submitForm()" style="font-size: 12px;
+        ">Delete</button>
+      </div>
+    </div>
+
+  </div>
+</div>

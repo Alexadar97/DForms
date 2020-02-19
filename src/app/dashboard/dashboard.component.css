@@ -1,0 +1,216 @@
+.list-group-item{
+  border: 0px;
+  border-radius: 0px;
+  background: #242536;
+  margin-left: 10px;
+}
+.list-group{
+  background: #242536;
+  height: 100vh;
+  padding-top: 20px;
+}
+.list-group-item > a {
+    color: #ffffff;
+}
+
+.list-group-item > a:active{
+    color: #fff !important;
+    text-decoration: none;
+}
+
+.list-group-item.active, .list-group-item.active:focus{
+  background: #030305;
+  color: #fff;
+  /* font-weight: bold; */
+  box-shadow: 0 0 2px 0px #828387;
+  border-left: 4px solid #FFB946;
+  margin-left: 6px;
+}
+.list-group-item:hover{
+  background: #030305;
+  color: #fff;
+  /* font-weight: bold; */
+  box-shadow: 0 0 2px 0px #828387;
+  border-left: 4px solid #FFB946;
+  margin-left: 6px;
+}
+.list-group-item.active > a, .list-group-item.active:focus > a, .list-group-item.active:hover > a{
+    
+    color:#fff;
+}
+.innerhead{
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 64px;
+    width: 100%;
+    overflow: hidden;
+    background-size: cover;
+    min-width: 512px;
+}
+img.innerpgtop{
+    width: 100%;
+    min-height: 56px;
+    height: 100%;
+}
+img.innerpglogo {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 20vw !important;
+  height: auto !important;
+  max-width: 200px !important;
+  min-width: 230px !important;
+  /* background-color: #14141F !important; */
+  padding: 20px 29px !important;
+  cursor: pointer;
+}
+
+
+:host /deep/ .mat-radio-label {
+    flex-direction: column-reverse;
+    
+  }
+
+  .mat-radio-label > .mat-radio-label-content {
+    padding: 0;
+  }
+
+  td,th{
+    padding: 10px;
+    text-align: center !important;
+  }
+
+  .btn-primary{
+    background-color: #006692!important;
+    border-color: #006692!important;
+    box-shadow: none;
+    color: #fff !important;
+  }
+
+  a.waves-effect{
+    width: 100%;
+    display: block;
+    color: #000;
+  }
+
+  td{
+    padding:6px;
+}
+
+th{
+    padding: 6px;
+}
+a:hover{
+  text-decoration: none;
+}
+a:focus{
+  text-decoration: none;
+}
+
+.setting-icon {
+  position: absolute;
+  right: 23px;
+  display: inline-block;
+  cursor: pointer;
+  top: 16px;
+  padding-top: 6px;
+  padding-bottom: 4px;
+  padding-right: 7px;
+  padding-left: 6px;
+  border-radius: 4px;
+  background-color: #ffffffeb;
+}
+
+.setting-icon:hover .settings-content {
+  display: block;
+}
+.settings-content {
+    display: none;
+    position: absolute;
+    right: 0px;
+    background-color: #444444;
+    min-width: 97px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    height: 45px;
+    margin-left: -33px;
+    border-radius: 4px;
+    top: 34px;
+}
+.settings-content a{
+  color: #fff;
+  padding-left: 17px;
+}
+
+.dashboardArea{
+    /* color: #fff; */
+    height: 90vh;
+    /* background: #BDBDBD; */
+    /* background: #565656f2; */
+}
+
+table{
+  background: #fff !important;
+}
+
+table > tr > th{
+  color:#fff;
+}
+@media (max-width:1444px){
+img.innerpglogo {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 20vw !important;
+  height: auto !important;
+  max-width: 193px !important;
+  min-width: 194px !important;
+  /* background-color: #14141F !important; */
+  padding: 21px 17px !important;
+}
+.list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover{
+  background: #030305;
+  color: #fff;
+  /* font-weight: bold; */
+  box-shadow: 0 0 2px 0px #828387;
+  border-left: 4px solid #FFB946;
+  margin-left: 6px;
+  white-space: nowrap;
+}
+}
+@media (min-width:1556px){
+  img.innerpglogo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 20vw;
+    height: auto;
+    max-width: 200px;
+    min-width: 230px;
+    /* background-color: #14141F; */
+    padding: 20px 29px;
+  }
+  .list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover{
+    background: #030305;
+    color: #fff;
+    /* font-weight: bold; */
+    box-shadow: 0 0 2px 0px #828387;
+    border-left: 4px solid #FFB946;
+    margin-left: 6px;
+    white-space: nowrap;
+  }
+
+}
+.homeicon{
+  position: absolute;
+  right: 273px;
+  top: 24px;
+  color: #fff;
+  border: 2px solid #ffffff;
+  padding: 1px 2px;
+  border-radius: 100px;
+  cursor: pointer;
+  font-size: 8px;
+}

@@ -1,0 +1,621 @@
+<br>
+
+<div class="row">
+  <div class="col-md-4">
+    <h4>Proto Retrofitment</h4>
+  </div>
+  <div class="col-md-6">&nbsp;</div>
+  <div class="col-md-2" style="padding-right: 30px;">
+    <button class="btn btn-default" style="float: right" (click)="goBack()"><i
+        class="icon-chevron-left"></i>&nbsp;&nbsp;Back</button>
+  </div>
+</div>
+<div class="row" style="margin: 6px 10px;">
+  <form [formGroup]="ProtoReqForm">
+    <div class="row" style="width:100%;margin-top:10px;">
+      <div class="col-md-6  table-responsive">
+        <table id="prototable" class="table proto-table table-bordered">
+          <tr>
+            <th>Requested Date</th>
+            <td><input type="text" formControlName="createddate"
+                style="border: none; background: transparent;width: 100%;" disabled></td>
+          </tr>
+          <tr>
+            <th>Creditor</th>
+            <td><input type="text" formControlName="requestorname" style="border: none;
+                background: transparent;width: 100%;" disabled></td>
+          </tr>
+          <tr>
+            <th>Purpose</th>
+            <td><input type="text" formControlName="purpose" style="border: none;
+                background: transparent;width: 100%;" disabled></td>
+          </tr>
+          <tr>
+            <th>Contact Number</th>
+            <td><input type="text" formControlName="contactno" style="border: none;
+                background: transparent;width: 100%;" disabled></td>
+          </tr>
+          <tr>
+            <th>Department</th>
+            <td><input type="text" formControlName="department" style="border: none;
+                background: transparent;width: 100%;" disabled></td>
+          </tr>
+          <tr>
+            <th>Function</th>
+            <td><input type="text" formControlName="category" style="border: none;
+                background: transparent;width: 100%;" disabled></td>
+          </tr>
+          <tr>
+            <th>Sub Function</th>
+            <td>
+              <!--<textarea type="text" formControlName="subcategory" style="border: none;
+                background: transparent;width: 100%;" disabled></textarea> -->
+              <button class="btn btn-default btn-sm" style="background: rgba(96, 96, 96, 0.28);
+            border: none;">Click Here &nbsp;<i class="icon-eye-open"></i></button>
+            </td>
+          </tr>
+          <tr>
+            <th>Category</th>
+            <td>
+              <!-- <textarea type="text" formControlName="workrequest" style="border: none;
+                background: transparent;width: 100%;" disabled></textarea> -->
+              <button class="btn btn-default btn-sm" style="background: rgba(96, 96, 96, 0.28);
+                border: none;">Click Here &nbsp;<i class="icon-eye-open"></i></button>
+            </td>
+
+          </tr>
+        </table>
+      </div>
+      <div class="col-md-6  table-responsive">
+        <table id="prototable" class="table proto-table table table-bordered">
+          <tr>
+            <th>Project Name</th>
+            <td><input type="text" formControlName="projectname" style="border: none;
+                    background: transparent;width: 100%;" disabled></td>
+          </tr>
+
+          <tr>
+            <th>
+              System Name</th>
+            <td><input type="text" formControlName="systemname" style="border: none;
+                  background: transparent;width: 100%;" disabled></td>
+          </tr>
+          <tr>
+            <th>
+              Activity</th>
+            <td><input type="text" formControlName="activity" style="border: none;
+                  background: transparent;width: 100%;" disabled></td>
+          </tr>
+          <tr>
+            <th>
+              Types of Activity</th>
+            <!-- <td><textarea type="text" formControlName="retrofitmenttype" style="border: none;
+                  background: transparent;width: 100%;" disabled></textarea></td> -->
+            <!-- <p (click)="prototypeact()">Click Here</p> -->
+            <td>
+              <button class="btn btn-default btn-sm" style="background: rgba(96, 96, 96, 0.28);
+            border: none;">Click Here &nbsp;<i class="icon-eye-open"></i></button></td>
+          </tr>
+          <tr>
+            <th>
+              AO Drawing Number</th>
+            <td>
+              <ng-container *ngIf="ProtoReqForm.value.aodrawing == 1">
+                <input type="text" formControlName="aodrawingtext" style="border: none;
+                          background: transparent;width: 100%;" disabled>
+              </ng-container>
+              <ng-container *ngIf="ProtoReqForm.value.aodrawing == 0">
+                <input type="text" formControlName="filepath" style="border: none;
+                          background: transparent;width: 100%;" disabled>
+              </ng-container>
+            </td>
+          </tr>
+          <tr>
+            <th>
+              Fitment Report Required</th>
+            <td>
+              <!-- <ng-container *ngIf="this.ProtoReqForm.value != '1'">
+                <input type="text" formControlName="fitmentreport" value="1" style="border: none;
+                        background: transparent;width: 100%;" disabled>
+              </ng-container>
+
+              <ng-container *ngIf="this.ProtoReqForm.value != '0'">
+                <input type="text" formControlName="fitmentremarks" value="0" style="border: none;
+                        background: transparent;width: 100%;" disabled>
+              </ng-container> -->
+              <ng-container *ngIf="ProtoReqForm.value.fitmentreport != 1">
+                <input type="text" formControlName="fitmentreport" style="border: none;
+                        background: transparent;width: 100%;" disabled>
+              </ng-container>
+              <ng-container *ngIf="ProtoReqForm.value.fitmentreport == 0">
+                <input type="text" formControlName="fitmentremarks" style="border: none;
+                        background: transparent;width: 100%;" disabled>
+              </ng-container>
+            </td>
+          </tr>
+          <tr>
+            <th>
+              Finas Update Required </th>
+            <td>
+              <!-- <ng-container *ngIf="this.ProtoReqForm.finasupdate != 1">
+                <input type="text" formControlName="finasupdate" value="1" style="border: none;
+                    background: transparent;width: 100%;" disabled>
+              </ng-container>
+              <ng-container *ngIf="this.ProtoReqForm.finasupdate  != '0'">
+                <input type="text" formControlName="finasupdateremarks" value="0" style="border: none;
+                    background: transparent;width: 100%;" disabled>
+              </ng-container> -->
+              <ng-container *ngIf="ProtoReqForm.value.finasupdate != 1 ">
+                <input type="text" formControlName="finasupdate" style="border: none;
+                    background: transparent;width: 100%;" disabled>
+              </ng-container>
+              <ng-container *ngIf="ProtoReqForm.value.finasupdate == 0 ">
+                <input type="text" formControlName="finasupdateremarks" style="border: none;
+                    background: transparent;width: 100%;" disabled>
+              </ng-container>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <div class="row" style="width:100%;">
+      <div class="col-md-12">
+        <h5 style="font-size: 16px;
+          padding: 10px 0px;">New Part Details</h5>
+      </div>
+    </div>
+    <div class="row" style="width:100%;">
+      <div class="col-md-12 table-responsive">
+        <table id="prototable" class="table part-table table table-bordered">
+          <tr>
+            <th>S.No</th>
+            <th>Finas id</th>
+            <th>Part No</th>
+            <th>Description</th>
+            <th>ZGS</th>
+            <th>Quantity</th>
+            <th>To be Scrap / Stored</th>
+          </tr>
+          <tbody formArrayName="prpartsmaster">
+            <tr *ngFor="let part of rowForms.controls;let i =index;" [formGroupName]="i">
+              <td style="text-align: center">{{(i+1)}}</td>
+              <td><input type="text" formControlName="finasid" style="border: none;
+                      background: transparent;width: 100%;" disabled></td>
+              <td><input type="text" formControlName="partno" style="border: none;
+                      background: transparent;width: 100%;" disabled></td>
+              <td><input type="text" formControlName="description" style="border: none;
+                      background: transparent;width: 100%;" disabled></td>
+              <td><input type="text" formControlName="quantity" style="border: none;
+                      background: transparent;width: 100%;" disabled></td>
+              <td><input type="text" formControlName="zgs" style="border: none;
+                      background: transparent;width: 100%;" disabled></td>
+              <td><input type="text" formControlName="scraporstored" style="border: none;
+                        background: transparent;width: 100%;" disabled></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="row" style="width:100%;">
+      <div class="col-md-12">
+        <h5 style="font-size: 16px;
+          padding: 10px 0px;">No of Vehicle /Objects</h5>
+      </div>
+    </div>
+    <div class="row" style="width:100%;">
+      <div class="col-md-12  table-responsive">
+        <table id="prototable" class="table part-table table table-bordered">
+          <tr>
+            <th>S.No</th>
+            <th>Vehicle Number</th>
+            <th>Vehicle Owner</th>
+            <th>Model Number</th>
+            <th>Expected Date of Start</th>
+          </tr>
+          <tbody formArrayName="prvehiclemaster">
+            <tr *ngFor="let data of novehicle.controls;let i =index;" [formGroupName]="i">
+              <td style="text-align:center;">{{(i+1)}}</td>
+              <td><input type="text" formControlName="vehicleno" style="border: none;
+                background: transparent;width: 100%;" disabled></td>
+              <td><input type="text" formControlName="ownerofvehicle" style="border: none;
+                background: transparent;width: 100%;" disabled></td>
+              <td><input type="text" formControlName="modelnumber" style="border: none;
+                background: transparent;width: 100%;" disabled></td>
+              <td><input type="text" class="form-control" formControlName="startdate"
+                  style="width: 100%;cursor: pointer;display:none" bsDatepicker id="date{{i}}"
+                  [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </form>
+  <br><br>
+</div>
+<div class="row" style="margin: 10px 10px;">
+  <form  [formGroup]="BCAProtoForm">
+    <div class="row" style="width:100%;">
+      <div class="col-md-12">
+        <h5 class="style-border" style="font-weight: 600;">Category</h5>
+      </div>
+    </div>
+    <div class="row" style="width:100%;padding: 10px 0px;">
+      <div class="col-md-2">
+        <div class="form-group">
+          <label class="control control--checkbox">Vehicle
+            <input type="checkbox" class="chk" value="Vehicle" formControlName="category">
+            <div class="control__indicator"></div>
+          </label>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="form-group">
+          <label class="control control--checkbox">Cabin
+            <input type="checkbox" class="chk" value="Cabin" formControlName="category">
+            <div class="control__indicator"></div>
+          </label>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="form-group">
+          <label class="control control--checkbox">Engine
+            <input type="checkbox" class="chk" value="Engine" formControlName="category">
+            <div class="control__indicator"></div>
+          </label>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="form-group">
+          <label class="control control--checkbox">Transmission
+            <input type="checkbox" class="chk" value="Transmission" formControlName="category">
+            <div class="control__indicator"></div>
+          </label>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="form-group">
+          <label class="control control--checkbox">Axle
+            <input type="checkbox" class="chk" value="Axle" formControlName="category">
+            <div class="control__indicator"></div>
+          </label>
+        </div>
+      </div>
+      <div class="col-md-2"></div>
+    </div>
+    <div class="row" style="width:100%;padding: 10px 0px;">
+      <div class="col-md-4">
+        <div class="form-group  text-field">
+          Finas Id<dot></dot>
+          <input type="text" class="form-control" style="font-weight: 400;" formControlName="finasid">
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group  text-field">
+          Vehicle Number<dot></dot>
+          <input type="text" class="form-control" style="font-weight: 400;" formControlName="vehicleno">
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group  text-field">
+          Vehicle / Object Finas Id<dot></dot>
+          <input type="text" class="form-control" style="font-weight: 400;"  formControlName="vehicleobjectfinasid">
+        </div>
+      </div>
+    </div>
+    <div class="row" style="width:100%;padding: 10px 0px;">
+      <div class="col-md-12">
+        <div class="form-group text-field">
+          Observation <dot> </dot>
+          <textarea rows="4" type="text" class="form-control" style="font-weight: 400;" formControlName="observation">
+          </textarea>
+        </div>
+      </div>
+    </div>
+    <div class="row" style="width:100%;padding: 10px 0px;">
+      <div class="col-md-4">
+        <div class="form-group text-field">
+          Work Started On ( Date & Time) <dot> </dot>
+          <input type="text" placeholder="Datepicker" class="form-control" bsDatepicker id="startdate"  formControlName="startdate"
+            [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }">
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group text-field">
+          Work Ends On ( Date & Time ) <dot> </dot>
+          <input type="text" placeholder="Datepicker" class="form-control" bsDatepicker id="enddate" formControlName="enddate"
+            [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }">
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group text-field">
+          <div class="form-group  text-field">
+            Actual Km. at the time of Fitment<dot></dot>
+            <input type="text" class="form-control" style="font-weight: 400;" formControlName="fitmentkm">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row" style="width:100%;padding: 10px 0px;">
+      <div class="col-md-12">
+        <div class="form-group text-field">
+          Work Done By <dot> </dot>
+          <textarea rows="2" type="text" class="form-control" style="font-weight: 400;" formControlName="workdone">
+          </textarea>
+        </div>
+      </div>
+    </div>
+    <div class="row" style="width:100%;padding: 10px 0px;">
+      <div class="col-md-12">
+        <h5 class="style-border" style="font-weight: 600;">Supervisor</h5>
+      </div>
+    </div>
+    <div class="row" style="width:100%;padding: 10px 0px;">
+      <div class="col-md-3">
+        <div class="form-group  text-field">
+          Name<dot></dot>
+          <input type="text" class="form-control" style="font-weight: 400;" formControlName="supervisorname">
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group text-field">
+          Date <dot> </dot>
+          <input type="text" placeholder="Datepicker" class="form-control" bsDatepicker id="date"
+            [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }" formControlName="date">
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group text-field">
+          Received Date
+          <dot> </dot>
+          <input type="text" placeholder="Datepicker" class="form-control" bsDatepicker id="receiveddate"
+            [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }"  formControlName="receiveddate">
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group text-field">
+          Completed date <dot> </dot>
+          <input type="text" placeholder="Datepicker" class="form-control" bsDatepicker id="completeddate"  formControlName="completeddate"
+            [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }">
+        </div>
+      </div>
+    </div>
+    <div class="row" style="width:100%;padding: 10px 0px;">
+      <div class="col-md-12">
+        <h5 class="style-border" style="font-weight: 600;">FINAS Requester </h5>
+      </div>
+    </div>
+    <div class="row" style="width:100%;padding: 10px 0px;">
+      <div class="col-md-2">
+        <div class="form-group  text-field">
+          Name<dot></dot>
+          <input type="text" class="form-control" style="font-weight: 400;" formControlName="finasrequestername">
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group text-field">
+          Date <dot> </dot>
+          <input type="text" placeholder="Datepicker" class="form-control" bsDatepicker id="finasdate"  formControlName="finasdate"
+            [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }">
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group  text-field">
+          Mobile No<dot></dot>
+          <input type="number" class="form-control" style="font-weight: 400;"  formControlName="mobileno">
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="form-group text-field">
+          Return On <dot> </dot>
+          <input type="text" placeholder="Datepicker" class="form-control" bsDatepicker id="returnon"  formControlName="returnon"
+            [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }">
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="form-group text-field">
+          Received On <dot> </dot>
+          <input type="text" placeholder="Datepicker" class="form-control" bsDatepicker id="receivedon" formControlName="receivedon"
+            [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }">
+        </div>
+      </div>
+    </div>
+    <div class="row" style="width:100%;padding: 10px 0px;">
+      <div class="col-md-9">
+        <div class="form-group text-field">
+          Remarks <dot> </dot>
+          <textarea rows="1" type="text" class="form-control" style="font-weight: 400;" formControlName="remarks" >
+          </textarea>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class=" text-field">No of Vehicle / Object <dot></dot>
+          <div class="row" style="width:100%;">
+            <div class="col-md-2">
+                <button class="btn btn-default" *ngIf="partnovehicle.controls.length >1"   (click)="partdeletevehicle(i)"><i class="icon-minus"></i></button>
+            </div>
+            <div class="col-md-8">
+              <input type="text" class="form-control" formControlName="noofvehicleorobj" id="partnovchobj"
+                style="text-align:center;font-weight: 700;position: relative;
+                left: 12px;"
+                readonly />
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-default"  (click)="partaddvehicle()"><i class="icon-plus"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row" style="width:100%;padding: 10px 0px;">
+      <div class="col-md-12">
+        <h5 class="style-border-number" style="font-weight: 600;">No of Vehicle / Object </h5>
+      </div>
+    </div>
+    <div class="row" style="width:100%">
+      <div class="col-md-12">
+        <table class="table table-bordered" id="protorequest" style="width:100%;">
+          <tr class="tableheader">
+            <th>S.No</th>
+            <th>Vehicle Name
+            </th>
+            <th>Vehicle / Object Finas Id
+              <dot> </dot>
+            </th>
+            <th>Vehicle Km <dot> </dot>
+            </th>
+            <th>Start Date<dot> </dot>
+            </th>
+            <th>End Date<dot> </dot>
+            </th>
+          </tr>
+          <tbody>
+              <tbody formArrayName="Protovehiclemaster">
+                  <tr class="tablerow" *ngFor="let data of partnovehicle.controls;let i =index;" [formGroupName]="i">
+                    <td>{{i+1}}</td>
+              <td>
+                <input type="text" class="form-control" formControlName="vehiclename">
+              </td>
+              <td>
+                <input type="text" class="form-control" formControlName="vehicleorobjfinasid">
+              </td>
+              <td>
+                <input type="number" class="form-control" formControlName="vehiclekm">
+               </td>
+              <td>
+                  <input type="text" placeholder="Datepicker" class="form-control" bsDatepicker id="datestart" formControlName="datestart"
+            [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }">
+                 </td>
+                 <td>
+                    <input type="text" placeholder="Datepicker" class="form-control" bsDatepicker id="dateend" formControlName="dateend"
+                    [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }">
+                  </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+    <div class="row" style="width:100%;padding: 10px 0px;">
+        <div class="col-md-12">
+          <h5 class="style-border" style="font-weight: 600;">New Part Details </h5>
+        </div>
+      </div>
+      <div class="row" style="width:100%">
+        <div class="col-md-12">
+          <table class="table table-bordered" id="protorequest" style="width:100%;">
+            <tr class="tableheader">
+              <th>S.No</th>
+              <th>Object Finas Id
+                <dot> </dot>
+              </th>
+              <th>Part Number <dot> </dot>
+              </th>
+              <th>Part Description<dot> </dot>
+              </th>
+              <th>Quantity <dot> </dot>
+              </th>
+              <th>Zgs <dot> </dot>
+              </th>
+              <th>Remarks <dot> </dot>
+              </th>
+              <th>Delete</th>
+            </tr>
+            <tbody>
+                <tbody formArrayName="Protopartsmaster">
+                    <tr class="tablerow" *ngFor="let row of protorowForms.controls;let i =index" [formGroupName]="i">
+                      <td>{{(i+1)}}</td>
+                <td>
+                  <input type="text" class="form-control" formControlName="objectfinaid">
+                </td>
+                <td>
+                  <input type="text" class="form-control" formControlName="partnumber">
+                </td>
+                <td>
+                    <input type="text" class="form-control" formControlName="partdescription">
+                  </td>
+                <td>
+                  <input type="number" class="form-control" formControlName="quantity">
+                 </td>
+                <td>
+                    <input type="number" class="form-control" formControlName="zgs">
+                   </td>
+                   <td>
+                      <textarea type="text" class="form-control" style="font-weight: 400;" style="height:34px ; "formControlName="partremark">
+                        </textarea>
+                    </td>
+                    <td class="text-center"> <button *ngIf="protorowForms.controls.length >1" class="btn btn-default"
+                        (click)="protodeleteRow(i)"><i class="fas fa-trash"></i></button> </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+      <div style="text-align: right;padding-right: 34px;">
+          <button class="btn btn-default btn-md" (click)="protoaddRow()" style="margin:10px 0px;"><i
+              class="icon-plus"></i>&nbsp;&nbsp;Add
+            Row</button>
+        </div>
+      <div class="row" style="width:100%;padding: 12px 0px;">
+          <div class="col-md-3">
+              <div class="form-group  text-field">
+             Requestor Name<dot></dot>
+                <input type="text" class="form-control" style="font-weight: 400;" formControlName="requstername">
+              </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group  text-field">
+          Department<dot></dot>
+                  <input type="text" class="form-control" style="font-weight: 400;" formControlName="department">
+                </div>
+              </div>
+              <div class="col-md-3">
+                  <div class="form-group  text-field">
+                 Contact No<dot></dot>
+                    <input type="number" class="form-control" style="font-weight: 400;" formControlName="contactno">
+                  </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group  text-field">
+                   Date<dot></dot>
+                   <input type="text" placeholder="Datepicker" class="form-control" bsDatepicker id="addtionaldate"
+                   [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }" formControlName="addtionaldate">
+                    </div>
+                  </div>
+      </div>
+      <!-- <div class="row" style="width:100%;padding: 10px 0px;">
+          <div class="col-md-3">
+              <div class="form-group  text-field">
+             Received On<dot></dot>
+             <input type="text" placeholder="Datepicker" class="form-control" bsDatepicker id="datestart"
+             [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }">
+              </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group  text-field">
+                  Completed On<dot></dot>
+          <input type="text" placeholder="Datepicker" class="form-control" bsDatepicker id="datestart"
+          [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }">
+                </div>
+              </div>
+              <div class="col-md-3">
+                  <div class="form-group  text-field">
+                 Return On<dot></dot>
+                 <input type="text" placeholder="Datepicker" class="form-control" bsDatepicker id="datestart"
+                 [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }">
+                  </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group  text-field">
+                        Received On<dot></dot>
+                   <input type="text" placeholder="Datepicker" class="form-control" bsDatepicker id="datefield"
+                   [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }">
+                    </div>
+                  </div>
+      </div> -->
+  </form>
+  <div style="text-align: right;margin: 0px 0px 20px 0px;padding-right: 34px;">
+    <button class="btn btn-primary btn-md"  style="margin: 0px 0px 40px 0px;"><i
+        class="icon-save"></i>&nbsp;&nbsp;Submit</button>
+  </div>
+</div>

@@ -1,0 +1,901 @@
+<app-spinner *ngIf="loading"></app-spinner>
+<br>
+<div class="container">
+  <div class="row">
+    <div class="col-md-4">
+      <h4>Proto Retrofitment</h4>
+    </div>
+    <div class="col-md-6">&nbsp;</div>
+    <div class="col-md-2" style="position: relative;
+    right: 14px;">
+      <!-- <ng-container *ngIf ="status == 'hdtsupervisor' || status == 'mdtsupervisor' || status == 'aggregatesupervisor'
+        || status == 'eandesupervisor' || status == 'ppssupervisor' || status == 'maintenancesupervisor' || status == 'mechanicalsupervisor'"> -->
+      <button class="btn btn-default" style="float: right" (click)="goBack()"><i
+          class="fa fa-chevron-left"></i>&nbsp;&nbsp;Back</button>
+      <!-- </ng-container> -->
+    </div>
+  </div>
+  <div class="row" style="box-shadow: 1px 1px 1px 1px #d6d6d6;
+padding: 16px;
+width: 100%;">
+    <form [formGroup]="ProtoReqForm">
+      <div class="row" style="margin-top:10px;">
+        <div class="col-md-6  table-responsive">
+          <table id="prototable" class="table proto-table table-bordered">
+            <tr>
+              <th>Date of Request</th>
+              <td><input type="text" formControlName="createddate"
+                  style="border: none; background: transparent;width: 100%;" disabled></td>
+            </tr>
+            <tr>
+              <th>Form ID</th>
+              <td><input type="text" formControlName="prformid"
+                  style="border: none; background: transparent;width: 100%;" disabled></td>
+            </tr>
+            <tr>
+              <th>Requester Name</th>
+              <td><input type="text" formControlName="requestorname" style="border: none;
+                background: transparent;width: 100%;" disabled></td>
+            </tr>
+            <tr>
+              <th>Contact Number</th>
+              <td><input type="text" formControlName="contactno" style="border: none;
+                background: transparent;width: 100%;" disabled></td>
+            </tr>
+            <tr>
+              <th>Department</th>
+              <td><input type="text" formControlName="department" style="border: none;
+                background: transparent;width: 100%;" disabled></td>
+            </tr>
+            <tr>
+              <th>Function</th>
+              <td>
+                <!-- <input type="text" formControlName="supervisor" style="border: none;
+                background: transparent;width: 100%;" disabled> -->
+                <ng-container *ngIf="supervisor == 'mdtsupervisor'">
+                  Vehicle MDT
+                </ng-container>
+                <ng-container *ngIf="supervisor == 'hdtsupervisor'">
+                  Vehicle HDT
+                </ng-container>
+                <ng-container *ngIf="supervisor == 'aggregateengine'">
+                  Engine
+                </ng-container>
+                <ng-container *ngIf="supervisor == 'ppssupervisor'">
+                  PPS
+                </ng-container>
+                <ng-container *ngIf="supervisor == 'aggregatetransmission'">
+                  Transmission
+                </ng-container>
+                <ng-container *ngIf="supervisor == 'aggregateaxle'">
+                  Axle
+                </ng-container>
+              </td>
+            </tr>
+            <tr>
+              <th>Sub Function</th>
+              <td>
+                <ul class="list-group-category" style="padding-left: 14px;">
+                  <ng-container *ngFor="let data of arrlist ; let i =index ">
+                    <!-- <li class="list-group" style="margin-bottom: 8px;">{{data}}</li> -->
+                    <li class="list-group" *ngIf="data == 'mdtsupervisor'" style="margin-bottom: 8px;">Vehicle MDT</li>
+                    <li class="list-group" *ngIf="data == 'aggregateengine'" style="margin-bottom: 8px;">Aggregate
+                      Engine</li>
+                    <li class="list-group" *ngIf="data == 'aggregatetransmission'" style="margin-bottom: 8px;">Aggregate
+                      Transmission</li>
+                    <li class="list-group" *ngIf="data == 'aggregateaxle'" style="margin-bottom: 8px;">Aggregate Axle
+                    </li>
+                    <li class="list-group" *ngIf="data == 'eandesupervisor'" style="margin-bottom: 8px;">E&E</li>
+                    <li class="list-group" *ngIf="data == 'hdtsupervisor'" style="margin-bottom: 8px;">Vehicle HDT</li>
+                    <li class="list-group" *ngIf="data == 'ppssupervisor'" style="margin-bottom: 8px;">PPS</li>
+                    <li class="list-group" *ngIf="data == 'maintenancesupervisor'" style="margin-bottom: 8px;">
+                      Maintenance</li>
+                    <li class="list-group" *ngIf="data == 'mechanicalsupervisor'" style="margin-bottom: 8px;">Proto
+                      Mechanical Workshop</li>
+                  </ng-container>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <th>Category</th>
+              <td>
+                <ul class="list-group-category" style="padding-left: 14px;">
+                  <ng-container *ngFor="let data of arrcategorylist ; let i =index ">
+                    <li class="list-group" style="margin-bottom: 8px;" *ngIf="data == 1">Retro Fitment</li>
+                    <li class="list-group" style="margin-bottom: 8px;" *ngIf="data == 2">Trail</li>
+                    <li class="list-group" style="margin-bottom: 8px;" *ngIf="data == 3">Failure</li>
+                    <li class="list-group" style="margin-bottom: 8px;" *ngIf="data == 4">
+                      {{otherCategory}}
+                    </li>
+                  </ng-container>
+                </ul>
+              </td>
+
+            </tr>
+          </table>
+        </div>
+        <div class="col-md-6  table-responsive">
+          <table id="prototable" class="table proto-table table table-bordered">
+            <tr>
+              <th>Project Name</th>
+              <td><input type="text" formControlName="projectname" style="border: none;
+                    background: transparent;width: 100%;" disabled></td>
+            </tr>
+
+            <tr>
+              <th>
+                System Name</th>
+              <td><input type="text" formControlName="systemname" style="border: none;
+                  background: transparent;width: 100%;" disabled></td>
+            </tr>
+            <tr>
+              <th>
+                Activity</th>
+              <td><input type="text" formControlName="activity" style="border: none;
+                  background: transparent;width: 100%;" disabled></td>
+            </tr>
+            <tr>
+              <th>
+                Types of Activity</th>
+              <td>
+                <ul class="list-group-category" style="padding-left: 14px;">
+                  <ng-container *ngFor="let data of arrlists ; let i =index ">
+                    <li class="list-group" style="margin-bottom: 8px;" *ngIf="data == 1">Retrofitment was planned
+                      at the time of vehicle sign off</li>
+                    <li class="list-group" style="margin-bottom: 8px;" *ngIf="data == 2">Retrofitment due to
+                      testing feedback</li>
+                    <li class="list-group" style="margin-bottom: 8px;" *ngIf="data == 3">Retrofitment due to Field
+                      Issue</li>
+                    <li class="list-group" style="margin-bottom: 8px;" *ngIf="data == 4">IMCS / Cost Reduction
+                      Proposal</li>
+                    <li class="list-group" style="margin-bottom: 8px;" *ngIf="data == 5">
+                      {{retrofitmentothers}}</li>
+                  </ng-container>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <th style="padding: 0px 8px;">
+                <ng-container>
+                  AO Drawing Required
+                </ng-container>
+              </th>
+              <td style="padding: 0px !important;margin: 0px !important;">
+                <table class="table table-striped">
+                  <tr>
+                    <td style="width: 25%;padding: 12px !important;
+                        border-right: 1px solid #ccc !important;
+                        border-bottom-color: transparent !important;
+                        border-top-color: transparent !important;">
+                      <ng-container *ngIf="aodrawing == 1">
+                        Yes
+                      </ng-container>
+                      <ng-container *ngIf="aodrawing == 0">
+                        No
+                      </ng-container>
+                    </td>
+                    <th style="width: 25%;background: transparent;
+                      color: #000;
+                      padding: 8px !important;
+                      border-left: 1px solid #ccc !important;
+                      border-right: 1px solid #ccc !important;
+                      border-top: 1px solid transparent !important;
+                      border-bottom: 1px solid transparent !important;">
+                      <ng-container *ngIf="aodrawing == 0"> AO Drawing File</ng-container>
+                      <ng-container *ngIf="aodrawing == 1"> AO Drawing Number</ng-container>
+                    </th>
+                    <td style="padding: 12px !important;border-top-color: transparent !important;
+                          border-bottom-color: transparent !important;">
+                      <ng-container *ngIf="aodrawing == 0">
+                        <ul class="list-group-category" style="padding-left: 26px;">
+                          <ng-container *ngFor="let file of fileDownloadList ; let i =index">
+                            <li class="list-group" style="margin-bottom: 8px;">{{file.filename}}&nbsp;&nbsp;<i
+                                class="fa fa-download" (click)="downlaodfile(file.filename,file.id)"
+                                style="font-size: 15px;color: #130f0fb5;cursor: pointer;"></i></li>
+                          </ng-container>
+                        </ul>
+                      </ng-container>
+                      <ng-container *ngIf="aodrawing == 1">
+                        {{aodrawingtext}}
+                      </ng-container>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <th style="padding: 0px 8px;">Finas Update Required</th>
+              <td style="padding: 0px !important;margin: 0px !important;">
+                <table class="table table-striped">
+                  <tr>
+                    <td style="padding: 12px !important;
+                        border-right: 1px solid #ccc !important;
+                        border-bottom-color: transparent !important;
+                        border-top-color: transparent !important;">
+                      <ng-container *ngIf="finasupdate == 1">
+                        Yes
+                      </ng-container>
+                      <ng-container *ngIf="finasupdate == 0">
+                        No
+                      </ng-container>
+                    </td>
+                    <ng-container *ngIf="finasupdate == 0">
+                      <th style="background: transparent;
+                          color: #000;
+                          padding: 8px !important;
+                          border-left: 1px solid #ccc !important;
+                          border-right: 1px solid #ccc !important;
+                          border-top: 1px solid transparent !important;
+                          border-bottom: 1px solid transparent !important;">Remarks</th>
+                    </ng-container>
+                    <ng-container *ngIf="finasupdate == 0">
+                      <td style="width: 25%;padding: 12px !important;
+                          border-right: 1px solid #ccc !important;
+                          border-bottom-color: transparent !important;
+                          border-top-color: transparent !important;">
+                        <ng-container>
+                          {{finasupdateremarks}}
+                        </ng-container>
+                      </td>
+                    </ng-container>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <th style="padding: 0px 8px;">Fitment Report Required</th>
+              <td style="padding: 0px !important;margin: 0px !important;">
+                <table class="table table-striped">
+                  <tr>
+                    <td style="padding: 12px !important;
+                      border-right: 1px solid #ccc !important;
+                      border-bottom-color: transparent !important;
+                      border-top-color: transparent !important;">
+                      <ng-container *ngIf="fitmentreport == 1">
+                        Yes
+                      </ng-container>
+                      <ng-container *ngIf="fitmentreport == 0">
+                        No
+                      </ng-container>
+                    </td>
+                    <ng-container *ngIf="fitmentreport == 0">
+                      <th style="background: transparent;
+                     color: #000;
+                     padding: 8px !important;
+                     border-left: 1px solid #ccc !important;
+                     border-right: 1px solid #ccc !important;
+                     border-top: 1px solid transparent !important;
+                     border-bottom: 1px solid transparent !important;">Remarks</th>
+                    </ng-container>
+                    <ng-container *ngIf="fitmentreport == 0">
+                      <td style="width: 25%;padding: 12px !important;
+                        border-right: 1px solid #ccc !important;
+                        border-bottom-color: transparent !important;
+                        border-top-color: transparent !important;">
+                        <ng-container>
+                          {{fitmentremarks}}
+                        </ng-container>
+                      </td>
+                    </ng-container>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <h5 style="font-size: 16px;
+          padding: 10px 0px;">Part Details</h5>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 table-responsive">
+          <table id="prototable" class="table part-table table table-bordered">
+            <tr>
+              <th>S.No</th>
+              <th>Finas Id</th>
+              <th>Part No</th>
+              <th>Description</th>
+              <th>ZGS</th>
+              <th>Quantity</th>
+              <th>To be Scrapped / Stored</th>
+            </tr>
+            <tbody formArrayName="prpartsmaster">
+              <tr *ngFor="let part of rowForms.controls;let i =index;" [formGroupName]="i">
+                <td style="text-align: center">{{(i+1)}}</td>
+                <td><input type="text" formControlName="finasid" style="border: none;
+                  background: transparent;width: 100%;" disabled></td>
+                <td><input type="text" formControlName="partnumber" style="border: none;
+                  background: transparent;width: 100%;" disabled></td>
+                <td><input type="text" formControlName="description" style="border: none;
+                  background: transparent;width: 100%;" disabled></td>
+                <td><input type="text" formControlName="quantity" style="border: none;
+                  background: transparent;width: 100%;" disabled></td>
+                <td><input type="text" formControlName="zgs" style="border: none;
+                  background: transparent;width: 100%;" disabled></td>
+                <td><input type="text" formControlName="scraporstored" style="border: none;
+                    background: transparent;width: 100%;" disabled></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <h5 style="font-size: 16px;
+          padding: 10px 0px;">No of Vehicle /Objects</h5>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12  table-responsive">
+          <table id="prototable" class="table part-table table table-bordered">
+            <tr>
+              <th>S.No</th>
+              <th>Vehicle / Aggregate Number</th>
+              <th>Vehicle / Model Number</th>
+              <th>Vehicle / Aggregate Owner Name</th>
+              <th>Expected Start Date</th>
+            </tr>
+            <tbody formArrayName="prvehiclemaster">
+              <tr *ngFor="let data of novehicle.controls;let i =index;" [formGroupName]="i">
+                <td style="text-align:center;">{{(i+1)}}</td>
+                <td><input type="text" formControlName="vehicleaggregateno" style="border: none;
+                background: transparent;width: 100%;" disabled></td>
+                <td><input type="text" formControlName="modelnumber" style="border: none;
+                  background: transparent;width: 100%;" disabled></td>
+                <td><input type="text" formControlName="ownername" style="border: none;
+              background: transparent;width: 100%;" disabled></td>
+                <td> <input type="text" formControlName="startdate" style="border: none;
+              background: transparent;width: 100%;" bsDatepicker id="date{{i}}"
+                    [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }" disabled></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </form>
+    <br><br>
+  </div>
+  <form [formGroup]="BCAArrayForm">
+
+    <div formArrayName="bcaarray" class="row" style="padding: 10px 0px;">
+
+      <!-- set with supervisor form editable forms -->
+      <ng-container *ngFor="let data of vehicleBCA.controls;let i =index" [formGroupName]="i">
+        <ng-container
+          *ngIf="(bcaStatus) && (bcaStatus[i]) && ((bcaStatus[i]['status'] == 'notcreated' || bcaStatus[i]['status'] != 'submitted') && (usertype == 'mdtsupervisor' || usertype == 'hdtsupervisor' || usertype == 'eandesupervisor' ||
+     usertype == 'mechanicalsupervisor' || usertype == 'maintenancesupervisor' || usertype == 'ppssupervisor' || usertype == 'aggregatesupervisor'))">
+          <!-- <form [formGroup]="BCAProtoForm"> -->
+            
+
+          <h4>
+            <ng-container *ngIf="bcaStatus[i]['status'] != 'submitted' ">
+              Vehicle Details : {{bcaStatus[i]['modelnumber']}}
+            </ng-container>
+          </h4>
+
+          <div class="row" style="padding: 20px 0px;">
+            <div class="col-md-4">
+              <div class="form-group  text-field">
+                Finas Id
+                <input type="text" class="form-control" style="font-weight: 400;" formControlName="finasid">
+                <small class="text-danger" *ngIf="
+              !data.controls.finasid.valid &&
+              data.controls.finasid.touched
+            "> Finas Id is required</small>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group  text-field">
+                Vehicle / Object Finas Id
+                <input type="text" class="form-control" style="font-weight: 400;" formControlName="objfinasid"
+                  autocomplete="off">
+                <small class="text-danger" *ngIf="
+            !data.controls.objfinasid.valid &&
+            data.controls.objfinasid.touched
+          "> Vehicle / Object Finas Id is required</small>
+              </div>
+            </div>
+          </div>
+          <div class="row" style="padding: 10px 0px;">
+            <div class="col-md-12">
+              <div class="form-group text-field">
+                Observation
+                <textarea rows="4" type="text" class="form-control" style="font-weight: 400;"
+                  formControlName="observation" autocomplete="off">
+            </textarea>
+                <small class="text-danger" *ngIf="
+            !data.controls.observation.valid &&
+            data.controls.observation.touched
+          "> Observation is required</small>
+              </div>
+            </div>
+          </div>
+          <div class="row" style="padding: 10px 0px;">
+            <div class="col-md-3">
+              <div class="form-group text-field">
+                Work Started On
+                <!-- <input type="text" placeholder="DD/MM/YYYY" class="form-control" [minDate]="today" bsDatepicker
+                id="startdate{{i}}" formControlName="workstarteddate" 
+                [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }"> -->
+                <input formControlName="workstarteddate" type="text" placeholder="DD/MM/YYYY" class="form-control"
+                  bsDatepicker id="startdate{{i}}"
+                  [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }">
+                <small class="text-danger" *ngIf="
+            !data.controls.workstarteddate.valid &&
+            data.controls.workstarteddate.touched
+          "> Work Started On is required</small>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group text-field">
+                Work Ends On
+                <input type="text" placeholder="DD/MM/YYYY" class="form-control" bsDatepicker
+                  id="enddate{{i}}" formControlName="workendsdate" autocomplete="off"
+                  [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }">
+                <small class="text-danger" *ngIf="
+              !data.controls.workendsdate.valid &&
+              data.controls.workendsdate.touched
+            "> Work Ends On is required</small>
+              </div>
+
+            </div>
+            <div class="col-md-3">
+              <div class="form-group text-field">
+                <div class="form-group  text-field">
+                  Actual Km. at the time of Fitment
+                  <input type="number" class="form-control" style="font-weight: 400;" formControlName="actualkm"
+                    autocomplete="off">
+                  <small class="text-danger" *ngIf="
+              !data.controls.actualkm.valid &&
+              data.controls.actualkm.touched
+            "> Actual Km. at the time of Fitment is required</small>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3"></div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group text-field">
+                Work Done By
+                <textarea rows="4" type="text" class="form-control" style="font-weight: 400;"
+                  formControlName="workdoneby" autocomplete="off">
+            </textarea>
+                <small class="text-danger" *ngIf="
+            !data.controls.workdoneby.valid &&
+            data.controls.workdoneby.touched
+          "> Work Done By is required</small>
+              </div>
+            </div>
+          </div>
+          <div class="row" style="padding: 10px 0px;">
+            <div class="col-md-12">
+              <h5 class="style-border" style="font-weight: 600;">Supervisor</h5>
+            </div>
+          </div>
+          <div class="row" style="padding: 10px 0px;">
+            <div class="col-md-3">
+              <div class="form-group  text-field">
+                Name
+                <input type="text" class="form-control" style="font-weight: 400;" formControlName="supervisorname"
+                  autocomplete="off">
+                <small class="text-danger" *ngIf="
+            !data.controls.supervisorname.valid &&
+            data.controls.supervisorname.touched
+          "> Name is required</small>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group text-field">
+                Date
+                <input type="text" placeholder="DD/MM/YYYY" class="form-control" [minDate]="today" bsDatepicker
+                  id="date{{i}}" [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }"
+                  formControlName="supervisordate" autocomplete="off">
+                <small class="text-danger" *ngIf="
+              !data.controls.supervisordate.valid &&
+              data.controls.supervisordate.touched
+            "> Date is required</small>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group text-field">
+                Received Date
+                <input type="text" placeholder="DD/MM/YYYY" class="form-control" [minDate]="today" bsDatepicker
+                  id="receiveddate{{i}}" [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }"
+                  autocomplete="off" formControlName="supervisorreceiveddate">
+                <small class="text-danger" *ngIf="
+              !data.controls.supervisorreceiveddate.valid &&
+              data.controls.supervisorreceiveddate.touched
+            "> Received Date is required</small>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group text-field">
+                Completed Date
+                <input type="text" placeholder="DD/MM/YYYY" class="form-control" [minDate]="today" bsDatepicker
+                  id="completeddate{{i}}" formControlName="supervisorcompleteddate" autocomplete="off"
+                  [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }">
+                <small class="text-danger" *ngIf="
+              !data.controls.supervisorcompleteddate.valid &&
+              data.controls.supervisorcompleteddate.touched
+            "> Completed Date is required</small>
+              </div>
+            </div>
+          </div>
+          <ng-container *ngIf="finasupdate == 1">
+            <div class="row" style="padding: 10px 0px;">
+              <div class="col-md-12">
+                <h5 class="style-border" style="font-weight: 600;">FINAS Requester </h5>
+              </div>
+            </div>
+            <div class="row" style="padding: 10px 0px;">
+              <div class="col-md-2">
+                <div class="form-group  text-field">
+                  Name
+                  <input type="text" class="form-control" style="font-weight: 400;" formControlName="finasreqname"
+                    autocomplete="off">
+                  <small class="text-danger" *ngIf="
+            !data.controls.finasreqname.valid &&
+            data.controls.finasreqname.touched
+          "> Name is required</small>
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="form-group text-field">
+                  Date
+                  <input type="text" placeholder="DD/MM/YYYY" class="form-control" [minDate]="today" bsDatepicker
+                    id="finasdate{{i}}" formControlName="finasreqdate" autocomplete="off"
+                    [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }">
+                  <small class="text-danger" *ngIf="
+              !data.controls.finasreqdate.valid &&
+              data.controls.finasreqdate.touched
+            "> Date is required</small>
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="form-group  text-field">
+                  Mobile No
+                  <input type="number" class="form-control" style="font-weight: 400;"
+                    formControlName="finasreqcontactno" autocomplete="off">
+                  <small class="text-danger" *ngIf="
+            !data.controls.finasreqcontactno.valid &&
+            data.controls.finasreqcontactno.touched
+          "> Mobile No is required</small>
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="form-group text-field">
+                  Return On
+                  <input type="text" placeholder="DD/MM/YYYY" class="form-control" [minDate]="today" bsDatepicker
+                    id="returnon{{i}}" formControlName="finasreqreturndate"
+                    [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }" autocomplete="off">
+                  <small class="text-danger" *ngIf="
+              !data.controls.finasreqreturndate.valid &&
+              data.controls.finasreqreturndate.touched
+            "> Return On is required</small>
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="form-group text-field">
+                  Received On
+                  <input type="text" placeholder="DD/MM/YYYY" class="form-control" [minDate]="today" bsDatepicker
+                    id="receivedon{{i}}" formControlName="finasreqreceiveddate"
+                    [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }" autocomplete="off">
+                  <small class="text-danger" *ngIf="
+              !data.controls.finasreqreceiveddate.valid &&
+              data.controls.finasreqreceiveddate.touched
+            "> Received On is required</small>
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="form-group text-field">
+                  Remarks
+                  <textarea rows="1" type="text" class="form-control" style="font-weight: 400;"
+                    formControlName="finasreqremarks" autocomplete="off">
+            </textarea>
+                  <small class="text-danger" *ngIf="
+            !data.controls.finasreqremarks.valid &&
+            data.controls.finasreqremarks.touched
+          "> Remarks is required</small>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+
+
+          <div class="col-md-12" style="text-align: right;position: relative;
+                left: 25px;">
+            <ng-container>
+              <button class="btn btn-primary btn-md" (click)="saveForm($event.target.value,i)" value="1"
+                style="margin: 0px 0px 20px 0px;"><i class="fa fa-save"></i>&nbsp;&nbsp;Save As
+                Draft</button>&nbsp;&nbsp;
+            </ng-container>
+            <ng-container *ngIf="bcaStatus[i]['isfitmentcreated'] == 0 && isfitment == 1">
+              <button class="btn btn-primary btn-md" (click)="saveFitmentReport($event.target.value,i)" value='1'
+                style="margin: 0px 0px 20px 0px;"><i class="fa fa-save"></i>&nbsp;&nbsp;Save and Create Fitment
+                Report</button>&nbsp;&nbsp;
+            </ng-container>
+            <ng-container *ngIf="bcaStatus[i]['isfitmentcreated'] == 1">
+              <button class="btn btn-primary btn-md" (click)="ViewFitmentReport(bcaStatus[i].id)" value='1'
+                style="margin: 0px 0px 20px 0px;"><i class="fa fa-eye"></i>&nbsp;&nbsp;View Fitment Report</button>&nbsp;&nbsp;
+            </ng-container>
+            <ng-container
+              *ngIf="usertype == 'hdtsupervisor' || usertype == 'mdtsupervisor'|| usertype == 'eandesupervisor'|| usertype == 'ppssupervisor'
+                  || usertype == 'aggregatesupervisor'|| usertype == 'maintenancesupervisor'|| usertype == 'mechanicalsupervisor'">
+              <button class="btn btn-primary btn-md" (click)="submitBca($event.target.value,i)" value=""
+                style="margin: 0px 0px 20px 0px;"><i class="fa fa-save"></i>&nbsp;&nbsp;Submit</button>
+            </ng-container>
+          </div>
+        </ng-container>
+      </ng-container>
+
+
+      <!-- set with disabled field in supervisor form -->
+
+
+      <ng-container *ngFor="let data of vehicleBCA.controls;let i =index" [formGroupName]="i">
+        <ng-container
+          *ngIf="(bcaStatus) && (bcaStatus[i]) && ((bcaStatus[i]['status'] == 'submitted') && (usertype == 'mdtsupervisor' || usertype == 'hdtsupervisor' || usertype == 'eandesupervisor' ||
+      usertype == 'mechanicalsupervisor' || usertype == 'maintenancesupervisor' || usertype == 'ppssupervisor' || usertype == 'aggregatesupervisor'))">
+          <h4>
+            <ng-container *ngIf="bcaStatus[i]['status'] == 'submitted'">
+              Vehicle Details : {{bcaStatus[i]['modelnumber']}}
+            </ng-container>
+          </h4>
+          <div class="row" style="padding: 20px 0px;">
+            <div class="col-md-4">
+              <div class="form-group  text-field">
+                Finas Id
+                <input type="text" class="form-control" style="font-weight: 400;" formControlName="finasid" disabled>
+                <small class="text-danger" *ngIf="
+              !data.controls.finasid.valid &&
+              data.controls.finasid.touched
+            "> Finas Id is required</small>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group  text-field">
+                Vehicle / Object Finas Id
+                <input type="text" class="form-control" style="font-weight: 400;" formControlName="objfinasid" disabled>
+                <small class="text-danger" *ngIf="
+            !data.controls.objfinasid.valid &&
+            data.controls.objfinasid.touched
+          "> Vehicle / Object Finas Id is required</small>
+              </div>
+            </div>
+          </div>
+          <div class="row" style="padding: 10px 0px;">
+            <div class="col-md-12">
+              <div class="form-group text-field">
+                Observation
+                <textarea rows="4" type="text" class="form-control" style="font-weight: 400;"
+                  formControlName="observation" disabled>
+            </textarea>
+                <small class="text-danger" *ngIf="
+            !data.controls.observation.valid &&
+            data.controls.observation.touched
+          "> Observation is required</small>
+              </div>
+            </div>
+          </div>
+          <div class="row" style="padding: 10px 0px;">
+            <div class="col-md-3">
+              <div class="form-group text-field">
+                Work Started On
+                <input type="text" placeholder="DD/MM/YYYY" class="form-control" [minDate]="today" bsDatepicker
+                  id="startdate" formControlName="workstarteddate"
+                  [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }" disabled>
+                <small class="text-danger" *ngIf="
+            !data.controls.workstarteddate.valid &&
+            data.controls.workstarteddate.touched
+          "> Work Started On is required</small>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group text-field">
+                Work Ends On
+                <input type="text" placeholder="DD/MM/YYYY" class="form-control" [minDate]="today" bsDatepicker
+                  id="enddate" formControlName="workendsdate"
+                  [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }" disabled>
+                <small class="text-danger" *ngIf="
+              !data.controls.workendsdate.valid &&
+              data.controls.workendsdate.touched
+            "> Work Ends On is required</small>
+              </div>
+
+            </div>
+            <div class="col-md-3">
+              <div class="form-group text-field">
+                <div class="form-group  text-field">
+                  Actual Km. at the time of Fitment
+                  <input type="number" class="form-control" style="font-weight: 400;" formControlName="actualkm"
+                    disabled>
+                  <small class="text-danger" *ngIf="
+              !data.controls.actualkm.valid &&
+              data.controls.actualkm.touched
+            "> Actual Km. at the time of Fitment is required</small>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3"></div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group text-field">
+                Work Done By
+                <textarea rows="4" type="text" class="form-control" style="font-weight: 400;"
+                  formControlName="workdoneby" disabled>
+            </textarea>
+                <small class="text-danger" *ngIf="
+            !data.controls.workdoneby.valid &&
+            data.controls.workdoneby.touched
+          "> Work Done By is required</small>
+              </div>
+            </div>
+          </div>
+          <div class="row" style="padding: 10px 0px;">
+            <div class="col-md-12">
+              <h5 class="style-border" style="font-weight: 600;">Supervisor</h5>
+            </div>
+          </div>
+          <div class="row" style="padding: 10px 0px;">
+            <div class="col-md-3">
+              <div class="form-group  text-field">
+                Name
+                <input type="text" class="form-control" style="font-weight: 400;" formControlName="supervisorname"
+                  disabled>
+                <small class="text-danger" *ngIf="
+            !data.controls.supervisorname.valid &&
+            data.controls.supervisorname.touched
+          "> Name is required</small>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group text-field">
+                Date
+                <input type="text" placeholder="DD/MM/YYYY" class="form-control" [minDate]="today" bsDatepicker
+                  id="date" [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }"
+                  formControlName="supervisordate" disabled>
+                <small class="text-danger" *ngIf="
+              !data.controls.supervisordate.valid &&
+              data.controls.supervisordate.touched
+            "> Date is required</small>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group text-field">
+                Received Date
+                <input type="text" placeholder="DD/MM/YYYY" class="form-control" [minDate]="today" bsDatepicker
+                  id="receiveddate" [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }"
+                  formControlName="supervisorreceiveddate" disabled>
+                <small class="text-danger" *ngIf="
+              !data.controls.supervisorreceiveddate.valid &&
+              data.controls.supervisorreceiveddate.touched
+            "> Received Date is required</small>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group text-field">
+                Completed Date
+                <input type="text" placeholder="DD/MM/YYYY" class="form-control" [minDate]="today" bsDatepicker
+                  id="completeddate" formControlName="supervisorcompleteddate"
+                  [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }" disabled>
+                <small class="text-danger" *ngIf="
+              !data.controls.supervisorcompleteddate.valid &&
+              data.controls.supervisorcompleteddate.touched
+            "> Completed Date is required</small>
+              </div>
+            </div>
+          </div>
+          <ng-container *ngIf="finasupdate == 1">
+            <div class="row" style="padding: 10px 0px;">
+              <div class="col-md-12">
+                <h5 class="style-border" style="font-weight: 600;">FINAS Requester </h5>
+              </div>
+            </div>
+            <div class="row" style="padding: 10px 0px;">
+              <div class="col-md-2">
+                <div class="form-group  text-field">
+                  Name
+                  <input type="text" class="form-control" style="font-weight: 400;" formControlName="finasreqname"
+                    disabled>
+                  <small class="text-danger" *ngIf="
+            !data.controls.finasreqname.valid &&
+            data.controls.finasreqname.touched
+          "> Name is required</small>
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="form-group text-field">
+                  Date
+                  <input type="text" placeholder="DD/MM/YYYY" class="form-control" [minDate]="today" bsDatepicker
+                    id="finasdate" formControlName="finasreqdate"
+                    [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }" disabled>
+                  <small class="text-danger" *ngIf="
+              !data.controls.finasreqdate.valid &&
+              data.controls.finasreqdate.touched
+            "> Date is required</small>
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="form-group  text-field">
+                  Mobile No
+                  <input type="text" class="form-control" style="font-weight: 400;" maxlength="10"
+                    formControlName="finasreqcontactno" (keypress)="keyAlpha($event)" disabled>
+                  <small class="text-danger" *ngIf="
+            !data.controls.finasreqcontactno.valid &&
+            data.controls.finasreqcontactno.touched
+          "> Mobile No is required</small>
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="form-group text-field">
+                  Return On
+                  <input type="text" placeholder="DD/MM/YYYY" class="form-control" [minDate]="today" bsDatepicker
+                    id="returnon" formControlName="finasreqreturndate"
+                    [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }" disabled>
+                  <small class="text-danger" *ngIf="
+              !data.controls.finasreqreturndate.valid &&
+              data.controls.finasreqreturndate.touched
+            "> Return On is required</small>
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="form-group text-field">
+                  Received On
+                  <input type="text" placeholder="DD/MM/YYYY" class="form-control" [minDate]="today" bsDatepicker
+                    id="receivedon" formControlName="finasreqreceiveddate"
+                    [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }" disabled>
+                  <small class="text-danger" *ngIf="
+              !data.controls.finasreqreceiveddate.valid &&
+              data.controls.finasreqreceiveddate.touched
+            "> Received On is required</small>
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="form-group text-field">
+                  Remarks
+                  <textarea rows="1" type="text" class="form-control" style="font-weight: 400;"
+                    formControlName="finasreqremarks" disabled>
+            </textarea>
+                  <small class="text-danger" *ngIf="
+            !data.controls.finasreqremarks.valid &&
+            data.controls.finasreqremarks.touched
+          "> Remarks is required</small>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+          <!-- </form> -->
+        </ng-container>
+      </ng-container>
+
+
+
+    </div>
+
+  </form>
+
+</div>
+
+
+<div class="modal fade" id="finasidmodal" role="dialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog" style="width: 80vw;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Retrofitment Report</h4>
+      </div>
+      <div class="modal-body" style="position: relative;">
+       <!-- {{reportData|json}} -->
+        <div style="position: absolute;top:0;bottom:0;left:0;right:0; z-index: 10;background: #8080800d;"></div>
+        <retrofitment-report [report]="reportData"></retrofitment-report>
+      </div>
+    
+    </div>
+  </div>
+</div>
+

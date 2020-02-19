@@ -1,0 +1,540 @@
+<form [formGroup]="form">
+          
+      
+    <div class="row" style="
+padding: 10px;
+width: 100%;">
+        <div class="">
+            <div class="row" style="
+      padding-bottom: 10px;">
+                <div class="col-md-3">
+                    <text-input label="Fitment Details" isRequired="true" prop="fitmentdetails" [parentForm]="form"
+                        input="Fitment" placeholder="Fitment"></text-input>
+                    <small class="text-danger" *ngIf="
+                        !form.controls.fitmentdetails.valid &&
+                        form.controls.fitmentdetails.touched
+                      ">Fitment Details is required</small>
+                </div>
+                <div class="col-md-3">
+
+                    <text-input label="Vehicle Model" isRequired="true" prop="vehiclemodel" [parentForm]="form"
+                        input="Vehicle Model" placeholder="Vehicle Model"></text-input>
+                    <small class="text-danger" *ngIf="
+                        !form.controls.vehiclemodel.valid &&
+                        form.controls.vehiclemodel.touched
+                      ">Vehicle Model is required</small>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-bordered">
+                    <tr class="tableheader">
+                        <th>S.No</th>
+                        <th>Part Number
+                        </th>
+                        <th> Part Description
+                        </th>
+                        <th>Quantity
+                        </th>
+                        <th>ZGS level as per NWC
+                        </th>
+                        <th>Actual Part Fitted ZGS
+                        </th>
+                        <th style="text-align: center;">TCMS
+                            <table style="width: 100px;">
+                                <tr>
+                                    <th style="text-align: center;border-right: 1px solid #d0d0d0;
+                                                            width: 50%;">DS</th>
+                                    <th style="text-align: center;width: 50%;;">DZ</th>
+                                </tr>
+                            </table>
+
+                        </th>
+                        <th>Special remark if any
+                        </th>
+                        <!-- <th>Delete</th> -->
+                    </tr>
+                    <tbody formArrayName="fitmentParts">
+                        <tr class="tablerow" *ngFor="let row of rowForms.controls;let j =index" [formGroupName]="j">
+                            <td style="text-align: center;">
+                                {{(j+1)}}
+                            </td>
+                            <td>
+                                <text-input label="" isRequired="" prop="partnumber" [parentForm]="row"
+                                    input="Part Number" placeholder="Part Number"></text-input>
+                              
+                            </td>
+                            <td>
+                                <text-input label="" prop="description" [parentForm]="row" input="Description"
+                                    placeholder="Description"></text-input>
+                              
+                            </td>
+                            <td>
+                                <number-input label="" isRequired="" prop="quantity" [parentForm]="row" input="Quantity"
+                                    placeholder="Quantity"></number-input>
+                               
+                            </td>
+                            <td>
+                                <text-input label="" isRequired="" prop="zgsnwc" [parentForm]="row"
+                                    input="ZGS level as per NWC" placeholder="ZGS Level"></text-input>
+                               
+                            </td>
+                            <td>
+                                <text-input label="" isRequired="" prop="actualzgs" [parentForm]="row"
+                                    input="Actual ZGS Level" placeholder="Actual ZGS Level"></text-input>
+                              
+                            </td>
+                            <td>
+                                <table style="width: 100px;text-align: center;">
+                                    <tr>
+                                        <td class="ds-td">
+                                            <mat-checkbox formControlName="ds"></mat-checkbox>
+                                          
+                                        </td>
+                                        <td class="ds-td">
+                                            <mat-checkbox formControlName="dz"></mat-checkbox>
+                                            
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </td>
+
+                            <td>
+                                <text-input label="" isRequired="" prop="remarks" [parentForm]="row"
+                                    input="Special Remark" placeholder="Remark"></text-input>
+                               
+                            </td>
+
+
+                            <!-- <td class="text-center"> <button *ngIf="rowForms.controls.length >1" class="btn btn-default"
+                                    (click)="deleteRow(i)"><i class="fas fa-trash"></i></button> </td> -->
+                        </tr>
+                    </tbody>
+
+
+
+                </table>
+
+            </div>
+        </div>
+
+        <!-- <div style="text-align: right;">
+
+            <button class="btn btn-default btn-md" (click)="addRow()" style="padding: 6px 16px;"><i
+                    class="fa fa-plus"></i>&nbsp;&nbsp;Add Row</button>
+
+        </div> -->
+        <div class="row">
+            <div class="col-md-4">
+                <h4>KTO details</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-bordered">
+                    <tr class="tableheader">
+                        <th>S.No</th>
+                        <th>Part Number
+                        </th>
+                        <th>Alternate Part number If Used
+                        </th>
+                        <th>Part Description
+                        </th>
+                        <th>Quantity
+                        </th>
+                        <th style="text-align: center;">TCMS
+                            <table style="width: 100px;">
+                                <tr>
+                                    <th style="text-align: center;border-right: 1px solid #d0d0d0;
+                                        width: 50%;">DS</th>
+                                    <th style="text-align: center;width: 50%;;">DZ</th>
+                                </tr>
+                            </table>
+
+                        </th>
+                        <th>Drawing specified torque value
+                        </th>
+                        <th>Actual given torque value
+                        </th>
+
+                        <!-- <th>Delete</th> -->
+                    </tr>
+                    <tbody formArrayName="fitmentKTODetails">
+                        <tr class="tablerow" *ngFor="let data of KTOForms.controls;let k=index" [formGroupName]="k">
+                            <td style="text-align: center;">
+                                {{(k+1)}}
+                            </td>
+                            <td>
+                                <text-input label="" isRequired="" prop="partnumber" [parentForm]="data"
+                                    input="Partnumber" placeholder="Partnumber"></text-input>
+                                
+                            </td>
+
+                            <td>
+                                <text-input label="" isRequired="" prop="altpartno" [parentForm]="data"
+                                    input="Alternate" placeholder="Alternate Number"></text-input>
+                                
+                            </td>
+
+                            <td>
+                                <text-input label="" isRequired="" prop="description" [parentForm]="data"
+                                    input="Part Description" placeholder="Description"></text-input>
+                                
+
+                            </td>
+                            <td>
+                                <text-input label="" isRequired="" prop="quantity" [parentForm]="data" input="Quantity"
+                                    placeholder="Quantity" min="8" max="15"></text-input>
+                               
+
+                            </td>
+                            <td>
+                                <table style="width: 100px;text-align: center;">
+                                    <tr>
+                                        <td class="ds-td">
+                                            <mat-checkbox formControlName="ds"></mat-checkbox>
+                                           
+                                        </td>
+                                        <td class="ds-td">
+                                            <mat-checkbox formControlName="dz"></mat-checkbox>
+                                          
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </td>
+
+
+
+                            <td>
+                                <text-input label="" isRequired="" prop="drawingtorqueval" [parentForm]="data"
+                                    input="Drawing specified torque" placeholder="Enter Torque"></text-input>
+                                
+
+                            </td>
+                            <td>
+                                <text-input label="" isRequired="" prop="actualtorqueval" [parentForm]="data"
+                                    input="Actual given torque" placeholder="Enter Actual Torque"></text-input>
+                               
+                            </td>
+
+                            <!-- <td class="text-center"> <button *ngIf="KTOForms.controls.length >1"
+                                    class="btn btn-default" (click)="deleteKTORow(k)"><i
+                                        class="fas fa-trash"></i></button>
+                            </td> -->
+                        </tr>
+                    </tbody>
+
+
+
+                </table>
+
+            </div>
+        </div>
+
+        <!-- <div style="text-align: right;padding-bottom: 15px">
+
+            <button class="btn btn-default btn-md" (click)="addkto1()" style="padding: 6px 16px;"><i
+                    class="fa fa-plus"></i>&nbsp;&nbsp;Add Row</button>
+        </div> -->
+        <div class="row">
+            <div class="col-md-4">
+                <h4>Observation</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-bordered">
+                    <tr class="tableheader">
+                        <th>S.No</th>
+                        <th>Parameters
+                        </th>
+                        <th>Dimensions mentioned as per drawing
+                        </th>
+                        <th style="text-align: center;">TCMS
+                            <table style="width: 100px;">
+                                <tr>
+                                    <th style="text-align: center;border-right: 1px solid #d0d0d0;
+                                            width: 50%;">DS</th>
+                                    <th style="text-align: center;width: 50%;;">DZ</th>
+                                </tr>
+                            </table>
+
+                        </th>
+                        <th>Actual observations
+                        </th>
+                        <th>Remark
+                        </th>
+
+                        <!-- <th>Delete</th> -->
+                    </tr>
+                    <tbody formArrayName="fitmentObservations">
+                        <tr class="tablerow" *ngFor="let datas of retroForms.controls;let l=index" [formGroupName]="l">
+                            <td style="text-align: center;">
+                                {{(l+1)}}
+                            </td>
+                            <td>
+                                <text-input label="" isRequired="" prop="parameters" [parentForm]="datas"
+                                    input="Parameters" placeholder="Parameters"></text-input>
+                               
+                            </td>
+                            <td>
+                                <text-input label="" isRequired="" prop="dimensionsdrawing" [parentForm]="datas"
+                                    input="Dimensions mentioned as per drawing " placeholder="Dimensions"></text-input>
+                              
+                            </td>
+                            <td>
+                                <table style="width: 100px;text-align: center;">
+                                    <tr>
+                                        <td class="ds-td">
+                                            <mat-checkbox formControlName="ds"></mat-checkbox>
+                                           
+                                        </td>
+                                        <td class="ds-td">
+                                            <mat-checkbox formControlName="dz"></mat-checkbox>
+                                          
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td>
+                                <text-input label="" isRequired="true" prop="actualobservtions" [parentForm]="datas"
+                                    input="Actual observations" placeholder="Actual observations"></text-input>
+                            
+                            </td>
+                            <td>
+                                <text-input label="" isRequired="true" prop="remarks" [parentForm]="datas"
+                                    input="Remark" placeholder="Remarks"></text-input>
+
+                              
+                            </td>
+
+                            <!-- <td class="text-center"> <button *ngIf="retroForms.controls.length >1" class="btn btn-default"
+                                    (click)="deletenewRow(l)"><i class="fas fa-trash"></i></button> </td> -->
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- <div style="text-align: right;">
+
+            <button class="btn btn-default btn-md" (click)="addnewRow()" style="padding: 6px 16px;"><i
+                    class="fa fa-plus"></i>&nbsp;&nbsp;Add Row</button>
+
+        </div> -->
+
+
+        <br>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <h4>Any Additional Observation</h4>
+        </div>
+    </div>
+    <div class="row" style="padding: 10px;width: 100%;">
+        <div class="col-md-12" style="padding:0px">
+            <table class="table table-bordered table-comments">
+
+                <tbody>
+                    <tr>
+                        <td style="width:20%; background: rgb(235,235,235);">Fouling With Other Parts <dot></dot>
+                        </td>
+                        <td id="center">
+                            <div class="btn-group">
+
+                                <input class="form-control" type="text" style="margin-top: 8px;" value="{{isfoulingparts == 1?'Yes':'No'}}">
+                                
+                                <!-- <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group"
+                                    formControlName="isfoulingparts">
+                                    <mat-radio-button class="material-radio-btn" *ngFor="let option of checkOptions"
+                                        (click)="foulingparts(option)" [value]="option">
+                                        {{option}}
+                                    </mat-radio-button>
+                                </mat-radio-group> -->
+
+                              
+
+                            </div>
+                        </td>
+                        <td style="width:65%">
+                         
+                            <text-input label="" isRequired="true" prop="foulingparts" [parentForm]="form"
+                                input="Fouling parts" placeholder="Fouling parts"></text-input>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style=" background: rgb(235,235,235);">Parts Quality Issues If Any <dot></dot>
+                        </td>
+                        <td id="center">
+                            <div class="btn-group">
+                                <input type="text" class="form-control" style="margin-top: 8px;" value="{{ispartqualityissues == 1?'Yes':'No'}}">
+                                <!-- <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group"
+                                    formControlName="ispartqualityissues">
+                                    <mat-radio-button class="material-radio-btn" *ngFor="let option of checkOptions"
+                                        [value]="option">
+                                        {{option}}
+                                    </mat-radio-button>
+                                </mat-radio-group> -->
+                              
+
+                            </div>
+                        </td>
+                        <td>
+                            <text-input label="" isRequired="true" prop="partqualityissues" [parentForm]="form"
+                                input="Parts Quality Issues" placeholder="Parts Quality Issues"></text-input>
+                           
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style=" background: rgb(235,235,235);">Accesibility Issues If Any <dot></dot>
+                        </td>
+                        <td id="center">
+                            <div class="btn-group">
+                                <input type="text" class="form-control" style="margin-top: 8px;" value="{{isaccessibilityissues == 1?'Yes':'No'}}">
+                                <!-- <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group"
+                                    formControlName="isaccessibilityissues">
+                                    <mat-radio-button class="material-radio-btn" *ngFor="let option of checkOptions"
+                                        [value]="option">
+                                        {{option}}
+                                    </mat-radio-button>
+                                </mat-radio-group> -->
+                               
+
+                            </div>
+                        </td>
+                        <td>
+                            <text-input label="" isRequired="true" prop="accessibilityissues" [parentForm]="form"
+                                input="Accesibility Issues" placeholder="Accesibility Issues"></text-input>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style=" background: rgb(235,235,235);">Other Issues If Any</td>
+                        <td></td>
+                        <td>
+                            <text-input label="" isRequired="false" prop="otherissues" [parentForm]="form"
+                                input="Other Issues" placeholder="Other Issues"></text-input>
+
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row" style="padding: 10px;width: 100%;">
+        <div class="col-md-6">
+            <h5>Fitment Photograph If Available</h5>
+            <br>
+            <!-- <label for="uploadFilePartidl2" class="btn btn-md addnew btn-primary">
+                Select File</label>
+            <input type="file" id="uploadFilePartidl2" #uploadFilePartid2 style="display: none;"
+                (change)="uploadfile($event)" accept=".jpg,.png,.jpeg" multiple> -->
+            <!-- <span class="filename"> {{imgNames}}</span> -->
+            <div *ngIf="fileUploadArr.length > 0" style="margin-top: 6px;">Selected Images:</div>
+            <br>
+            <!-- <img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAUA
+    AAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO
+        9TXL0Y4OHwAAAABJRU5ErkJggg==" alt="Red dot" /> -->
+            <img *ngFor="let image of uploadedImages" src="data:image/png;base64,{{image.image}}" alt="" style="width:46%;margin:2%;display:inline-block;float:left;">
+            <!-- <ul *ngFor="let data of fileUploadArr;let k=index" class="" style="height: 50px;">
+                <span id="upload{{k}}">
+                    <li class="col-md-8">{{data.filename}}</li>
+                    <div class="col-md-4">
+                        <button class="btn btn-danger" (click)="deleteImg(k)">Delete</button> -->
+                    <!-- </div>
+                </span>
+            </ul>  -->
+            <!-- <p style="font-weight: 600;
+            color: #009688;
+            font-size: 16px;margin-top: 12px;">Note : Only three images are allowed.</p> -->
+        </div>
+        <div class="col-md-3">
+           
+            <text-input label="AO Drawing Number" isRequired="true" prop="aodrawingtext" [parentForm]="form"
+                input="AO Drawing Number" placeholder="AO Drawing Number"></text-input>
+            <small class="text-danger" *ngIf="
+        !form.controls.aodrawingtext.valid &&
+        form.controls.aodrawingtext.touched
+      ">AO Drawing Number is required</small>
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+    <div class="row" style="padding: 10px;width: 100%;">
+        <div class="col-md-6">
+
+            <h4>Remarks: <dot></dot>
+            </h4>
+
+            <input type="text" class="form-control" id="usr" formControlName="remarks">
+            <small class="text-danger" *ngIf="
+            !form.controls.remarks.valid &&
+            form.controls.remarks.touched
+          ">Remarks is required</small>
+        </div>
+        <div class="col-md-5 col-md-offset-1">
+            <div class="row" style="padding-bottom: 15px">
+                <h4>Fitment Status <dot></dot>
+                </h4>
+                <div class="btn-group">
+                  
+                    <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group"
+                        formControlName="fitmentstatus">
+                        <mat-radio-button class="material-radio-btn" *ngFor="let option of checkOptions2"
+                            [value]="option">
+                            {{option}}
+                        </mat-radio-button>
+                    </mat-radio-group>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="padding: 10px;width: 100%;">
+        <div class="col-md-12">
+            <h4> Work Completed On:</h4>
+        </div>
+        <div class="col-md-12" style="margin-bottom:10px;">
+            <div class="col-md-4">Fitment prepared By <dot></dot>
+            </div>
+            <div class="col-md-4"><input type="text" class="form-control" formControlName="preparedby">
+                <small class="text-danger" *ngIf="
+                !form.controls.preparedby.valid &&
+                form.controls.preparedby.touched
+              ">Fitment prepared By is required</small>
+            </div>
+            <div class="col-md-4">
+              
+            </div>
+
+        </div>
+        <div class="col-md-12">
+            <div class="col-md-4">Fitment checked By <dot></dot>
+            </div>
+            <div class="col-md-4"><input type="text" class="form-control" formControlName="checkedby">
+                <small class="text-danger" *ngIf="
+                !form.controls.checkedby.valid &&
+                form.controls.checkedby.touched
+              ">Fitment checked By is required</small>
+            </div>
+        </div>
+        <div class="col-md-4">
+           
+        </div>
+
+    </div>
+    <!-- <div class="row" style="
+padding: 10px;
+width: 100%;">
+        <div style="text-align: right;margin:20px  0px;">
+
+            <button class="btn btn-primary btn-md" (click)="submitForm()" style="">
+                <i class="fa fa-save"></i>&nbsp;&nbsp;Submit</button>
+
+        </div>
+
+
+    </div> -->
+</form>

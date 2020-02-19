@@ -1,0 +1,945 @@
+<app-spinner *ngIf="loading"></app-spinner>
+<div class="col-md-12" style="margin-top:10px;">
+<div class="col-md-6" >
+    <h4>TC Plates</h4>
+   
+</div>
+<div class="col-md-6">
+    <!-- <button class="btn btn-primary dropdown-item" (click)="backHome()" style="    width: 13%;float: right;">
+        <i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Back</button> -->
+</div>
+</div>
+<!-- <div class="col-md-12 table-responsive tcptable">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th></th>
+                <th>LDT</th>
+                <th>MDT</th>
+                <th>HDT</th>
+                <th>TT</th>
+                <th>BUS</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th>Durability</th>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <th>FT</th>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <th>FE</th>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <th>BMC</th>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <th>BUS</th>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <th>Homologation</th>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+</div> -->
+
+<div class="col-md-12">
+    <div class="col-md-7" style="padding: 0px;">
+        <div class="tabbar" style="padding: 15px;">
+            <ng-container>
+                <div id="plannedTab" (click)="markTab('live',$event)" class="tab tab_selected">Live</div>
+
+            </ng-container>
+            <ng-container *ngIf="istcplate == true ||  isAdmin == true  ">
+                <div (click)="markTab('pending',$event)" class="tab">Renewal Pending</div>
+                <div (click)="markTab('available',$event)" class="tab">Available</div>
+
+            </ng-container>
+            <ng-container *ngIf="istcplate != true &&  isAdmin != true">
+
+                <div (click)="markTab('history',$event)" class="tab">History</div>
+            </ng-container>
+        </div>
+    </div>
+    <ng-container *ngIf="tab == 'live'">
+        <div class="col-md-2">
+            <input type="text" class="form-control" placeholder="  Search  " name="search" style="    position: relative;
+            top: 15px;" (input)="searchlive($event.target.value)" #valsearchuser autocomplete="off"><i
+                class="fa fa-search search"></i>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="tab == 'pending'">
+        <div class="col-md-2">
+            <input type="text" class="form-control" placeholder="  Search  " name="search" style="    position: relative;
+                        top: 15px;" (input)="searchpen($event.target.value)" #valsearchuser autocomplete="off"><i
+                class="fa fa-search search"></i>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="tab == 'available'">
+        <div class="col-md-2">
+            <input type="text" class="form-control" placeholder="  Search  " name="search" style="    position: relative;
+                                    top: 15px;" (input)="searchavai($event.target.value)" #valsearchuser
+                autocomplete="off"><i class="fa fa-search search"></i>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="tab == 'history'">
+        <div class="col-md-2">
+            <input type="text" class="form-control" placeholder="  Search  " name="search" style="    position: relative;
+                                                top: 15px;" (input)="searchhist($event.target.value)" #valsearchuser
+                autocomplete="off"><i class="fa fa-search search"></i>
+        </div>
+    </ng-container>
+    <div class="col-md-3">
+        <ng-container *ngIf="istcplate == true   ">
+            <button class="btn btn-primary btn-md btn-primbtn" (click)="AddTcPlate()"
+                style="margin: 15px 0px 0px 22px;">+
+                &nbsp;Add New TC Plate</button>
+        </ng-container>
+
+    </div>
+
+    <!-- live -->
+    <div *ngIf="tab == 'live'" class="col-md-12" style="margin-top: 10px;">
+        <div class="col-md-12 table-responsive tablelist" style="padding: 0px;">
+            <table class="table">
+                <thead>
+                    <tr style="white-space: nowrap;">
+                        <th>S.No</th>
+                        <th>TC Plate Number</th>
+                        <th>L4 Name</th>
+                        <th>User Name</th>
+                        <th>Sub User Name</th>
+                        <th>TC Expiry Date</th>
+                        <th>Category</th>
+                        <th>Insurance Number</th>
+                        <th>TC Insurance Expiry Date</th>
+                        <th>
+                            <ng-container *ngIf="istcplate != true   ">Handover
+                            </ng-container>
+                            <ng-container *ngIf="istcplate == true   ">Revoke
+                            </ng-container>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr
+                        *ngFor="let data of TCPlist| paginate: { itemsPerPage: 10, currentPage: p3,id: 'three'}; let i=index">
+                        <td>{{((currentPage- 1) * 10 + i+1)}}</td>
+                        <td (click)="openform19(data)">
+                            <p class="tcpnoplate">{{data.tcplatename}}</p>
+                        </td>
+                        <td>
+                            <ng-container
+                                *ngIf="tcPlateRespTeamModel && tcPlateRespTeamModel[data['id']] && tcPlateRespTeamModel[data['id']]['l4name']">
+                                {{tcPlateRespTeamModel[data['id']]["l4name"]}}
+                            </ng-container>
+                        </td>
+                        <td>
+                            <ng-container
+                                *ngIf="tcPlateRespTeamModel && tcPlateRespTeamModel[data['id']] && tcPlateRespTeamModel[data['id']]['username']">
+                                {{tcPlateRespTeamModel[data['id']]["username"]}}
+                            </ng-container>
+                        </td>
+                        <td>
+                            <ng-container
+                                *ngIf="tcPlateRespTeamModel && tcPlateRespTeamModel[data['id']] && tcPlateRespTeamModel[data['id']]['subusername']">
+                                {{tcPlateRespTeamModel[data['id']]["subusername"]}}
+                            </ng-container>
+                        </td>
+                        <td>
+                            <ng-container
+                                *ngIf="TCPListExLive && TCPListExLive[data['id']] && TCPListExLive[data['id']]['expirydate']">
+                                {{TCPListExLive[data['id']]["expirydate"]}}
+                            </ng-container>
+
+                        </td>
+                        <td>{{data.category}}</td>
+                        <td>
+                            <ng-container
+                                *ngIf="TCPListInsLive && TCPListInsLive[data['id']] && TCPListInsLive[data['id']]['insnumber']">
+                                {{TCPListInsLive[data['id']]["insnumber"]}}
+                            </ng-container>
+                        </td>
+                        <td>
+                            <ng-container
+                                *ngIf="TCPListInsLive && TCPListInsLive[data['id']] && TCPListInsLive[data['id']]['expirydate']">
+                                {{TCPListInsLive[data['id']]["expirydate"]}}
+                            </ng-container>
+                        </td>
+                        <td>
+                            <ng-container *ngIf="istcplate != true   ">
+                                <button class="btn btn-black btn-md" (click)="RevokeTeam(data.id)"
+                                    style="background:#276090;color: #fff">Handover</button>
+                            </ng-container>
+                            <ng-container *ngIf="istcplate == true   ">
+                                <button class="btn btn-black btn-md" (click)="RevokeTeam(data.id)"
+                                    style="background:#276090;color: #fff">Revoke</button>
+                            </ng-container>
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table>
+            <h4 *ngIf="TCPlist?.length==0" class="text-center">No Available Data!</h4>
+            <div style="float: right;margin-bottom: 35px;" *ngIf="TCPlist?.length!=0">
+                <button [disabled]="currentPage == 1" class="btn btn-default paginationbtn"
+                    (click)="paginatePartList('prev')"><i class="fa fa-angle-left"></i></button>
+                <span style="font-size: 15px;
+                        padding: 10px;">
+                    <!-- {{currentPage}} -->
+                    <input id="currentPageInput" class="paginatecontrol" type="text" value="{{currentPage}}"
+                        style="width: 50px;">
+                    <!-- <i class="icon-search" (click)="searchPage()" class="searchbtn"></i> -->
+                    <i class="fa fa-search searchbtn" (click)="searchPage()"></i>
+                    of
+                    {{totalPages}}
+                </span>
+
+                <button [disabled]="currentPage == totalPages" class="btn btn-default paginationbtn"
+                    (click)="paginatePartList('next')"><i class="fa fa-angle-right"></i></button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- pending -->
+    <div *ngIf="tab == 'pending'" class="col-md-12" style="margin-top: 10px;">
+        <div class="col-md-12 table-responsive tablelist" style="padding: 0px;">
+            <table class="table">
+                <thead>
+                    <tr style="white-space: nowrap;">
+                        <th>S.No</th>
+                        <th>TC Plate Number</th>
+                        <th>TC Expiry Date</th>
+                        <th>Category</th>
+                        <th>Insurance Number</th>
+                        <th>TC Insurance Expiry Date</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr
+                        *ngFor="let data of TCPlistPending| paginate: { itemsPerPage: 10, currentPage: p2,id: 'one'}; let i=index">
+                        <td>{{((currentPage- 1) * 10 + i+1)}}</td>
+                        <td (click)="openform19(data)">
+                            <p class="tcpnoplate">{{data.tcplatename}}</p>
+                        </td>
+                        <td>
+                            <ng-container
+                                *ngIf="TCPListExPend && TCPListExPend[data['id']] && TCPListExPend[data['id']]['expirydate']">
+                                {{TCPListExPend[data['id']]["expirydate"]}}
+                            </ng-container>
+
+                            &nbsp;<button class="btn" (click)="assignExpiry(data)"
+                                style="background:#276090;color: #fff;padding: 0px 5px;">+</button>
+                        </td>
+                        <td>{{data.category}}</td>
+                        <td>
+                            <ng-container
+                                *ngIf="TCPListInsPend && TCPListInsPend[data['id']] && TCPListInsPend[data['id']]['insnumber']">
+                                {{TCPListInsPend[data['id']]["insnumber"]}}
+                            </ng-container>
+                        </td>
+                        <td>
+                            <ng-container
+                                *ngIf="TCPListInsPend && TCPListInsPend[data['id']] && TCPListInsPend[data['id']]['expirydate']">
+                                {{TCPListInsPend[data['id']]["expirydate"]}}
+                            </ng-container>&nbsp;<button class="btn" (click)="assignInsurance(data)"
+                                style="background:#276090;color: #fff;padding: 0px 5px;">+</button>
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table>
+            <h4 *ngIf="TCPlistPending?.length==0" class="text-center">No Available Data!</h4>
+            <div style="float: right;margin-bottom: 35px;" *ngIf="TCPlistPending?.length!=0">
+                <button [disabled]="currentPage == 1" class="btn btn-default paginationbtn"
+                    (click)="paginatePartList('prev')"><i class="fa fa-angle-left"></i></button>
+                <span style="font-size: 15px;
+                        padding: 10px;">
+                    <!-- {{currentPage}} -->
+                    <input id="currentPageInput" class="paginatecontrol" type="text" value="{{currentPage}}"
+                        style="width: 50px;">
+                    <!-- <i class="icon-search" (click)="searchPage()" class="searchbtn"></i> -->
+                    <i class="fa fa-search searchbtn" (click)="searchPage()"></i>
+                    of
+                    {{totalPages}}
+                </span>
+
+                <button [disabled]="currentPage == totalPages" class="btn btn-default paginationbtn"
+                    (click)="paginatePartList('next')"><i class="fa fa-angle-right"></i></button>
+            </div>
+        </div>
+
+    </div>
+    <!-- available -->
+    <div *ngIf="tab == 'available'" class="col-md-12" style="margin-top: 10px;">
+        <div class="col-md-12 table-responsive tablelist" style="padding: 0px;">
+            <table class="table">
+                <thead>
+                    <tr style="white-space: nowrap;">
+                        <th>S.No</th>
+                        <th>TC Plate Number</th>
+                        <th>TC Expiry Date</th>
+                        <th>Category</th>
+                        <th>Insurance Number</th>
+                        <th>TC Insurance Expiry Date</th>
+                        <th>Assign Team</th>
+                        <th>Edit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr
+                        *ngFor="let data of TCPlistavailable| paginate: { itemsPerPage: 10, currentPage: p1,id: 'two'}; let i=index">
+                        <td>{{((currentPage- 1) * 10 + i+1)}}</td>
+                        <td>
+                            {{data.tcplatename}}
+                        </td>
+                        <td>
+                            <ng-container
+                                *ngIf="TCPListEx && TCPListEx[data['id']] && TCPListEx[data['id']]['expirydate']">
+                                {{TCPListEx[data['id']]["expirydate"]}}
+                            </ng-container>
+
+                            &nbsp;<button class="btn" (click)="assignExpiry(data)"
+                                style="background:#276090;color: #fff;padding: 0px 5px;">+</button>
+                        </td>
+                        <td>{{data.category}}</td>
+                        <td>
+                            <ng-container
+                                *ngIf="TCPListIns && TCPListIns[data['id']] && TCPListIns[data['id']]['insnumber']">
+                                {{TCPListIns[data['id']]["insnumber"]}}
+                            </ng-container>
+                        </td>
+                        <td>
+                            <ng-container
+                                *ngIf="TCPListIns && TCPListIns[data['id']] && TCPListIns[data['id']]['expirydate']">
+                                {{TCPListIns[data['id']]["expirydate"]}}
+                            </ng-container>&nbsp;<button class="btn" (click)="assignInsurance(data)"
+                                style="background:#276090;color: #fff;padding: 0px 5px;">+</button>
+                        </td>
+                        <td> <button class="btn btn-black btn-md" (click)="assignTeam(data)"
+                                style="background:#276090;color: #fff">Assign Team</button></td>
+                        <td> <button class="btn btn-black btn-md" (click)="assignEdit(data)"
+                                style="background:#276090;color: #fff">Edit</button></td>
+                    </tr>
+
+                </tbody>
+            </table>
+            <h4 *ngIf="TCPlistavailable?.length==0" class="text-center">No Available Data!</h4>
+            <div style="float: right;margin-bottom: 35px;" *ngIf="TCPlistavailable?.length!=0">
+                <button [disabled]="currentPage == 1" class="btn btn-default paginationbtn"
+                    (click)="paginatePartList('prev')"><i class="fa fa-angle-left"></i></button>
+                <span style="font-size: 15px;
+                        padding: 10px;">
+                    <!-- {{currentPage}} -->
+                    <input id="currentPageInput" class="paginatecontrol" type="text" value="{{currentPage}}"
+                        style="width: 50px;">
+                    <!-- <i class="icon-search" (click)="searchPage()" class="searchbtn"></i> -->
+                    <i class="fa fa-search searchbtn" (click)="searchPage()"></i>
+                    of
+                    {{totalPages}}
+                </span>
+
+                <button [disabled]="currentPage == totalPages" class="btn btn-default paginationbtn"
+                    (click)="paginatePartList('next')"><i class="fa fa-angle-right"></i></button>
+            </div>
+        </div>
+
+
+    </div>
+    <!-- history -->
+    <div *ngIf="tab == 'history'" class="col-md-12" style="margin-top: 10px;">
+        <div class="col-md-12 table-responsive tablelist" style="padding: 0px;">
+            <table class="table">
+                <thead>
+                    <tr style="white-space: nowrap;">
+                        <th>S.No</th>
+                        <th>TC Plate Number</th>
+                        <th>TC Expiry Date</th>
+                        <th>Category</th>
+                        <th>Insurance Number</th>
+                        <th>TC Insurance Expiry Date</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr
+                        *ngFor="let data of TCPlistHistory| paginate: { itemsPerPage: 10, currentPage: p4,id: 'four'}; let i=index">
+                        <td>{{((currentPage- 1) * 10 + i+1)}}</td>
+                        <td (click)="openform19(data)">
+                            <p class="tcpnoplate">{{data.tcplatename}}</p>
+                        </td>
+                        <td>
+                            <ng-container
+                                *ngIf="TCPListHis && TCPListHis[data['id']] && TCPListHis[data['id']]['expirydate']">
+                                {{TCPListHis[data['id']]["expirydate"]}}
+                            </ng-container>
+                        </td>
+                        <td>{{data.category}}</td>
+                        <td>
+                            <ng-container
+                                *ngIf="TCPListInsHis && TCPListInsHis[data['id']] && TCPListInsHis[data['id']]['insnumber']">
+                                {{TCPListInsHis[data['id']]["insnumber"]}}
+                            </ng-container>
+                        </td>
+                        <td>
+                            <ng-container
+                                *ngIf="TCPListInsHis && TCPListInsHis[data['id']] && TCPListInsHis[data['id']]['expirydate']">
+                                {{TCPListInsHis[data['id']]["expirydate"]}}
+                            </ng-container>
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table>
+            <h4 *ngIf="TCPlistHistory?.length==0" class="text-center">No Available Data!</h4>
+            <div style="float: right;margin-bottom: 35px;" *ngIf="TCPlistHistory?.length!=0">
+                <button [disabled]="currentPage == 1" class="btn btn-default paginationbtn"
+                    (click)="paginatePartList('prev')"><i class="fa fa-angle-left"></i></button>
+                <span style="font-size: 15px;
+                        padding: 10px;">
+                    <!-- {{currentPage}} -->
+                    <input id="currentPageInput" class="paginatecontrol" type="text" value="{{currentPage}}"
+                        style="width: 50px;">
+                    <!-- <i class="icon-search" (click)="searchPage()" class="searchbtn"></i> -->
+                    <i class="fa fa-search searchbtn" (click)="searchPage()"></i>
+                    of
+                    {{totalPages}}
+                </span>
+
+                <button [disabled]="currentPage == totalPages" class="btn btn-default paginationbtn"
+                    (click)="paginatePartList('next')"><i class="fa fa-angle-right"></i></button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="TCPlateModal" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="background: #F7F7F7;">
+            <div class="modal-header" style="padding: 15px 0; border-bottom: 2px solid #979797;margin: 0px 45px;">
+                <h4 class="modal-title">Add New TC Plate </h4>
+            </div>
+
+            <div class="modal-body" style="border:none">
+                <form [formGroup]="AddTCForm">
+                    <div class="col-md-12" style="margin: 20px 0 0 0;">
+
+                        <div class="col-md-4">
+                            <label>TC Plate Number<dot></dot></label>
+                            <input type="text" class="form-control" formControlName="tcplatename">
+                            <small class="text-danger" *ngIf="
+                        !AddTCForm.controls.tcplatename.valid &&
+                        AddTCForm.controls.tcplatename.touched
+                      ">TC Plate Number is required</small>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label>TC Expiry Date<dot></dot></label>
+                            <div style="position: relative;">
+                                <input type="text" placeholder="DD-MM-YYYY" class="form-control" bsDatepicker
+                                    [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY', showWeekNumbers:false }" id="dates" autocomplete="off"
+                                    [minDate]="today" formControlName="tcPlateExpiryModel">
+                                <img id="spring_calendar" src="assets/images/spring-calendar.svg">
+                            </div>
+                            <small class="text-danger" *ngIf="
+                        !AddTCForm.controls.tcPlateExpiryModel.valid &&
+                        AddTCForm.controls.tcPlateExpiryModel.touched
+                      ">TC Expiry Date is required</small>
+                        </div>
+                        <div class="col-md-4">
+                            <label>TC Plate Document<dot></dot></label><br>
+                            <div class="col-md-12" style="padding: 0px;">
+                                <div class="col-md-6" style="padding: 0px;">
+                                    <label id="upload_file" for="uploadFilePartidl1"
+                                        class="btn btn-md addnew btn-primary">
+                                        Upload File</label>
+                                    <input type="file" id="uploadFilePartidl1" #uploadFilePartid1 style="display: none;"
+                                        (change)="uploadfile($event)" formControlName="filepath"
+                                        accept="application/pdf">
+                                </div>
+                                <div class="col-md-6" style="padding: 0px;">
+                                    <ng-container *ngIf="uploadfilename == true">
+                                        <span class="filenametext"> {{fileName}}</span>
+                                        </ng-container>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12" style="margin: 20px 0 0 0;">
+                        <div class="col-md-4">
+                            <label>Insurance Number</label>
+                            <input type="text" class="form-control" formControlName="insnumber">
+                            <small class="text-danger" *ngIf="
+                        !AddTCForm.controls.insnumber.valid &&
+                        AddTCForm.controls.insnumber.touched
+                      ">Insurance Number is required</small>
+                        </div>
+                        <div class="col-md-4">
+                            <label>Insurance Expiry Date</label>
+                            <div style="position: relative;">
+                              
+                                <input type="text" placeholder="DD-MM-YYYY" class="form-control" bsDatepicker
+                                    [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY', showWeekNumbers:false }" id="dates2"  autocomplete="off"
+                                    [minDate]="today" formControlName="tcPlateInsuranceModel">
+                                <img id="spring_calendar" src="assets/images/spring-calendar.svg">
+                            </div>
+                            <small class="text-danger" *ngIf="
+                        !AddTCForm.controls.tcPlateInsuranceModel.valid &&
+                        AddTCForm.controls.tcPlateInsuranceModel.touched
+                      ">Insurance Expiry Date is required</small>
+                        </div>
+                        <div class="col-md-4">
+                            <label>Insurance Document</label><br>
+                            <div class="col-md-12" style="padding: 0px;">
+                                <div class="col-md-6" style="padding: 0px;">
+                                    <label id="upload_file" for="uploadFilePartidl2"
+                                        class="btn btn-md addnew btn-primary">
+                                        Upload File</label>
+                                    <input type="file" id="uploadFilePartidl2" #uploadFilePartid2 style="display: none;"
+                                        (change)="uploadfile1($event)" formControlName="filepathins"
+                                        accept="application/pdf">
+                                </div>
+                                <div class="col-md-6" style="padding: 0px;">
+                                    <ng-container *ngIf="uploadfilename1 == true">
+                                        <span class="filenametext"> {{fileName1}}</span>
+                                    </ng-container>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12" style="margin: 20px 0 0 0;">
+
+                        <div class="col-md-4">
+                            <label>Select Category</label>
+                            <select class="form-control" formControlName="category">
+                                <option selected disabled>Select Category</option>
+                                <option value="LDT">LDT</option>
+                                <option value="MDT">MDT</option>
+                                <option value="HDT">HDT</option>
+                                <option value="TT">TT</option>
+                                <option value="BUS">BUS</option>
+                            </select>
+                            <small class="text-danger" *ngIf="
+                        !AddTCForm.controls.category.valid &&
+                        AddTCForm.controls.category.touched
+                      ">User is required</small>
+                        </div>
+                        <div class="col-md-4">
+                            <label>Remarks<dot></dot></label>
+                            <textarea formControlName="remarks" class="form-control"></textarea>
+                            <small class="text-danger" *ngIf="
+                            !AddTCForm.controls.remarks.valid &&
+                            AddTCForm.controls.remarks.touched
+                          ">Remarks is required</small>
+                        </div>
+                        <div class="col-md-4">
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer" style="border-top: none;padding:0px 41px">
+                <button type="button" class="btn btn-md btn-black" data-dismiss="modal"
+                    style="background:#276090;color: #fff;">Cancel
+                </button>
+                <button type="button" class="btn btn-md  btn-black"
+                    style="background:#276090;color: #fff;margin:29px 0px 29px 11px"
+                    (click)="submitForm()">Save&nbsp;&nbsp;<i class="icon-save"></i></button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="AssignTeam" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content" style="background: #F7F7F7;">
+            <div class="modal-header" style="padding: 15px 0; border-bottom: 2px solid #979797;margin: 0px 45px;">
+                <h4 class="modal-title">Add Assign Team </h4>
+            </div>
+
+            <div class="modal-body" style="border:none">
+                <form [formGroup]="AssignTCForm">
+                    <div class="col-md-12" style="margin: 20px 0 0 0;">
+                        <div class="col-md-6">
+                            <label>Select L4<dot></dot></label>
+                            <select name="" id="" class="form-control" formControlName="l4">
+                                <option value=null selected disabled>Select L4 User </option>
+                                <option *ngFor="let user of l4Users" value="{{user.shortid}}">
+                                    {{user.firstname}}&nbsp;{{user.lastname}}
+                                </option>
+
+                            </select>
+                            <small class="text-danger" *ngIf="
+                        !AssignTCForm.controls.l4.valid &&
+                        AssignTCForm.controls.l4.touched
+                      ">L4 is required</small>
+                        </div>
+                        <div class="col-md-6">
+                            <label> User<dot></dot></label>
+                            <input type="text" class="form-control" formControlName="username" ><i
+                                class="fa fa-search searchuser" (click)="searchUser()" ></i>
+                            <small class="text-danger" *ngIf="
+                                !AssignTCForm.controls.username.valid &&
+                                AssignTCForm.controls.username.touched
+                              ">User is required</small>
+                        </div>
+                       
+                    </div>
+                    <div class="col-md-12">
+                            <div class="col-md-6">
+                                    <label> Deputy User <dot></dot></label>
+                                    <input type="text" class="form-control" formControlName="subuser" ><i
+                                        class="fa fa-search searchuser" (click)="searchSubUser()"></i>
+                                    <small class="text-danger" *ngIf="
+                                        !AssignTCForm.controls.subuser.valid &&
+                                        AssignTCForm.controls.subuser.touched
+                                      "> Deputy User is required</small>
+                                </div>
+                        <div class="col-md-6">
+                            <label>Select Team<dot></dot></label>
+                            <select name="" id="" class="form-control" formControlName="teamname">
+                                <option value=null selected disabled>Select Team </option>
+                                <option value="Durability">Durability</option>
+                                <option value="FT">FT</option>
+                                <option value="FE">FE</option>
+                                <option value="BMC">BMC</option>
+                                <option value="Bus">Bus</option>
+                                <option value="Homologation">Homologation</option>
+                            </select>
+                            <small class="text-danger" *ngIf="
+                        !AssignTCForm.controls.teamname.valid &&
+                        AssignTCForm.controls.teamname.touched
+                      ">Team is required</small>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="col-md-6">
+                            <label>Remarks<dot></dot></label>
+                            <textarea formControlName="remarks" class="form-control"></textarea>
+                            <small class="text-danger" *ngIf="
+                            !AssignTCForm.controls.remarks.valid &&
+                            AssignTCForm.controls.remarks.touched
+                          ">Remarks is required</small>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer" style="border-top: none;padding:0px 41px">
+                <button type="button" class="btn btn-md btn-black" data-dismiss="modal"
+                    style="background:#276090;color: #fff;">Cancel
+                </button>
+                <button type="button" class="btn btn-md  btn-black"
+                    style="background:#276090;color: #fff;margin:29px 0px 29px 11px"
+                    (click)="submitFormAssign()">Save&nbsp;&nbsp;<i class="icon-save"></i></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="AddExpiry" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content" style="background: #F7F7F7;">
+            <div class="modal-header" style="padding: 9px 0;
+            border-bottom: 2px solid #979797;
+            margin: 0px 28px;">
+                <h4 class="modal-title">Add TC Expiry </h4>
+            </div>
+
+            <div class="modal-body" style="border:none">
+                <form [formGroup]="AddTCFormExpiry">
+
+                    <div class="col-md-12">
+                        <label>TC Expiry Date</label>
+                        <div style="position: relative;">
+                            <input type="text" placeholder="DD-MM-YYYY" class="form-control" bsDatepicker autocomplete="off"
+                                [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY', showWeekNumbers:false }" id="datesexp"
+                                [minDate]="today" formControlName="tcPlateExpiryModel">
+                            <img id="spring_calendar" src="assets/images/spring-calendar.svg">
+                        </div>
+                        <small class="text-danger" *ngIf="
+                        !AddTCFormExpiry.controls.tcPlateExpiryModel.valid &&
+                        AddTCFormExpiry.controls.tcPlateExpiryModel.touched
+                      ">TC Expiry Date is required</small>
+                    </div>
+                    <div class="col-md-12">
+                        <label>TC Plate Document</label><br>
+                        <div class="col-md-12" style="padding: 0px;">
+                            <div class="col-md-6" style="padding: 0px;">
+                                <label id="upload_file" for="uploadFilePartidl1" class="btn btn-md addnew btn-primary">
+                                    Upload File</label>
+                                <input type="file" id="uploadFilePartidl1" #uploadFilePartid1 style="display: none;"
+                                    (change)="uploadfile($event)" formControlName="filepath"
+                                    accept="application/pdf">
+                            </div>
+                            <div class="col-md-6" style="padding: 0px;">
+                                <ng-container *ngIf="uploadfilename == true">
+                                    <span class="filenametext"> {{fileName}}</span>
+                                </ng-container>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+
+            <div class="modal-footer" style="border-top: none;padding:0px 41px">
+                <button type="button" class="btn btn-md btn-black" data-dismiss="modal"
+                    style="background:#276090;color: #fff;">Cancel
+                </button>
+                <button type="button" class="btn btn-md  btn-black"
+                    style="background:#276090;color: #fff;margin:29px 0px 29px 11px"
+                    (click)="submitFormExpiry()">Save&nbsp;&nbsp;<i class="icon-save"></i></button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="AddInsurance" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content" style="background: #F7F7F7;">
+            <div class="modal-header" style="padding: 9px 0;
+            border-bottom: 2px solid #979797;
+            margin: 0px 28px;">
+                <h4 class="modal-title">Add TC Insurance Expiry </h4>
+            </div>
+
+            <div class="modal-body" style="border:none">
+                <form [formGroup]="AddTCFormInsrance">
+
+                    <div class="col-md-12">
+                        <label>Insurance Number</label>
+                        <input type="text" class="form-control" formControlName="insnumber">
+                        <small class="text-danger" *ngIf="
+                    !AddTCFormInsrance.controls.insnumber.valid &&
+                    AddTCFormInsrance.controls.insnumber.touched
+                  ">Insurance Number is required</small>
+                    </div>
+                    <div class="col-md-12">
+                        <label>Insurance Expiry Date</label>
+                        <div style="position: relative;">
+                            <input type="text" placeholder="DD-MM-YYYY" class="form-control" bsDatepicker autocomplete="off"
+                                [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY', showWeekNumbers:false }" id="datesins"
+                                [minDate]="today" formControlName="tcPlateInsuranceModel">
+                            <img id="spring_calendar" src="assets/images/spring-calendar.svg">
+                        </div>
+                        <small class="text-danger" *ngIf="
+                    !AddTCFormInsrance.controls.tcPlateInsuranceModel.valid &&
+                    AddTCFormInsrance.controls.tcPlateInsuranceModel.touched
+                  ">Insurance Expiry Date is required</small>
+                    </div>
+                    <div class="col-md-12">
+                        <label>Insurance Document</label><br>
+                        <div class="col-md-12" style="padding: 0px;">
+                            <div class="col-md-6" style="padding: 0px;">
+                                <label id="upload_file" for="uploadFilePartidl2" class="btn btn-md addnew btn-primary">
+                                    Upload File</label>
+                                <input type="file" id="uploadFilePartidl2" #uploadFilePartid2 style="display: none;"
+                                    (change)="uploadfile1($event)" formControlName="filepathins"
+                                    accept="application/pdf">
+                            </div>
+                            <div class="col-md-6" style="padding: 0px;">
+                                <ng-container *ngIf="uploadfilename1 == true">
+                                    <span class="filenametext"> {{fileName1}}</span>
+                                </ng-container>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+
+            <div class="modal-footer" style="border-top: none;padding:0px 41px">
+                <button type="button" class="btn btn-md btn-black" data-dismiss="modal"
+                    style="background:#276090;color: #fff;">Cancel
+                </button>
+                <button type="button" class="btn btn-md  btn-black"
+                    style="background:#276090;color: #fff;margin:29px 0px 29px 11px"
+                    (click)="submitFormInsurance()">Save&nbsp;&nbsp;<i class="icon-save"></i></button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="TCPlateModalEdit" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="background: #F7F7F7;">
+            <div class="modal-header" style="padding: 15px 0; border-bottom: 2px solid #979797;margin: 0px 45px;">
+                <h4 class="modal-title">Edit TC Plate </h4>
+            </div>
+
+            <div class="modal-body" style="border:none">
+                <form [formGroup]="AddTCFormEdit">
+                    <div class="col-md-12" style="margin: 20px 0 0 0;">
+                        <div class="col-md-4">
+                            <label>TC Expiry Date<dot></dot></label>
+                            <div style="position: relative;">
+                                <input type="text" placeholder="DD-MM-YYYY" class="form-control" bsDatepicker autocomplete="off"
+                                    [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY', showWeekNumbers:false }" id="datese"
+                                    [minDate]="today" formControlName="tcPlateExpiryModel">
+                                <img id="spring_calendar" src="assets/images/spring-calendar.svg">
+                            </div>
+                            <small class="text-danger" *ngIf="
+                        !AddTCFormEdit.controls.tcPlateExpiryModel.valid &&
+                        AddTCFormEdit.controls.tcPlateExpiryModel.touched
+                      ">TC Expiry Date is required</small>
+                        </div>
+                        <div class="col-md-4">
+                            <label>TC Plate Document<dot></dot></label><br>
+                            <div class="col-md-12" style="padding: 0px;">
+                                <div class="col-md-6" style="padding: 0px;">
+                                    <label id="upload_file" for="uploadFilePartidl1"
+                                        class="btn btn-md addnew btn-primary">
+                                        Upload File</label>
+                                    <input type="file" id="uploadFilePartidl1" #uploadFilePartid1 style="display: none;"
+                                        (change)="uploadfile($event)" formControlName="filepath"
+                                        accept="application/pdf">
+                                </div>
+                                <div class="col-md-6" style="padding: 0px;">
+                                   
+                                        <span class="filenametext"> {{Editfilepath}}</span>
+                                   
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12" style="margin: 20px 0 0 0;">
+                        <div class="col-md-4">
+                            <label>Insurance Number</label>
+                            <input type="text" class="form-control" formControlName="insnumber">
+                            <small class="text-danger" *ngIf="
+                        !AddTCFormEdit.controls.insnumber.valid &&
+                        AddTCFormEdit.controls.insnumber.touched
+                      ">Insurance Number is required</small>
+                        </div>
+                        <div class="col-md-4">
+                            <label>Insurance Expiry Date</label>
+                            <div style="position: relative;">
+                                <input type="text" placeholder="DD-MM-YYYY" class="form-control" bsDatepicker autocomplete="off"
+                                    [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY', showWeekNumbers:false }" id="datese2"
+                                    [minDate]="today" formControlName="tcPlateInsuranceModel">
+                                <img id="spring_calendar" src="assets/images/spring-calendar.svg">
+                            </div>
+                            <small class="text-danger" *ngIf="
+                        !AddTCFormEdit.controls.tcPlateInsuranceModel.valid &&
+                        AddTCFormEdit.controls.tcPlateInsuranceModel.touched
+                      ">Insurance Expiry Date is required</small>
+                        </div>
+                        <div class="col-md-4">
+                            <label>Insurance Document</label><br>
+                            <div class="col-md-12" style="padding: 0px;">
+                                <div class="col-md-6" style="padding: 0px;">
+                                    <label id="upload_file" for="uploadFilePartidl2"
+                                        class="btn btn-md addnew btn-primary">
+                                        Upload File</label>
+                                    <input type="file" id="uploadFilePartidl2" #uploadFilePartid2 style="display: none;"
+                                        (change)="uploadfile1($event)" formControlName="filepathins"
+                                        accept="application/pdf">
+                                </div>
+                                <div class="col-md-6" style="padding: 0px;">
+                                        <span class="filenametext"> {{Editfilepathins}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12" style="margin: 20px 0 0 0;">
+
+                        <div class="col-md-4">
+                            <label>Select Category</label>
+                            <select class="form-control" formControlName="category">
+                                <option selected disabled>Select Category</option>
+                                <option value="LDT">LDT</option>
+                                <option value="MDT">MDT</option>
+                                <option value="HDT">HDT</option>
+                                <option value="TT">TT</option>
+                                <option value="BUS">BUS</option>
+                            </select>
+                            <small class="text-danger" *ngIf="
+                        !AddTCFormEdit.controls.category.valid &&
+                        AddTCFormEdit.controls.category.touched
+                      ">Category is required</small>
+                        </div>
+                        <div class="col-md-4">
+                                <label>Remarks<dot></dot></label>
+                                <textarea formControlName="remarks" class="form-control"></textarea>
+                                <small class="text-danger" *ngIf="
+                                !AddTCFormEdit.controls.remarks.valid &&
+                                AddTCFormEdit.controls.remarks.touched
+                              ">Remarks is required</small>
+                        </div>
+                        <div class="col-md-4">
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer" style="border-top: none;padding:0px 41px">
+                <button type="button" class="btn btn-md btn-black" data-dismiss="modal"
+                    style="background:#276090;color: #fff;">Cancel
+                </button>
+                <button type="button" class="btn btn-md  btn-black"
+                    style="background:#276090;color: #fff;margin:29px 0px 29px 11px"
+                    (click)="submitFormEdit()">Save&nbsp;&nbsp;<i class="icon-save"></i></button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="Confirm" role="dialog" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-sm">
+              <div class="modal-content" >
+                    <div class="modal-header" style="padding: 8px 0;
+                    border-bottom: 2px solid #979797;
+                    margin: 0px 2px;">
+                            <div class="col-md-10">
+                                    <h5 class="modal-title"> Submit</h5>
+                              </div>
+                              <div class="col-md-2">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                              </div>
+                        </div>
+                    <div class="modal-body">
+                          <div class="row">
+                                <div class="col-md-12">
+                                      <p> Are you sure want to submit? </p>
+                                </div>
+                          </div>
+                    </div>
+                    <div class="modal-footer">
+                          <button type="button" class="btn btn-md btn-black"style="background:#276090;color: #fff;" data-dismiss="modal" >No</button>
+                          <button type="button" class="btn btn-md btn-black"style="background:#276090;color: #fff;" (click)="ReleaseTeam()">Yes
+                          </button>
+                    </div>
+              </div>
+        </div>
+  </div>

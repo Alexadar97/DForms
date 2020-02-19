@@ -1,0 +1,57 @@
+<div class="col-md-12" style="margin-top:10px;">
+    <div class="col-md-4">
+      <h4>Vehicle Signoff Sheet
+      </h4>
+    </div>
+    <div class="col-md-4 ">
+    </div>
+    <!-- <div class="col-md-4" style="text-align: right;">
+      <button class="btn btn-primary" (click)="addvehiclesignoff()"><i class="icon-plus"></i>&nbsp;&nbsp;New Request</button>
+    </div> -->
+
+    <div class="col-md-4" style="text-align: right;">
+        
+        <!-- <input type="button" value="New Request" class="btn btn-primary" (click)="addsto()" style="margin-right: 0px;"> -->
+       
+            <div class="dropdown">
+                    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <!-- <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> -->
+                        <i class="icon-list"></i>
+                        <!-- Actions -->
+                        &nbsp;&nbsp;Menu &nbsp;<i class="icon-caret-down"></i>
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="width: 30%;padding: 4px;background: #dedede;">
+                    <button class="btn btn-primary dropdown-item" (click)="addvehiclesignoff()"><i class="icon-plus"></i>&nbsp;&nbsp;New Request</button>
+                  <!-- <a class="dropdown-item" href="#">Action</a>
+                  <a class="dropdown-item" href="#">Another action</a>
+                  <a class="dropdown-item" href="#">Something else here</a> -->
+                </div>
+              </div>    
+  
+    </div>
+
+  </div>
+
+  <div class="col-md-12">
+    <div class="table-responsive">
+      <!-- *ngFor="let data of allstoform | paginate: { itemsPerPage: 10, currentPage: p1,id: 'two'};let index=index" -->
+     <table id="prototable" class="table table-bordered table-striped" style="width:99%">
+        <tr>
+          <th>S.No</th>
+          <th>Vehicle or Finas ID</th>
+          <th>Purpose of the vehicle</th>
+          <th>Date of signoff </th>
+          <th>Aggregate signoffs</th>
+        </tr>
+       <!--tbody >
+          <tr  *ngFor="let data of protolist| paginate: { itemsPerPage: 10, currentPage: p1,id: 'two'};let index=index">
+
+          </tr>
+        </tbody>-->
+      </table>
+    </div>
+    <br>
+    <!-- <h4 *ngIf="protolist?.length==0" class="text-center">No New Retrofitment Request created yet!</h4>
+    <pagination-controls *ngIf="protolist?.length!=0" style="text-align: right;" (pageChange)="p1 = $event" #api id="two">
+          </pagination-controls> -->
+  </div>

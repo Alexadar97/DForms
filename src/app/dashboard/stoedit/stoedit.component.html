@@ -1,0 +1,541 @@
+<app-spinner *ngIf="loading"></app-spinner>
+
+<div class="col-md-2" style="padding: 0;
+background-color: #242536; height: 100vh;">
+  <div style="margin-top: 15px;">
+    <p class="sidetext" (click)="stolist()" routerLinkActive="active"><i
+        class="fa fa-angle-double-right"></i>&nbsp;&nbsp;STO
+      List</p>
+    <p class="sidetext" (click)="addsto()" routerLinkActive="active"><i class="fa fa-plus"></i>&nbsp;&nbsp;New
+      Request</p>
+
+    <p class="sidetext" (click)="upload()" routerLinkActive="active"><i class="fa fa-upload"></i>&nbsp;&nbsp;Upload
+      Partlist</p>
+
+    <ng-container class="dropdown-item" *ngIf="isPartsplanner">
+      <p class="sidetext" (click)="uploadModal()" routerLinkActive="active"><i
+          class="fa fa-upload"></i>&nbsp;&nbsp;Upload
+        Part Master</p>
+    </ng-container>
+
+
+
+  </div>
+</div>
+<div class="col-md-10">
+  <div class="row">
+    <div class="col-md-4 col-md-offset-4">
+      <h4 style="font-size: 28px;">STO Request</h4>
+    </div>
+
+    <div class="col-md-2">&nbsp;</div>
+    <div class="col-md-2" style="padding-right: 30px;">
+
+    </div>
+  </div>
+  <div class="row" style="
+      padding: 10px;
+      width: 100%;padding-top: 0px;">
+    <h5 style="text-align: center;
+ font-size: 20px;width: 85%;">Material Used for Internal Consumption</h5>
+
+    <hr>
+
+    <form [formGroup]="form" autocomplete="off">
+
+
+      <div class="row">
+
+
+        <div class="col-md-3">
+
+          Form ID
+          <input type="text" class="form-control" value="" formControlName="stoformid" readonly>
+
+        </div>
+        <div class="col-md-3">
+
+          Requester Name
+
+          <input type="text" class="form-control" value="" formControlName="creditorname" readonly>
+
+        </div>
+        <div class="col-md-3">
+
+          Purpose of Transfer
+          <dot></dot>
+          <input type="text" class="form-control" value="" formControlName="purpose" readonly>
+
+          <small class="text-danger errormsg" *ngIf="
+                !form.controls.purpose.valid &&
+                form.controls.purpose.touched
+              ">Purpose is required</small>
+
+        </div>
+
+        <div class="col-md-3">
+          <ng-container>
+            IO Number
+            <dot></dot>
+          </ng-container>
+          <input *ngIf="userType == 'budgetapprover'" type="text" class="form-control" value=""
+            formControlName="ionumber" (keypress)="keyAlpha($event)">
+
+          <input *ngIf="userType == 'partsplanner' || userType == 'sm'|| userType == 'ipl' || userType == 'store'"
+            type="text" class="form-control" value="" formControlName="ionumber" readonly>
+
+
+          <small class="text-danger errormsg" *ngIf="
+                !form.controls.ionumber.valid &&
+                form.controls.ionumber.touched
+              ">IO Number is required</small>
+
+        </div>
+
+        <div class="col-md-3 ">
+
+          Phone Number
+          <dot></dot>
+          <input type="number" class="form-control" value="" formControlName="phonenumber" readonly>
+          <small class="text-danger errormsg" *ngIf="
+                !form.controls.phonenumber.valid &&
+                form.controls.phonenumber.touched
+              ">Phone Number is required</small>
+
+        </div>
+        <ng-container *ngIf="userType == 'budgetapprover'">
+          <div class="col-md-3 ">
+            Value
+            <dot></dot>
+            <input type="number" class="form-control" value="" formControlName="value" readonly>
+          </div>
+        </ng-container>
+        <!-- <div *ngIf="userType == 'partsplanner'" class="col-md-3 ">
+
+        SM
+        <dot></dot>
+        <input type="text" class="form-control" value="" formControlName="smid">
+        <small class="text-danger errormsg" *ngIf="
+                !form.controls.smid.valid &&
+                form.controls.smid.touched
+              ">SM is required</small>
+
+      </div> -->
+
+
+      </div>
+
+
+      <hr>
+      <!-- <h4>{{form.value|json}}</h4>
+          <hr> -->
+      <div class="row">
+        <div class="col-md-12">
+          <table class="table table-bordered">
+            <tr class="tableheader">
+              <th>S.No</th>
+              <th>Part No<dot></dot>
+              </th>
+              <th>Part Description<dot></dot>
+              </th>
+              <ng-container *ngIf="userType != 'ipl' &&  userType != 'store'">
+                <th>
+                  Quantity<dot></dot>
+                </th>
+              </ng-container>
+
+              <th *ngIf="userType != 'budgetapprover' && userType != 'partsplanner' && userType != 'sm'">
+                <ng-container *ngIf="userType == 'ipl' &&  userType != 'store'">
+                  SM Quantity<dot></dot>
+                </ng-container>
+                <ng-container *ngIf="userType == 'store'">
+                  IPL Dispatched Quantity
+                </ng-container>
+
+
+              </th>
+              <th *ngIf="userType == 'budgetapprover'">Price Per Quantity<dot></dot>
+              </th>
+              <th *ngIf="userType == 'budgetapprover'">Total Value<dot></dot>
+              </th>
+              <th>Unit<dot></dot>
+              </th>
+              <ng-container *ngIf="userType != 'partsplanner'">
+                <th>SM Name</th>
+              </ng-container>
+              <ng-container *ngIf="userType == 'partsplanner'">
+                <th>
+                  SM Short ID<dot></dot>
+                </th>
+                <th>SM Name</th>
+
+              </ng-container>
+              <ng-container *ngIf="userType != 'budgetapprover' && userType != 'partsplanner' && userType != 'store'">
+                <th>
+                  <ng-container *ngIf="userType == 'sm'">SM Approved Quantity
+                  </ng-container>
+                  <ng-container *ngIf="userType == 'ipl'">IPL Approved Quantity
+                  </ng-container>
+                </th>
+              </ng-container>
+
+              <th *ngIf="userType == 'sm'">Vendor Code <dot></dot></th>
+              <th *ngIf="userType == 'sm'">Vendor Name</th>
+              <ng-container *ngIf="userType != 'partsplanner'&& userType != 'store' &&  userType != 'budgetapprover'">
+                <th>
+                  <ng-container *ngIf="userType == 'sm'">
+                    SM Quantity <dot></dot>
+                  </ng-container>
+                  <ng-container *ngIf="userType == 'ipl'">
+                    IPL Quantity <dot></dot>
+                  </ng-container>
+                </th>
+              </ng-container>
+              <th *ngIf="userType == 'ipl'">Location <dot></dot></th>
+            </tr>
+            <tbody formArrayName="stoParts">
+              <tr class="tablerow" *ngFor="let row of rowForms.controls;let i =index" [formGroupName]="i">
+                <td style="text-align: center;">
+                  {{((p1- 1) * 10 + i+1)}}
+                </td>
+                <td>
+                  <input type="text" class="form-control" formControlName="partnumber" readonly>
+                </td>
+                <td>
+                  <input type="text" class="form-control" formControlName="description" readonly>
+                </td>
+                <td>
+                  <ng-container *ngIf="userType == 'ipl' ">
+                    <input type="number" class="form-control" formControlName="smquantity" readonly>
+                  </ng-container>
+
+                  <ng-container
+                    *ngIf="  userType != 'budgetapprover' &&  userType != 'ipl' && userType != 'partsplanner'&& userType != 'sm' ">
+                    <input type="number" class="form-control" formControlName="iplquantity" readonly>
+                  </ng-container>
+                  <ng-container *ngIf=" userType == 'budgetapprover'">
+                    <input type="number" class="form-control" formControlName="reqquantity">
+                    <small class="text-danger"
+                      *ngIf="!row.controls.reqquantity.valid && row.controls.reqquantity.touched">
+                      Quantity is required</small>
+                  </ng-container>
+                  <ng-container *ngIf=" userType == 'partsplanner'">
+                    <input type="number" class="form-control" formControlName="baquantity" readonly>
+                  </ng-container>
+                  <ng-container *ngIf="  userType == 'sm'">
+                    <input type="number" class="form-control" formControlName="baquantity" readonly>
+                  </ng-container>
+                </td>
+                <td *ngIf="userType == 'budgetapprover'">
+                  <input type="text" class="form-control" formControlName="priceperqty" readonly>
+                </td>
+                <td *ngIf="userType == 'budgetapprover'">
+                  <input type="text" class="form-control" formControlName="priceperpart" readonly>
+                </td>
+                <td>
+                  <input type="text" class="form-control" formControlName="unit" readonly>
+                </td>
+                <ng-container *ngIf="userType != 'partsplanner'">
+                  <td> <input type="text" class="form-control" formControlName="sm" readonly></td>
+                </ng-container>
+                <ng-container *ngIf="userType == 'partsplanner'">
+                  <td>
+                    <!-- <input type="text" class="form-control" formControlName="smid" > -->
+
+                    <!-- <div class="col-md-8"> -->
+                    <ng-container *ngIf="!isStoreApproved  && formStatus == 'budgetapproved'">
+                      <input type="text" class="form-control" formControlName="smid"><i class="fa fa-search search"
+                        (click)="searchUser(i)"></i>&nbsp;&nbsp;
+                    </ng-container>
+                    <ng-container
+                      *ngIf="!isStoreApproved  && (formStatus == 'pending' || formStatus == 'l4approved' || formStatus == 'l3approved' || formStatus == 'exigencyrequest' )">
+                      <input type="text" class="form-control" formControlName="smid" readonly><i
+                        class="fa fa-search search" (click)="searchUser(i)" style="display: none"></i>&nbsp;&nbsp;
+                    </ng-container>
+                    <ng-container *ngIf="!isStoreApproved  && (formStatus=='ppapproved' )">
+                      <input type="text" class="form-control" formControlName="smid" readonly><i
+                        class="fa fa-search search" (click)="searchUser(i)"></i>&nbsp;&nbsp;
+                    </ng-container>
+                    <input *ngIf="isStoreApproved" type="text" class="form-control" formControlName="smid" readonly>
+
+                    <small class="text-danger errormsg" *ngIf="
+                  !row.controls.smid.valid &&
+                  row.controls.smid.touched
+                "> SM Short ID is required</small>
+
+                  </td>
+
+                  <td>
+                    <ng-container *ngIf="showshortid == true">
+                      <input *ngIf="!isStoreApproved" type="text" class="form-control" formControlName="smname"
+                        readonly>
+                    </ng-container>
+                    <ng-container *ngIf="showshortid ==false">
+
+                      <ng-container *ngIf="row.controls.sm.value == 'null null'">
+                        <input type="text" class="form-control" value="--" readonly>
+                      </ng-container>
+                      <ng-container *ngIf="row.controls.sm.value != 'null null'">
+                        <input type="text" class="form-control" formControlName="sm" readonly>
+                      </ng-container>
+                    </ng-container>
+                  </td>
+
+                </ng-container>
+                <ng-container *ngIf="userType != 'partsplanner' && userType != 'budgetapprover' && userType != 'store'">
+                  <td>
+
+                    <ng-container *ngIf="userType == 'sm'">
+                      <ng-container *ngIf="row.controls.smstatus.value == 'pending'">
+                        <input type="text" id="smqnty" class="form-control" formControlName="smquantity"
+                          (keypress)="keyAlpha($event)" readonly>
+                      </ng-container>
+                      <ng-container *ngIf="row.controls.smstatus.value == null">
+                        <input type="text" id="smqnty" class="form-control" formControlName="smquantity"
+                          (keypress)="keyAlpha($event)" readonly>
+                      </ng-container>
+                      <ng-container *ngIf="row.controls.smstatus.value == 'completed'">
+                        <input type="text" id="smqnty" class="form-control" formControlName="smquantity" readonly
+                          (keypress)="keyAlpha($event)">
+                      </ng-container>
+                    </ng-container>
+
+                    <ng-container *ngIf="userType == 'ipl'">
+                      <ng-container *ngIf="row.controls.iplstatus.value == 'pending'">
+                        <input type="text" class="form-control" formControlName="iplquantity"
+                          (input)="iplquantitys($event.target.value,i,row)" (keypress)="keyAlpha($event)" readonly>
+                      </ng-container>
+                      <ng-container *ngIf="row.controls.iplstatus.value == null">
+                        <input type="text" class="form-control" formControlName="iplquantity"
+                          (input)="iplquantitys($event.target.value,i,row)" (keypress)="keyAlpha($event)" readonly>
+                      </ng-container>
+                      <ng-container *ngIf="row.controls.iplstatus.value == 'completed'">
+                        <input type="text" class="form-control" formControlName="iplquantity"
+                          (input)="iplquantitys($event.target.value,i,row)" (keypress)="keyAlpha($event)" readonly>
+                      </ng-container>
+
+                    </ng-container>
+                  </td>
+                  <td *ngIf="userType == 'sm'" style="width: 14%;">
+                    <input class="form-control" formControlName="vendorcode" disabled>
+                      <!-- <ng-container *ngFor="let vendor of vendorMap[i]">
+                        <option value={{vendor.vendorcode}}>{{vendor.vendorcode}}</option>
+                      </ng-container>
+                    </select> -->
+
+                  </td>
+                  <td *ngIf="userType == 'sm'">
+                    <input type="text" class="form-control" formControlName="vendorname" readonly>
+                  </td>
+                </ng-container>
+                <ng-container *ngIf="userType != 'partsplanner'&& userType != 'budgetapprover'  && userType != 'store'">
+                  <td>
+                    <ng-container *ngIf="userType == 'sm'">
+                      <input type="number" class="form-control" formControlName="smbalqty"
+                        (input)="SMquantitys($event.target.value,i,row)">
+                    </ng-container>
+                    <ng-container *ngIf="userType == 'ipl'">
+                      <input type="number" class="form-control" formControlName="iplbalqty"
+                        (input)="iplquantitys($event.target.value,i,row)">
+                    </ng-container>
+                  </td>
+                </ng-container>
+                <td *ngIf="userType == 'ipl'" style=" width: 14%;">
+                  <input class="form-control" formControlName="location">
+                </td>
+                <!-- <td>
+                        <input type="text" class="form-control" formControlName="purpose">
+                    </td> -->
+
+                <!-- <td>
+                      <button *ngIf="i!=0" class="btn btn-default" (click)="deleteRow(i)"><i class="fas fa-trash"></i>
+                      <span *ngIf="i==0">-</span>
+                      </button> </td> -->
+              </tr>
+            </tbody>
+
+
+
+          </table>
+          <!-- <pagination-controls *ngIf="rowForms.controls?.length!=0" style="text-align: right;" (pageChange)="p1 = $event" #api id="two">
+        </pagination-controls> -->
+        </div>
+      </div>
+
+
+
+    </form>
+    <div>
+      <form [formGroup]="remarkForm" class="row">
+        <div class="col-md-4"></div>
+
+
+        <div class="col-md-4 ">
+          <div class="col-md-12 " id="duedatepic" style="padding:0;display: none;">
+            <ng-container *ngIf="userType == 'sm' && userType != 'store' ">
+              Due Date to Approve Balance Parts: <dot></dot>
+              <input formControlName="duedate" type="text" placeholder="DD-MM-YYYY" class="form-control" bsDatepicker
+                [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }" id="dates" [minDate]="today">
+              <small class="text-danger errormsg" *ngIf="
+              !remarkForm.controls.duedate.valid &&
+              remarkForm.controls.duedate.touched
+            "> Due Date is required</small>
+            </ng-container>
+            <ng-container *ngIf=" userType == 'ipl' && userType != 'store'">
+              Due Date to Approve Balance Parts: <dot></dot>
+              <input formControlName="duedate" type="text" placeholder="DD-MM-YYYY" class="form-control" bsDatepicker
+                [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }" id="dates" [minDate]="today">
+
+              <small class="text-danger errormsg" *ngIf="
+              !remarkForm.controls.duedate.valid &&
+              remarkForm.controls.duedate.touched
+            "> Due Date is required</small>
+            </ng-container>
+          </div>
+        </div>
+
+        <div class="col-md-4 " *ngIf="userType != 'sm'">
+
+
+          Remarks <dot></dot>
+          <input type="text" class="form-control" value="" formControlName="remarks">
+          <br>
+          <small class="text-danger errormsg" *ngIf="
+                !remarkForm.controls.remarks.valid &&
+                remarkForm.controls.remarks.touched
+              ">Remark is required</small>
+
+        </div>
+
+
+      </form>
+    </div>
+
+
+    <div style="text-align: right;">
+      <!-- <button class="btn btn-default bt-md" (click)="addRow()"><i class="icon-plus"></i>&nbsp;&nbsp;Add Row</button> -->
+    </div>
+    <br>
+    <div style="text-align: right;margin-bottom: 40px;">
+      <div id="errorMessage" style="color:red;">
+
+      </div>
+      <!-- FOR BUDGET APPROVER -->
+      <button class="btn btn-primary btn-success" (click)="calculateForm()" *ngIf="userType == 'budgetapprover'">
+        <i class="fa fa-calculator"></i>&nbsp;&nbsp;Calculate</button>&nbsp;&nbsp;&nbsp;
+      <button style="background: green;border:none;width:100px;" *ngIf="userType == 'budgetapprover'"
+        class="btn btn-primary btn-md" (click)="saveBudgetApprover()">
+        <i class="fa fa-check"></i>&nbsp;&nbsp;Approve</button>
+      &nbsp;&nbsp;&nbsp;
+      <button style="background: #c9302c;border:none;width:100px;" *ngIf="userType == 'budgetapprover'"
+        class="btn btn-primary btn-md" (click)="rejectBudgetApprover()"><i
+          class="fa fa-times"></i>&nbsp;&nbsp;Reject</button>
+
+
+
+      <!-- FOR PART PLANNER -->
+      <ng-container *ngIf="userType == 'partsplanner' && formStatus == 'budgetapproved'">
+        <button class="btn btn-primary btn-" style="background: green;border: none;width:100px;"
+          (click)="savePartPlanner()">
+          <i class="fa fa-check"></i>&nbsp;&nbsp;Approve
+        </button>&nbsp;&nbsp;&nbsp;&nbsp;
+        <button class="btn btn-danger" style="background: #c9302c;border: none;width:100px;"
+          (click)="RejectPartPlanner()">
+          <i class="fa fa-times"></i>&nbsp;&nbsp;Reject
+        </button>&nbsp;&nbsp;&nbsp;&nbsp;
+        <button class="btn btn-primary btn-md" (click)="submitClose()"><i
+            class="fa fa-times"></i>&nbsp;&nbsp;Close</button>
+      </ng-container>
+      <ng-container
+        *ngIf="userType == 'partsplanner' && (formStatus == 'pending' || formStatus == 'l4approved' || formStatus == 'l3approved' || formStatus == 'exigencyrequest' || formStatus=='ppapproved' ) ">
+
+        <button class="btn btn-primary btn-md" (click)="submitClose()"><i
+            class="fa fa-times"></i>&nbsp;&nbsp;Close</button>
+      </ng-container>
+
+
+      <button *ngIf="userType == 'partsplanner' && isStoreApproved && formclosed == '0' " class="btn btn-primary btn-md"
+        (click)="savePartialClosed()"><i class="fa fa-times"></i>&nbsp;&nbsp;Partial
+        Close</button>&nbsp;&nbsp;&nbsp;&nbsp;
+
+      <!-- <button *ngIf="userType == 'partsplanner' && formStatus == 'iplcompleted'" class="btn btn-primary btn-md"
+      (click)="markComplete()"><i class="icon-save"></i>&nbsp;&nbsp;Close</button> -->
+
+      <!-- *ngIf="isStoreApproved" -->
+      <button *ngIf="userType == 'partsplanner' && isStoreApproved && formclosed == '1' " class="btn btn-primary btn-md"
+        (click)="submitClose()"><i class="fa fa-times"></i>&nbsp;&nbsp;Close</button>
+
+      <!-- FOR SM -->
+      <!-- <ng-container *ngIf="userType == 'sm' && hasValidSMValue"> -->
+      <ng-container *ngIf="userType == 'sm'">
+
+
+        <button *ngIf="isSMComplete==2 && isSMComplete!=3" class="btn btn-primary btn-md" id="btnparts" style="width:170px;background: #edd60b;
+        border: none;
+        color: #000;" (click)="savePartialSM()"><i class="fa fa-save"></i>&nbsp;&nbsp;Partial Complete</button>
+
+        &nbsp;&nbsp;&nbsp;&nbsp;
+
+        <button *ngIf="isSMComplete==1 && isSMComplete!=3" class="btn btn-primary btn-md" style="width:170px;background: #63b603;
+        border: none;
+        color: #000;" id="btncomplete" (click)="saveSM()"><i class="fa fa-save"></i>&nbsp;&nbsp;Complete</button>
+
+      </ng-container>
+
+
+      <!-- FOR IPL -->
+      <!-- <button *ngIf="userType == 'ipl'" class="btn btn-primary btn-md" (click)="savePartialIPL()"><i
+        class="icon-save"></i>&nbsp;&nbsp;Partial Approval</button> -->
+      <ng-container *ngIf="userType == 'ipl'">
+        <button *ngIf="isIPLComplete==2 && isIPLComplete!=3" class="btn btn-primary btn-md" id="btnpartsipl" style="width:170px;background: #edd60b;
+    border: none;
+    color: #000;" (click)="savePartialIPL()"><i class="fa fa-save"></i>&nbsp;&nbsp;Partial Dispatched</button>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+
+        <button *ngIf="isIPLComplete==1 && isIPLComplete!=3" class="btn btn-primary btn-md" id="btncompleteipl" style="width:170px;background: #63b603;
+        border: none;
+        color: #000;" (click)="saveIPL()"><i class="fa fa-save"></i>&nbsp;&nbsp;Dispatched</button>
+      </ng-container>
+      <!-- FOR STORE -->
+      <ng-container *ngIf="userType == 'store'">
+        <button *ngIf="formclosed == '0'" class="btn btn-primary btn-md" style="width:170px;background: #edd60b;  border: none;
+        color: #000;" (click)="savePartialReceive()"><i class="fa fa-save"></i>&nbsp;&nbsp;Parts Received</button>
+        <button *ngIf="formclosed == '1'" class="btn btn-primary btn-md" style="background: green;border: none;"
+          (click)="saveStore()"><i class="fa fa-check"></i>&nbsp;&nbsp; Parts Received</button>
+      </ng-container>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+
+
+<!-- confirm close modal -->
+
+<div class="modal fade" id="confirmClose" role="dialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-10">
+            <p class="modalHeader" style="font-weight: 600;">Close</p>
+          </div>
+          <div class="col-md-2">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <br>
+          <div class="col-md-12">
+            <p> Are you sure to close the form ?</p>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-primary" data-dismiss="modal">No </button>
+        <button type="button" class="btn btn-sm btn-primary" (click)="markClose()">Yes</button>
+      </div>
+    </div>
+  </div>
+</div>

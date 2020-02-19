@@ -1,0 +1,39 @@
+.card {
+    box-shadow: 0 0 4px #b0abab;
+    background-color: white;
+    height: 400px;
+}
+p{    text-align: center;
+    font-weight: bold;
+}
+    .rangedate{
+        width: 100%;
+        height: 20px;
+        padding: 5px 6px;
+        font-size: 9px;
+    
+    }
+    .sub-head{
+        font-size: 11px;
+        margin: 0;
+    }
+    .selectbox{
+        font-size: 12px;
+    margin: 7px 0;
+    height: 26px;
+    padding: 0px 10px;
+    }
+    #selectbox1month{
+        height: 31px;
+    width: 30%;
+    margin: 0px 0px 24px 0px;
+    }
+    .display-head1{
+        white-space: nowrap;
+        padding: 6px 0px 0px 24px;
+        display: flex;
+    }
+    .head{
+        white-space: nowrap;
+        padding: 6px;
+    }

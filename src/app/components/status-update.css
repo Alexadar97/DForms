@@ -1,0 +1,60 @@
+.dotbox{
+    display: inline-block;
+    float: left;
+    top: -28px;
+    position: absolute;
+    /* margin-left:-6px; */
+}
+.dot{
+    width:25px;
+    height:25px;
+   
+    border-radius: 30px;
+    margin-left: -6px;
+    margin-top: 20px;
+
+}
+.dotlabel{
+    font-size: 9px;
+    margin-left:-25%;
+}
+.dotlabel2{
+    font-size: 9px;
+    margin-left:-25%;
+}
+.dotleft{
+    margin-left:13.5%;
+}
+.dot-green{
+background: #549709;
+}
+.dot-red{
+background: #E81C1C;
+}
+.dot-null{
+    background:  #E8E8E8;
+}
+.dot-done{
+    /* background:  #BFBFBF; */
+    background:  #2c3e50;
+}
+
+.updateContainer{
+    /* background:  #BFBFBF; */
+    background: #E8E8E8;
+    height: 10px;
+    /* margin-bottom: 25px; */
+    width: 90%;
+    margin: auto;
+    margin-bottom: 55px;
+    position: relative;
+    margin-top: 14px;
+}
+.progress{
+    position: absolute;
+    /* background: #BFBFBF; */
+    background: #2c3e50;
+    height: 10px;
+    /* border: 1px dashed grey; */
+    /* width:20% */
+}

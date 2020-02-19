@@ -1,0 +1,53 @@
+
+.proto-table > tr > th{
+    /* border: 1px solid #9e9e9e3d !important; */
+    padding: 12px;
+    /* color: #000; */
+    width: 50%;
+   background: rgb(235,235,235);
+    border: 1px solid rgb(220,220,220);
+  
+    font-weight: 600;
+  
+  }
+  .part-table > tr > th{
+    /* border: 1px solid #9e9e9e3d !important; */
+    padding: 12px;
+    background: rgb(235,235,235);
+    border: 1px solid rgb(220,220,220);
+    font-size: 12px;
+    font-weight: 600;
+  
+  }
+  
+  .proto-table > tr > td{
+    border: 1px solid rgb(220,220,220);
+    padding: 12px;
+    font-weight: 500;
+    width: 50%;
+    font-size: 12px;
+  }
+  .part-table > tr > td{
+    border: 1px solid rgb(220,220,220);
+    padding: 12px;
+    font-weight: 500;
+    border: 1px solid #ddd !important;
+    font-size: 12px;
+  }
+  
+   td {
+    border: 1px solid rgb(220,220,220);
+  }
+  table.table,  td, th{
+    margin-bottom: 0px;
+    border: 1px solid rgb(220,220,220);
+    font-size: 12px;
+  }
+  input#date:focus {
+    outline: none;
+  }
+  textarea {
+    resize: none;
+    outline: none;
+  }
+  

@@ -1,0 +1,31 @@
+<div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 pagebody">
+    <div class="col-md-12 ">
+      <h3 >User Management</h3>
+      <!-- <button class="btn btn-primary dropdown-item" (click)="backHome()" style="    width: 6%;float: right;">
+        <i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Back</button> -->
+      <hr>
+      <div role="tabpanel" class="text-center" >
+        <!-- Nav tabs -->
+
+        <!-- <app-user></app-user> -->
+
+        <div id="myTab" class="nav nav-tabs bottomtabs" role="tablist">
+           
+        
+            <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2  cursor components tab-usermanagement" style="" >
+                <a class="nav-item nav-link active "  role="tab" data-toggle="tab" routerLinkActive="active"  routerLink="/dashboard/usermanagement/user" style="color:#000;width: 100%;
+                display: block;">User </a>
+              </div>
+             
+              <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2  cursor components tab-usermanagement" style="" >
+                  <a class="nav-item nav-link"  role="tab" data-toggle="tab"   routerLink="/dashboard/usermanagement/department" style="color:#000;width: 100%;
+                  display: block;">Department </a>
+                </div>
+        </div>
+
+      
+      </div>
+    </div>
+  
+  <router-outlet></router-outlet>
+  </div>

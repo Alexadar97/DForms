@@ -1,0 +1,333 @@
+<app-spinner *ngIf="loading"></app-spinner>
+<div class="col-md-2" style="padding: 0;
+background-color: #242536; height: 100vh;">
+  <div style="margin-top: 15px;">
+    <p class="sidetext" (click)="protolists()" routerLinkActive="active"><i
+        class="fa fa-angle-double-right"></i>&nbsp;&nbsp;Proto List</p>
+    <p class="sidetext" (click)="addproto()" routerLinkActive="active"><i class="fa fa-plus"></i>&nbsp;&nbsp;New
+      Request</p>
+
+    <p class="sidetext active" (click)="showOFM()"><i class="fa fa-calendar"></i>&nbsp;&nbsp;OFM</p>
+
+
+
+  </div>
+</div>
+<div class="col-md-10">
+  <div class="row" style="margin-top: 14px;">
+    <div class="col-md-6">
+      <h4>OFM </h4>
+    </div>
+    <div class="col-md-4">
+      <!-- <button class="btn btn-primary " style="border: none;width:100px;float:right;" (click)="pdfDownload()">
+      <i class="icon-download-alt"></i>&nbsp;&nbsp;Download
+    </button> -->
+    </div>
+    <div class="col-md-2">
+      <button class="btn btn-primary btn-md" style="border: none;float:right;" (click)="pdfDownload('export.zip')">
+        <i class="fa fa-download"></i>
+        &nbsp;Download</button>
+    </div>
+  </div>
+
+  <div class="tabbar" style="padding: 15px;">
+    <div id="plannedTab" (click)="markTab('planned',$event)" class="tab tab_selected">Planned</div>
+    <div (click)="markTab('unplanned',$event)" class="tab">Unplanned</div>
+  </div>
+
+
+  <!-- Planned -->
+  <div *ngIf="tab == 'planned'" class="col-md-12" style="padding-bottom: 30px;">
+    <div class="row" style="padding: 15px 0px;">
+      <div class="col-md-2">
+        <div class="calendar">
+          <!-- <input type="text" placeholder="DD/MM/YYYY" class="form-control" bsDatepicker id="ofmdate" [minDate]="today"
+              [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }"> -->
+          <input class="form-control" placeholder="Select week" bsDatepicker id="ofmweek"
+            [bsConfig]="{ selectWeek: true}">
+        </div>
+      </div>
+      <div class="col-md-6">
+        <button class="btn btn-default  btn-sm" (click)="selectWeek()">Search</button>&nbsp;&nbsp;&nbsp;
+        <span>Selected Weeks : </span>&nbsp;
+        <!-- <ng-container *ngFor="let data of selectedWeeks">
+           <span id="showweek">{{data}}</span> 
+          </ng-container> -->
+        <button class="btn btn-default  btn-sm" (click)="viewWeeksdata()">View</button>&nbsp;&nbsp;&nbsp;
+      </div>
+      <div class="col-md-4">
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table id="prototable" class="table table-bordered table-striped" style="width:99%" *ngIf="OfmList?.length!=0">
+        <tr>
+          <th> S.No </th>
+          <th>WR No/Description</th>
+          <th>Project</th>
+          <th>Vehicle Aggregate Number</th>
+          <th>Model</th>
+          <th>Requester </th>
+          <th>Request Date</th>
+          <th>Activity</th>
+          <th>Expected Comp Date</th>
+          <th>Area</th>
+          <th colspan="2" style="text-align: center;">Collabration
+            <table style="width:100%;">
+              <tr>
+                <td style="border: 1px solid transparent !important;">PPS</td>
+                <td style="border: 1px solid transparent !important;">E&E</td>
+              </tr>
+            </table>
+          </th>
+          <th>Remarks</th>
+        </tr>
+        <tbody>
+          <tr
+            *ngFor="let data of OfmPlannedList| paginate: { itemsPerPage: 10, currentPage: p1,id: 'two'};let index=index">
+            <td>
+              {{(index+1)}}
+
+            </td>
+            <td style="white-space: nowrap;">
+
+              <span style="white-space: nowrap; ">
+                {{(data?.prformid != null) ? data?.prformid : '-' }}
+              </span>
+
+            </td>
+            <td style="white-space: nowrap;">
+              {{(data?.createddate != null) ? data?.createddate : '-' }}
+            </td>
+            <td>{{(data?.projectname != null) ? data?.projectname : '-' }}</td>
+            <td>{{(data?.modelnumber != null) ? data?.modelnumber : '-' }}</td>
+
+            <td>{{(data?.requestorname != null) ? data?.requestorname : '-' }}</td>
+            <td>{{(data?.createddate != null) ? data?.createddate : '-' }}</td>
+            <td>{{(data?.activity != null) ? data?.activity : '-' }}</td>
+
+            <td>
+              {{(data?.closeddate != null) ? data?.closeddate : '-' }}
+
+            </td>
+            <td>
+              {{(data?.area != null) ? data?.area : '-' }}
+
+            </td>
+
+            <td>
+              <ng-container *ngIf="data?.collaborationpps == ''">
+                -
+              </ng-container>
+              <ng-container *ngIf="data?.collaborationpps != null">
+                {{(data?.collaborationpps != null) ? data?.collaborationpps : '-' }}
+              </ng-container>
+            </td>
+            <td>
+              <ng-container *ngIf="data?.collaborationeande == ''">
+                -
+              </ng-container>
+              <ng-container *ngIf="data?.collaborationeande != null">
+                {{(data?.collaborationeande != null) ? data?.collaborationeande : '-' }}
+              </ng-container>
+            </td>
+
+            <td>
+              {{(data?.remarks != null) ? data?.remarks : '-' }}
+            </td>
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <br>
+    <h4 *ngIf="OfmPlannedList?.length==0" class="text-center">No OFM data available!</h4>
+
+
+
+  </div>
+
+  <!-- Unplanned -->
+  <div *ngIf="tab == 'unplanned'" class="col-md-12" style="padding-bottom: 30px;">
+    <div class="row" style="padding: 15px 0px;">
+      <div class="col-md-2">
+        <div class="calendar">
+          <input class="form-control" placeholder="Select week" bsDatepicker id="ofmweek2"
+            [bsConfig]="{ selectWeek: true}">
+        </div>
+      </div>
+      <div class="col-md-6">
+        <button class="btn btn-default btn-sm" (click)="selectWeekUnPlan()">Search</button>&nbsp;&nbsp;&nbsp;
+        <span>Selected Weeks : </span>&nbsp;
+        <button class="btn btn-default btn-sm" (click)="viewUnplanWeeksdata()">View</button>&nbsp;&nbsp;&nbsp;
+      </div>
+      <div class="col-md-4">
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table id="prototable" class="table table-bordered table-striped" style="width:99%" *ngIf="OfmList?.length!=0">
+        <tr>
+          <th> S.No </th>
+          <th>WR No/Description</th>
+          <th>Project</th>
+          <th>Vehicle Aggregate Number</th>
+          <th>Model</th>
+          <th>Requester </th>
+          <th>Request Date</th>
+          <th>Activity</th>
+          <th>Expected Comp Date</th>
+          <th>Area</th>
+          <th style="text-align: center;" colspan="2">Collabration
+            <table style="width:100%">
+              <tr>
+                <td style="border: 1px solid transparent !important;">PPS</td>
+                <td style="border: 1px solid transparent !important;">E&E</td>
+              </tr>
+            </table>
+          </th>
+          <th>Remarks</th>
+
+
+        </tr>
+        <tbody>
+          <tr
+            *ngFor="let data of OfmUnPlannedList| paginate: { itemsPerPage: 10, currentPage: p1,id: 'two'};let index=index">
+            <td>
+              {{(index+1)}}
+            </td>
+            <td style="white-space: nowrap;">
+
+              <span style="white-space: nowrap; ">
+                {{(data?.prformid != null) ? data?.prformid : '-' }}
+              </span>
+
+            </td>
+            <td>{{(data?.projectname != null) ? data?.projectname : '-' }}</td>
+            <td>{{(data?.vehicleaggregateno != null) ? data?.vehicleaggregateno : '-' }}</td>
+            <td>{{(data?.modelnumber != null) ? data?.modelnumber : '-' }}</td>
+            <td>{{(data?.requestorname != null) ? data?.requestorname : '-' }}</td>
+            <td>
+              {{(data?.createddate != null) ? data?.createddate : '-' }}
+
+            </td>
+            <td>
+              {{(data?.activity != null) ? data?.activity : '-' }}
+
+            </td>
+            <td>
+              {{(data?.closeddate != null) ? data?.closeddate : '-' }}
+
+            </td>
+            <td>
+              {{(data?.area != null) ? data?.area : '-' }}
+
+            </td>
+            <td>
+              <ng-container *ngIf="data?.collaborationpps == ''">
+                -
+              </ng-container>
+              <ng-container *ngIf="data?.collaborationpps != null">
+                {{(data?.collaborationpps != null) ? data?.collaborationpps : '-' }}
+              </ng-container>
+            </td>
+            <td>
+              <ng-container *ngIf="data?.collaborationeande == ''">
+                -
+              </ng-container>
+              <ng-container *ngIf="data?.collaborationeande != null">
+                {{(data?.collaborationeande != null) ? data?.collaborationeande : '-' }}
+              </ng-container>
+            </td>
+            <td> {{(data?.remarks != null) ? data?.remarks : '-' }} </td>
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <br>
+    <h4 *ngIf="OfmUnPlannedList?.length==0" class="text-center">No OFM data available!</h4>
+
+
+
+  </div>
+  <!-- Planned modal -->
+  <div class="modal fade" id="plannedWeek" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header" style="border-bottom: none;">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Selected Weeks</h4>
+        </div>
+        <div class="modal-body">
+          <table class="table table-striped">
+            <tr>
+              <th>S.No</th>
+              <th>Week Number</th>
+              <th>Year</th>
+              <th>Delete</th>
+            </tr>
+            <ng-container
+              *ngFor="let data of selectedWeeks |  paginate: { itemsPerPage: 10, currentPage: p1,id: 'one'};let index=index">
+              <tr id="showWeeks{{index}}">
+                <td>{{((p1- 1) * 10 + index+1)}}</td>
+                <td>{{data}}</td>
+                <td>{{CurrentYear}}</td>
+                <td>
+                  <button class="btn btn-default  btn-sm" (click)="weekReset(index)" style="border-radius: 6px;">
+                    <i class="fas fa-trash" style="font-size: 16px;"></i>
+                  </button>
+                </td>
+              </tr>
+            </ng-container>
+          </table>
+          <div style="margin: 10px 0px;">
+            <pagination-controls *ngIf="selectedWeeks.length!=0" style="text-align: right;" (pageChange)="p1 = $event"
+              #api id="one">
+            </pagination-controls>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- UnPlanned modal -->
+  <div class="modal fade" id="Weekunplan" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header" style="border-bottom: none;">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Selected Weeks</h4>
+        </div>
+        <div class="modal-body">
+          <table class="table table-striped">
+            <tr>
+              <th>S.No</th>
+              <th>Week Number</th>
+              <th>Year</th>
+              <th>Delete</th>
+            </tr>
+            <ng-container
+              *ngFor="let data of selectedUnPlanWeeks |  paginate: { itemsPerPage: 10, currentPage: p2,id: 'two'};let index=index">
+              <tr id="showWeeks{{index}}">
+                <td>{{((p1- 1) * 10 + index+1)}}</td>
+                <td>{{data}}</td>
+                <td>{{CurrentYear}}</td>
+                <td>
+                  <button class="btn btn-default  btn-sm" (click)="weekReset(index)" style="border-radius: 6px;">
+                    <i class="fas fa-trash" style="font-size: 16px;"></i>
+                  </button>
+                </td>
+              </tr>
+            </ng-container>
+          </table>
+          <div style="margin: 10px 0px;">
+            <pagination-controls *ngIf="selectedUnPlanWeeks.length!=0" style="text-align: right;"
+              (pageChange)="p2 = $event" #api id="two">
+            </pagination-controls>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

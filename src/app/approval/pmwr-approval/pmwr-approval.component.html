@@ -1,0 +1,208 @@
+<app-spinner *ngIf="loading"></app-spinner>
+<div class="col-md-12">
+  <h4>Machine Shop Work</h4>
+</div>
+<form [formGroup]="pmworkreqform" style="padding: 10px;width: 100%;">
+  <div class="row" style="box-shadow: 1px 1px 1px 1px #d6d6d6;
+      padding: 10px;
+      width: 100%;background: #fbfbfb;">
+    <div class="col-md-12">
+      <div class="row" style="margin-top:10px;">
+        <div class="col-md-6  table-responsive">
+          <table class="table proto-table table-bordered">
+            <tr>
+              <th>Date of Request</th>
+              <td colspan="3"><input type="text" id="input" class="form-control" formControlName="createddate" disabled>
+              </td>
+            </tr>
+            <tr>
+              <th>Form ID</th>
+              <td colspan="3"><input type="text" id="input" class="form-control" formControlName="mswformid" disabled>
+              </td>
+            </tr>
+            <tr>
+              <th>Request Name</th>
+              <td colspan="3"><input type="text" id="input" class="form-control" formControlName="requestername"
+                  disabled></td>
+            </tr>
+            <tr>
+              <th>Department</th>
+              <td colspan="3"><input type="text" id="input" class="form-control" formControlName="department" disabled>
+              </td>
+            </tr>
+            <tr>
+              <th>CAD</th>
+              <td style="vertical-align: middle;">
+                <ng-container *ngIf="card == 1">
+                  <input type="text" id="input" class="form-control" value="Yes" disabled> </ng-container>
+                <ng-container *ngIf="card == 0">
+                  <input type="text" id="input" class="form-control" value="No" disabled>
+                </ng-container>
+              </td>
+              <th style="vertical-align: middle;" *ngIf="card == 0">CAD Remarks</th>
+              <th style="vertical-align: middle;" *ngIf="card == 1">CAD Attachment Files</th>
+              <td style="vertical-align: middle;" style="width: 26%;padding: 5px">
+                <div *ngIf="card == 1" style="height: 14vh;overflow: auto;">
+                  <table>
+                    <ng-container *ngFor="let fileList of pmwrFileListData">
+                      <tr>
+                        <td style="border: none;padding:0px 0px 10px 0px;background: #fff !important;">
+                          {{fileList.filename}}</td>
+                        <td style="border: none;padding:0px 0px 10px 0px;width: 8%;background: #fff !important;"><i
+                            class="fa fa-download"
+                            (click)="downlaodfile(fileList.filename+'.'+fileList.fileformat ,fileList.id)"
+                            style="font-size: 15px;color: #130f0fb5;cursor: pointer;"></i></td>
+                      </tr>
+                    </ng-container>
+                  </table>
+                </div>
+                <ng-container *ngIf="card == 0">
+                  <input style="width: 132px;" type="text" id="input" class="form-control" formControlName="cadtext"
+                    disabled>
+                </ng-container>
+              </td>
+            </tr>
+            <tr>
+              <th>Cost Center</th>
+              <td><input style="width: 132px;" type="text" id="input" class="form-control" formControlName="costcenter"
+                  disabled></td>
+              <!-- <ng-container *ngIf="mechbcashortid != null">
+                          <th>BCA Short ID</th>
+                          <td>
+                              <input type="text" id="input" class="form-control" formControlName="mechbcashortid"
+                                disabled></td>
+                        </ng-container> -->
+            </tr>
+            <!-- <tr *ngIf="mechbcashortid != null">
+                      <th>BCA Password</th>
+                      <td>
+                          <input type="text" id="input" class="form-control" formControlName="mechbcapassword"
+                            disabled>
+                      </td>
+                    </tr> -->
+          </table>
+        </div>
+        <div class="col-md-6  table-responsive">
+          <table class="table proto-table table-bordered">
+            <tr>
+              <th>Project Name</th>
+              <td> <input type="text" id="input" class="form-control" formControlName="projectname" disabled></td>
+            </tr>
+            <tr>
+              <th>Purpose of Activity</th>
+              <td> <input class="form-control" id="input" type="text" formControlName="storagePurpose" disabled></td>
+            </tr>
+            <tr>
+              <th>Status</th>
+              <td><input class="form-control" id="input" type="text" formControlName="status" disabled></td>
+            </tr>
+            <tr *ngIf="l4remarks != null">
+              <th>L4 Remarks</th>
+              <td><textarea style="height: 63px;overflow: auto" class="form-control" id="input" type="text"
+                  formControlName="l4remarks" disabled></textarea></td>
+            </tr>
+            <tr>
+              <th>Activity Description</th>
+              <td> <textarea style="height: 63px;overflow: auto" id="input" class="form-control" type="text"
+                  formControlName="activity" disabled></textarea></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <h4 style="margin-top: 22px;">Part Details</h4>
+    </div>
+    <div class="col-md-12 table-responsive" style="margin: 13px 0px 30px 0px;overflow: inherit;">
+      <table class="table part-table table table-bordered">
+        <thead>
+          <tr>
+            <th>S.No</th>
+            <th style="width: 14%;">Work Category
+            </th>
+            <th style="width: 19%;">Sub Category
+            </th>
+            <th>Part Number
+            </th>
+            <th>Part Description
+            </th>
+            <th>Vehicle number</th>
+            <th>Quantity
+            </th>
+            <th>Expected Delivery Date</th>
+          </tr>
+        </thead>
+        <tbody formArrayName="mswParts">
+          <tr class="tablerow" *ngFor="let part of rowForms.controls;let i =index" [formGroupName]="i">
+            <td style="text-align: center;">{{i+1}}</td>
+            <td>
+              <select class="form-control" id="workcatid{{i}}" formControlName="workcategory"
+                (change)="workcat($event.target.value,i)" disabled>
+                <option value="null" disabled>Select Work Category</option>
+                <option value="servicesutilization">Services Utilization</option>
+                <option value="partfabrication">Part Fabrication</option>
+              </select>
+            </td>
+            <td>
+              <ng-multiselect-dropdown [placeholder]="'Select Sub Category'" id="select{{i}}"
+              [(data)]="dropdownList[i]" [(ngModel)]="selectedItems[i]" formControlName="worksubcategory2"
+              [settings]="dropdownSettings" (onSelect)="onItemSelect($event,i)"
+              (onSelectAll)="onSelectAll($event,i)" [disabled]="'false'">
+            </ng-multiselect-dropdown>
+            </td>
+            <td>
+              <input class="form-control" type="text" formControlName="partnumber" disabled>
+            </td>
+            <td>
+              <input class="form-control" type="text" formControlName="description" disabled>
+            </td>
+            <td>
+              <input class="form-control" type="text" formControlName="vehicleno" disabled>
+            </td>
+            <td>
+              <input class="form-control" type="text" formControlName="quantity" (keypress)="keyAlpha($event)" disabled>
+            </td>
+            <td>
+              <ng-container
+                *ngIf="(type == 'L4' && ApproveSatatus == 'pending') || (type == 'PROTOL4' && ApproveSatatus == 'l4approved')">
+                <input formControlName="startdate" type="text" placeholder="DD/MM/YYYY" class="form-control"
+                  bsDatepicker id="date{{i}}" [minDate]="today"
+                  [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }">
+              </ng-container>
+              <ng-container
+                *ngIf="((type == 'L4' && ApproveSatatus == 'l4approved')||(type == 'L4' && ApproveSatatus == 'l4rejected')) || ((type == 'PROTOL4' && ApproveSatatus == 'protol4approved') || (type == 'PROTOL4' && ApproveSatatus == 'protol4rejected') || (type == 'L4' && ApproveSatatus == 'mechsupervisorapproved'))">
+                <input formControlName="startdate" type="text" placeholder="DD/MM/YYYY" class="form-control"
+                  bsDatepicker id="date{{i}}" [minDate]="today"
+                  [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }" disabled>
+              </ng-container>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+    <ng-container
+      *ngIf="(type == 'L4' && ApproveSatatus == 'pending') || (type == 'PROTOL4' && ApproveSatatus == 'l4approved')">
+      <div class="col-md-9"></div>
+      <div class="col-md-3" [formGroup]="remarkForm">
+        <div class="form-group">
+          Remarks<dot></dot>
+          <textarea type="text" class="form-control" id="Project" formControlName="remark"></textarea>
+          <small class="text-danger" *ngIf="
+                                              !remarkForm.controls.remark.valid &&
+                                              remarkForm.controls.remark.touched
+                                            ">Remarks is required</small>
+        </div>
+      </div>
+      <br>
+      <div class="col-md-12" style="text-align: right;margin: 20px 0px;">
+        <button style="background: green;border:none;width:100px;" class="btn btn-primary btn-md"
+          (click)="updateData(1)">
+          <i class="fa fa-check"></i>&nbsp;&nbsp;Approve</button>
+        &nbsp;&nbsp;&nbsp;
+        <button style="background: #c9302c;border:none;width:100px;" class="btn btn-primary btn-md"
+          (click)="updateData(0)"><i class="fa fa-times"></i>&nbsp;&nbsp;Reject</button>
+      </div>
+    </ng-container>
+  </div>
+</form>

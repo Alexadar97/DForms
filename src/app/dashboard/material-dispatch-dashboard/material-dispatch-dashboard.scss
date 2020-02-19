@@ -1,0 +1,32 @@
+::ng-deep{
+   #highChart-2 g.highcharts-grid.highcharts-yaxis-grid {
+        display: none;
+    }
+    #highChart-2 text.highcharts-subtitle {
+        display: none;
+    }
+    #highChart-2 g.highcharts-axis-labels.highcharts-yaxis-labels{
+        display: none;
+    }
+    #highChart-2 g.highcharts-axis.highcharts-xaxis {
+        display: none;
+    }
+    text.highcharts-credits{
+        display: none;
+    }
+    #highChart-1 text.highcharts-subtitle{
+        display: none;
+    }
+    #highChart-1 g.highcharts-axis-labels.highcharts-yaxis-labels {
+        display: none;
+    }
+    #highChart-1 path.highcharts-tick{
+        display: none;
+    }
+    #highChart-1 g.highcharts-data-labels.highcharts-series-0.highcharts-column-series.highcharts-tracker {
+        display: none;
+    }
+    text.highcharts-subtitle {
+        display: none;
+    }
+}

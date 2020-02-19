@@ -1,0 +1,257 @@
+<app-spinner *ngIf="loading"></app-spinner>
+<div class="col-md-12">
+  <h4>New Material Credit Slip</h4>
+</div>
+
+
+<div class="row" style="box-shadow: 1px 1px 1px 1px #d6d6d6;
+        padding: 10px;
+        width: 100%;background: #fbfbfb;">
+
+  <form [formGroup]="form">
+
+    <div class="">
+      <div class="row">
+
+        <div class="col-md-3">
+
+          Requested Date
+          <input type="text" class="form-control" value="" formControlName="createddate" readonly>
+
+        </div>
+
+
+        <div class="col-md-3">
+
+          Storage Type
+          <input type="text" class="form-control" value="" formControlName="storagetype" readonly>
+
+        </div>
+        <div class="col-md-3">
+
+          Creditor Name
+          <input type="text" class="form-control" value="" formControlName="creditorname" readonly>
+
+        </div>
+        <div class="col-md-3">
+
+          Purpose
+          <input type="text" class="form-control" value="" formControlName="storagePurpose" readonly>
+
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3">
+
+          HR ID
+          <input type="text" class="form-control" value="" formControlName="hrid" readonly>
+          <br>
+          <small class="text-danger errormsg" *ngIf="
+                  !form.controls.hrid.valid &&
+                  form.controls.hrid.touched
+                ">HR ID is required</small>
+
+        </div>
+
+        <div class="col-md-3">
+
+          Contact Number
+          <input type="text" class="form-control" value="" formControlName="contactno" readonly>
+          <br>
+          <small class="text-danger errormsg" *ngIf="
+                !form.controls.contactno.valid &&
+                form.controls.contactno.touched
+              ">Contact Number is required</small>
+
+        </div>
+
+        <div class="col-md-3">
+
+          Department
+          <!-- <select readonly class="form-control" name="" id="" formControlName="deptid">
+                <ng-container *ngFor="let data of deptList;let index = index ; ">
+                  <option value={{data?.id}}>{{data.name}}</option>
+                </ng-container>
+              </select> -->
+
+          <input type="text" class="form-control" value="" formControlName="department" readonly>
+          <small class="text-danger errormsg" *ngIf="
+              !form.controls.department.valid &&
+              form.controls.department.touched
+            ">Contact Number is required</small>
+        </div>
+
+        <div class="col-md-3">
+          Store Remarks
+          <input type="text" class="form-control" value="" formControlName="storeacceptremarks" readonly>
+        </div>
+      </div>
+      <div class="row" *ngIf="status == 'approved'">
+        <div class="col-md-3">
+          L4 Approver Remarks
+          <input type="text" class="form-control" value="" formControlName="l4approveremarks" readonly>
+        </div>
+      </div>
+
+    </div>
+
+    <hr>
+    <!-- <h4>{{form.value|json}}</h4>
+            <hr> -->
+    <div class="row">
+      <div class="col-md-12">
+        <table id="umcs_table" class="table table-bordered">
+          <tr class="tableheader">
+            <th>S.No</th>
+
+            <th>Part No</th>
+            <th>Description</th>
+            <th>ZGS</th>
+            <!-- <th>Issue Slip No.</th> -->
+
+            <th>Quantity</th>
+            <th>Finas id</th>
+            <!-- <th>Delete</th> -->
+            <th *ngIf="isApproved">Action</th>
+          </tr>
+          <tbody formArrayName="nmcsParts">
+            <tr class="tablerow" *ngFor="let row of rowForms.controls;let i =index" [formGroupName]="i">
+              <td style="text-align: center;">
+                {{(i+1)}}
+              </td>
+
+              <td>
+                <input readonly type="text" class="form-control" formControlName="partnumber">
+              </td>
+              <td>
+                <input readonly type="text" class="form-control" formControlName="description">
+              </td>
+              <td>
+                <input readonly type="text" class="form-control" formControlName="zgs">
+              </td>
+              <!-- <td> <input readonly type="text" class="form-control" formControlName="issueslipno"></td> -->
+
+              <td> <input readonly type="number" class="form-control" formControlName="quantity"></td>
+
+              <td>
+                <button class="btn btn-sm btn-default" (click)="viewFinasid(i)"><i
+                    class="fa fa-eye"></i>&nbsp;&nbsp;View </button>
+              </td>
+              <!-- <td>
+                       <button readonly *ngIf="i!=0" class="btn btn-default" (click)="deleteRow(i)"><i class="fas fa-trash"></i></button>
+                      </td> -->
+              <td *ngIf="isApproved">
+                <input type="text" class="form-control" formControlName="location">
+              </td>
+            </tr>
+          </tbody>
+
+
+
+        </table>
+
+      </div>
+    </div>
+
+    <!-- <h3>{{form.controls.storagePeriod.value}}</h3> -->
+
+    <!-- <div *ngIf="!isPending" class="col-md-4 col-md-offset-8">
+            Remarks:
+          <input type="text" class="form-control" value="" formControlName="remarks" readonly >
+        </div> -->
+  </form>
+  <br><br>
+
+
+
+
+
+  <div *ngIf="isPending && isexpired == 0">
+    <form [formGroup]="approvalForm" class="row">
+      <div class="col-md-4 col-md-offset-8"
+        *ngIf="!isApproved && ((formStatus == 'accepted' &&
+          formTypes == 'L4') || (formStatus == 'l4approved' && formTypes == 'L3') || (formStatus == 'l3approved' && formTypes == 'L2'))">
+
+        Remarks:
+        <input type="text" class="form-control" value="" formControlName="remarks">
+        <br>
+        <small class="text-danger errormsg" *ngIf="
+                !approvalForm.controls.remarks.valid &&
+                approvalForm.controls.remarks.touched
+              ">Remarks is required</small>
+
+      </div>
+    </form>
+    <br>
+    <!--
+        <div class="row" *ngIf="!isApproved">
+          <button class="btn btn-primary  col-md-2 col-md-offset-6" style="background: green;" (click)="acceptForm(true)">
+            <i class="icon-ok"></i>&nbsp;&nbsp;Approve
+          </button>
+          <button class="btn btn-danger col-md-2 col-md-offset-1" (click)="acceptForm(false)">
+            <i class="icon-remove"></i>&nbsp;&nbsp;Reject
+          </button>
+        </div>
+      </div> -->
+    <div class="row" style="float:right;"
+      *ngIf="!isApproved && ((formStatus == 'accepted' &&
+      formTypes == 'L4') || (formStatus == 'l4approved' && formTypes == 'L3') || (formStatus == 'l3approved' && formTypes == 'L2'))">
+      <div class="col-md-12">
+        <button class="btn btn-primary btn-" style="background: green;border: none;width:100px;"
+          (click)="acceptForm(true)">
+          <i class="fa fa-check"></i>&nbsp;&nbsp;Approve
+        </button>&nbsp;&nbsp;&nbsp;&nbsp;
+        <button class="btn btn-danger" style="border: none; background: #c9302c;;width:100px;"
+          (click)="acceptForm(false)">
+          <i class="fa fa-times"></i>&nbsp;&nbsp;Reject
+        </button>
+      </div>
+    </div>
+
+
+    <div *ngIf="isApproved">
+      <button class="btn btn-primary  col-md-3 col-md-offset-4" (click)="acceptLocation()">
+        Submit
+      </button>
+    </div>
+  </div>
+  <div class="modal fade" id="finasidmodal" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Finas ID</h4>
+        </div>
+        <div class="modal-body">
+          <div class="">
+            <div class="row">
+              <div class=" col-md-12 table-responsive">
+                <table class="table viewmodaltable">
+                  <thead>
+                    <tr>
+                      <th> S.No</th>
+                      <th>Finas ID</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <ng-container *ngFor="let data of partsvalue;let index=index;">
+                      <tr>
+                        <td> {{index+1}}</td>
+                        <td>{{data.finasid}}</td>
+                      </tr>
+                    </ng-container>
+                  </tbody>
+                </table>
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <!-- <button type="button" class="btn btn-md  btn-black" (click)="confirmAddcostcenter()">Submit</button>
+              <button type="button" class="btn btn-md btn-black" data-dismiss="modal">Cancel </button> -->
+        </div>
+      </div>
+    </div>
+  </div>

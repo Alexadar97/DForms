@@ -1,0 +1,256 @@
+<app-spinner *ngIf="loading"></app-spinner>
+<div class="col-md-2" style="padding: 0;
+background-color: #242536; height: 100vh;">
+<div style="margin-top: 15px;">
+  <p class="sidetext"  (click)="pmlists()"  routerLinkActive="active" ><i class="fa fa-angle-double-right"></i>&nbsp;&nbsp;Machine Shop Work List</p>
+    <p   class="sidetext active" (click)="addpmwork()"routerLinkActive="active" ><i class="fa fa-plus"></i>&nbsp;&nbsp;New
+                Request</p>
+
+                <!-- <p  (click)="Material_master()"
+                *ngIf="usertype == 'mechanicalsupervisor'">Material Cost Master</p> -->
+    </div>
+</div>
+<div class="col-md-10">
+<div class="row">
+  <div class="col-md-10">
+    <h4>Machine Shop Work</h4>
+  </div>
+  <div class="col-md-2" style="padding-right: 30px;">
+  </div>
+</div>
+<form [formGroup]="pmworkreqform" style="padding: 10px;width: 100%;">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="form-group">
+        Project Name<dot></dot>
+        <input type="text" class="form-control" id="Project" formControlName="projectname">
+        <small class="text-danger" *ngIf="
+                                          !pmworkreqform.controls.projectname.valid &&
+                                          pmworkreqform.controls.projectname.touched
+                                        ">Project is required</small>
+      </div>
+
+    </div>
+    <div class="col-md-3">
+      <div class="form-group">
+        Purpose of Activity<dot></dot>
+        <input class="form-control" type="text" formControlName="storagePurpose">
+      </div>
+      <small class="text-danger" *ngIf="
+      !pmworkreqform.controls.storagePurpose.valid &&
+      pmworkreqform.controls.storagePurpose.touched
+    ">Purpose of Activity is required</small>
+    </div>
+
+    <div class="col-md-3">
+      <div class="form-group  text-field">
+        Approver L4<dot></dot>
+        <select class="form-control" formControlName="l4">
+          <option value=null selected disabled>Select Approver L4 </option>
+          <option value="{{data.shortid}}" *ngFor="let data of l4ProtoUsers">{{data.firstname}} {{data.lastname}}
+          </option>
+        </select>
+      </div>
+      <small class="text-danger" *ngIf="
+        !pmworkreqform.controls.l4.valid &&
+        pmworkreqform.controls.l4.touched
+      "> L4 is required</small>
+    </div>
+    <div class="col-md-3">
+      <div class="form-group">
+        Cost Center<dot></dot>
+        <input type="text" class="form-control" id="costcenter" formControlName="costcenter">
+        <small class="text-danger" *ngIf="
+                                          !pmworkreqform.controls.costcenter.valid &&
+                                          pmworkreqform.controls.costcenter.touched
+                                        ">Cost Center is required</small>
+      </div>
+
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-3">
+      <div class="form-group">
+        Activity Description<dot></dot>
+        <textarea style="height: 63px;" class="form-control" type="text" formControlName="activity"></textarea>
+      </div>
+      <small class="text-danger" *ngIf="
+          !pmworkreqform.controls.activity.valid &&
+          pmworkreqform.controls.activity.touched
+        ">Activity Description is required</small>
+    </div>
+    <div class="col-md-4">
+      <div class="row">
+        <div class="col-sm-5">
+          <div class="form-group" style="padding: 7px 0px 0px 0px;">
+            <label>CAD<dot></dot></label>
+            <div class="radio-group">
+              <label class="control control--radio">Yes
+                <input type="radio" value="1" formControlName="iscad" (change)="aodrawyes($event.target.value)" />
+                <div class="control__indicator"></div>
+              </label>
+              <label class="control control--radio">No
+                <input type="radio" value="0" formControlName="iscad" (change)="aodrawyes($event.target.value)" />
+                <div class="control__indicator"></div>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-7">
+          <div class="form-group" style="padding: 3px 0px 0px 0px;">
+            <label *ngIf="aono" style="font-size: 12px;width: 130px;font-weight: 600;">Attach File
+              <br>
+              <label class="btn btn-sm btn-primary" for="aonofield">Select Multiple Files</label>
+              <input class="form-control" id="aonofield" type="file" accept=".xlsx,.xls,.pdf"
+                (change)="uploadfile($event)" multiple></label>
+            <label *ngIf="aoyes" id="card_desc">
+                <label style="margin: 0px;">Remarks<dot></dot></label>
+                <textarea id="cadtext" class="form-control" type="text" formControlName="cadtext" style="width: 304px;height: 63px;"></textarea>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="form-group" style="padding: 7px 0px 0px 0px;" *ngIf="aono">
+        <section class="file-scroll">
+          <ng-container *ngFor="let data of fileUploadArr;let i=index">
+            <p class="filename" style="font-size: 12px;
+               font-weight: 600;" id="upload{{i}}">{{data.filename}}.{{data.fileformat}} &nbsp;&nbsp;<i class="fa fa-times"
+                (click)="deleteUpload(i)" style="font-size: 14px;cursor: pointer;"></i></p>
+          </ng-container>
+        </section>
+      </div>
+    </div>
+   <div class="col-md-1"></div>
+  </div>
+  <hr>
+  <div class="row">
+    <div class="col-md-12">
+      <table class="table responsive table-bordered">
+        <thead>
+          <tr class="tableheader">
+            <th>S.No</th>
+            <th style="width: 17%;">Work Category<dot></dot>
+            </th>
+            <th style="width: 19%;">Sub Category<dot></dot>
+            </th>
+            <th>Part Number<dot></dot>
+            </th>
+            <th>Part Description<dot></dot>
+            </th>
+            <th>Vehicle number</th>
+            <th>Quantity<dot></dot>
+            </th>
+            <th>Expected Delivery Date<dot></dot>
+            </th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody formArrayName="mswParts">
+          <tr class="tablerow" *ngFor="let part of rowForms.controls;let i =index" [formGroupName]="i">
+            <td style="text-align: center;">{{i+1}}</td>
+            <td>
+              <select name="option" class="form-control" id="workcatid{{i}}" formControlName="workcategory"
+                (change)="workcat($event.target.value,i)">
+                <option value="null" disabled>Select Work Category</option>
+                <option value="servicesutilization">Services Utilization</option>
+                <option value="partfabrication">Part Fabrication</option>
+              </select>
+              <small class="text-danger" *ngIf="
+              !part.controls.workcategory.valid &&
+              part.controls.workcategory.touched
+            ">Work Category is required</small>
+            </td>
+            <td>
+              <ng-multiselect-dropdown [placeholder]="'Select Sub Category'" id="select{{i}}" [(data)]="dropdownList[i]"
+                [(ngModel)]="selectedItems[i]" formControlName="worksubcategory2" [settings]="dropdownSettings"
+                (onSelect)="onItemSelect($event,i)" (onSelectAll)="onSelectAll($event,i)">
+              </ng-multiselect-dropdown>
+              <small class="text-danger" *ngIf="
+              !part.controls.worksubcategory2.valid &&
+              part.controls.worksubcategory2.touched
+            ">Sub Category is required</small>
+        </td>
+            <td>
+              <input class="form-control" type="text" formControlName="partnumber" minlength="8" maxlength="15">
+              <small class="text-danger" *ngIf="
+              !part.controls.partnumber.valid &&
+              part.controls.partnumber.touched
+            ">Part Number is required <br>(Should be minimum 8 characters) </small>
+            </td>
+            <td>
+              <input class="form-control" type="text" formControlName="description">
+              <small class="text-danger" *ngIf="
+              !part.controls.description.valid &&
+              part.controls.description.touched
+            ">Description is required</small>
+            </td>
+            <td>
+              <input class="form-control" type="text" formControlName="vehicleno">
+              <!-- <small class="text-danger" *ngIf="
+                  !part.controls.vehicleno.valid &&
+                  part.controls.vehicleno.touched
+                ">Vehicle Number is required</small> -->
+            </td>
+            <td>
+              <input class="form-control" type="text" formControlName="quantity" (keypress)="keyAlpha($event)">
+              <small class="text-danger" *ngIf="
+                  !part.controls.quantity.valid &&
+                  part.controls.quantity.touched
+                ">Quantity is required</small>
+            </td>
+            <td>
+                <input formControlName="startdate" type="text" placeholder="DD/MM/YYYY" class="form-control"
+                  bsDatepicker id="date{{i}}" [minDate]="today" [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }">
+                  <small class="text-danger" *ngIf="
+                  !part.controls.startdate.valid &&
+                  part.controls.startdate.touched
+                ">Expected Delivery Date is required</small>
+            </td>
+            <td class="text-center"> <button *ngIf="rowForms.controls.length >1" class="btn btn-default"
+                (click)="deleteRow(i)"><i class="fas fa-trash"></i></button> </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="col-md-12 text-right nopadding">
+        <button class="btn btn-default btn-md" (click)="addRow()" style="margin:10px 0px;"><i class="fa fa-plus"></i>&nbsp;&nbsp;Add
+          Row</button>
+      </div>
+    </div>
+  </div>
+</form>
+<div class="col-md-12" style="text-align: right;margin: 20px 0px;">
+  <button class="btn btn-primary btn-md" (click)="submitForm()"><i class="fa fa-save"></i>&nbsp;&nbsp;Submit</button>
+</div>
+</div>
+
+
+
+
+<!-- confirm modal -->
+
+<div class="modal fade" id="confirmSubmit" role="dialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-10">
+            <p class="modalHeader" style="font-weight: 600;">Submit</p>
+          </div>
+          <div class="col-md-2">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <br>
+          <div class="col-md-12">
+            <p> Are you sure to submit the form ?</p>
+          </div>
+        </div>
+      </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-sm btn-primary" data-dismiss="modal">No </button>
+      <button type="button" class="btn btn-sm btn-primary" (click)="save()">Yes</button>
+    </div>
+  </div>
+  </div>
+</div>

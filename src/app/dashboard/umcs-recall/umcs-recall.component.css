@@ -1,0 +1,65 @@
+#umcs_table > tr > th{
+    text-align: center !important;
+    border: 1px solid #ddd;
+}
+#umcs_table > tr > td{
+    text-align: center !important;
+}
+
+.loaderripple{
+    position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #ffffffba;
+  z-index: 2000;
+  }
+  
+  .loaderripple > img{
+    display: block;
+    margin: auto;
+    padding-top: 10%;
+  }
+  .umcs {
+    padding: 33px 0px 0px 0px;
+}
+.Period {
+  padding: 14px 0px 0px 0px;
+}
+label.btn.btn-md.addnew.btn-primary {
+  margin: 0px 12px;
+  padding: 3px 11px 3px 11px;
+}
+
+input::-webkit-calendar-picker-indicator {
+  display: none;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+} 
+.sidetext{
+  color: #fff;
+  padding: 7px 20px;
+  margin: 8px 0;
+  cursor: pointer;
+  border-left: 4px solid #242536;
+}
+.active{
+  background: #030305;
+  color: #fff;
+  box-shadow: 0 0 2px 0 #828387;
+  border-left: 4px solid #ffb946;
+  /* margin-left: 6px; */
+  white-space: nowrap;
+}
+p.sidetext:hover{
+  background: #030305;
+  color: #fff;
+  box-shadow: 0 0 2px 0 #828387;
+  border-left: 4px solid #ffb946;
+  /* margin-left: 6px; */
+  white-space: nowrap;
+}

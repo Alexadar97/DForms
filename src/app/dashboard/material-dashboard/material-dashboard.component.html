@@ -1,0 +1,66 @@
+<div class="container">
+    <div class="row" style="margin: 10px 0 10px 0;">
+        <div class="col-md-12">
+            <div class="high-chart">
+                <div class="col-md-2" style="margin-top: 13px;">
+                    <h4 style="font-size: 14px;
+                    font-weight: 600;">Requests Yearly Trend</h4>
+                </div>
+                <div class="col-md-2" style="margin-top: 12px;">
+                    <select class="form-control" name="year" id="year" (change)="ChangeYear($event.target.value)">
+                        <ng-container *ngFor="let data of yearlist; let i=index">
+                            <option value={{data}}>{{data}}</option>
+                        </ng-container>
+                    </select>
+                </div>
+                <div class="col-md-8"></div>
+                <figure class="highcharts-figure">
+                    <div [chart]="highChart" id="highchart-1"></div>
+                </figure>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="margin: 10px 0 10px 0;">
+        <div class="col-md-6">
+            <div class="high-chart-figure">
+                <div class="col-md-12">
+                    <div class="col-md-4">
+                        <h5 style="font-weight: 600;font-size: 14px;">Monthly Trend</h5>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="display-head">
+                            <label class="head">Select Duration</label>&nbsp;&nbsp;&nbsp;
+                            <input class="form-control" bsDaterangepicker id="date" type="text" [bsConfig]="bsConfig"
+                                [(ngModel)]="bsRangeValue" (bsValueChange)="SelectDate($event)" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="col-md-5">
+                        <figure class="highcharts-figure">
+                            <div [chart]="singleHighChart" id="highchart-2"></div>
+                        </figure>
+                    </div>
+                    <div class="col-md-7">
+                        <figure class="highcharts-figure" id="highchart-3">
+                            <div [chart]="pieChart"></div>
+                        </figure>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="high-chart-figure">
+                <div class="col-md-12">
+                    <div class="col-md-4">
+                        <h5 style="font-weight: 600;font-size: 14px;">Overall Trend</h5>
+                    </div>
+                    <div class="col-md-8"></div>
+                </div>
+                <figure class="highcharts-figure">
+                    <div [chart]="waterFallChart" id="highchart-4"></div>
+                </figure>
+            </div>
+        </div>
+    </div>
+</div>

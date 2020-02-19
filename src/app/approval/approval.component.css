@@ -1,0 +1,11 @@
+img.innerpglogo {
+    position: absolute;
+    margin: 19px auto;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 20vw;
+    height: auto;
+    max-width: 200px;
+    min-width: 200px;
+}

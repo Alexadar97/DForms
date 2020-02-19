@@ -1,0 +1,415 @@
+<app-spinner *ngIf="loading"></app-spinner>
+<div class="col-md-12">
+  <h4>Proto Retrofitment</h4>
+</div>
+<div class="row" style="box-shadow: 1px 1px 1px 1px #d6d6d6;
+  padding: 10px;
+  width: 100%;background: #fbfbfb;">
+  <form [formGroup]="ProtoReqForm" style="margin:5px;">
+    <div class="row" style="margin-top:10px;">
+      <div class="col-md-6  table-responsive">
+        <table id="prototable" class="table proto-table table-bordered">
+          <tr>
+            <th>Date of Request</th>
+            <td><input type="text" formControlName="createddate"
+                style="border: none; background: transparent;width: 100%;" disabled></td>
+          </tr>
+          <tr>
+            <th>Form ID</th>
+            <td><input type="text" formControlName="prformid"
+                style="border: none; background: transparent;width: 100%;" disabled></td>
+          </tr>
+          <tr>
+            <th>Requester Name</th>
+            <td><input type="text" formControlName="requestorname" style="border: none;
+              background: transparent;width: 100%;" disabled></td>
+          </tr>
+          <tr>
+            <th>Contact Number</th>
+            <td><input type="text" formControlName="contactno" style="border: none;
+              background: transparent;width: 100%;" disabled></td>
+          </tr>
+          <tr>
+            <th>Department</th>
+            <td><input type="text" formControlName="department" style="border: none;
+              background: transparent;width: 100%;" disabled></td>
+          </tr>
+          <tr>
+            <th>Function</th>
+            <td><input type="text" formControlName="supervisor" style="border: none;
+              background: transparent;width: 100%;" disabled></td>
+          </tr>
+          <tr>
+            <th>Sub Function</th>
+            <td>
+              <!-- <textarea type="text" formControlName="" style="border: none;
+              background: transparent;width: 100%;" disabled></textarea> -->
+              <ul class="list-group-category" style="padding-left: 14px;">
+                <ng-container *ngFor="let data of arrlist ; let i =index ">
+                  <li class="list-group" *ngIf="data == 'mdtsupervisor'" style="margin-bottom: 8px;">Vehicle MDT</li>
+                  <li class="list-group" *ngIf="data == 'aggregateengine'" style="margin-bottom: 8px;">Aggregate Engine
+                  </li>
+                  <li class="list-group" *ngIf="data == 'aggregatetransmission'" style="margin-bottom: 8px;">Aggregate
+                    Transmission</li>
+                  <li class="list-group" *ngIf="data == 'aggregateaxle'" style="margin-bottom: 8px;">Aggregate Axle</li>
+                  <li class="list-group" *ngIf="data == 'eandesupervisor'" style="margin-bottom: 8px;">E&E</li>
+                  <li class="list-group" *ngIf="data == 'hdtsupervisor'" style="margin-bottom: 8px;">Vehicle HDT</li>
+                  <li class="list-group" *ngIf="data == 'ppssupervisor'" style="margin-bottom: 8px;">PPS</li>
+                  <li class="list-group" *ngIf="data == 'maintenancesupervisor'" style="margin-bottom: 8px;">
+                    Maintenance</li>
+                  <li class="list-group" *ngIf="data == 'mechanicalsupervisor'" style="margin-bottom: 8px;">Proto
+                    Mechanical Workshop</li>
+                </ng-container>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <th>Category</th>
+            <td>
+              <!-- <textarea type="text" formControlName="workrequest" style="border: none;
+              background: transparent;width: 100%;" disabled></textarea> -->
+              <ul class="list-group-category" style="padding-left: 14px;">
+                <ng-container *ngFor="let data of arrcategorylist ; let i =index ">
+                  <li class="list-group" style="margin-bottom: 8px;" *ngIf="data == 1">Retro Fitment</li>
+                  <li class="list-group" style="margin-bottom: 8px;" *ngIf="data == 2">Trail</li>
+                  <li class="list-group" style="margin-bottom: 8px;" *ngIf="data == 3">Failure</li>
+                  <li class="list-group" style="margin-bottom: 8px;" *ngIf="data == 4">
+                    {{otherCategory}}
+                  </li>
+                </ng-container>
+              </ul>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="col-md-6  table-responsive">
+        <table id="prototable" class="table proto-table table table-bordered">
+          <tr>
+            <th>Project Name</th>
+            <td><input type="text" formControlName="projectname" style="border: none;
+                  background: transparent;width: 100%;" disabled></td>
+          </tr>
+
+          <tr>
+            <th>
+              System Name</th>
+            <td><input type="text" formControlName="systemname" style="border: none;
+                background: transparent;width: 100%;" disabled></td>
+          </tr>
+          <tr>
+            <th>
+              Activity</th>
+            <td><input type="text" formControlName="activity" style="border: none;
+                background: transparent;width: 100%;" disabled></td>
+          </tr>
+          <tr>
+            <th>
+              Types of Activity</th>
+            <td>
+              <ul class="list-group-category" style="padding-left: 14px;">
+                <ng-container *ngFor="let data of arrlists ; let i =index ">
+                  <li class="list-group" style="margin-bottom: 8px;" *ngIf="data == 1">Retrofitment was planned
+                    at the time of vehicle sign off</li>
+                  <li class="list-group" style="margin-bottom: 8px;" *ngIf="data == 2">Retrofitment due to
+                    testing feedback</li>
+                  <li class="list-group" style="margin-bottom: 8px;" *ngIf="data == 3">Retrofitment due to Field
+                    Issue</li>
+                  <li class="list-group" style="margin-bottom: 8px;" *ngIf="data == 4">IMCS / Cost Reduction
+                    Proposal</li>
+                  <li class="list-group" style="margin-bottom: 8px;" *ngIf="data == 5">
+                    {{retrofitmentothers}}</li>
+                </ng-container>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+              <th style="padding: 0px 8px;">
+                  <ng-container>
+                    AO Drawing Required
+                  </ng-container>
+                </th>
+                <td style="padding: 0px !important;margin: 0px !important;">
+                    <table class="table table-striped">
+                      <tr>
+                        <td style="width: 25%;padding: 12px !important;
+                        border-right: 1px solid #ccc !important;
+                        border-bottom-color: transparent !important;
+                        border-top-color: transparent !important;">
+                          <ng-container *ngIf="aodrawing == 1">
+                            Yes
+                          </ng-container>
+                          <ng-container *ngIf="aodrawing == 0">
+                            No
+                          </ng-container>
+                        </td>
+                        <th style="width: 25%;background: transparent;
+                       color: #000;
+                            padding: 8px !important;
+                            border-left: 1px solid #ccc !important;
+                            border-right: 1px solid #ccc !important;
+                            border-top: 1px solid transparent !important;
+                            border-bottom: 1px solid transparent !important;">
+                          <ng-container *ngIf="aodrawing == 0"> AO Drawing File</ng-container>
+                          <ng-container *ngIf="aodrawing == 1"> AO Drawing Number</ng-container>
+                        </th>
+                        <td style="width: 25%;padding: 12px !important;
+                        border-right: 1px solid #ccc !important;
+                        border-bottom-color: transparent !important;
+                        border-top-color: transparent !important;">
+                          <ng-container *ngIf="aodrawing == 0">
+                            <ul class="list-group-category" style="padding-left: 26px;">
+                              <ng-container *ngFor="let file of fileDownloadList ; let i =index">
+                                <li class="list-group" style="margin-bottom: 8px;">{{file.filename}}&nbsp;&nbsp;<i
+                                    class="fa fa-download"
+                                    (click)="downlaodfile(file.filename,file.id)"
+                                    style="font-size: 15px;color: #130f0fb5;cursor: pointer;"></i></li>
+                              </ng-container>
+                            </ul>
+                          </ng-container>
+                          <ng-container *ngIf="aodrawing == 1">
+                            {{aodrawingtext}}
+                          </ng-container>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+          </tr>
+          <tr>
+              <th style="width: 25%;padding: 0px 8px;">Finas Update Required</th>
+              <td style="width: 25%;padding: 0px !important;margin: 0px !important;">
+                  <table class="table table-striped">
+                    <tr>
+                      <td style="width: 25%;padding: 12px !important;
+                      border-right: 1px solid #ccc !important;
+                      border-bottom-color: transparent !important;
+                      border-top-color: transparent !important;">
+                        <ng-container *ngIf="finasupdate == 1">
+                          Yes
+                        </ng-container>
+                        <ng-container *ngIf="finasupdate == 0">
+                          No
+                        </ng-container>
+                      </td>
+                      <ng-container *ngIf="finasupdate == 0">
+                        <th style="width: 25%;background: transparent;
+                         color: #000;
+                         padding: 8px !important;
+                         border-left: 1px solid #ccc !important;
+                         border-right: 1px solid #ccc !important;
+                         border-top: 1px solid transparent !important;
+                         border-bottom: 1px solid transparent !important;">Remarks</th>
+                      </ng-container>
+                      <ng-container *ngIf="finasupdate == 0">
+                        <td style="width: 25%;padding: 12px !important;
+                        border-right: 1px solid #ccc !important;
+                        border-bottom-color: transparent !important;
+                        border-top-color: transparent !important;">
+                          <ng-container>
+                            {{finasupdateremarks}}
+                          </ng-container>
+                        </td>
+                      </ng-container>
+                    </tr>
+                  </table>
+                </td>
+          </tr>
+          <tr>
+              <th style="padding: 0px 8px;">Fitment Report Required</th>
+              <td style="width: 25%;padding: 0px !important;margin: 0px !important;">
+                <table class="table table-striped">
+                  <tr>
+                    <td style="width: 25%;padding: 12px !important;
+                    border-right: 1px solid #ccc !important;
+                    border-bottom-color: transparent !important;
+                    border-top-color: transparent !important;">
+                      <ng-container *ngIf="fitmentreport == 1">
+                        Yes
+                      </ng-container>
+                      <ng-container *ngIf="fitmentreport == 0">
+                        No
+                      </ng-container>
+                    </td>
+                    <ng-container *ngIf="fitmentreport == 0">
+                      <th style="width: 25%;background: transparent;
+                   color: #000;
+                         padding: 8px !important;
+                         border-left: 1px solid #ccc !important;
+                         border-right: 1px solid #ccc !important;
+                         border-top: 1px solid transparent !important;
+                         border-bottom: 1px solid transparent !important;">Remarks</th>
+                    </ng-container>
+                    <ng-container *ngIf="fitmentreport == 0">
+                      <td style="width: 25%;padding: 12px !important;
+                      border-right: 1px solid #ccc !important;
+                      border-bottom-color: transparent !important;
+                      border-top-color: transparent !important;">
+                        <ng-container>
+                          {{fitmentremarks}}
+                        </ng-container>
+                      </td>
+                    </ng-container>
+                  </tr>
+                </table>
+              </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <h5 style="font-size: 16px;
+        padding: 10px 0px;">Part Details</h5>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12 table-responsive">
+        <table id="prototable" class="table part-table table table-bordered">
+          <tr>
+            <th>S.No</th>
+            <th>Finas id</th>
+            <th>Part No</th>
+            <th>Description</th>
+            <th>ZGS</th>
+            <th>Quantity</th>
+            <th>To be Scrapped / Stored</th>
+          </tr>
+          <tbody formArrayName="umcsParts">
+            <tr *ngFor="let part of rowForms.controls;let i =index;" [formGroupName]="i">
+              <td style="text-align: center">{{(i+1)}}</td>
+              <td><input type="text" formControlName="finasid" style="border: none;
+                    background: transparent;width: 100%;" disabled></td>
+              <td><input type="text" formControlName="partnumber" style="border: none;
+                    background: transparent;width: 100%;" disabled></td>
+              <td><input type="text" formControlName="description" style="border: none;
+                    background: transparent;width: 100%;" disabled></td>
+             
+              <td><input type="text" formControlName="zgs" style="border: none;
+                    background: transparent;width: 100%;" disabled></td>
+                     <td><input type="text" formControlName="quantity" style="border: none;
+                      background: transparent;width: 100%;" disabled></td>
+              <td><input type="text" formControlName="scraporstored" style="border: none;
+                      background: transparent;width: 100%;" disabled></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <h5 style="font-size: 16px;
+        padding: 10px 0px;">No of Vehicle /Objects</h5>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12  table-responsive">
+        <table id="prototable" class="table part-table table table-bordered">
+          <tr>
+            <th>S.No</th>
+            <th>Vehicle / Aggregate Number</th>
+            <th>Vehicle / Model Number</th>
+            <th>Vehicle / Aggregate Owner Name</th>
+            <th>Expected Start Date</th>
+          </tr>
+          <tbody formArrayName="prvehiclemaster">
+            <tr *ngFor="let data of novehicle.controls;let i =index;" [formGroupName]="i">
+              <td style="text-align:center;">{{(i+1)}}</td>
+              <td><input type="text" formControlName="vehicleaggregateno" style="border: none;
+                background: transparent;width: 100%;" disabled></td>
+              <td><input type="text" formControlName="modelnumber" style="border: none;
+                  background: transparent;width: 100%;" disabled></td>
+              <td><input type="text" formControlName="ownername" style="border: none;
+              background: transparent;width: 100%;" disabled></td>
+
+              <td>
+                    <ng-container *ngIf="isexpired == 1">
+                        <input type="text" class="form-control" formControlName="startdate"
+                        style="width: 100%;cursor: pointer;" bsDatepicker id="date{{i}}" [minDate]="today"
+                        [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }" disabled>
+                    </ng-container> 
+                    <!-- <ng-container *ngIf="formStatus == 'l4approved' && formTypes == 'L4'">
+                      <input type="text" class="form-control" formControlName="startdate"
+                        style="width: 100%;cursor: pointer;" bsDatepicker id="date{{i}}"
+                        [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }" disabled>
+                        </ng-container> -->
+               <ng-container   *ngIf="data.value.ownerstatus != 'completed' && (formStatus == 'pending') && isexpired == 0">
+                        <input type="text" class="form-control" formControlName="startdate"
+                        style="width: 100%;cursor: pointer;" bsDatepicker id="date{{i}}" [minDate]="today"
+                        [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }" >
+                    </ng-container> 
+                    <ng-container  *ngIf="data.value.ownerstatus == 'completed' && (formStatus == 'pending') && isexpired == 0">
+                      <input type="text" class="form-control" formControlName="startdate"
+                      style="width: 100%;cursor: pointer;" bsDatepicker id="date{{i}}" [minDate]="today"
+                      [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }" disabled>
+                  </ng-container> 
+                  <ng-container   *ngIf="formStatus == 'vehicleownerapproved' && isexpired == 0">
+                      <input type="text" class="form-control" formControlName="startdate"
+                      style="width: 100%;cursor: pointer;" bsDatepicker id="date{{i}}" [minDate]="today"
+                      [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }" >
+                  </ng-container> 
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </form>
+  <br><br>
+  <ng-container *ngIf="!isApproved && (isexpired == 0)">
+    <div>
+      <form [formGroup]="approvalForm" class="row" style="margin: 10px 0px;">
+        <div class="col-md-4 col-md-offset-8">
+          Remarks:
+          <input type="text" class="form-control" value="" formControlName="remarks">
+          <br>
+          <small class="text-danger errormsg" *ngIf="
+          !approvalForm.controls.remarks.valid &&
+          approvalForm.controls.remarks.touched
+        ">Remarks is required</small>
+        </div>
+      </form>
+      <br>
+      <div class="row" style="float:right;margin: 10px 0px;">
+        <div class="col-md-12">
+          <button class="btn btn-primary btn-" style="background: green;border: none;width:100px;"
+            (click)="acceptForm(true)">
+            <i class="fa fa-check"></i>&nbsp;&nbsp;Approve
+          </button>&nbsp;&nbsp;&nbsp;&nbsp;
+          <button class="btn btn-danger" style="border: none; background: #c9302c;;width:100px;"
+            (click)="acceptForm(false)">
+            <i class="fa fa-times"></i>&nbsp;&nbsp;Reject
+          </button>&nbsp;&nbsp;
+       
+        </div>
+      </div>
+    </div>
+   
+  </ng-container>
+  <ng-container *ngIf="isApproved &&  (isexpired == 1)">
+    <div>
+      <form [formGroup]="approvalForm" class="row" style="margin: 10px 0px;">
+        <div class="col-md-4 col-md-offset-8">
+          Remarks:
+          <input type="text" class="form-control" value="" formControlName="remarks">
+          <br>
+          <small class="text-danger errormsg" *ngIf="
+            !approvalForm.controls.remarks.valid &&
+            approvalForm.controls.remarks.touched
+          ">Remarks is required</small>
+        </div>
+      </form>
+      <br>
+      <div class="row" style="float:right;margin: 10px 0px;">
+        <div class="col-md-12">
+          <button class="btn btn-primary btn-" style="background: green;border: none;width:100px;"
+            (click)="acceptForm(true)">
+            <i class="fa fa-check"></i>&nbsp;&nbsp;Approve
+          </button>&nbsp;&nbsp;&nbsp;&nbsp;
+          <button class="btn btn-danger" style="border: none; background: #c9302c;;width:100px;"
+            (click)="acceptForm(false)">
+            <i class="fa fa-times"></i>&nbsp;&nbsp;Reject
+          </button>&nbsp;&nbsp;
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>

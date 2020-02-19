@@ -1,0 +1,19 @@
+::ng-deep{
+ 
+      path.highcharts-button-symbol {
+        display: none;
+    }
+    text.highcharts-credits {
+        display: none;
+    }
+    #Trend-3 g.highcharts-axis-labels.highcharts-yaxis-labels, #Trend-3 g.highcharts-axis.highcharts-xaxis,  #Trend-3 g.highcharts-axis-labels.highcharts-xaxis-labels,
+    #Trend-3 path.highcharts-grid-line,  #Trend-2 g.highcharts-axis-labels.highcharts-xaxis-labels, #Trend-2 path.highcharts-grid-line, #Trend-1 g.highcharts-axis-labels.highcharts-xaxis-labels,
+     #Trend-1 path.highcharts-grid-line, #Trend-2 g.highcharts-axis.highcharts-xaxis, #Trend-1 g.highcharts-axis.highcharts-xaxis,
+     #Trend-2 g.highcharts-axis-labels.highcharts-yaxis-labels,   #Trend-1 g.highcharts-axis-labels.highcharts-yaxis-labels
+    {
+        display: none;
+    }
+    g.highcharts-exporting-group {
+        display: none;
+    }
+}

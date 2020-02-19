@@ -1,0 +1,13 @@
+.tablerow > td{
+    padding: 6px 6px;
+    background: #f3f3f3ad;
+  }
+  .tableheader>th{
+    padding: 6px 6px;
+    background: #f3f3f3ad;
+  }
+  
+  /* label{
+  font-weight: 400;
+  }
+   */

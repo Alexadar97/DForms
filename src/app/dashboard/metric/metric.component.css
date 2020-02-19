@@ -1,0 +1,22 @@
+.card1{
+    background: #95a5a6;
+            color: #fff;
+            padding: 16px;
+            font-size: 14px;border: 6px solid #fff;
+    /* box-shadow: 1px 1px 1px 1px #80808038; */
+    border-radius: 10px;
+}
+
+.card2{
+    background: #2980b9;
+            color: #fff;
+            padding: 16px;
+            font-size: 14px;border: 6px solid #fff;
+    /* box-shadow: 1px 1px 1px 1px #80808038; */
+    border-radius: 10px;
+}
+
+.card_value{
+
+    font-size: 22px;text-align: right;
+}

@@ -1,0 +1,77 @@
+<div class="row" style="margin: 30px 0 30px 0;">
+    <div class="col-md-12 ">
+        <div class="card">
+            <div class="row" style="padding-top: 13px;">
+                <div class="col-md-4">
+                    <div class="display-head1">
+                        <label class="head">Requester Yearly Trend</label>&nbsp;&nbsp;&nbsp;
+                        <select id="year" class="form-control" name="year" style="height: 31px;"
+                            (change)="SelectYear($event.target.value)">
+                            <ng-container *ngFor="let data of yearlist; let i=index">
+                                <option value={{data}}>{{data}}</option>
+                            </ng-container>
+                        </select>
+                    </div>
+                    <div class="col-md-8"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div [chart]="highChart" id="nmcsChart"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12" style="margin:25px 0 10px 0;">
+        <div class="col-md-6" style="padding-left: 0px;">
+            <div class="card">
+                <div class="col-md-12" style="padding: 0px;">
+                    <div class="col-md-4" style="text-align: center;">
+                        <h5 >Monthly Trend</h5>
+                    </div>
+                    <div class="col-md-5" style="padding: 0px;">
+                        <p class="sub-head">Select Duration</p>
+                      
+                        <input class="form-control" bsDaterangepicker id="rangedagte" type="text" style="font-size: 12px;height: 25px;"
+                        [bsConfig]="bsConfig" [(ngModel)]="bsRangeValue"
+                        (bsValueChange)="SelectDate($event)" />
+                
+                    </div>
+                    <div class="col-md-3" style="padding: 0px;text-align: center;">
+                        <!-- <p class="sub-head">Exigency</p> -->
+                        <label for="yes"style=" font-size: 12px;">Air</label>&nbsp;
+                        <input type="radio" id="yes" checked  (change)="roadandhir($event.target.value)" value="1"name="season">&nbsp;
+                        <label for="no" style=" font-size: 12px;">Road</label>&nbsp;
+                        <input type="radio" id="no"name="season" (change)="roadandhir($event.target.value)" value="2">
+                    </div>
+                </div>
+              
+                <div class="col-md-12">
+                    <div class="col-md-3">
+                        <figure class="highcharts-figure">
+                            <div [chart]="singleHighChart" id="highChart-2"></div>
+                        </figure>
+                    </div>
+                    <div class="col-md-9">
+                        <figure class="highcharts-figure">
+                            <div [chart]="pieChart" id="highChart-3"></div>
+                        </figure>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6" style="padding-right: 0px;">
+            <div class="card">
+                <div class="col-md-12">
+                    <div class="col-md-4">
+                        <h5 style="font-weight: 600;font-size: 14px;">Overall Trend</h5>
+                    </div>
+                    <div class="col-md-8"></div>
+                </div>
+                <figure class="highcharts-figure">
+                    <div [chart]="waterFallChart" id="highChart-4"></div>
+                </figure>
+            </div>
+        </div>
+    </div>
+</div>

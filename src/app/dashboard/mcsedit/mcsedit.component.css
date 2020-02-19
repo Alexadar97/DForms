@@ -1,0 +1,30 @@
+.delp {
+    padding: 23px 0px 0px 0px;
+}
+.tableheader>th{
+    padding: 6px 6px;
+    background: #f3f3f3ad;
+    border: 1px solid #ddd;
+} .sidetext{
+  color: #fff;
+  padding: 7px 20px;
+  margin: 8px 0;
+  cursor: pointer;
+  border-left: 4px solid #242536;
+}
+.active{
+  background: #030305;
+  color: #fff;
+  box-shadow: 0 0 2px 0 #828387;
+  border-left: 4px solid #ffb946;
+  /* margin-left: 6px; */
+  white-space: nowrap;
+}
+  p.sidetext:hover{
+    background: #030305;
+    color: #fff;
+    box-shadow: 0 0 2px 0 #828387;
+    border-left: 4px solid #ffb946;
+    /* margin-left: 6px; */
+    white-space: nowrap;
+  }

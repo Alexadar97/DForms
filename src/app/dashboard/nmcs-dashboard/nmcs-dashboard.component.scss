@@ -1,0 +1,21 @@
+::ng-deep{
+    path.highcharts-tick {
+        display: none;     
+      }
+     #nmcsChart text.highcharts-data-label.highcharts-data-label-color-0 {
+        display: none;    
+      }
+      g.highcharts-axis-labels.highcharts-yaxis-labels {
+        display: none;
+      }
+      text.highcharts-credits {
+        display: none;
+    }
+    #monthtrend1 path.highcharts-grid-line, path.highcharts-axis-line, #monthtrend1 g.highcharts-axis-labels.highcharts-xaxis-labels {
+      display: none;
+  } 
+
+//   #monthtrend2 g.highcharts-data-labels.highcharts-series-0.highcharts-pie-series.highcharts-tracker {
+//     display: none;
+// }
+}

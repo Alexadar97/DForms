@@ -1,0 +1,871 @@
+<app-spinner *ngIf="loading"></app-spinner>
+<div class="col-md-2" style="padding: 0;
+background-color: #242536; height: 100vh;">
+<div style="margin-top: 15px;">
+    <p  class="sidetext" routerLinkActive="active"(click)="mislist()" ><i class="fa fa-angle-double-right"></i>&nbsp;&nbsp;Material Dispatch List</p>
+    <p class="sidetext" (click)="addmisdispatch()"routerLinkActive="active" ><i class="fa fa-plus"></i>&nbsp;&nbsp;New
+                Request</p>
+     
+                <!-- <p  *ngIf="usertype == 'store'" (click)="add_Master()">Master</p> -->
+    </div>
+</div>
+<div class="col-md-10">
+<form [formGroup]="form" style="margin-top: 20px;">
+    <div class="row">
+        <div class="col-md-4">
+            <h4>Material Dispatch</h4>
+        </div>
+        <div class="col-md-6"></div>
+        <div class="col-md-2" style="padding-right: 40px;">
+          
+        </div>
+    </div>
+    <div class="row" style="padding: 10px;width: 100%;margin-top:10px;">
+        <div class="col-md-12" style="margin: 10px 0px;">
+            <div class="col-md-3">
+                <ng-container *ngIf="formstatus == 'l4approved' || formstatus == 'l3approved'">
+                    <text-input label="Cost Center / IO" isRequired="true" prop="costcenter" [parentForm]="form"
+                        input="Cost Center" placeholder="">
+                    </text-input>
+                </ng-container>
+                <ng-container *ngIf="formstatus == 'packinitiated' || formstatus == 'packsubmitted' || formstatus == 'l4dispatchapproved'
+                || formstatus == 'storesubmitted' || formstatus == 'packdispatched'">
+                    <disabled-input label="Cost Center / IO" isRequired="true" prop="costcenter" [parentForm]="form"
+                        input="Cost Center" placeholder="">
+                    </disabled-input>
+                </ng-container>
+            </div>
+            <div class="">
+                SAP Reference of Original Document: <dot></dot>
+                <br>
+                <!-- SAP original document fields purchasereturns=1 jobwork=2 loc=3 others=4 -->
+                <div class="form-group col-md-1" style="margin-top: 12px;">
+                    <label class="control control--checkbox">Purchase Returns
+                        <input type="checkbox" class="chkboxes" id="sap1" value="1">
+                        <div class="control__indicator"></div>
+                    </label>
+                </div>
+                <div class="form-group col-md-1" style="margin-top: 12px;">
+                    <label class="control control--checkbox">Job Work
+                        <input type="checkbox" id="sap2" class="chkboxes" value="2">
+                        <div class="control__indicator"></div>
+                    </label>
+                </div>
+                <div class="form-group col-md-1" style="margin-top: 12px;">
+                    <label class="control control--checkbox">FOC
+                        <input type="checkbox" id="sap3" class="chkboxes" value="3">
+                        <div class="control__indicator"></div>
+                    </label>
+                </div>
+                <div class="form-group col-md-1" style="margin-top: 12px;">
+                    <label class="control control--checkbox">Others
+                        <input type="checkbox" id="sap4" class="chkboxes" value="4" (click)="purchaseother($event,$event.target.value)">
+                        <div class="control__indicator"></div>
+                    </label>
+                </div>
+            </div>
+
+            <div class="col-md-3" *ngIf="workshow">
+                <span>
+                    <ng-container *ngIf="formstatus == 'l4approved' || formstatus == 'l3approved'">
+                        <textarea type="text" placeholder="" class="form-control" formControlName="otherstext"
+                            style="height: 34px;margin-top: 10px;">
+                    </textarea>
+                    </ng-container>
+                    <ng-container      *ngIf="formstatus == 'packinitiated' || formstatus == 'packsubmitted' || formstatus == 'l4dispatchapproved'
+                || formstatus == 'storesubmitted' || formstatus == 'packdispatched'">
+                        <textarea type="text" placeholder="" class="form-control" formControlName="otherstext"
+                            style="height: 34px;margin-top: 10px;" disabled>
+                                </textarea>
+                    </ng-container>
+                </span>
+
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+
+    </div>
+    <div class="row" style="padding: 10px;width: 100%;">
+        <div class="col-md-12">
+            <div class="col-md-3" style="margin-top: -17px;">
+                <ng-container *ngIf="formstatus == 'l4approved' || formstatus == 'l3approved'">
+                    <text-input label="Purpose of Dispatch" isRequired="true" prop="dispatchpurpose" [parentForm]="form"
+                        input="GSTIN" placeholder="">
+                    </text-input>
+                </ng-container>
+                <ng-container   *ngIf="formstatus == 'packinitiated' || formstatus == 'packsubmitted' || formstatus == 'l4dispatchapproved'
+                || formstatus == 'storesubmitted' || formstatus == 'packdispatched'">
+                    <disabled-input label="Purpose of Dispatch" isRequired="true" prop="dispatchpurpose" [parentForm]="form"
+                        input="GSTIN" placeholder="">
+                    </disabled-input>
+                </ng-container>
+            </div>
+            <div class="col-md-3" style="margin-top: -6px;"
+                *ngIf="(formstatus != 'l4dispatchapproved' && formstatus == 'packdispatched') || (formstatus == 'storesubmitted')">
+
+                Delivery Challan  Date <dot></dot>
+                <br>
+                <input formControlName="expectchallandate" type="text" placeholder="DD/MM/YYYY" class="form-control" 
+                id="challandate" bsDatepicker [minDate]="today" [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }" disabled>
+            </div>
+            <div class="col-md-3" style="margin-top: -6px;" *ngIf="formstatus =='l4dispatchapproved'">
+
+                Delivery Challan Date <dot></dot>
+                <br>
+                <!-- <input formControlName="challannumber" type="text" placeholder="Challan Number" class="form-control"
+                    id="arrivedate" disabled> -->
+                    <input formControlName="expectchallandate" type="text" placeholder="DD/MM/YYYY" class="form-control" 
+                    id="challandate" bsDatepicker [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }">
+            </div>
+            <div class="col-md-3" style="margin-top: -6px;" *ngIf="formstatus =='l4dispatchapproved' || formstatus == 'packdispatched' || formstatus == 'storesubmitted'">
+
+             Challan Number <dot></dot>
+                <br>
+                <input formControlName="challanno" type="text" placeholder="Challan Number" class="form-control" disabled>
+            </div>
+            <div class="col-md-6"></div>
+        </div>
+    </div>
+    <div class="row" style="padding: 10px;width: 100%;">
+        <div class="col-md-12">
+            <span style="font-weight: 600;"> Details of Recipient</span>
+            <br>
+            <div class="col-md-3">
+                <ng-container *ngIf="formstatus == 'l4approved' || formstatus == 'l3approved'">
+                    <text-input label="Name" isRequired="true" prop="recipientname" [parentForm]="form"
+                        input="Recipient Name" placeholder="">
+                    </text-input>
+                </ng-container>
+                <ng-container   *ngIf="formstatus == 'packinitiated' || formstatus == 'packsubmitted' || formstatus == 'l4dispatchapproved'
+                || formstatus == 'storesubmitted' || formstatus == 'packdispatched'">
+                    <disabled-input label="Name" isRequired="true" prop="recipientname" [parentForm]="form"
+                        input="Recipient Name" placeholder="">
+                    </disabled-input>
+                </ng-container>
+            </div>
+            <div class="col-md-6">
+                <ng-container *ngIf="formstatus == 'l4approved' || formstatus == 'l3approved'">
+                    <text-input label="Address" isRequired="true" prop="recipientaddress" [parentForm]="form"
+                        input="Recipient Address" placeholder="">
+                    </text-input>
+                </ng-container>
+                <ng-container   *ngIf="formstatus == 'packinitiated' || formstatus == 'packsubmitted' || formstatus == 'l4dispatchapproved'
+                || formstatus == 'storesubmitted' || formstatus == 'packdispatched'">
+                    <disabled-input label="Address" isRequired="true" prop="recipientaddress" [parentForm]="form"
+                        input="Recipient Address" placeholder="">
+                    </disabled-input>
+                </ng-container>
+            </div>
+            <div class="col-md-3">
+                <ng-container *ngIf="formstatus == 'l4approved' || formstatus == 'l3approved'">
+                    <text-input label="State" isRequired="true" prop="state" [parentForm]="form" input="State"
+                        placeholder="">
+                    </text-input>
+                </ng-container>
+                <ng-container   *ngIf="formstatus == 'packinitiated' || formstatus == 'packsubmitted' || formstatus == 'l4dispatchapproved'
+                || formstatus == 'storesubmitted' || formstatus == 'packdispatched'">
+                    <disabled-input label="State" isRequired="true" prop="state" [parentForm]="form" input="State"
+                        placeholder="">
+                    </disabled-input>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="padding: 10px;width: 100%;">
+        <div class="col-md-12">
+            <div class="col-md-3">
+                <ng-container *ngIf="formstatus == 'l4approved' || formstatus == 'l3approved'">
+                    <number-input label="Pin Code" isRequired="true" prop="statecode" [parentForm]="form"
+                        input="Pin Code" placeholder=""></number-input>
+                </ng-container>
+                <ng-container   *ngIf="formstatus == 'packinitiated' || formstatus == 'packsubmitted' || formstatus == 'l4dispatchapproved'
+                || formstatus == 'storesubmitted' || formstatus == 'packdispatched'">
+                    <disabled-input label="Pin Code" isRequired="true" prop="statecode" [parentForm]="form"
+                        input="Pin Code" placeholder=""></disabled-input>
+                </ng-container>
+            </div>
+            <div class="col-md-3">
+                <ng-container *ngIf="formstatus == 'l4approved' || formstatus == 'l3approved'">
+                    <text-input label="GST Unique Number" isRequired="true" prop="gstinuniqueno" [parentForm]="form"
+                        input="GSTIN" placeholder="">
+                    </text-input>
+                </ng-container>
+                <ng-container   *ngIf="formstatus == 'packinitiated' || formstatus == 'packsubmitted' || formstatus == 'l4dispatchapproved'
+                || formstatus == 'storesubmitted' || formstatus == 'packdispatched'">
+                    <disabled-input label="GST Unique Number" isRequired="true" prop="gstinuniqueno" [parentForm]="form"
+                        input="GSTIN" placeholder="">
+                    </disabled-input>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="padding: 24px;width: 100%;">
+        <table class="table table-bordered">
+            <tr class="tableheader" style="background: rgb(235,235,235);">
+                <th style="width: 4%;"> <span> S.No</span></th>
+                <th style="width: 12%;"> <span> Part No</span>
+                    <dot></dot>
+                </th>
+                <th style="width: 12%;"> <span> Part Description</span>
+                    <dot></dot>
+                </th>
+                <th style="width: 6%;"> <span> HSN Code</span>
+                    <dot></dot>
+                </th>
+                <th style="width: 5%;"> <span> Quantity</span>
+                    <dot></dot>
+                </th>
+                <th style="width: 10%;"> <span> Unit</span>
+                    <dot></dot>
+                </th>
+                <th style="width: 6%;"> <span> Rate per Item</span>
+                    <dot></dot>
+                </th>
+                <th style="width: 6%;"> <span> Taxable Value</span>
+                    <dot></dot>
+                </th>
+                <th style="text-align: center;width: 10%;"> <span> CGST</span>
+                    <br>
+                    <table style="width:100%;">
+                        <tr>
+                            <td style="border: 1px solid transparent !important;">Rate  <dot></dot></td>
+                            <td style="border: 1px solid transparent !important;">Amt  <dot></dot></td>
+                        </tr>
+                    </table>
+                </th>
+                <th style="text-align: center;width: 10%;"> <span> SGST</span>
+                    <br>
+                    <table style="width:100%;">
+                        <tr>
+                            <td style="border: 1px solid transparent !important;">Rate  <dot></dot></td>
+                            <td style="border: 1px solid transparent !important;">Amt  <dot></dot></td>
+                        </tr>
+                    </table>
+                </th>
+                <th style="text-align: center;width: 10%;"> <span> IGST</span>
+                    <br>
+                    <table style="width:100%;">
+                        <tr>
+                            <td style="border: 1px solid transparent !important;">Rate  <dot></dot></td>
+                            <td style="border: 1px solid transparent !important;">Amt  <dot></dot></td>
+                        </tr>
+                    </table>
+                </th>
+                <th *ngIf="formstatus == 'l3approved' || formstatus == 'l4approved'" style="width: 4%;"> <span>
+                        Delete</span></th>
+            </tr>
+
+            <tbody formArrayName="materialDispatchParts">
+                <tr class="tablerow" *ngFor="let row of rowForms.controls;let j =index" [formGroupName]="j">
+                    <td style="text-align: center;">
+                        {{(j+1)}}
+                    </td>
+                    <td>
+                        <ng-container *ngIf="formstatus == 'l4approved' || formstatus == 'l3approved'">
+                            <text-input label="" isRequired="true" prop="partnumber" [parentForm]="row"
+                                input="Part Number" placeholder="" (keypress)="nospace($event)"></text-input>
+                        </ng-container>
+                        <ng-container   *ngIf="formstatus == 'packinitiated' || formstatus == 'packsubmitted' || formstatus == 'l4dispatchapproved'
+                || formstatus == 'storesubmitted' || formstatus == 'packdispatched'">
+                            <disabled-input label="" isRequired="true" prop="partnumber" [parentForm]="row"
+                                input="Part Number" placeholder="" (keypress)="nospace($event)"></disabled-input>
+                        </ng-container>
+                    </td>
+                    <td>
+                        <ng-container *ngIf="formstatus == 'l4approved' || formstatus == 'l3approved'">
+                            <text-input label="" isRequired="true" prop="description" [parentForm]="row"
+                                input="Description" placeholder=""></text-input>
+                        </ng-container>
+                        <ng-container   *ngIf="formstatus == 'packinitiated' || formstatus == 'packsubmitted' || formstatus == 'l4dispatchapproved'
+                || formstatus == 'storesubmitted' || formstatus == 'packdispatched'">
+                            <disabled-input label="" isRequired="true" prop="description" [parentForm]="row"
+                                input="Description" placeholder=""></disabled-input>
+                        </ng-container>
+                    </td>
+                    <td>
+                        <ng-container *ngIf="formstatus == 'l4approved' || formstatus == 'l3approved'">
+                            <text-input label="" isRequired="true" class="input" prop="hsncode" [parentForm]="row"
+                                input="HSN Code" placeholder=""></text-input>
+                        </ng-container>
+                        <ng-container   *ngIf="formstatus == 'packinitiated' || formstatus == 'packsubmitted' || formstatus == 'l4dispatchapproved'
+                || formstatus == 'storesubmitted' || formstatus == 'packdispatched'">
+                            <disabled-input label="" isRequired="true" class="input" prop="hsncode" [parentForm]="row"
+                                input="HSN Code" placeholder=""></disabled-input>
+                        </ng-container>
+
+                    </td>
+                    <td>
+                        <ng-container *ngIf="formstatus == 'l4approved' || formstatus == 'l3approved'">
+                            <number-input label="" isRequired="true" prop="quantity" [parentForm]="row" input="Quantity"
+                                placeholder=""></number-input>
+                        </ng-container>
+                        <ng-container   *ngIf="formstatus == 'packinitiated' || formstatus == 'packsubmitted' || formstatus == 'l4dispatchapproved'
+                || formstatus == 'storesubmitted' || formstatus == 'packdispatched'">
+                            <disabled-input label="" isRequired="true" prop="quantity" [parentForm]="row"
+                                input="Quantity" placeholder=""></disabled-input>
+                        </ng-container>
+
+                    </td>
+                    <td>
+                        <ng-container *ngIf="formstatus == 'l4approved' || formstatus == 'l3approved'">
+                            <select name="" id="" formControlName="unit" class="form-control" style="margin-top: 8px;">
+                                <option value=null selected disabled>Select Unit Type </option>
+                                <option value="Kg">Kg</option>
+                                <option value="Litre">Litre</option>
+                                <option value="Nos">Nos</option>
+                                <option value="PCS">PCS</option>
+                            </select>
+                        </ng-container>
+                        <ng-container   *ngIf="formstatus == 'packinitiated' || formstatus == 'packsubmitted' || formstatus == 'l4dispatchapproved'
+                || formstatus == 'storesubmitted' || formstatus == 'packdispatched'">
+                            <select name="" id="" formControlName="unit" class="form-control" style="margin-top: 8px;"
+                                disabled>
+                                <option value=null selected disabled>Select Unit Type </option>
+                                <option value="Kg">Kg</option>
+                                <option value="Litre">Litre</option>
+                                <option value="Nos">Nos</option>
+                                <option value="PCS">PCS</option>
+                            </select>
+                        </ng-container>
+                    </td>
+                    <td>
+                        <ng-container *ngIf="formstatus == 'l4approved' || formstatus == 'l3approved'">
+                            <text-input label="" isRequired="true" prop="rateperitem" [parentForm]="row"
+                                input="Rate Per Item" placeholder=""></text-input>
+                        </ng-container>
+                        <ng-container   *ngIf="formstatus == 'packinitiated' || formstatus == 'packsubmitted' || formstatus == 'l4dispatchapproved'
+                || formstatus == 'storesubmitted' || formstatus == 'packdispatched'">
+                            <disabled-input label="" isRequired="true" prop="rateperitem" [parentForm]="row"
+                                input="Rate Per Item" placeholder=""></disabled-input>
+                        </ng-container>
+                    </td>
+
+                    <td>
+                        <ng-container *ngIf="formstatus == 'l4approved' || formstatus == 'l3approved'">
+                            <text-input label="" isRequired="" prop="taxablevalue" [parentForm]="row"
+                                input="HSN Code" placeholder=""></text-input>
+                                <small class="text-danger" *ngIf="
+                                !row.controls.taxablevalue.valid &&
+                                row.controls.taxablevalue.touched
+                              ">Taxable Value is required</small>
+                        </ng-container>
+                        <ng-container   *ngIf="formstatus == 'packinitiated' || formstatus == 'packsubmitted' || formstatus == 'l4dispatchapproved'
+                || formstatus == 'storesubmitted' || formstatus == 'packdispatched'">
+                            <disabled-input label="" isRequired="true" prop="taxablevalue" [parentForm]="row"
+                                input="HSN Code" placeholder=""></disabled-input>
+                        </ng-container>
+                    </td>
+
+                    <td>
+                        <table style="width:100%;">
+                            <tr>
+                                <td style="border: 1px solid transparent !important;">
+                                    <ng-container *ngIf="formstatus == 'l4approved' || formstatus == 'l3approved'">
+                                        <number-input label="" isRequired="" prop="cgstrate" [parentForm]="row"
+                                            input="HSN Code" placeholder=""></number-input>
+                                            <small class="text-danger" *ngIf="
+                                            !row.controls.cgstrate.valid &&
+                                            row.controls.cgstrate.touched
+                                          ">CGST Rate is required</small>
+                                    </ng-container>
+                                    <ng-container   *ngIf="formstatus == 'packinitiated' || formstatus == 'packsubmitted' || formstatus == 'l4dispatchapproved'
+                || formstatus == 'storesubmitted' || formstatus == 'packdispatched'">
+                                        <disabled-input label="" isRequired="true" prop="cgstrate" [parentForm]="row"
+                                            input="HSN Code" placeholder=""></disabled-input>
+                                    </ng-container>
+                                </td>
+                                <td style="border: 1px solid transparent !important;">
+                                    <ng-container *ngIf="formstatus == 'l4approved' || formstatus == 'l3approved'">
+                                        <number-input label="" isRequired="" prop="cgstamt" [parentForm]="row"
+                                            input="HSN Code" placeholder=""></number-input>
+                                            <small class="text-danger" *ngIf="
+                                            !row.controls.cgstamt.valid &&
+                                            row.controls.cgstamt.touched
+                                          ">CGST Amt is required</small>
+                                    </ng-container>
+                                    <ng-container   *ngIf="formstatus == 'packinitiated' || formstatus == 'packsubmitted' || formstatus == 'l4dispatchapproved'
+                || formstatus == 'storesubmitted' || formstatus == 'packdispatched'">
+                                        <disabled-input label="" isRequired="" prop="cgstamt" [parentForm]="row"
+                                            input="HSN Code" placeholder=""></disabled-input>
+                                    </ng-container>
+                                </td>
+                            </tr>
+                        </table>
+                    <td>
+                        <table style="width:100%;">
+                            <tr>
+                                <td style="border: 1px solid transparent !important;">
+                                    <ng-container *ngIf="formstatus == 'l4approved' || formstatus == 'l3approved'">
+                                        <number-input label="" isRequired="" prop="sgstrate" [parentForm]="row"
+                                            input="HSN Code" placeholder=""></number-input>
+                                            <small class="text-danger" *ngIf="
+                                            !row.controls.sgstrate.valid &&
+                                            row.controls.sgstrate.touched
+                                          ">SGST Rate is required</small>
+                                    </ng-container>
+                                    <ng-container   *ngIf="formstatus == 'packinitiated' || formstatus == 'packsubmitted' || formstatus == 'l4dispatchapproved'
+                || formstatus == 'storesubmitted' || formstatus == 'packdispatched'">
+                                        <disabled-input label="" isRequired="true" prop="sgstrate" [parentForm]="row"
+                                            input="HSN Code" placeholder=""></disabled-input>
+                                    </ng-container>
+                                </td>
+                                <td style="border: 1px solid transparent !important;">
+                                    <ng-container *ngIf="formstatus == 'l4approved' || formstatus == 'l3approved'">
+                                        <number-input label="" isRequired="" prop="sgstamt" [parentForm]="row"
+                                            input="HSN Code" placeholder=""></number-input>
+                                            <small class="text-danger" *ngIf="
+                                            !row.controls.sgstamt.valid &&
+                                            row.controls.sgstamt.touched
+                                          ">SGST Amt is required</small>
+                                    </ng-container>
+                                    <ng-container   *ngIf="formstatus == 'packinitiated' || formstatus == 'packsubmitted' || formstatus == 'l4dispatchapproved'
+                || formstatus == 'storesubmitted' || formstatus == 'packdispatched'">
+                                        <disabled-input label="" isRequired="true" prop="sgstamt" [parentForm]="row"
+                                            input="HSN Code" placeholder=""></disabled-input>
+                                    </ng-container>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+
+                    <td>
+                        <table class="table" style="width:100%;">
+                            <tr>
+                                <td style="border: 1px solid transparent !important;">
+                                    <ng-container *ngIf="formstatus == 'l4approved' || formstatus == 'l3approved'">
+                                        <number-input label="" isRequired="" prop="igstrate" [parentForm]="row"
+                                            input="HSN Code" placeholder=""></number-input>
+                                            <small class="text-danger" *ngIf="
+                                            !row.controls.igstrate.valid &&
+                                            row.controls.igstrate.touched
+                                          ">IGST Rate is required</small>
+                                    </ng-container>
+                                    <ng-container   *ngIf="formstatus == 'packinitiated' || formstatus == 'packsubmitted' || formstatus == 'l4dispatchapproved'
+                || formstatus == 'storesubmitted' || formstatus == 'packdispatched'">
+                                        <disabled-input label="" isRequired="true" prop="igstrate" [parentForm]="row"
+                                            input="HSN Code" placeholder=""></disabled-input>
+                                    </ng-container>
+                                </td>
+                                <td style="border: 1px solid transparent !important;">
+                                    <ng-container *ngIf="formstatus == 'l4approved' || formstatus == 'l3approved'">
+                                        <number-input label="" isRequired="" prop="igstamt" [parentForm]="row"
+                                            input="HSN Code" placeholder=""></number-input>
+                                            <small class="text-danger" *ngIf="
+                                            !row.controls.igstamt.valid &&
+                                            row.controls.igstamt.touched
+                                          ">IGST Amt is required</small>
+                                    </ng-container>
+                                    <ng-container   *ngIf="formstatus == 'packinitiated' || formstatus == 'packsubmitted' || formstatus == 'l4dispatchapproved'
+                || formstatus == 'storesubmitted' || formstatus == 'packdispatched'">
+                                        <disabled-input label="" isRequired="true" prop="igstamt" [parentForm]="row"
+                                            input="HSN Code" placeholder=""></disabled-input>
+                                    </ng-container>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td *ngIf="formstatus == 'l3approved' || formstatus == 'l4approved'" class="text-center"> <button
+                            *ngIf="rowForms.controls.length >1" class="btn btn-default" (click)="deleteRow(j)"><i
+                                class="fas fa-trash"></i></button> </td>
+                </tr>
+            </tbody>
+
+        </table>
+
+        <div style="text-align: right;" *ngIf="formstatus == 'l3approved' || formstatus == 'l4approved'">
+
+            <button class="btn btn-primary btn-md" (click)="addRow()" style="padding: 6px 16px;"><i
+                    class="fa fa-plus"></i>&nbsp;&nbsp;Add
+                Row</button>
+
+        </div>
+    </div>
+    <div class="row" style="padding: 10px;width: 100%;">
+        <div class="col-md-9"></div>
+        <div class="col-md-3">
+            <ng-container   *ngIf="formstatus == 'packinitiated' || formstatus == 'packsubmitted' || formstatus == 'l4dispatchapproved'
+            || formstatus == 'storesubmitted' || formstatus == 'packdispatched'">
+            <disabled-input label="Total Value" prop="overalltaxvalues" [parentForm]="form"
+                input="Total Value" placeholder="">
+            </disabled-input>
+        </ng-container>
+            <!-- <ng-container   *ngIf="formstatus == 'packinitiated' || formstatus == 'packsubmitted' || formstatus == 'l4dispatchapproved'
+                || formstatus == 'storesubmitted'">
+                <disabled-input label="Prepared By" isRequired="true" prop="preparedby" [parentForm]="form"
+                    input="Prepared By" placeholder="">
+                </disabled-input>
+            </ng-container> -->
+        </div>
+    </div>
+    <div class="row" style="padding: 10px;width: 100%;">
+
+        <div class="col-md-3">
+            <ng-container *ngIf="formstatus == 'l4approved' || formstatus == 'l3approved'">
+                <text-input label="Prepared By" isRequired="true" prop="preparedby" [parentForm]="form"
+                    input="Prepared By" placeholder="">
+                </text-input>
+            </ng-container>
+            <ng-container   *ngIf="formstatus == 'packinitiated' || formstatus == 'packsubmitted' || formstatus == 'l4dispatchapproved'
+                || formstatus == 'storesubmitted' || formstatus == 'packdispatched'">
+                <disabled-input label="Prepared By" isRequired="true" prop="preparedby" [parentForm]="form"
+                    input="Prepared By" placeholder="">
+                </disabled-input>
+            </ng-container>
+        </div>
+
+        <div class="col-md-3">
+            <ng-container *ngIf="formstatus == 'l4approved' || formstatus == 'l3approved'|| formstatus == 'l4dispatchapproved'">
+                <text-input label="Vehicle Number" prop="vehicleno" [parentForm]="form" input="Vehicle Number"
+                    placeholder="">
+                </text-input>
+            </ng-container>
+            <ng-container   *ngIf="formstatus == 'packinitiated' || formstatus == 'packsubmitted' || formstatus == 'storesubmitted' || formstatus == 'packdispatched'">
+                <disabled-input label="Vehicle Number" prop="vehicleno" [parentForm]="form" input="Vehicle Number"
+                    placeholder="">
+                </disabled-input>
+            </ng-container>
+        </div>
+
+        <div class="col-md-3">
+            <ng-container *ngIf="formstatus == 'l4approved' || formstatus == 'l3approved'">
+                <text-input label="Department" isRequired="true" prop="department" [parentForm]="form"
+                    input="Department" placeholder="">
+                </text-input>
+            </ng-container>
+            <ng-container   *ngIf="formstatus == 'packinitiated' || formstatus == 'packsubmitted' || formstatus == 'l4dispatchapproved'
+                || formstatus == 'storesubmitted' || formstatus == 'packdispatched'">
+                <disabled-input label="Department" isRequired="true" prop="department" [parentForm]="form"
+                    input="Department" placeholder="">
+                </disabled-input>
+            </ng-container>
+        </div>
+        <div class="col-md-3">
+            <ng-container *ngIf="formstatus == 'l4approved' || formstatus == 'l3approved'">
+                <text-input label="Contact Number" isRequired="true" prop="contactno" [parentForm]="form"
+                    input="Contact Number" placeholder="">
+                </text-input>
+            </ng-container>
+            <ng-container   *ngIf="formstatus == 'packinitiated' || formstatus == 'packsubmitted' || formstatus == 'l4dispatchapproved'
+                || formstatus == 'storesubmitted' || formstatus == 'packdispatched'">
+                <disabled-input label="Contact Number" isRequired="true" prop="contactno" [parentForm]="form"
+                    input="Contact Number" placeholder="">
+                </disabled-input>
+            </ng-container>
+        </div>
+        <section style="padding-top: 82px;">
+        <div class="col-md-3">
+            <ng-container *ngIf="formstatus == 'l4approved' || formstatus == 'l3approved'">
+                <text-input label="HR ID" isRequired="true" prop="hrid" [parentForm]="form" input="HR ID"
+                    placeholder="">
+                </text-input>
+            </ng-container>
+            <ng-container   *ngIf="formstatus == 'packinitiated' || formstatus == 'packsubmitted' || formstatus == 'l4dispatchapproved'
+                || formstatus == 'storesubmitted' || formstatus == 'packdispatched'">
+                <disabled-input label="HR ID" isRequired="true" prop="hrid" [parentForm]="form" input="HR ID"
+                    placeholder="">
+                </disabled-input>
+            </ng-container>
+        </div>
+        <div class="col-md-3">
+            <ng-container *ngIf="formstatus == 'l4approved' || formstatus == 'l3approved'">
+                <text-input label="Remarks"  prop="reqremarks" [parentForm]="form" input="Remarks"
+                    placeholder="">
+                </text-input>
+            </ng-container>
+            <ng-container   *ngIf="formstatus == 'packinitiated' || formstatus == 'packsubmitted' || formstatus == 'l4dispatchapproved'
+                || formstatus == 'storesubmitted' || formstatus == 'packdispatched'">
+                <disabled-input label="Remarks" prop="reqremarks" [parentForm]="form" input="Remarks"
+                    placeholder="">
+                </disabled-input>
+            </ng-container>
+        </div>
+        <form [formGroup]="DocketForm">
+            <div class="col-md-3">
+                <ng-container *ngIf="formstatus == 'l4dispatchapproved'">
+                    <label style="font-weight: normal;">Docket Number <dot></dot></label>
+                <input class="form-control" formControlName="docketno" type="text">
+                </ng-container>
+                <ng-container  *ngIf="formstatus == 'storesubmitted' || formstatus == 'packdispatched'">
+                    <label style="font-weight: normal;">Docket Number <dot></dot></label>
+                    <input class="form-control" formControlName="docketno" type="text" disabled>
+                </ng-container>
+            </div>
+            <div class="col-md-3">
+                <ng-container *ngIf="formstatus == 'l4dispatchapproved'">
+                    <label style="font-weight: normal;">Transporter <dot></dot></label>
+                <input class="form-control" formControlName="transporter" type="text">
+                </ng-container>
+                <ng-container *ngIf="formstatus == 'storesubmitted' || formstatus == 'packdispatched'">
+                    <label style="font-weight: normal;">Transporter <dot></dot></label>
+                    <input class="form-control" formControlName="transporter" type="text" disabled>
+                </ng-container>
+            </div>
+        </form>
+    </section>
+
+    </div>
+
+    <div class="row" style="padding: 10px;width: 100%;">
+        <div class="col-md-4"></div>
+        <div class="col-md-4" style="border: 1px solid rgba(119, 119, 119, 0.36);
+        background: rgba(119, 119, 119, 0.36);
+        border-radius: 5px;
+        margin-top: 30px;
+        text-align: center;
+        padding: 12px;">
+            <div class="col-md-12">
+                <div class="col-md-2"></div>
+                <div class="col-md-4">
+                    <span>Returnable</span>
+                    <br>
+                    <label class="control control--radio">
+                        <input type="radio" value="1" id="return1" (change)="checkReturnable($event,$event.target.value)"
+                            formControlName="returnOrNonReturn" />
+                        <div class="control__indicator"></div>
+                    </label>
+                </div>
+                <div class="col-md-4">
+                    <span style="white-space: nowrap;">Non Returnable</span>
+                    <br>
+                    <label class="control control--radio">
+                        <input type="radio" value="0" id="return2" (change)="checkNonReturnable($event,$event.target.value)"
+                            formControlName="returnOrNonReturn" />
+                        <div class="control__indicator"></div>
+                    </label>
+                </div>
+                <div class="col-md-2"></div>
+            </div>
+
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+
+    <div class="row" style="padding: 10px;width: 100%;" *ngIf="returnchked">
+        <div class="col-md-3 col-md-offset-4">
+            Expected Date of Arriving <dot></dot>
+            <ng-container *ngIf="formstatus == 'l4approved' || formstatus == 'l3approved'">
+                <input formControlName="expectedreturndate" type="text" placeholder="DD/MM/YYYY" class="form-control"
+                    id="arrivedate" bsDatepicker [minDate]="today" [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }">
+            </ng-container>
+            <ng-container   *ngIf="formstatus == 'packinitiated' || formstatus == 'packsubmitted' || formstatus == 'l4dispatchapproved'
+                || formstatus == 'storesubmitted' || formstatus == 'packdispatched'">
+                <input formControlName="expectedreturndate" type="text" placeholder="DD/MM/YYYY" class="form-control"
+                    id="arrivedate" bsDatepicker  [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }"
+                    disabled>
+            </ng-container>
+        </div>
+        <div class="col-md-3" *ngIf="formstatus == 'packdispatched'">
+            <label style="
+                text-align: center;
+                font-weight: 400;">Returnable Certificate</label>
+            <dot></dot>
+            <br>
+            <label class="btn btn-sm btn-default" for="aonofield" style="background: #ccc;">Upload Files</label>
+            <input class="form-control" id="aonofield" type="file" #aodrawupload accept=".zip" value=""
+                (change)="uploadfile($event)" style="display: none !important;">
+                <p> {{fileName}}</p>
+
+
+        </div>
+        <div class="col-md-3" style="margin-top: 8px;" *ngIf="formstatus == 'storesubmitted'">
+            <ul class="list-group-category" style="padding-left: 26px;">
+                <label style="
+                text-align: center;
+                font-weight: 400;">Returnable Certificate</label>
+                <ng-container *ngFor="let file of fileDownloadList ; let i =index">
+                  <li class="list-group" style="margin-bottom: 8px;">{{file.filename}}&nbsp;&nbsp;<i
+                      class="fa fa-download" (click)="downlaodfile(file.filename,file.id)"
+                      style="font-size: 15px;color: #130f0fb5;cursor: pointer;"></i></li>
+                </ng-container>
+              </ul>
+        </div>
+    </div>
+
+    <div class="row" style="padding: 10px;width: 100%;" *ngIf="nonreturncheked">
+
+        <h5 class="border-style" style="font-weight: 600;"> Scrap Declaration <dot></dot>
+        </h5>
+        <br>
+        <div class="col-md-2" style="font-weight: 600;">Purpose of Shipment</div>
+        <div class="col-md-2">
+            <label class="control control--checkbox">Failed Parts Analysis
+                <input type="checkbox" id="shipment1" class="chkShipment" value="1">
+                <div class="control__indicator"></div>
+            </label>
+        </div>
+        <div class="col-md-2">
+            <label class="control control--checkbox">Destructive Testing
+                <input type="checkbox" id="shipment2" class="chkShipment" value="2">
+                <div class="control__indicator"></div>
+            </label>
+        </div>
+        <div class="col-md-2">
+            <label class="control control--checkbox">Fitment Trail
+                <input type="checkbox" id="shipment3" class="chkShipment" value="3">
+                <div class="control__indicator"></div>
+            </label>
+        </div>
+        <div class="col-md-2">
+            <label class="control control--checkbox">Sample Testing
+                <input type="checkbox" id="shipment4" class="chkShipment" value="4">
+                <div class="control__indicator"></div>
+            </label>
+        </div>
+        <div class="col-md-2">
+            <label class="control control--checkbox">New Development reference
+                <input type="checkbox" id="shipment5" class="chkShipment" value="5">
+                <div class="control__indicator"></div>
+            </label>
+        </div>
+
+        <div class="col-md-3">
+            Expected Date of Scrapping <dot></dot>
+            <br>
+            <ng-container *ngIf="formstatus == 'l4approved' || formstatus == 'l3approved'">
+                    <input formControlName="expectedscrappingdate" type="text" placeholder="DD/MM/YYYY" class="form-control" autocomplete="off"
+                    bsDatepicker id="excepteddate" [minDate]="today" [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }">
+            </ng-container>
+            <ng-container   *ngIf="formstatus == 'packinitiated' || formstatus == 'packsubmitted' || formstatus == 'l4dispatchapproved'
+                || formstatus == 'storesubmitted'|| formstatus == 'packdispatched'">
+                <input formControlName="expectedscrappingdate" id="excepteddate" type="text" placeholder="DD/MM/YYYY"
+                    class="form-control" bsDatepicker
+                    [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }" disabled>
+            </ng-container>
+        </div>
+        <div class="col-md-3" *ngIf="formstatus == 'packdispatched'">
+            <label style="
+                text-align: center;
+                font-weight: 400;">Scrap Certificate Upload</label>
+            <dot></dot>
+            <br>
+            <label class="btn btn-sm btn-default" for="aonofield" style="background: #ccc;">Upload Files</label>
+            <input class="form-control" id="aonofield" type="file" #aodrawupload accept=".zip"  value=""
+                (change)="uploadfile($event)" style="display: none !important;">
+               <p> {{fileName}}</p>
+
+        </div>
+        <div class="col-md-3" style="margin-top: 8px;" *ngIf="formstatus == 'storesubmitted'">
+            <ul class="list-group-category" style="padding-left: 26px;">
+                <label style="
+                text-align: center;
+                font-weight: 400;">Scrap Certificate Upload</label>
+                <ng-container *ngFor="let file of fileDownloadList ; let i =index">
+                  <li class="list-group" style="margin-bottom: 8px;">{{file.filename}}&nbsp;&nbsp;<i
+                      class="fa fa-download" (click)="downlaodfile(file.filename,file.id)"
+                      style="font-size: 15px;color: #130f0fb5;cursor: pointer;"></i></li>
+                </ng-container>
+              </ul>
+        </div>
+            <!-- <div class="col-md-3"  *ngIf="formstatus == 'l4dispatchapproved'">
+                <section class="scroll-file">
+                    <ng-container *ngFor="let data of fileUploadArr; let i=index">
+                  <p class="filename" style="font-size: 12px;
+                   font-weight: 600;" id ="upload{{i}}"> {{data.filename}} &nbsp;&nbsp;<i class="fa fa-times"  (click)="deleteUpload(i)" style="font-size: 14px;cursor: pointer;"></i></p>
+                   </ng-container>
+                  </section>
+            </div> -->
+    </div>
+    <form [formGroup]="remarkForm">
+        <div class="col-md-12">
+            <div class="col-md-8"></div>
+            <div class="col-md-4">
+                <label>Remarks <dot></dot></label>
+                <input class="form-control" formControlName="storeremarks" type="text">
+                <br>
+            </div>
+        </div>
+    </form>
+    <br>
+    <div class="row" style="padding: 10px;width: 100%;">
+        <div style="text-align: right;margin-bottom:30px;">
+            <ng-container *ngIf="ismailtrigger == 1">
+                <button class="btn btn-primary btn-md" (click)="MailTrigger()" style="">
+                    <i class="fa fa-save"></i>&nbsp;&nbsp;Send Mail</button>&nbsp;&nbsp;
+            </ng-container>
+            <ng-container *ngIf="formstatus == 'l3approved' || formstatus == 'l4approved'">
+                <button class="btn btn-primary btn-md" (click)="packinitiate()" style="">
+                    <i class="fa fa-save"></i>&nbsp;&nbsp;Packaging Initiate</button>&nbsp;&nbsp;
+            </ng-container>
+            <ng-container *ngIf="formstatus == 'packinitiated'">
+                <button class="btn btn-primary btn-md" (click)="packcomplete()" style="">
+                    <i class="fa fa-save"></i>&nbsp;&nbsp;Packaging Complete</button>&nbsp;&nbsp;
+            </ng-container>
+            <ng-container *ngIf="formstatus == 'packdispatched'">
+                <button class="btn btn-primary btn-md" (click)="submitForm()" style="">
+                    <i class="fa fa-save"></i>&nbsp;&nbsp;Submit</button>&nbsp;&nbsp;
+            </ng-container>
+            <ng-container *ngIf="formstatus == 'l4dispatchapproved'">
+                <button class="btn btn-primary dropdown-item" (click)="downloadZip('Generate_ZIP.zip')">
+                    <i class="fa fa-print"></i>&nbsp;&nbsp;Print</button>&nbsp;&nbsp;
+                <button class="btn btn-primary btn-md" (click)="dispatch()">
+                    <i class="fa fa-save"></i>&nbsp;&nbsp;Dispatch</button>&nbsp;&nbsp;
+                
+            </ng-container>
+           
+            <ng-container>
+                <button class="btn btn-primary btn-md" (click)="submitClose()" style="">
+                    <i class="fa fa-times"></i>&nbsp;&nbsp;Close</button>&nbsp;&nbsp;
+            </ng-container>
+        </div>
+    </div>
+</form>
+</div>
+
+
+
+<!-- confirm modal -->
+
+<div class="modal fade" id="confirmSubmit" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-10">
+              <p class="modalHeader" style="font-weight: 600;">Submit</p>
+            </div>
+            <div class="col-md-2">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <br>
+            <div class="col-md-12">
+              <p> Are you sure to submit the form ?</p>
+            </div>
+          </div>
+        </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-primary" data-dismiss="modal">No </button>
+        <button type="button" class="btn btn-sm btn-primary" (click)="storesubmit()">Yes</button>
+      </div>
+    </div>
+    </div>
+  </div>
+
+
+
+  <!-- confirm close modal -->
+
+<div class="modal fade" id="confirmClose" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-10">
+              <p class="modalHeader" style="font-weight: 600;">Close</p>
+            </div>
+            <div class="col-md-2">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <br>
+            <div class="col-md-12">
+              <p> Are you sure to close the form ?</p>
+            </div>
+          </div>
+        </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-primary" data-dismiss="modal">No </button>
+        <button type="button" class="btn btn-sm btn-primary" (click)="close()">Yes</button>
+      </div>
+    </div>
+    </div>
+  </div>
+  

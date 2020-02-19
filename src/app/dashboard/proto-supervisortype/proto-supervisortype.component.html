@@ -1,0 +1,92 @@
+<div class="col-md-12" style="margin-top:10px;">
+    <div class="col-md-4">
+        <!-- <h4>Proto Retrofitment</h4> -->
+    </div>
+    <div class="col-md-4 "> </div>
+    <div class="col-md-4" style="text-align: right;">
+        <button class="btn btn-default" style="float: right" (click)="goBack()"><i
+                class="icon-chevron-left"></i>&nbsp;&nbsp;Back</button>
+    </div>
+</div>
+<div class="col-md-12" style="margin-top: 30px;">
+    <div class="col-md-4">
+        <h4>SubFunction</h4>
+    </div>
+    <div class="col-md-4"></div>
+    <div class="col-md-4" style="text-align: right;">
+        <button class="btn btn-primary btn-sm" style="float: right" (click)="addSubFunction()"><i
+                class="fa fa-plus-circle"></i>&nbsp;&nbsp;New SubFunction</button>
+    </div>
+</div>
+<div class="col-md-12" style="margin-top: 20px;">
+    <div class="col-md-2"></div>
+    <div class="col-md-8  table-responsive">
+        <ng-container *ngIf="allfunctions?.length!=0">
+            <table class="table table-striped">
+                <tr>
+                    <th>S.No</th>
+                    <th>SubFunction Name</th>
+                    <th>Edit</th>
+                </tr>
+                <tr
+                    *ngFor="let data of allfunctions| paginate: { itemsPerPage: 10, currentPage: p1,id: 'two'};let index=index">
+                    <td>{{((p1- 1) * 10 + index+1)}}</td>
+                    <td> {{(data?.subsupervisortype != null) ? data?.subsupervisortype : '-' }} </td>
+                    <td> <button class="btn btn-primary btn-sm" (click)="Edit((p1- 1) * 10 + index)">
+                            &nbsp;&nbsp;Edit</button></td>
+                </tr>
+            </table>
+            <br><br>
+            <pagination-controls style="text-align: right;" (pageChange)="p1 = $event" #api id="two">
+            </pagination-controls>
+        </ng-container>
+        <h4 *ngIf="allfunctions?.length==0" class="text-center">No SubFunction created yet.</h4>
+        <br>
+    </div>
+    <div class="col-md-2"></div>
+</div>
+
+
+<!-- Add new functions -->
+<div class="modal fade" id="addNewSubFunction" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" style="font-size: 15px;">{{modalname}} SubFunction</h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-table">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <form [formGroup]="ProtosupervisorTypeForm" autocomplete="off">
+                                <div class="form-group text-field">
+                                    SubFunction Name
+                                    <!-- <input type="text" class="form-control" formControlName="subsupervisortype"
+                                        style="font-weight: 400;"> -->
+                                        <select class="form-control" formControlName="subsupervisortype">
+                                                <option value=null selected disabled>Select Function</option>
+                                                <option value="{{data.usertype}}" *ngFor="let data of getSubfunction">{{data.usertype}}
+                                                </option>
+                                              </select>
+                                    <small class="text-danger" *ngIf="
+                                    !ProtosupervisorTypeForm.controls.subsupervisortype.valid &&
+                                    ProtosupervisorTypeForm.controls.subsupervisortype.touched
+                                  ">SubFunction Name is Required</small>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div style="float:right;">
+                    <button class="btn btn-primary btn-sm" style="border: none;" data-dismiss="modal">
+                        <i class="icon-remove"></i>&nbsp;&nbsp;Cancel</button>
+                    <button class="btn btn-primary btn-sm" style="border: none;" (click)="Save()">
+                        <i class="icon-save"></i>&nbsp;&nbsp;Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

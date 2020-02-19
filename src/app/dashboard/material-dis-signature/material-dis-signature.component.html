@@ -1,0 +1,195 @@
+<app-spinner *ngIf="loading"></app-spinner>
+<div class="col-md-2" style="padding: 0;
+background-color: #242536; height: 100vh;">
+    <div style="margin-top: 15px;">
+        <p class="sidetext " routerLinkActive="active" (click)="mislist()"><i
+                class="fa fa-angle-double-right"></i>&nbsp;&nbsp;Material Dispatch List</p>
+        <p class="sidetext" (click)="addmisdispatch()" routerLinkActive="active"><i
+                class="fa fa-plus"></i>&nbsp;&nbsp;New
+            Request</p>
+        <p class="sidetext active" routerLinkActive="active"><i class="fa fa-edit"></i>&nbsp;&nbsp;Authorized Signatory
+        </p>
+
+    </div>
+</div>
+<div class="col-md-10" style="padding: 35px 10%;">
+    <div class="col-md-12" style="margin-top:10px;">
+        <div class="col-md-4" style="padding: 0">
+            <h4>Authorized Signatory</h4>
+        </div>
+
+        <div class="col-md-5">
+
+        </div>
+        <div class="col-md-3">
+            <!-- <input type="text" class="form-control" placeholder="  Search  " name="search"
+            (input)="search($event.target.value)" #valsearchuser autocomplete="off"><i
+            class="fa fa-search search"></i> -->
+            <button class="btn btn-primary dropdown-item" (click)="addSignature()" style="    width: 35%;float: right;">
+                <i class="fa fa-plus"></i> &nbsp;&nbsp;Add</button>
+        </div>
+
+
+
+    </div>
+
+    <div class="col-md-12">
+        <div class="">
+
+            <table id="prototable" class="table table-bordered table-striped" style="width:99%">
+                <tr>
+                    <th>S.NO</th>
+                    <th>Short ID</th>
+                    <th>Signature by</th>
+                    <th>Edit</th>
+                </tr>
+                <tr
+                    *ngFor="let data of allusers | paginate: { itemsPerPage: 10, currentPage: p1,id: 'two'};let index=index">
+                    <td>{{((p1- 1) * 10 + index+1)}}</td>
+                    <td>{{data.shortid}}</td>
+                    <td>{{data.signatureby}}</td>
+                    <td><button class="btn btn-primary dropdown-item"
+                            (click)="edituser((p1- 1) * 10 + index,data.signimage)" style="    width: 25%;">
+                            Edit</button></td>
+                </tr>
+
+            </table>
+            <br><br>
+            <pagination-controls style="text-align: right;" (pageChange)="p1 = $event" #api id="two">
+            </pagination-controls>
+        </div>
+
+    </div>
+</div>
+<div class="modal fade" id="SignatureModal" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"> Add Signatory</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <form [formGroup]="addORedituserForm">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                        <label for="email" class="editmodal">Short ID</label>
+                                        <input type="text" class="form-control " formControlName="shortid"
+                                            maxlength="40" autocomplete="off" id="adduname"
+                                            placeholder="Enter Short ID ">
+                                        <small class="text-danger"
+                                            *ngIf="!addORedituserForm.controls.shortid.valid && addORedituserForm.controls.shortid.touched">Short
+                                            ID is invalid (Min 3 and Special Characters are not allowed)</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <button class="btn btn-default form-control" (click)="searchUser()"
+                                        style="margin-top: 25px;">
+                                        Search
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="usr"> Signature By:</label>
+                                <input type="text" readonly class="form-control" formControlName="signatureby"
+                                    placeholder="Signature By">
+                                <small class="text-danger"
+                                    *ngIf="!addORedituserForm.controls.signatureby.valid && addORedituserForm.controls.signatureby.touched">
+                                    Signature By is invalid </small>
+                            </div>
+
+                            <div class="form-group">
+                                <label id="file1" for="uploadFilePartidl1" class="btn btn-md addnew btn-primary">
+                                    Upload File</label>&nbsp;&nbsp;<span style="color: green;">Image Size 10KB to
+                                    100KB</span>
+                                <!-- <input type="file" id="uploadFilePartidl1" style="display: none;" (change)="preview(file.files)"
+                                    formControlName="filepath" accept=".jpg,.png,.jpeg"> -->
+                                <input #file1 id="uploadFilePartidl1" type="file" style="display: none;" formControlName="filepath"
+                                    (change)="preview($event)" accept=".jpg,.png,.jpeg" />
+                            </div>
+
+                            <p class="filenametext"> {{fileName1}}</p>
+
+
+                            <img [src]="imgURL" style="height: 155px;" *ngIf="imgURL">
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-success" (click)="FileSize()">Submit</button>
+                <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal" (click)="cancel()">Cancel </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="EditSignatureModal" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Edit Signatory</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <form [formGroup]="addORedituserForm">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                        <label for="email" class="editmodal">Short ID</label>
+                                        <input type="text" class="form-control " formControlName="shortid"
+                                            maxlength="40" autocomplete="off" id="adduname"
+                                            placeholder="Enter Short ID ">
+                                        <small class="text-danger"
+                                            *ngIf="!addORedituserForm.controls.shortid.valid && addORedituserForm.controls.shortid.touched">Short
+                                            ID is invalid (Min 3 and Special Characters are not allowed)</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <button class="btn btn-default form-control" (click)="searchUser()"
+                                        style="margin-top: 25px;">
+                                        Search
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="usr"> Signature By:</label>
+                                <input type="text" readonly class="form-control" formControlName="signatureby"
+                                    placeholder="Signature By">
+                                <small class="text-danger"
+                                    *ngIf="!addORedituserForm.controls.signatureby.valid && addORedituserForm.controls.signatureby.touched">
+                                    Signature By is invalid </small>
+                            </div>
+                            <div class="form-group">
+                                <label id="file" for="uploadFilePartidl" class="btn btn-md addnew btn-primary">
+                                    Upload File</label>&nbsp;&nbsp;<span style="color: green;">Image Size 10KB to
+                                    100KB</span>
+                                <!-- <input type="file" id="uploadFilePartidl1" style="display: none;" (change)="preview(file.files)"
+                                    formControlName="filepath" accept=".jpg,.png,.jpeg"> -->
+                                <input #file id="uploadFilePartidl" type="file" style="display: none;" formControlName="filepath"
+                                    (change)="preview($event)" accept=".jpg,.png,.jpeg" />
+                            </div>
+                            <ng-container *ngIf="fileName1 == ''">
+                                <!-- <p class="filenametext"> {{imageName}}</p> -->
+                            </ng-container>
+                            <ng-container *ngIf="fileName1 != ''">
+                                <p class="filenametext"> {{fileName1}}</p>
+                            </ng-container>
+                            <img src="{{getImage}}" alt="" style="height: 155px;" *ngIf="!imgURL">
+                            <img [src]="imgURL" *ngIf="imgURL"  style="height: 155px;">
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-success" (click)="FileSize()">Submit</button>
+                <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal" (click)="cancel()">Cancel </button>
+            </div>
+        </div>
+    </div>
+</div>

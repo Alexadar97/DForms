@@ -1,0 +1,40 @@
+.filename{
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 7px;
+    position: relative;
+    left: 5px;
+
+}
+.Period{
+    padding: 14px 0px 0px 0px;
+  }
+  .Period1{
+    padding: 37px 0px 0px 0px;
+}
+label.btn.btn-md.addnew.btn-primary.pdf{
+    margin: 0px 9px;
+    padding: 3px 11px 3px 11px;
+}
+.sidetext{
+  color: #fff;
+  padding: 7px 20px;
+  margin: 8px 0;
+  cursor: pointer;
+  border-left: 4px solid #242536;
+}
+.active{
+  background: #030305;
+  color: #fff;
+  box-shadow: 0 0 2px 0 #828387;
+  border-left: 4px solid #ffb946;
+  /* margin-left: 6px; */
+  white-space: nowrap;
+}
+  p.sidetext:hover{
+    background: #030305;
+    color: #fff;
+    box-shadow: 0 0 2px 0 #828387;
+    border-left: 4px solid #ffb946;
+    /* margin-left: 6px; */
+    white-space: nowrap;
+  }

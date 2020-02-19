@@ -1,0 +1,135 @@
+<br>
+<div class="row">
+    <div class="col-md-4">
+        <h4>Vehicle Signoff Sheet</h4>
+    </div>
+    <div class="col-md-6">&nbsp;</div>
+    <div class="col-md-2" style="padding-right: 30px;">
+        <button class="btn btn-default" style="float: right" (click)="goBack()"><i
+                class="icon-chevron-left"></i>&nbsp;&nbsp;Back</button>
+    </div>
+</div>
+<form [formGroup]="vehiclesignoffform">
+    <div class="row" style="
+      padding: 10px;
+      width: 100%;">
+        <div class="col-md-6">
+            <div class="form-group">
+                Vehicle or Finas ID <dot></dot>
+                <input type="text" class="form-control" id="finasid" formControlName="finasid">
+            </div>
+            <small class="text-danger" *ngIf="
+                                          !vehiclesignoffform.controls.finasid.valid &&
+                                          vehiclesignoffform.controls.finasid.touched
+                                        "> Vehicle or Finas ID is required</small>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                Purpose of the vehicle <dot></dot>
+                <input type="number" class="form-control" id="" formControlName="purposevehicle">
+            </div>
+            <small class="text-danger" *ngIf="
+                                          !vehiclesignoffform.controls.purposevehicle.valid &&
+                                          vehiclesignoffform.controls.purposevehicle.touched
+                                        "> Purpose of the vehicle is required</small>
+        </div>
+    </div>
+    <div class="row" style="
+  padding: 10px;
+  width: 100%;">
+        <div class="col-md-6">
+            <div class="form-group">
+
+                Date of signoff <dot></dot>
+                <input type="text" class="form-control" id="" formControlName="date">
+            </div>
+            <small class="text-danger" *ngIf="
+                                      !vehiclesignoffform.controls.date.valid &&
+                                      vehiclesignoffform.controls.date.touched
+                                    ">
+                Date of signoff is required</small>
+        </div>
+        <div class="col-md-6"></div>
+    </div>
+    <div class="row" style="
+  padding: 10px;
+  width: 100%;">
+  <div class="col-md-12">
+    <h4>Select aggregate signoffs</h4>
+    <div class="aggregate table-responsive">
+        <table class="table table-bordered" id="vehiclesignoff">
+            <tr class="tableheader">
+                <th>Aggregate </th>
+                <th>
+                         
+                    <input id="checkMe"type="checkbox"  > &nbsp;&nbsp;<label for="checkMe"> ME</label></th>
+                    
+                  <th><input type="checkbox" id="issue"> &nbsp;&nbsp;<label for="issue">Fitment Issue/ Proto
+                      Build</label></th>
+                  <th><input type="checkbox" id="pps"> &nbsp;&nbsp;<label for="pps">PPS</label></th>
+                  <th><input type="checkbox" id="concern"> &nbsp;&nbsp;<label for="concern">Concern to
+                      testing</label></th>
+                  <th><input type="checkbox" id="build"> &nbsp;&nbsp;<label for="build">Build Engineer</label>
+                  </th>
+                  <th><input type="checkbox" id="designer"> &nbsp;&nbsp;<label for="designer">Designer</label>
+                  </th>
+                  <th><input type="checkbox" id="testing"> &nbsp;&nbsp;<label for="testing">Testing</label></th>
+                  <th><input type="checkbox" id="remark"> &nbsp;&nbsp;<label for="remark">Remarks</label></th>
+              <th>Delete</th>
+            </tr>
+            <tbody formArrayName="vehiclesignoff">
+              <tr class="tablerow" *ngFor="let data of vehiclesignform.controls;let i =index" [formGroupName]="i">
+                <td> <select class="form-control-select" formControlName="aggregated" class="form-control">
+                    
+                      <option>Select Aggregate</option>
+                      <option>Chassis</option>
+                      <option>Cabin</option>
+                   
+                  </select></td>
+                  <td>
+                      <input type="text" class="form-control" disabled>
+                   
+                   
+                   
+                  </td>
+                  <td>
+                    <input type="text" class="form-control" disabled >
+                  </td>
+                  <td>
+                    <input type="text" class="form-control"disabled >
+                  </td>
+                  <td>
+                    <input type="text" class="form-control"disabled >
+                  </td>
+                  <td>
+
+                    <input type="text" class="form-control" disabled>
+                  </td>
+                  <td>
+                    <input type="text" class="form-control" disabled>
+                  </td>
+                  <td>
+                    <input type="text" class="form-control"disabled >
+                  </td>
+                  <td>
+                    <input type="text" class="form-control" disabled>
+                  </td>
+                <td class="text-center"> <button *ngIf="vehiclesignform.controls.length >1" class="btn btn-default"
+                    (click)="deleteRow(i)"><i class="fas fa-trash"></i></button> </td>
+              </tr>
+            </tbody>
+          </table>
+    </div>
+  </div>
+  <div style="text-align: right;">
+    <button class="btn btn-default btn-md" (click)="addRow()" style=""><i class="icon-plus"></i>&nbsp;&nbsp;Add
+        Row</button>
+    </div>
+    </div>
+</form>
+<div style="text-align: right;margin: 20px 0px;">
+
+    <button class="btn btn-primary btn-md"  style=""><i
+        class="icon-save"></i>&nbsp;&nbsp;Submit</button>
+  
+  </div>

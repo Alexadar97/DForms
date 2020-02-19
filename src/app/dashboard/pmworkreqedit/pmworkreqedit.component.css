@@ -1,0 +1,136 @@
+.tablerow > td{
+    padding: 6px 6px;
+    background: #f3f3f3ad;
+  }
+  .tableheader>th{
+    padding: 6px 6px;
+    background: #f3f3f3ad;
+  }
+  label{
+    font-weight: 400;
+    }
+    .table-bordered {
+      border: 1px solid #ddd;
+  }
+  .nopadding{
+    padding: 0px !important;
+  }
+  .radio-group {
+    display: flex;
+  }
+  label.control.control--radio {
+    margin: 0px 15px 0px 0px;
+  }
+  input#aonofield {
+    border: none;
+    display: none;
+  }
+  
+  /* yes or no */
+  .control {
+    display: block;
+    position: relative;
+    padding-left: 30px;
+    margin-bottom: 15px;
+    cursor: auto;
+  }
+  .control input {
+    position: absolute;
+    z-index: -1;
+    opacity: 0;
+  }
+  .control__indicator {
+    position: absolute;
+    top: 2px;
+    left: 0;
+    height: 15px;
+      width: 15px;
+    background: #9E9E9E;
+  }
+  .control:hover input ~ .control__indicator,
+  .control input:focus ~ .control__indicator {
+    background: #ccc;
+  }
+  .control input:checked ~ .control__indicator {
+    background: #534a4a;
+  }
+  .control input:disabled ~ .control__indicator {
+    background: #898a8e;
+    opacity: 0.6;
+    pointer-events: none;
+  }
+  .control__indicator:after {
+    content: '';
+    position: absolute;
+    display: none;
+  }
+  .control input:checked ~ .control__indicator:after {
+    display: block;
+  }
+  .control--checkbox .control__indicator:after {
+    left: 6px;
+      top: 2px;
+      width: 4px;
+      height: 8px;
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+  .control--checkbox input:disabled ~ .control__indicator:after {
+    border-color: #7b7b7b;
+  }
+  .control--radio .control__indicator {
+    border-radius: 50%;
+  }
+  .control--radio .control__indicator:after {
+    left: 4px;
+    top: 4px;
+    height: 7px;
+    width: 7px;
+    border-radius: 50%;
+    background: #fff;
+  }
+  section.file-scroll {
+    height: 69px;
+    overflow: auto;
+  }
+  #card_desc{
+    font-size: 14px;
+    width: 100%;
+    margin: 0px 0px 0px 0px;
+  }
+  label.btn.btn-sm.btn-primary:hover{
+    background-color:#337ab7c7 !important;
+    border-color: unset !important;
+  }
+  label.btn.btn-sm.btn-primary{
+    cursor:auto;
+    background-color:#337ab7c7 !important;
+    border-color: unset !important;
+  }
+  #cadtext{
+    font-weight: 100;
+  }
+  .sidetext{
+    color: #fff;
+    padding: 7px 20px;
+    margin: 8px 0;
+    cursor: pointer;
+    border-left: 4px solid #242536;
+  }
+  .active{
+    background: #030305;
+    color: #fff;
+    box-shadow: 0 0 2px 0 #828387;
+    border-left: 4px solid #ffb946;
+    /* margin-left: 6px; */
+    white-space: nowrap;
+  }
+  p.sidetext:hover{
+    background: #030305;
+    color: #fff;
+    box-shadow: 0 0 2px 0 #828387;
+    border-left: 4px solid #ffb946;
+    /* margin-left: 6px; */
+    white-space: nowrap;
+  }

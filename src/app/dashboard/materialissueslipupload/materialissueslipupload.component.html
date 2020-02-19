@@ -1,0 +1,310 @@
+<app-spinner *ngIf="loading"></app-spinner>
+<div class="col-md-2" style="padding: 0;
+background-color: #242536; height: 100vh;">
+  <div style="margin-top: 15px;">
+    <p class="sidetext" routerLinkActive="active" (click)="mislist()"><i
+        class="fa fa-angle-double-right"></i>&nbsp;&nbsp;MIS List</p>
+    <p class="sidetext" (click)="materialnewlist()" routerLinkActive="active"><i class="fa fa-plus"></i>&nbsp;&nbsp;New
+      Request</p>
+
+    <p class="sidetext active" (click)="uploadpart()" routerLinkActive="active"><i
+        class="fa fa-upload"></i>&nbsp;&nbsp;Upload
+      Partlist</p>
+  </div>
+</div>
+<div class="col-md-10">
+  <div class="row">
+    <div class="col-md-4">
+      <h4> Material Issue Slip - File Upload</h4>
+    </div>
+    <div class="col-md-6"></div>
+    <div class="col-md-2" style="padding-right: 40px;">
+
+    </div>
+  </div>
+  <div class="row" style="
+padding: 10px;
+width: 100%;">
+
+    <!-- <form [formGroup]="form"> -->
+
+    <form [formGroup]="form">
+
+      <div class="">
+        <div class="row">
+          <div class="col-md-3">
+
+            Project
+            <dot></dot>
+            <ng-container *ngIf="isShowValue == false">
+              <input type="text" class="form-control" value="" formControlName="project" placeholder="Project">
+            </ng-container>
+            <ng-container *ngIf="isShowValue == true">
+              <input type="text" class="form-control" value="" formControlName="project" placeholder="Project" disabled>
+            </ng-container>
+            <small class="text-danger errormsg" *ngIf="
+                                                !form.controls.project.valid &&
+                                                form.controls.project.touched
+                                              ">Project is required</small>
+          </div>
+          <div class="col-md-3">
+
+            Purpose
+            <dot></dot>
+            <ng-container *ngIf="isShowValue == false">
+              <input type="text" class="form-control" value="" formControlName="purpose" placeholder="Purpose">
+            </ng-container>
+            <ng-container *ngIf="isShowValue == true">
+              <input type="text" class="form-control" value="" formControlName="purpose" placeholder="Purpose" disabled>
+            </ng-container>
+            <small class="text-danger errormsg" *ngIf="
+                                            !form.controls.purpose.valid &&
+                                            form.controls.purpose.touched
+                                          ">Purpose is required</small>
+          </div>
+          <div class="col-md-3">
+
+            Contact Number
+            <dot></dot>
+            <ng-container *ngIf="isShowValue == false">
+              <input type="text" class="form-control" value="" formControlName="contactno" maxlength="10"
+                placeholder=" Contact Number" (keypress)="keyAlpha($event)">
+            </ng-container>
+            <ng-container *ngIf="isShowValue == true">
+              <input type="text" class="form-control" value="" formControlName="contactno" maxlength="10"
+                placeholder=" Contact Number" (keypress)="keyAlpha($event)" disabled>
+            </ng-container>
+            <small class="text-danger errormsg" *ngIf="
+                                    !form.controls.contactno.valid &&
+                                    form.controls.contactno.touched
+                                  "> Contact Number is required</small>
+          </div>
+          <div class="col-md-3">
+
+            HR ID
+            <dot></dot>
+            <ng-container *ngIf="isShowValue == false">
+              <input type="text" class="form-control" value="" formControlName="hrid" placeholder="HR/1234">
+            </ng-container>
+            <ng-container *ngIf="isShowValue == true">
+              <input type="text" class="form-control" value="" formControlName="hrid" placeholder="HR/1234" disabled>
+            </ng-container>
+            <small class="text-danger errormsg" *ngIf="
+                                    !form.controls.hrid.valid &&
+                                    form.controls.hrid.touched
+                                  "> HR ID is required</small>
+          </div>
+        </div>
+      </div>
+      <hr>
+
+
+      <div class="" *ngIf="isShowValue == false">
+        <div class="row">
+          <div class="col-md-12">
+            <label for="uploadFilePartidl" class="btn btn-md addnew btn-primary">
+              Select File</label>
+            <input type="file" id="uploadFilePartidl" #uploadFilePartid style="display: none;"
+              (change)="uploadfile($event)" accept=".xlsx">
+            <span class="filename"> {{fileName}}</span>
+          </div>
+
+          <div class="col-md-12">
+            <a download href="assets/MIS_template.xlsx">Download Template<i class="fas fa-cloud-download-alt"
+                style="font-size: 16px;color: #000000;"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <!-- <hr> -->
+      <div class="row" *ngIf="isShowValue == true">
+        <div class="col-md-12">
+          <table class="table table-bordered">
+            <tr class="tableheader">
+              <th>S.No</th>
+              <th>Part Number <dot></dot>
+              </th>
+              <th>Part Description <dot></dot>
+              </th>
+              <th>ZGS <dot></dot>
+              </th>
+              <th>Quantity <dot></dot>
+              </th>
+              <th style="width:20%;">Part Availability Check Status
+              </th>
+              <th> Remarks
+              </th>
+            </tr>
+            <tbody formArrayName="misPartsDummy">
+              <tr class="tablerow" *ngFor="let row of rowForms.controls;let j =index" [formGroupName]="j">
+                <td style="text-align: center;">
+                  {{(j+1)}}
+                </td>
+                <td>
+                  <input type="text" class="form-control" formControlName="partnumber" minlength="8" maxlength="15"
+                    (keypress)="nospace($event)" disabled>
+                  <small class="text-danger errormsg" *ngIf="
+                  !row.controls.partnumber.valid &&
+                  row.controls.partnumber.touched
+                ">Part Number is required <br>(Should be minimum 8 characters) </small>
+                </td>
+                <td>
+                  <input type="text" class="form-control" formControlName="description" disabled>
+                  <small class="text-danger errormsg" *ngIf="
+                  !row.controls.description.valid &&
+                  row.controls.description.touched
+                ">Part Description is required</small>
+                </td>
+                <td> <input type="text" class="form-control" formControlName="zgs" disabled>
+                  <small class="text-danger errormsg" *ngIf="
+            !row.controls.zgs.valid &&
+            row.controls.zgs.touched
+          ">ZGS is required</small></td>
+                <td>
+                  <input type="text" class="form-control" formControlName="quantity" (keypress)="AllowNumber($event)" disabled>
+                  <small class="text-danger errormsg" *ngIf="
+            !row.controls.quantity.valid &&
+            row.controls.quantity.touched
+          ">Quantity is required</small>
+                </td>
+                <td>
+                  <ng-container *ngIf="row.value.partavailable == 'partnotavailable'">
+                    <input type="text" class="form-control" value="This part is not available" disabled>
+                  </ng-container>
+                  <ng-container *ngIf="row.value.partavailable == 'partavailable' ">
+                    <input type="text" class="form-control" value="This part is available" disabled>
+                  </ng-container>
+                  <ng-container *ngIf="row.value.partavailable == 'qtynotavailable'">
+                    <input type="text" class="form-control" value="Quantity is not available" disabled>
+                  </ng-container>
+                  <ng-container *ngIf="row.value.partavailable == 'zgsmismatch'">
+                    <input type="text" class="form-control" value="ZGS mismatch" disabled>
+                  </ng-container>
+                </td>
+                <td>
+                  <input type="text" class="form-control" formControlName="partremarks" disabled>
+                  <small class="text-danger errormsg" *ngIf="
+                  !row.controls.partremarks.valid &&
+                  row.controls.partremarks.touched
+                "> Remarks is required</small>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="row" *ngIf="isShowValue == false">
+        <div class="col-md-8"></div>
+        <div class="col-md-2" style="position: relative;
+    left: 65px;top: 10px;">
+          <div class="form-group">
+            <label class="control control--checkbox">Check For Part Availability
+              <input type="checkbox" class="chkboxes" formControlName="partavailable" value="1"
+                (click)="checkedpart($event.target.value)">
+              <div class="control__indicator"></div>
+            </label>
+          </div>
+        </div>
+        <div class="col-md-2" style="text-align: right;">
+          <button class="btn btn-primary" (click)="submitForm()">Preview</button>
+        </div>
+      </div>
+
+      <div style="text-align: right;">
+        <button class="btn btn-primary btn-md" (click)="uploadCancel()" *ngIf="isShowValue == true"><i
+            class="fa fa-times"></i>&nbsp;&nbsp;Cancel</button>
+        &nbsp;&nbsp;&nbsp;
+        <button class="btn btn-primary btn-md" (click)="uploadConfirm()" *ngIf="isShowValue == true"><i
+            class="fa fa-save"></i>&nbsp;&nbsp;Confirm</button>
+      </div>
+    </form>
+
+  </div>
+</div>
+
+
+
+<!-- confirm modal -->
+
+<div class="modal fade" id="confirmSubmit" role="dialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-10">
+            <p class="modalHeader" style="font-weight: 600;">Preview</p>
+          </div>
+          <div class="col-md-2">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <br>
+          <div class="col-md-12">
+            <p> Are you sure to preview the form ?</p>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-primary" data-dismiss="modal">No </button>
+        <button type="button" class="btn btn-sm btn-primary" (click)="confirmSubmit()">Yes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- upload cancel modal -->
+
+<div class="modal fade" id="cancelUpload" role="dialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-10">
+            <p class="modalHeader" style="font-weight: 600;">Cancel</p>
+          </div>
+          <div class="col-md-2">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <br>
+          <div class="col-md-12">
+            <p> Are you sure to cancel the form ?</p>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-primary" data-dismiss="modal">No </button>
+        <button type="button" class="btn btn-sm btn-primary" (click)="confirmCancel()">Yes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- upload confirm modal -->
+
+<div class="modal fade" id="confirmUpload" role="dialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-10">
+            <p class="modalHeader" style="font-weight: 600;">Confirm</p>
+          </div>
+          <div class="col-md-2">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <br>
+          <div class="col-md-12">
+            <p> Are you sure to confirm the form ?</p>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-primary" data-dismiss="modal">No </button>
+        <button type="button" class="btn btn-sm btn-primary" (click)="confirmUploadForm()">Yes</button>
+      </div>
+    </div>
+  </div>
+</div>

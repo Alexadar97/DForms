@@ -1,0 +1,606 @@
+<app-spinner *ngIf="loading"></app-spinner>
+<div class="col-md-2" style="padding: 0;
+background-color: #242536; height: 100vh;">
+<div style="margin-top: 15px;">
+    <p class="sidetext"  routerLinkActive="active"(click)="mislist()" ><i class="fa fa-angle-double-right"></i>&nbsp;&nbsp;Material Dispatch List</p>
+    <p  class="sidetext active"  (click)="addmisdispatch()"routerLinkActive="active" ><i class="fa fa-plus"></i>&nbsp;&nbsp;New
+                Request</p>
+     
+                <!-- <p  *ngIf="usertype == 'store'" (click)="add_Master()">Master</p> -->
+    </div>
+</div>
+<div class="col-md-10">
+<form [formGroup]="form" style="margin-top: 20px;">
+    <div class="row">
+        <div class="col-md-4">
+            <h4>Material Dispatch</h4>
+        </div>
+        <div class="col-md-6"></div>
+        <div class="col-md-2" style="padding-right: 40px;">
+         
+        </div>
+    </div>
+
+    <div class="row" style="padding: 10px;width: 100%;margin-top:10px;">
+        <div class="row">
+            <div class="col-md-3">
+
+                <text-input label="Cost Center / IO" prop="costcenter" [parentForm]="form" input="Cost Center" isRequired="true"
+                    placeholder="Cost Center">
+                </text-input>
+                <small class="text-danger" *ngIf="
+                    !form.controls.costcenter.valid &&
+                    form.controls.costcenter.touched
+                  ">Cost Center is required</small>
+
+            </div>
+
+            <div class="">
+
+                SAP Reference of Original Document: <dot></dot>
+                <br>
+
+                <!-- SAP original document fields purchasereturns=1 jobwork=2 loc=3 others=4 -->
+                <div class="form-group col-md-2" style="margin-top: 12px;">
+                    <label class="control control--checkbox">Purchase Returns
+                        <input type="checkbox" class="chkboxes" id="sap1" value="1">
+                        <div class="control__indicator"></div>
+                    </label>
+                </div>
+                <div class="form-group col-md-1" style="margin-top: 12px;">
+                    <label class="control control--checkbox">Job Work
+                        <input type="checkbox" class="chkboxes"id="sap2" value="2">
+                        <div class="control__indicator"></div>
+                    </label>
+                </div>
+                <div class="form-group col-md-1" style="margin-top: 12px;">
+                    <label class="control control--checkbox">FOC
+                        <input type="checkbox" class="chkboxes" id="sap3" value="3">
+                        <div class="control__indicator"></div>
+                    </label>
+                </div>
+                <div class="form-group col-md-1" style="margin-top: 12px;">
+                    <label class="control control--checkbox">Others
+                        <input type="checkbox" class="chkboxes" id="sap4" value="4"
+                            (click)="purchaseother($event,$event.target.value)">
+                        <div class="control__indicator"></div>
+                    </label>
+                </div>
+                <!-- <div style="margin-top: 8px;">
+                    Purchase Returns&nbsp;&nbsp;&nbsp;
+                    <mat-checkbox formControlName="sapreference" class="chkboxes" [value]="1"></mat-checkbox>&nbsp;&nbsp;&nbsp;
+
+                    Job Work&nbsp;&nbsp;&nbsp;
+                    <mat-checkbox formControlName="sapreference" class="chkboxes" [value]="2"></mat-checkbox>&nbsp;&nbsp;&nbsp;
+
+                    FOC&nbsp;&nbsp;&nbsp;
+                    <mat-checkbox formControlName="sapreference" class="chkboxes" [value]="3"></mat-checkbox>&nbsp;&nbsp;&nbsp;
+
+                    Others&nbsp;&nbsp;&nbsp;
+                    <mat-checkbox formControlName="sapreference" class="chkboxes" [value]="4"></mat-checkbox>
+                    &nbsp;&nbsp;&nbsp;
+                </div> -->
+
+
+
+            </div>
+
+            <div class="col-md-3" *ngIf="workshow">
+
+                <!-- <text-input label="Others" isRequired="true" prop="otherstext" [parentForm]="form" input="Purpose of Dispatch"
+                placeholder="Purpose of Dispatch">
+            </text-input> -->
+                <span>
+                    <textarea id="otherText" type="text" placeholder="" class="form-control" 
+                        formControlName="otherstext" style="height: 34px;margin-top: 10px;">
+                </textarea>
+                </span>
+
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+
+        <div class="col-md-3">
+
+            <text-input label="Purpose of Dispatch" prop="dispatchpurpose" [parentForm]="form" isRequired="true"
+                input="Purpose of Dispatch" placeholder="Purpose of Dispatch">
+            </text-input>
+            <small class="text-danger" *ngIf="
+            !form.controls.dispatchpurpose.valid &&
+            form.controls.dispatchpurpose.touched
+          ">Purpose of Dispatch is required</small>
+        </div>
+        <div class="col-md-3">
+
+            <span style="">Mode of Transport <dot></dot></span>
+            <br>
+            <!-- dropdown   : values: 1[road], 2[Air] -->
+            <!-- <text-input label="Mode of Transport" isRequired="true" prop="transportmode" [parentForm]="form" input="GSTIN"
+                placeholder="Mode of Transport">
+            </text-input> -->
+            <select formControlName="transportmode" class="form-control" style="margin-top: 8px;">
+                <option value=null selected disabled>Select Mode of Transport </option>
+                <option value="1">Road</option>
+                <option value="2">Air</option>
+            </select>
+            <small class="text-danger" *ngIf="
+            !form.controls.transportmode.valid &&
+            form.controls.transportmode.touched
+          ">Mode of Transport is required</small>
+        </div>
+        <div class="col-md-3" *ngIf="form.value.transportmode == 1 ||form.value.transportmode == 2 ">
+            <span style=""> Approver L4 <dot></dot></span>
+            <select class="form-control" formControlName="l4" style="margin-top:8px;">
+                <option value=null selected disabled>Select Approver L4 </option>
+                <option value="{{data.shortid}}" *ngFor="let data of l4Users">{{data.firstname}} {{data.lastname}}
+                </option>
+            </select>
+            <small class="text-danger" *ngIf="
+            !form.controls.transportmode.valid &&
+            form.controls.transportmode.touched
+          ">Approver L4 is required</small>
+            <!-- <text-input label="Approval L4" isRequired="true" prop="l4" [parentForm]="form" input="L4"
+                placeholder="L4">
+            </text-input> -->
+
+        </div>
+        <div class="col-md-3" *ngIf=" form.value.transportmode == 2">
+            <span style=""> Approver L3 <dot></dot></span>
+            <select class="form-control" formControlName="l3" style="margin-top:8px;">
+                <option value=null selected disabled>Select Approver L4 </option>
+                <option value="{{data.shortid}}" *ngFor="let data of l3Users">{{data.firstname}} {{data.lastname}}
+                </option>
+            </select>
+            <!-- <text-input label="Approval L4" isRequired="true" prop="l4" [parentForm]="form" input="L4"
+                placeholder="L4">
+            </text-input> -->
+
+        </div>
+
+
+
+    </div>
+    <div class="row" style="padding: 10px;width: 100%;">
+        <div class="col-md-12" style="">
+            Details of Recipient
+        </div>
+        <br>
+
+
+        <!-- <div class="col-md-3">
+
+            <text-input label="Consignee" isRequired="true" prop="gstin" [parentForm]="form" input="GSTIN"
+                placeholder="Consignee">
+            </text-input>
+
+        </div> -->
+
+        <div class="col-md-3">
+
+            <text-input label="Name" prop="recipientname" [parentForm]="form" input="Recipient Name" isRequired="true"
+                placeholder="Recipient Name">
+            </text-input>
+            <small class="text-danger" *ngIf="
+            !form.controls.recipientname.valid &&
+            form.controls.recipientname.touched
+          ">Recipient Name is required</small>
+        </div>
+
+        <div class="col-md-6">
+
+            <text-input label="Address" prop="recipientaddress" [parentForm]="form" input="Recipient Address" isRequired="true"
+                placeholder="Recipient Address">
+            </text-input>
+            <small class="text-danger" *ngIf="
+            !form.controls.recipientaddress.valid &&
+            form.controls.recipientaddress.touched
+          ">Address is required</small>
+        </div>
+
+    </div>
+    <div class="row" style="padding: 10px;width: 100%;">
+
+        <div class="col-md-3">
+
+            <text-input label="State" prop="state" [parentForm]="form" input="State" placeholder="State" isRequired="true">
+            </text-input>
+            <small class="text-danger" *ngIf="
+            !form.controls.state.valid &&
+            form.controls.state.touched
+          ">State is required</small>
+        </div>
+
+        <div class="col-md-3">
+
+            <text-input label="Pin Code" prop="statecode" [parentForm]="form" input="Pin Code" isRequired="true"
+                placeholder="Pin Code">
+            </text-input>
+            <small class="text-danger" *ngIf="
+                !form.controls.statecode.valid &&
+                form.controls.statecode.touched
+              ">Pin Code is required</small>
+        </div>
+
+        <div class="col-md-3">
+
+            <text-input label="GST Unique Number" prop="gstinuniqueno" [parentForm]="form" input="GSTIN" isRequired="true"
+                placeholder="GST Unique Number">
+            </text-input>
+            <small class="text-danger" *ngIf="
+            !form.controls.gstinuniqueno.valid &&
+            form.controls.gstinuniqueno.touched
+          ">GST Unique Number is required</small>
+        </div>
+
+    </div>
+
+    <div class="row" style="padding: 24px;width: 100%;">
+        <table class="table table-bordered">
+            <tr class="tableheader" style="background: rgb(235,235,235);">
+                <th> <span> S.No</span></th>
+                <th> <span> Part No</span>
+                    <dot></dot>
+                </th>
+                <th> <span> Part Description</span>
+                    <dot></dot>
+                </th>
+                <th> <span> HSN Code</span>
+                    <dot></dot>
+                </th>
+                <th> <span> Quantity</span>
+                    <dot></dot>
+                </th>
+                <th> <span> Unit</span>
+                    <dot></dot>
+                </th>
+                <th> <span> Rate per Item</span>
+                    <dot></dot>
+                </th>
+                <!-- <th> <span> Taxable Value</span><dot></dot></th>
+                <th> <span> CGST</span>
+                    <br>
+                    <table>
+                        <th>Rate</th>
+                        <th>Amt</th>
+                    </table>
+                </th>
+                <th> <span> SGST</span>
+                    <br>
+                    <table>
+                        <th>Rate</th>
+                        <th>Amt</th>
+                    </table></th>
+                <th> <span> IGST</span>
+                    <br>
+                    <table>
+                        <th>Rate</th>
+                        <th>Amt</th>
+                    </table></th> -->
+                <th> <span> Delete</span></th>
+
+
+            </tr>
+            <tbody formArrayName="materialDispatchParts">
+                <tr class="tablerow" *ngFor="let row of rowForms.controls;let j =index" [formGroupName]="j">
+                    <td style="text-align: center;">
+                        {{(j+1)}}
+                    </td>
+                    <td>
+                        <text-input label="" prop="partnumber" [parentForm]="row" input="Part Number"
+                            placeholder="Part Number" (keypress)="nospace($event)"></text-input>
+                        <small class="text-danger" *ngIf="
+                            !row.controls.partnumber.valid &&
+                            row.controls.partnumber.touched
+                          ">Part No is required</small>
+
+                    </td>
+                    <td>
+                        <text-input label="" prop="description" [parentForm]="row" input="Description"
+                            placeholder="Description"></text-input>
+                        <small class="text-danger" *ngIf="
+                            !row.controls.description.valid &&
+                            row.controls.description.touched
+                          ">Part Description is required</small>
+
+
+                    </td>
+                    <td>
+                        <text-input label="" class="input" prop="hsncode" [parentForm]="row" input="HSN Code"
+                            placeholder="HSN Code"></text-input>
+
+                        <small class="text-danger" *ngIf="
+                            !row.controls.hsncode.valid &&
+                            row.controls.hsncode.touched
+                          ">HSN Code is required</small>
+
+                    </td>
+                    <td>
+
+                        <!-- <text-input label="" isRequired="true" prop="quantity" [parentForm]="row" input="Quantity"
+                            placeholder="Quantity"></text-input> -->
+                        <number-input label="" prop="quantity" [parentForm]="row" input="Quantity"
+                            placeholder="Quantity"></number-input>
+
+                        <small class="text-danger" *ngIf="
+                            !row.controls.quantity.valid &&
+                            row.controls.quantity.touched
+                          ">Quantity is required</small>
+                    </td>
+                    <td>
+                        <!-- <label for="">Unit</label> -->
+                        <select name="" id="" formControlName="unit" class="form-control" style="margin-top: 8px;">
+                            <option value=null selected disabled>Select Unit Type </option>
+                            <option value="Kg">Kg</option>
+                            <option value="Litre">Litre</option>
+                            <option value="Nos">Nos</option>
+                            <option value="PCS">PCS</option>
+                        </select>
+                        <small class="text-danger" *ngIf="
+                        !row.controls.unit.valid &&
+                        row.controls.unit.touched
+                      ">Unit is required</small>
+                        <!-- <text-input label="" isRequired="true" prop="unit" [parentForm]="row" input="Actual ZGS Level"
+                            placeholder="Actual ZGS Level"></text-input> -->
+
+                    </td>
+
+
+                    <td>
+                        <number-input label="" prop="rateperitem" [parentForm]="row" input="Rate Per Item"
+                            placeholder="Rate per item"></number-input>
+                        <small class="text-danger" *ngIf="
+                            !row.controls.rateperitem.valid &&
+                            row.controls.rateperitem.touched
+                          ">Rate per Item is required</small>
+
+                    </td>
+                    <td class="text-center"> <button *ngIf="rowForms.controls.length >1" class="btn btn-default"
+                            (click)="deleteRow(j)"><i class="fas fa-trash"></i></button> </td>
+                </tr>
+            </tbody>
+
+
+
+        </table>
+        <!-- <br> -->
+        <div style="text-align: right;">
+
+            <button class="btn btn-primary btn-md" (click)="addRow()" style="padding: 6px 16px;"><i
+                    class="fa fa-plus"></i>&nbsp;&nbsp;Add Row</button>
+        </div>
+    </div>
+    <div class="row" style="padding: 10px;width: 100%;">
+
+        <div class="col-md-3">
+
+            <text-input label="Prepared By" prop="preparedby" [parentForm]="form" input="Prepared By"  isRequired="true"
+                placeholder="Prepared By">
+            </text-input>
+            <small class="text-danger" *ngIf="
+            !form.controls.preparedby.valid &&
+            form.controls.preparedby.touched
+          ">Prepared By is required</small>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <text-input label="Vehicle Number" prop="vehicleno" [parentForm]="form" input="Vehicle Number" 
+                placeholder="Vehicle Number">
+            </text-input>
+        </div>
+
+        <div class="col-md-3">
+
+            <text-input label="Department" prop="department" [parentForm]="form" input="Department"  isRequired="true"
+                placeholder="Department">
+            </text-input>
+            <small class="text-danger" *ngIf="
+            !form.controls.department.valid &&
+            form.controls.department.touched
+          ">Department is required</small>
+        </div>
+        <div class="col-md-3" style="margin-top: 8px;">
+
+            <!-- <text-input label="Contact Number" isRequired="true" prop="contactno" [parentForm]="form" input="Contact Number"
+                placeholder="Contact Number"  (keypress)="AllowNumber($event)">
+            </text-input> -->
+            <div class="form-group  text-field" style="">
+                Contact Number <dot></dot>
+                <input type="text" class="form-control" value="" formControlName="contactno" maxlength="10"
+                    placeholder="Contact Number" (keypress)="AllowNumber($event)"
+                    style="font-weight: 400;margin-top: 4px;">
+            </div>
+            <small class="text-danger" *ngIf="
+                    !form.controls.contactno.valid &&
+                    form.controls.contactno.touched
+                  ">Contact Number is invalid</small>
+
+        </div>
+    </div>
+    <div class="row" style="padding: 10px;width: 100%;">
+        <div class="col-md-3">
+
+            <text-input label="HR ID" prop="hrid" [parentForm]="form" input="HR ID" placeholder="HR/1234"  isRequired="true">
+            </text-input>
+            <small class="text-danger" *ngIf="
+            !form.controls.hrid.valid &&
+            form.controls.hrid.touched
+          ">HR ID is required</small>
+        </div>
+        <div class="col-md-3">
+
+            <text-input label="Remarks" prop="reqremarks" [parentForm]="form" input="Remarks" placeholder="Remarks">
+            </text-input>
+        </div>
+    </div>
+
+    <div class="row" style="padding: 10px;width: 100%;">
+        <div class="col-md-4"></div>
+        <div class="col-md-4" style="border: 1px solid rgba(119, 119, 119, 0.36);
+        background: rgba(119, 119, 119, 0.36);
+        border-radius: 5px;
+        margin-top: 30px;
+        text-align: center;
+        padding: 12px;">
+            <!-- <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group"
+                formControlName="ReturnOrNonReturn">
+                <mat-radio-button class="material-radio-btn" *ngFor="let option of checkOptions"
+                    (change)="checkReturnable(option)" [value]="option">
+                    {{option}}
+                </mat-radio-button>
+            </mat-radio-group> -->
+            <div class="col-md-12">
+                <div class="col-md-12">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-4">
+                        <span>Returnable</span>
+                        <br>
+                        <label class="control control--radio">
+                            <input type="radio" value="1" id="return1" (change)="checkReturnable($event,$event.target.value)"
+                                formControlName="returnOrNonReturn" />
+                            <div class="control__indicator"></div>
+                        </label>
+                    </div>
+                    <div class="col-md-4">
+                        <span>Non Returnable</span>
+                        <br>
+                        <label class="control control--radio">
+                            <input type="radio" value="0" id="return2" (change)="checkNonReturnable($event,$event.target.value)"
+                                formControlName="returnOrNonReturn" />
+                            <div class="control__indicator"></div>
+                        </label>
+                    </div>
+                    <div class="col-md-2"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+
+    <div class="row" style="padding: 10px;width: 100%;" *ngIf="returnchked">
+        <div class="col-md-3 col-md-offset-4">
+            <!-- <text-input label="Expected Return Date" isRequired="true" prop="expectedreturndate" [parentForm]="form"
+                input="Expected Return Date" placeholder="Return Date">
+            </text-input> -->
+            Expected Date of Arriving <dot></dot>
+            <input formControlName="expectedreturndate" type="text" placeholder="DD/MM/YYYY" class="form-control"
+                id="arrivedate" bsDatepicker [minDate]="today"
+                [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }">
+            <!-- <small class="text-danger" *ngIf="
+              !expectedreturndate.controls.startdate.valid &&
+              expectedreturndate.controls.startdate.touched
+            ">Expected Start Date is required</small> -->
+
+
+        </div>
+    </div>
+
+    <div class="row" style="padding: 10px;width: 100%;" *ngIf="nonreturncheked">
+
+        <h5 class="border-style" style="font-weight: 600;"> Scrap Declaration <dot></dot>
+        </h5>
+        <br>
+        <div class="col-md-2" style="font-weight: 600;">Purpose of Shipment</div>
+        <div class="col-md-2">
+            <!-- Failed Parts Analysis
+            &nbsp;&nbsp;&nbsp;
+            <mat-checkbox formControlName="purposeofshipment"></mat-checkbox>&nbsp;&nbsp;&nbsp; -->
+            <label class="control control--checkbox">Failed Parts Analysis
+                <input type="checkbox" class="chkShipment" id="shipment1" value="1">
+                <div class="control__indicator"></div>
+            </label>
+        </div>
+        <div class="col-md-2">
+            <!-- Destructive Testing
+            &nbsp;&nbsp;&nbsp;
+            <mat-checkbox formControlName="purposeofshipment"></mat-checkbox>&nbsp;&nbsp;&nbsp; -->
+            <label class="control control--checkbox">Destructive Testing
+                <input type="checkbox" class="chkShipment" id="shipment2" value="2">
+                <div class="control__indicator"></div>
+            </label>
+        </div>
+        <div class="col-md-2">
+            <!-- Fitment Trail
+            &nbsp;&nbsp;&nbsp;
+            <mat-checkbox formControlName="purposeofshipment"></mat-checkbox>&nbsp;&nbsp;&nbsp; -->
+            <label class="control control--checkbox">Fitment Trail
+                <input type="checkbox" class="chkShipment" id="shipment3" value="3">
+                <div class="control__indicator"></div>
+            </label>
+        </div>
+        <div class="col-md-2">
+            <!-- Sample Testing
+            &nbsp;&nbsp;&nbsp;
+            <mat-checkbox formControlName="purposeofshipment"></mat-checkbox>&nbsp;&nbsp;&nbsp; -->
+            <label class="control control--checkbox">Sample Testing
+                <input type="checkbox" class="chkShipment" id="shipment4" value="4">
+                <div class="control__indicator"></div>
+            </label>
+        </div>
+        <div class="col-md-2">
+            <!-- New Development reference
+            &nbsp;&nbsp;&nbsp;
+            <mat-checkbox formControlName="purposeofshipment"></mat-checkbox>&nbsp;&nbsp;&nbsp; -->
+            <label class="control control--checkbox">New Development reference
+                <input type="checkbox" class="chkShipment" id="shipment5" value="5">
+                <div class="control__indicator"></div>
+            </label>
+        </div>
+
+        <div class="col-md-3">
+            Expected Date of Scrapping
+            <br>
+            <!-- <text-input label="Expected Date of Shipping" isRequired="true" prop="expectedscrappingdate" [parentForm]="form"
+                input="Expected Date of Shipping" placeholder="GST Unique Number">
+            </text-input> -->
+            <!-- <input formControlName="expectedscrappingdate" id="excepteddate" type="text" placeholder="DD/MM/YYYY"
+                class="form-control" bsDatepicker [minDate]="today" [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }"> -->
+            <input formControlName="expectedscrappingdate" type="text" placeholder="DD/MM/YYYY" class="form-control"
+                autocomplete="off" bsDatepicker id="excepteddate" [minDate]="today"
+                [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }">
+
+        </div>
+
+    </div>
+
+
+    <div class="row" style="padding: 10px;width: 100%;">
+        <div style="text-align: right;margin-bottom:30px;">
+
+            <button class="btn btn-primary btn-md" (click)="submitForm()" style="">
+                <i class="fa fa-save"></i>&nbsp;&nbsp;Submit</button>
+        </div>
+
+
+    </div>
+</form>
+</div>
+
+
+<!-- confirm modal -->
+
+<div class="modal fade" id="confirmSubmit" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-10">
+              <p class="modalHeader" style="font-weight: 600;">Submit</p>
+            </div>
+            <div class="col-md-2">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <br>
+            <div class="col-md-12">
+              <p> Are you sure to submit the form ?</p>
+            </div>
+          </div>
+        </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-primary" data-dismiss="modal">No </button>
+        <button type="button" class="btn btn-sm btn-primary" (click)="confirmSubmit()">Yes</button>
+      </div>
+    </div>
+    </div>
+  </div>

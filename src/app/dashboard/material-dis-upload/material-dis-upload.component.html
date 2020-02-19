@@ -1,0 +1,609 @@
+<app-spinner *ngIf="loading"></app-spinner>
+<div class="col-md-2" style="padding: 0;
+background-color: #242536; height: 100vh;">
+    <div style="margin-top: 15px;">
+        <p class="sidetext" routerLinkActive="active" (click)="mislist()"><i
+                class="fa fa-angle-double-right"></i>&nbsp;&nbsp;Material Dispatch List</p>
+        <p class="sidetext" (click)="addmisdispatch()" routerLinkActive="active"><i
+                class="fa fa-plus"></i>&nbsp;&nbsp;New
+            Request</p>
+        <p class="sidetext active" routerLinkActive="active"><i class="fa fa-upload"></i>&nbsp;&nbsp;Upload
+            Partlist</p>
+    </div>
+</div>
+<div class="col-md-10">
+    <form [formGroup]="form" style="margin-top: 20px;">
+        <div class="row">
+            <div class="col-md-4">
+                <h4>Material Dispatch</h4>
+            </div>
+            <div class="col-md-6"></div>
+            <div class="col-md-2" style="padding-right: 40px;">
+
+            </div>
+        </div>
+
+        <div class="row" style="padding: 10px;width: 100%;margin-top:10px;">
+            <div class="row" style="padding: 0px 17px;">
+                <div class="col-md-3">
+
+                    <text-input label="Cost Center / IO" prop="costcenter" [parentForm]="form" input="Cost Center"
+                        isRequired="true" placeholder="Cost Center" *ngIf="showeditvalue == false">
+                    </text-input>
+                    <ng-container *ngIf="showeditvalue == true">
+                        <label style="font-weight: normal;">Cost Center / IO</label>
+                        <input class="form-control" formControlName="costcenter" disabled>
+                    </ng-container>
+                    <small class="text-danger" *ngIf="
+                    !form.controls.costcenter.valid &&
+                    form.controls.costcenter.touched
+                  ">Cost Center is required</small>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    SAP Reference of Original Document: <dot></dot>
+                    <br>
+
+                    <!-- SAP original document fields purchasereturns=1 jobwork=2 loc=3 others=4 -->
+                    <div class="form-group col-md-3" style="margin-top: 12px;">
+                        <label class="control control--checkbox" *ngIf="showeditvalue == false">Purchase Returns
+                            <input type="checkbox" class="chkboxes" id="one" value="1" formControlName="sapreference"
+                                (change)="selectbox1($event)">
+                            <div class="control__indicator"></div>
+                        </label>
+                        <label class="control control--checkbox" *ngIf="showeditvalue == true">Purchase Returns
+                            <input type="checkbox" class="chkboxes" disabled *ngIf="one != '1'">
+                            <input type="checkbox" name="vehicle" value="Car" checked disabled *ngIf="one == '1'">
+                            <div class="control__indicator"></div>
+                        </label>
+                    </div>
+                    <div class="form-group col-md-3" style="margin-top: 12px;">
+                        <label class="control control--checkbox" id="two" *ngIf="showeditvalue == false">Job Work
+                            <input type="checkbox" class="chkboxes" value="2" formControlName="sapreference"
+                                (change)="selectbox2($event)">
+                            <div class="control__indicator"></div>
+                        </label>
+                        <label class="control control--checkbox" *ngIf="showeditvalue == true">Job Work
+                            <input type="checkbox" class="chkboxes" disabled *ngIf="two != '2'">
+                            <input type="checkbox" name="vehicle" value="Car" checked disabled *ngIf="two == '2'">
+                            <div class="control__indicator"></div>
+                        </label>
+                    </div>
+                    <div class="form-group col-md-3" style="margin-top: 12px;">
+                        <label class="control control--checkbox" id="three" *ngIf="showeditvalue == false">FOC
+                            <input type="checkbox" class="chkboxes" value="3" formControlName="sapreference"
+                                (change)="selectbox3($event)">
+                            <div class="control__indicator"></div>
+                        </label>
+                        <label class="control control--checkbox" *ngIf="showeditvalue == true">FOC
+                            <input type="checkbox" class="chkboxes" disabled *ngIf="three != '3'">
+                            <input type="checkbox" name="vehicle" value="Car" checked disabled *ngIf="three == '3'">
+                            <div class="control__indicator"></div>
+                        </label>
+                    </div>
+                    <div class="form-group col-md-3" style="margin-top: 12px;">
+                        <label class="control control--checkbox" *ngIf="showeditvalue == false">Others
+                            <input type="checkbox" class="chkboxes" id="four" value="4"
+                                (click)="purchaseother($event,$event.target.value)" formControlName="sapreference"
+                                (change)="selectbox4($event)">
+                            <div class="control__indicator"></div>
+                        </label>
+                        <label class="control control--checkbox" *ngIf="showeditvalue == true">Others
+                            <input type="checkbox" class="chkboxes" disabled *ngIf="four != '4'">
+                            <input type="checkbox" name="vehicle" value="Car" checked disabled *ngIf="four == '4'">
+                            <div class="control__indicator"></div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <ng-container *ngIf="workshow">
+                        <span>
+                            <textarea id="otherText" type="text" placeholder="" class="form-control"
+                                formControlName="otherstext" style="height: 34px;margin-top: 10px;"
+                                *ngIf="showeditvalue == false">
+            </textarea>
+                            <textarea id="otherText" type="text" placeholder="" class="form-control"
+                                formControlName="otherstext" style="height: 34px;margin-top: 10px;"
+                                *ngIf="showeditvalue == true" disabled>
+            </textarea>
+                        </span>
+                    </ng-container>
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+
+            <div class="col-md-3">
+
+                <text-input label="Purpose of Dispatch" prop="dispatchpurpose" [parentForm]="form" isRequired="false"
+                    input="Purpose of Dispatch" placeholder="Purpose of Dispatch" *ngIf="showeditvalue == false">
+                </text-input>
+                <ng-container *ngIf="showeditvalue == true">
+                    <label style="font-weight: normal;">Purpose of Dispatch<dot></dot> </label>
+                    <input class="form-control" formControlName="dispatchpurpose" disabled>
+                </ng-container>
+                <small class="text-danger" *ngIf="
+            !form.controls.dispatchpurpose.valid &&
+            form.controls.dispatchpurpose.touched
+          ">Purpose of Dispatch is required</small>
+            </div>
+            <div class="col-md-3">
+
+                <span style="">Mode of Transport <dot></dot></span>
+                <br>
+                <select formControlName="transportmode" class="form-control" style="margin-top: 8px;"
+                    *ngIf="showeditvalue == false">
+                    <option value=null selected disabled>Select Mode of Transport </option>
+                    <option value="1">Road</option>
+                    <option value="2">Air</option>
+                </select>
+                <select formControlName="transportmode" class="form-control" style="margin-top: 8px;"
+                    *ngIf="showeditvalue == true" disabled>
+                    <option value=null selected disabled>Select Mode of Transport </option>
+                    <option value="1">Road</option>
+                    <option value="2">Air</option>
+                </select>
+                <small class="text-danger" *ngIf="
+            !form.controls.transportmode.valid &&
+            form.controls.transportmode.touched
+          ">Mode of Transport is required</small>
+            </div>
+            <div class="col-md-3" *ngIf="form.value.transportmode == 1 ||form.value.transportmode == 2 ">
+                <span style=""> Approver L4 <dot></dot></span>
+                <select class="form-control" formControlName="l4" style="margin-top:8px;"
+                    *ngIf="showeditvalue == false">
+                    <option value=null selected disabled>Select Approver L4 </option>
+                    <option value="{{data.shortid}}" *ngFor="let data of l4Users">{{data.firstname}} {{data.lastname}}
+                    </option>
+                </select>
+                <select class="form-control" formControlName="l4" style="margin-top:8px;" *ngIf="showeditvalue == true"
+                    disabled>
+                    <option value=null selected disabled>Select Approver L4 </option>
+                    <option value="{{data.shortid}}" *ngFor="let data of l4Users">{{data.firstname}} {{data.lastname}}
+                    </option>
+                </select>
+                <small class="text-danger" *ngIf="
+            !form.controls.transportmode.valid &&
+            form.controls.transportmode.touched
+          ">Approver L4 is required</small>
+            </div>
+            <div class="col-md-3" *ngIf=" form.value.transportmode == 2">
+                <span style=""> Approver L3 <dot></dot></span>
+                <select class="form-control" formControlName="l3" style="margin-top:8px;"
+                    *ngIf="showeditvalue == false">
+                    <option value=null selected disabled>Select Approver L4 </option>
+                    <option value="{{data.shortid}}" *ngFor="let data of l3Users">{{data.firstname}} {{data.lastname}}
+                    </option>
+                </select>
+                <select class="form-control" formControlName="l3" style="margin-top:8px;" *ngIf="showeditvalue == true"
+                    disabled>
+                    <option value=null selected disabled>Select Approver L4 </option>
+                    <option value="{{data.shortid}}" *ngFor="let data of l3Users">{{data.firstname}} {{data.lastname}}
+                    </option>
+                </select>
+            </div>
+
+
+
+        </div>
+        <div class="row" style="padding: 10px;width: 100%;">
+            <div class="col-md-12" style="">
+                Details of Recipient
+            </div>
+            <br>
+            <div class="col-md-3">
+
+                <text-input label="Name" prop="recipientname" [parentForm]="form" input="Recipient Name"
+                    isRequired="true" placeholder="Recipient Name" *ngIf="showeditvalue == false">
+                </text-input>
+                <ng-container *ngIf="showeditvalue == true">
+                    <label style="font-weight: normal;">Name<dot></dot> </label>
+                    <input class="form-control" formControlName="recipientname" disabled>
+                </ng-container>
+                <small class="text-danger" *ngIf="
+            !form.controls.recipientname.valid &&
+            form.controls.recipientname.touched
+          ">Recipient Name is required</small>
+            </div>
+
+            <div class="col-md-6">
+
+                <text-input label="Address" prop="recipientaddress" [parentForm]="form" input="Recipient Address"
+                    isRequired="true" placeholder="Recipient Address" *ngIf="showeditvalue == false">
+                </text-input>
+                <ng-container *ngIf="showeditvalue == true">
+                    <label style="font-weight: normal;">Address<dot></dot> </label>
+                    <input class="form-control" formControlName="recipientaddress" disabled>
+                </ng-container>
+                <small class="text-danger" *ngIf="
+            !form.controls.recipientaddress.valid &&
+            form.controls.recipientaddress.touched
+          ">Address is required</small>
+            </div>
+
+        </div>
+        <div class="row" style="padding: 10px;width: 100%;">
+
+            <div class="col-md-3">
+
+                <text-input label="State" prop="state" [parentForm]="form" input="State" placeholder="State"
+                    isRequired="true" *ngIf="showeditvalue == false">
+                </text-input>
+                <ng-container *ngIf="showeditvalue == true">
+                    <label style="font-weight: normal;">State<dot></dot> </label>
+                    <input class="form-control" formControlName="state" disabled>
+                </ng-container>
+                <small class="text-danger" *ngIf="
+            !form.controls.state.valid &&
+            form.controls.state.touched
+          ">State is required</small>
+            </div>
+
+            <div class="col-md-3">
+
+                <text-input label="Pin Code" prop="statecode" [parentForm]="form" input="Pin Code" isRequired="true"
+                    placeholder="Pin Code" *ngIf="showeditvalue == false">
+                </text-input>
+                <ng-container *ngIf="showeditvalue == true">
+                    <label style="font-weight: normal;">Pin Code<dot></dot> </label>
+                    <input class="form-control" formControlName="statecode" disabled>
+                </ng-container>
+                <small class="text-danger" *ngIf="
+                !form.controls.statecode.valid &&
+                form.controls.statecode.touched
+              ">Pin Code is required</small>
+            </div>
+
+            <div class="col-md-3">
+
+                <text-input label="GST Unique Number" prop="gstinuniqueno" [parentForm]="form" input="GSTIN"
+                    isRequired="true" placeholder="GST Unique Number" *ngIf="showeditvalue == false">
+                </text-input>
+                <ng-container *ngIf="showeditvalue == true">
+                    <label style="font-weight: normal;">GST Unique Number<dot></dot> </label>
+                    <input class="form-control" formControlName="gstinuniqueno" disabled>
+                </ng-container>
+                <small class="text-danger" *ngIf="
+            !form.controls.gstinuniqueno.valid &&
+            form.controls.gstinuniqueno.touched
+          ">GST Unique Number is required</small>
+            </div>
+
+        </div>
+        <div class="row" style="padding: 10px;width: 100%;">
+
+            <div class="col-md-3">
+
+                <text-input label="Prepared By" prop="preparedby" [parentForm]="form" input="Prepared By"
+                    placeholder="Internal Employee Only" isRequired="true" *ngIf="showeditvalue == false">
+                </text-input>
+                <ng-container *ngIf="showeditvalue == true">
+                    <label style="font-weight: normal;">Prepared By<dot></dot> </label>
+                    <input class="form-control" formControlName="preparedby" disabled>
+                </ng-container>
+                <small class="text-danger" *ngIf="
+            !form.controls.preparedby.valid &&
+            form.controls.preparedby.touched
+          ">Prepared By is required</small>
+
+            </div>
+
+            <div class="col-md-3">
+
+                <text-input label="Vehicle Number" prop="vehicleno" [parentForm]="form" input="Vehicle Number"
+                    placeholder="Vehicle Number" *ngIf="showeditvalue == false">
+                </text-input>
+                <ng-container *ngIf="showeditvalue == true">
+                    <label style="font-weight: normal;">Vehicle Number</label>
+                    <input class="form-control" formControlName="vehicleno" disabled>
+                </ng-container>
+            </div>
+
+            <div class="col-md-3">
+
+                <text-input label="Department" prop="department" [parentForm]="form" input="Department"
+                    placeholder="Department" isRequired="true" *ngIf="showeditvalue == false">
+                </text-input>
+                <ng-container *ngIf="showeditvalue == true">
+                    <label style="font-weight: normal;">Department<dot></dot> </label>
+                    <input class="form-control" formControlName="department" disabled>
+                </ng-container>
+                <small class="text-danger" *ngIf="
+            !form.controls.department.valid &&
+            form.controls.department.touched
+          ">Department is required</small>
+            </div>
+            <div class="col-md-3" style="margin-top: 2px;">
+
+            </div>
+        </div>
+        <div class="row" style="padding: 10px;width: 100%;">
+            <div class="col-md-3">
+                <div class="form-group  text-field" style="">
+                    Contact Number <dot></dot>
+                    <input type="text" class="form-control" value="" formControlName="contactno" maxlength="10"
+                        placeholder="Contact Number" (keypress)="AllowNumber($event)"
+                        style="font-weight: 400;margin-top: 6px;" *ngIf="showeditvalue == false">
+                    <input type="text" class="form-control" value="" formControlName="contactno" maxlength="10"
+                        placeholder="Contact Number" (keypress)="AllowNumber($event)"
+                        style="font-weight: 400;margin-top: 6px;" *ngIf="showeditvalue == true" disabled>
+                </div>
+                <small class="text-danger" *ngIf="
+                    !form.controls.contactno.valid &&
+                    form.controls.contactno.touched
+                  ">Contact Number is invalid</small>
+            </div>
+            <div class="col-md-3">
+                <text-input label="HR ID" prop="hrid" [parentForm]="form" input="HR ID"
+                    placeholder="Internal Employee Only" isRequired="true" *ngIf="showeditvalue == false">
+                </text-input>
+                <ng-container *ngIf="showeditvalue == true">
+                    <label style="font-weight: normal;">HR ID<dot></dot> </label>
+                    <input class="form-control" formControlName="hrid" disabled>
+                </ng-container>
+                <small class="text-danger" *ngIf="
+            !form.controls.hrid.valid &&
+            form.controls.hrid.touched
+          ">HR ID is required</small>
+            </div>
+            <div class="col-md-3">
+
+                <text-input label="Remarks" prop="reqremarks" [parentForm]="form" input="Remarks" placeholder="Remarks"
+                    *ngIf="showeditvalue == false">
+                </text-input>
+                <ng-container *ngIf="showeditvalue == true">
+                    <label style="font-weight: normal;">Remarks<dot></dot> </label>
+                    <input class="form-control" formControlName="reqremarks" disabled>
+                </ng-container>
+            </div>
+        </div>
+        <div class="row" style="padding: 10px;width: 100%;">
+            <div class="col-md-4" style="border: 1px solid rgba(119, 119, 119, 0.36);
+        background: rgba(119, 119, 119, 0.36);
+        border-radius: 5px;
+        margin-top: 30px;
+        text-align: center;
+        padding: 12px;">
+                <div class="col-md-12">
+                    <div class="col-md-6">
+                        <label class="control control--radio" *ngIf="showeditvalue == false">Returnable
+                            <input type="radio" value="1" (click)="checkReturnable($event,$event.target.value)"
+                                formControlName="returnOrNonReturn" />
+                            <div class="control__indicator"></div>
+                        </label>
+                        <label class="control control--radio" *ngIf="showeditvalue == true">Returnable
+                            <input type="radio" value="1" (click)="checkReturnable($event,$event.target.value)"
+                                formControlName="returnOrNonReturn" disabled />
+                            <div class="control__indicator"></div>
+                        </label>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="control control--radio" *ngIf="showeditvalue == false">Non Returnable
+                            <input type="radio" value="0" (click)="checkNonReturnable($event,$event.target.value)"
+                                formControlName="returnOrNonReturn" />
+                            <div class="control__indicator"></div>
+                        </label>
+                        <label class="control control--radio" *ngIf="showeditvalue == true">Non Returnable
+                            <input type="radio" value="0" (click)="checkNonReturnable($event,$event.target.value)"
+                                formControlName="returnOrNonReturn" disabled />
+                            <div class="control__indicator"></div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <section style="padding: 34px 0px;" *ngIf="showeditvalue == false">
+                    <div class="col-md-12">
+                        <label for="uploadFilePartidl" class="btn btn-md addnew btn-primary">
+                            Select File</label>
+                        <input type="file" id="uploadFilePartidl" #uploadFilePartid style="display: none;"
+                            (change)="uploadfile($event)"
+                            accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel">
+                        <span class="filename"> {{fileName}}</span>
+                    </div>
+
+                    <div class="col-md-12">
+                        <a download href="assets/excel/Dispatch_template.xlsx">Download Template <i
+                                class="fas fa-cloud-download-alt" style="font-size: 16px;color: #000000;"></i></a>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+
+        <div class="row" style="padding: 10px;width: 100%;" *ngIf="returnchked">
+            <div class="col-md-3 col-md-4">
+                Expected Date of Arriving <dot></dot>
+                <input formControlName="expectedreturndate" type="text" placeholder="DD/MM/YYYY" class="form-control"
+                    id="arrivedate" bsDatepicker [minDate]="today"
+                    [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }"
+                    *ngIf="showeditvalue == false">
+                <input formControlName="expectedreturndate" type="text" placeholder="DD/MM/YYYY" class="form-control"
+                    id="arrivedate" bsDatepicker [minDate]="today"
+                    [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }" *ngIf="showeditvalue == true"
+                    disabled>
+            </div>
+        </div>
+
+        <div class="row" style="padding: 10px;width: 100%;" *ngIf="nonreturncheked">
+
+            <h5 class="border-style" style="font-weight: 600;"> Scrap Declaration <dot></dot>
+            </h5>
+            <br>
+            <div class="col-md-2" style="font-weight: 600;">Purpose of Shipment</div>
+            <div class="col-md-2">
+                <label class="control control--checkbox" *ngIf="showeditvalue == false">Failed Parts Analysis
+                    <input type="checkbox" class="chkShipment" id="shipment1" value="1" (change)="checkbox1($event)">
+                    <div class="control__indicator"></div>
+                </label>
+                <label class="control control--checkbox" *ngIf="showeditvalue == true">Failed Parts Analysis
+                    <input type="checkbox" class="chkboxes" disabled *ngIf="shipment1 != '1'">
+                    <input type="checkbox" name="vehicle" value="Car" checked disabled *ngIf="shipment1 == '1'">
+                    <div class="control__indicator"></div>
+                </label>
+            </div>
+            <div class="col-md-2">
+                <label class="control control--checkbox" *ngIf="showeditvalue == false">Destructive Testing
+                    <input type="checkbox" class="chkShipment" id="shipment2" value="2" (change)="checkbox2($event)">
+                    <div class="control__indicator"></div>
+                </label>
+                <label class="control control--checkbox" *ngIf="showeditvalue == true">Destructive Testing
+                    <input type="checkbox" class="chkboxes" disabled *ngIf="shipment2 != '2'">
+                    <input type="checkbox" name="vehicle" value="Car" checked disabled *ngIf="shipment2 == '2'">
+                    <div class="control__indicator"></div>
+                </label>
+            </div>
+            <div class="col-md-2">
+                <label class="control control--checkbox" *ngIf="showeditvalue == false">Fitment Trail
+                    <input type="checkbox" class="chkShipment" id="shipment3" value="3" (change)="checkbox3($event)">
+                    <div class="control__indicator"></div>
+                </label>
+                <label class="control control--checkbox" *ngIf="showeditvalue == true">Fitment Trail
+                    <input type="checkbox" class="chkboxes" disabled *ngIf="shipment3 != '3'">
+                    <input type="checkbox" name="vehicle" value="Car" checked disabled *ngIf="shipment3 == '3'">
+                    <div class="control__indicator"></div>
+                </label>
+            </div>
+            <div class="col-md-2">
+                <label class="control control--checkbox" *ngIf="showeditvalue == false">Sample Testing
+                    <input type="checkbox" class="chkShipment" id="shipment4" value="4" (change)="checkbox4($event)">
+                    <div class="control__indicator"></div>
+                </label>
+                <label class="control control--checkbox" *ngIf="showeditvalue == true">Sample Testing
+                    <input type="checkbox" class="chkboxes" disabled *ngIf="shipment4 != '4'">
+                    <input type="checkbox" name="vehicle" value="Car" checked disabled *ngIf="shipment4 == '4'">
+                    <div class="control__indicator"></div>
+                </label>
+            </div>
+            <div class="col-md-2">
+                <label class="control control--checkbox" *ngIf="showeditvalue == false">New Development reference
+                    <input type="checkbox" class="chkShipment" id="shipment5" value="5" (change)="checkbox5($event)">
+                    <div class="control__indicator"></div>
+                </label>
+                <label class="control control--checkbox" *ngIf="showeditvalue == true">New Development reference
+                    <input type="checkbox" class="chkboxes" disabled *ngIf="shipment5 != '5'">
+                    <input type="checkbox" name="vehicle" value="Car" checked disabled *ngIf="shipment5 == '5'">
+                    <div class="control__indicator"></div>
+                </label>
+            </div>
+
+            <div class="col-md-3">
+                Expected Date of Scrapping
+                <br>
+                <input formControlName="expectedscrappingdate" type="text" placeholder="DD/MM/YYYY" class="form-control"
+                    autocomplete="off" bsDatepicker id="excepteddate" [minDate]="today"
+                    [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }"
+                    *ngIf="showeditvalue == false">
+                <input formControlName="expectedscrappingdate" type="text" placeholder="DD/MM/YYYY" class="form-control"
+                    autocomplete="off" bsDatepicker id="excepteddate" [minDate]="today"
+                    [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }" *ngIf="showeditvalue == true"
+                    disabled>
+
+            </div>
+
+        </div>
+        <div class="row" style="padding: 24px;width: 100%;" *ngIf="fileuploadid != null">
+            <table class="table table-bordered">
+                <tr class="tableheader" style="background: rgb(235,235,235);">
+                    <th> <span> S.No</span></th>
+                    <th> <span> Part No</span>
+                        <dot></dot>
+                    </th>
+                    <th> <span> Part Description</span>
+                        <dot></dot>
+                    </th>
+                    <th> <span> HSN Code</span>
+                        <dot></dot>
+                    </th>
+                    <th> <span> Quantity</span>
+                        <dot></dot>
+                    </th>
+                    <th> <span> Unit</span>
+                        <dot></dot>
+                    </th>
+                    <th> <span> Rate per Item</span>
+                        <dot></dot>
+                    </th>
+                </tr>
+                <tbody formArrayName="materialDispatchParts">
+                    <tr class="tablerow" *ngFor="let row of rowForms.controls;let j =index" [formGroupName]="j">
+                        <td style="text-align: center;">
+                            {{(j+1)}}
+                        </td>
+                        <td>
+                            <input class="form-control" formControlName="partnumber"  disabled>
+                        </td>
+                        <td>
+                            <input class="form-control" formControlName="description"  disabled>
+
+
+                        </td>
+                        <td>
+                            <input class="form-control" formControlName="hsncode"  disabled>
+                        </td>
+                        <td>
+                            <input class="form-control" formControlName="quantity"  disabled>
+                        </td>
+                        <td>
+                            <input class="form-control" formControlName="unit"  disabled>
+                        </td>
+                        <td>
+                            <input class="form-control" formControlName="rateperitem"  disabled>
+                        </td>
+                    </tr>
+                </tbody>
+
+
+
+            </table>
+        </div>
+
+        <div class="row" style="padding: 10px;width: 100%;">
+            <div style="text-align: right;margin-bottom:30px;">
+
+                <button class="btn btn-primary btn-md" (click)="submitForm()" style="" *ngIf="showeditvalue == false">
+                    Preview</button>
+                <ng-container *ngIf="showeditvalue == true">
+                    <button class="btn btn-primary btn-md" (click)="confirmCancel()"><i
+                            class="fa fa-times"></i>&nbsp;&nbsp;Cancel</button>
+                    &nbsp;&nbsp;&nbsp;
+                    <button class="btn btn-primary btn-md" (click)="finalconfirmsubmit()"><i
+                            class="fa fa-save"></i>&nbsp;&nbsp;Confirm</button>
+                </ng-container>
+            </div>
+
+
+        </div>
+    </form>
+</div>
+
+
+<!-- confirm modal -->
+
+<div class="modal fade" id="confirmSubmit" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-10">
+                        <p class="modalHeader" style="font-weight: 600;">Preview</p>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <br>
+                    <div class="col-md-12">
+                        <p> Are you sure to preview the form ?</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-primary" data-dismiss="modal">No
+                </button>
+                <button type="button" class="btn btn-sm btn-primary" (click)="confirmSubmit()">Yes</button>
+            </div>
+        </div>
+    </div>
+</div>

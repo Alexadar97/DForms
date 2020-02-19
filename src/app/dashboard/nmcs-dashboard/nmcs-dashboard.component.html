@@ -1,0 +1,78 @@
+<div class="row" style="    margin: 30px 0 30px 0;">
+    <div class="col-md-12 ">
+        <div class="card">
+            <div class="row" style="padding-top: 13px;">
+                <div class="col-md-4">
+                    <div class="display-head1">
+                        <label class="head">Requester Yearly Trend</label>&nbsp;&nbsp;&nbsp;
+                          <select name="year" id="year" class="form-control selectbox" (change)="getDashboardCount($event.target.value)">
+                            <ng-container *ngFor="let data of yearlist; let i=index">
+                                <option value={{data}}>{{data}}</option>
+                            </ng-container>
+                    </select>
+                    </div>
+                    <div class="col-md-8"></div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div [chart]="nmcsChart" id="nmcsChart"></div>
+            </div>
+
+        </div>
+    </div>
+    <div class="col-md-12" style="margin-top: 37px;padding: 0px;">
+        <div class="col-md-6">
+            <div class=" card" >
+                <div class="col-md-3">
+                    <h5 >Month Trend</h5>
+                    <div [chart]="monthtrend1" id="monthtrend1"></div>
+                    <label class="total">Total Requester</label>
+                </div>
+                <div class="col-md-9">
+                    <div class="col-md-12">
+                        <div class="col-md-5">
+                        <h5 >Select Duration</h5></div>
+                        <div class="col-md-7" style="padding: 0px;">
+                        <input class="form-control" bsDaterangepicker id="rangedagte" type="text" [bsConfig]="bsConfig" style="font-size: 12px;height: 25px;margin-top:7px"
+                            [(ngModel)]="bsRangeValue" (bsValueChange)="SelectDate($event)" />
+                            </div>
+                        <!-- <label class="head">Exigency</label>&nbsp;&nbsp;&nbsp; -->
+                        <!-- <div style="padding: 6px 0px 0px 0px;">
+                                    <input type="radio" name="yes1" value="yes">Yes&nbsp;
+                                    <input type="radio" name="yes1" value="no">No
+                                </div> -->
+                    </div>
+                    <div [chart]="monthtrend2" id="monthtrend2"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class=" card">
+                <div class="col-md-3">
+                    <h5 >Department Trend</h5>
+                    <div [chart]="monthtrend3" id="monthtrend1"></div>
+                    <label class="total">Total Requester</label>
+                </div>
+                <div class="col-md-9">
+                    <div class="col-md-12">
+                        <div class="col-md-6">
+                        <h5 >Select Department</h5></div>
+                        <div class="col-md-6">
+                        <select class="form-control selectbox" (change)="departmetSelect($event.target.value)">
+                            <ng-container *ngFor="let data of GetDeptDropDown; let i=index">
+                                <option value={{data}}>{{data}}</option>
+                            </ng-container>
+                        </select>
+                        </div>
+                        <!-- <label class="head">Exigency</label>&nbsp;&nbsp;&nbsp; -->
+                        <!-- <div style="padding: 6px 0px 0px 0px;">
+                                    <input type="radio" name="yes2" value="yes">Yes&nbsp;
+                                    <input type="radio" name="yes2" value="no">No
+                                </div> -->
+                    </div>
+                    <div [chart]="monthtrend4" id="monthtrend2"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

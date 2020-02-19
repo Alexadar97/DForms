@@ -1,0 +1,239 @@
+<app-spinner *ngIf="loading"></app-spinner>
+<div class="col-md-2" style="padding: 0;
+background-color: #242536; height: 100vh;">
+<div style="margin-top: 15px;">
+    <p  class="sidetext"(click)="materialnewlist()"routerLinkActive="active" ><i class="fa fa-plus"></i>&nbsp;&nbsp;New
+                Request</p>
+     
+            <p class="sidetext" (click)="uploadpart()" routerLinkActive="active"><i class="fa fa-upload"></i>&nbsp;&nbsp;Upload
+                Partlist</p>
+      
+                <ng-container class="dropdown-item" *ngIf="isStoreUser">
+                  <p class="sidetext" (click)="StockUpload()"><i
+                      class="fa fa-upload"></i>&nbsp;&nbsp;Stock Upload</p>
+                </ng-container>
+      
+           
+        
+          
+    </div>
+</div>
+<div class="col-md-10">
+<div class="row">
+  <div class="col-md-2">
+    <h4>Material Issue Slip</h4>
+  </div>
+  <div class="col-md-2">
+  </div>
+  <div class="col-md-6"></div>
+  <div class="col-md-2" style="padding-right: 40px;">
+   
+  </div>
+</div>
+
+<div class="row" style="
+padding: 10px;
+width: 100%;">
+
+  <form [formGroup]="form">
+
+    <div class="">
+
+      <div class="row">
+        <div class="col-md-2">
+
+          Project <dot></dot>
+          <ng-container *ngIf="status == 'recalled'">
+            <input type="text" class="form-control" value="" formControlName="project" placeholder="Project">
+          </ng-container>
+          <ng-container *ngIf="status != 'recalled'">
+            <input type="text" class="form-control" value="" formControlName="project" placeholder="Project" disabled>
+          </ng-container>
+        </div>
+        <div class="col-md-2">
+         Purpose <dot></dot>
+          <ng-container *ngIf="status == 'recalled'">
+            <input type="text" class="form-control" value="" formControlName="purpose" placeholder="Purpose">
+          </ng-container>
+          <ng-container *ngIf="status != 'recalled'">
+            <input type="text" class="form-control" value="" formControlName="purpose" placeholder="Purpose" disabled>
+          </ng-container>
+        </div>
+        <div class="col-md-2">
+        Contact number <dot></dot>
+        <ng-container *ngIf="status == 'recalled'">
+          <input type="text" class="form-control" value="" formControlName="contactno" placeholder=" Contact Number">
+        </ng-container>
+        <ng-container *ngIf="status != 'recalled'">
+          <input type="text" class="form-control" value="" formControlName="contactno" placeholder=" Contact Number"
+            disabled>
+        </ng-container>
+      </div>
+     
+        <div class="col-md-2">
+
+          HR ID <dot></dot>
+          <ng-container *ngIf="status == 'recalled'">
+            <input type="text" class="form-control" value="" formControlName="hrid" placeholder="HR/1234">
+          </ng-container>
+          <ng-container *ngIf="status != 'recalled'">
+            <input type="text" class="form-control" value="" formControlName="hrid" placeholder="HR/1234" disabled>
+          </ng-container>
+        </div>
+        <!-- <div class="col-md-2">
+
+          Requester Remarks
+
+          <input type="text" class="form-control" value="" formControlName="reqremarks" disabled>
+        </div> -->
+        <ng-container *ngIf="status != 'recalled'">
+          <div class="col-md-2">
+
+            Store Remarks
+
+            <input type="text" class="form-control" value="" formControlName="storeremarks" disabled>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+    <hr>
+    <div class="row">
+      <div class="col-md-12 table-responsive">
+        <table class="table table-bordered" style="width: 100%">
+          <tr class="tableheader">
+            <th style="width:4%">S.No</th>
+            <th>Part Number <dot></dot>
+            </th>
+            <th>Part Description <dot></dot>
+            </th>
+            <th>ZGS <dot></dot>
+            </th>
+            <th>Quantity <dot></dot>
+            </th>
+            <th>Part Availability Check <dot></dot>
+
+            <th>Part Availability Check Status
+            </th>
+            <th> Remarks
+            </th>
+          </tr>
+          <tbody formArrayName="misParts">
+            <tr class="tablerow" *ngFor="let row of rowForms.controls;let j =index" [formGroupName]="j">
+              <td style="text-align: center;">
+                {{(j+1)}}
+              </td>
+              <td>
+                <input type="text" class="form-control" formControlName="partnumber" minlength="8" maxlength="15"
+                  (keypress)="nospace($event)">
+                <small class="text-danger errormsg" *ngIf="
+                  !row.controls.partnumber.valid &&
+                  row.controls.partnumber.touched
+                ">Part Number is required <br>(Should be minimum 8 characters) </small>
+              </td>
+              <td>
+                <input type="text" class="form-control" formControlName="description">
+                <small class="text-danger errormsg" *ngIf="
+                  !row.controls.description.valid &&
+                  row.controls.description.touched
+                ">Part Description is required</small>
+              </td>
+              <td>
+                <input type="text" class="form-control" formControlName="zgs">
+                <small class="text-danger errormsg" *ngIf="
+            !row.controls.zgs.valid &&
+            row.controls.zgs.touched
+          "> ZGS is required</small>
+              </td>
+              <td>
+                <input type="text" class="form-control" formControlName="quantity" (keypress)="keyAlpha($event)">
+
+                <small class="text-danger errormsg" *ngIf="
+            !row.controls.quantity.valid &&
+            row.controls.quantity.touched
+          "> Quantity is required</small>
+              </td>
+              <td style="text-align: center;">
+                <button [disabled]="nextLibAvailable(row.value)" class="btn btn-primary btn-sm"
+                  (click)="checksinglepart(j)">Check Availability </button>
+              </td>
+              <td style="width: 20%;">
+                <ng-container *ngIf="checkavailclick == false">
+                    <input type="text" class="form-control"  formControlName="partavailable" style="" 
+                    disabled>
+                  <!-- <ng-container *ngIf="row.value?.partavailable == 'partnotavailable'">
+                    <input type="text" class="form-control" value="This part is not available" disabled>
+                  </ng-container>
+                  <ng-container *ngIf="row.value?.partavailable == 'partavailable'">
+                    <input type="text" class="form-control" value="This part is available" disabled>
+                  </ng-container>
+                  <ng-container *ngIf="row.value?.partavailable == 'qtynotavailable'">
+                    <input type="text" class="form-control" value="Quantity is not available" disabled>
+                  </ng-container>
+                  <ng-container *ngIf="row.value?.partavailable == 'zgsmismatch'">
+                    <input type="text" class="form-control" value="ZGS mismatch" disabled>
+                  </ng-container> -->
+                </ng-container>
+
+                <ng-container *ngIf="checkavailclick == true">
+                  <input type="text" class="form-control"  formControlName="partavailable" style="" 
+                    disabled>
+                </ng-container>
+              </td>
+              <td>
+                <input type="text" class="form-control" formControlName="partremarks">
+                <small class="text-danger errormsg" *ngIf="
+                  !row.controls.partremarks.valid &&
+                  row.controls.partremarks.touched
+                "> Remarks is required</small>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class="col-md-8"></div>
+      <div class="col-md-4">
+        <label>Remarks <dot></dot></label>
+        <input class="form-control" formControlName="reqremarks" type="text">
+        <br>
+      </div>
+    </div>
+  </form>
+  <br>
+
+  <div style="text-align: right;padding-bottom: 30px;">
+    <button class="btn btn-primary btn-md" (click)="submitForm()"><i class="fa fa-save"></i>&nbsp;&nbsp;Submit</button>
+  </div>
+</div>
+</div>
+
+
+
+<!-- confirm modal -->
+
+<div class="modal fade" id="confirmSubmit" role="dialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-10">
+            <p class="modalHeader" style="font-weight: 600;">Submit</p>
+          </div>
+          <div class="col-md-2">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <br>
+          <div class="col-md-12">
+            <p> Are you sure to submit the form ?</p>
+          </div>
+        </div>
+      </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-sm btn-primary" data-dismiss="modal">No </button>
+      <button type="button" class="btn btn-sm btn-primary" (click)="confirmSubmit()">Yes</button>
+    </div>
+  </div>
+  </div>
+</div>

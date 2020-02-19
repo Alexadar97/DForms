@@ -1,0 +1,79 @@
+<app-spinner *ngIf="loading"></app-spinner>
+<div style="">
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8 lorryImg" style="padding:0px">
+                <img src="./assets/images/login-img.jpg" style="width:100%;height: 100vh;">
+            </div>
+            <div class="col-md-4" style="padding:0px;background: #161515;    height: 100vh;">
+                <div class="form-align">
+                    <div class="brand">
+                        <img class="brand-img" src="./assets/images/logo.png" alt="..." style="   width: 75%; position: relative;
+                                top: 15px;">
+                    </div>
+                    <h3> Forms Portal</h3>
+
+                    <form [formGroup]="form" style="    margin-top: 40px;">
+                      <h5 style="    color: #fff;
+                      font-size: 16px;">Login</h5>
+                        <div class="input-form">
+                            <div style="margin-bottom:3%;">
+                                <input type="text" class="form-control" placeholder="Short ID" formControlName="shortid">
+                                <!-- <i class=" 	fa fa-user field-icon-start"></i> -->
+                            </div>
+
+                            <div style="margin-top:1%;">
+                                <input type="password" class="form-control" placeholder="Password"formControlName="password"
+                                    (keydown)="enterkey($event.keyCode)">
+                                <!-- <i class=" 	fa fa-key field-icon-start"></i> -->
+                            </div>
+
+                            <!-- FOR TESTING -->
+                            <div style="margin-top:3%;">
+                                <select name="" id="" class="form-control" formControlName="type">
+                                    <option value="admin">Admin</option>
+                                    <option value="requester">Requester</option>
+                                    <option value="store">Store</option>
+                                    <option value="sm">SM</option>
+                                    <option value="ipl">IPL</option>
+                                    <option value="budgetapprover">Budget Approver</option>
+                                    <option value="partsplanner">Parts Planner</option>
+                                    <option value="protovehicleowner">Proto Vehicle Owner</option>
+                                    <option value="hdtsupervisor">HDT Supervisor</option>
+                                    <option value="mdtsupervisor">MDT Supervisor</option>
+                                    <option value="aggregatesupervisor">Aggregate Supervisor</option>
+                                    <option value="eandesupervisor">E&E Supervisor</option>
+                                    <option value="ppssupervisor">PPS Supervisor</option>
+                                    <option value="maintenancesupervisor">Maintenance Supervisor</option>
+                                    <option value="mechanicalsupervisor">Mechanical Supervisor</option>
+                                    <option value="bca">Proto BCA</option>
+                                    <option value="L4">L4</option>
+                                    <option value="L3">L3</option>
+                                    <option value="tcplate">TC Plate Coordinator</option>
+                                    <option value="user">User</option>
+                                    <option value="protoL4">Proto L4</option>
+                                    <option value="mechanicalbca">PM Work Request BCA</option>
+                                </select>
+
+                            </div>
+                        </div>
+                    </form>
+
+                    <div style="margin-top:3%;    text-align: right;">
+                        <button class="btn btn-primary btn-submit"(click)="onSubmit()">Sign In &nbsp;&nbsp;<i
+                                class="fa fa-arrow-right"></i></button>
+                        <!-- <i class="fa fa-arrow-right field-icon" aria-hidden="true"></i>
+                        <input type="button" class="btn btn-primary btn-submit"
+                            style="width: 30%;border-radius: 1px;margin-right: 50px;padding-left: 45px;" value="Login"
+                            (click)="onSubmit()"> -->
+
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>

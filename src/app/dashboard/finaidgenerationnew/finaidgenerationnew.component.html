@@ -1,0 +1,1269 @@
+
+<app-spinner *ngIf="loading"></app-spinner>
+<br>
+<div class="row">
+    <div class="col-md-4">
+        <div class="col-md-12">
+            <h4>Finas ID Generation</h4>
+        </div>
+    </div>
+    <div class="col-md-6"></div>
+    <div class="col-md-2" style="padding-right: 40px;">
+        <button class="btn btn-default" style="float:right" (click)="goBack()"><i
+                class="icon-chevron-left"></i>&nbsp;&nbsp;Back</button>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row" id="bordertop">
+        <div class="col-md-2">
+            <h4>Vehicle Build Level</h4>
+        </div>
+        <div class="col-md-2">
+            <label class="checkboxdesign">
+                <h5 id="top">Proto</h5>
+                <input type="checkbox" value="" formControlName="vehicle">
+                <span class="checkmark"></span>
+            </label>
+        </div>
+        <div class="col-md-2">
+            <label class="checkboxdesign">
+                <h5 id="top">Production</h5>
+                <input type="checkbox" value="" formControlName="vehicle">
+                <span class="checkmark"></span>
+            </label>
+        </div>
+        <div class="col-md-2">
+            <label class="checkboxdesign">
+                <h5 id="top">P-Production</h5>
+
+                <input type="checkbox" value="" formControlName="vehicle">
+                <span class="checkmark"></span>
+            </label>
+        </div>
+        <div class="col-md-2">
+            <label class="checkboxdesign">
+                <h5 id="top">Convertion</h5>
+                <input type="checkbox" value="" formControlName="vehicle">
+                <span class="checkmark"></span>
+            </label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12" id="margin" style="
+        padding-bottom: 10px;">
+
+            <h5>Reason
+
+            </h5>
+            <textarea rows="1" class="form-control" name="comment" form="usrform">
+                   </textarea>
+
+
+        </div>
+    </div>
+    <div class="row" id="paddingbottom">
+
+        <div class="col-md-4">
+
+            <h5> Technician Name</h5>
+
+
+            <input type="text" class="form-control" value="" formControlName="storagetype">
+
+            <small class="text-danger errormsg" *ngIf="
+          !form.controls.storagetype.valid &&
+          form.controls.storagetype.touched
+        ">Name of Requester is required</small>
+
+
+        </div>
+        <div class="col-md-4">
+
+            <h5> Date</h5>
+
+
+            <input type="text" class="form-control" value="" formControlName="department">
+            <small class="text-danger errormsg" *ngIf="
+                        !form.controls.department.valid &&
+                        form.controls.department.touched
+                      ">Department is required</small>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <h5> Hours</h5>
+
+
+            <input type="text" class="form-control" value="" formControlName="purpose">
+            <small class="text-danger errormsg" *ngIf="
+              !form.controls.purpose.valid &&
+              form.controls.purpose.touched
+            ">Purpose is required</small>
+        </div>
+    </div>
+    <div class="row" id="paddingbottom">
+        <div class="col-md-6">
+            <div class="row" id="bordertop">
+                <div class="col-md-4">
+                    <h4>Vehicle Build Level</h4>
+                </div>
+                <div class="col-md-2">
+                    <label class="checkboxdesign">
+                        <h5 id="top">Tail</h5>
+                        <input type="checkbox" value="" formControlName="vehicle">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div class="col-md-2">
+                    <label class="checkboxdesign">
+                        <h5 id="top">C</h5>
+                        <input type="checkbox" value="" formControlName="vehicle">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div class="col-md-2">
+                    <label class="checkboxdesign">
+                        <h5 id="top">D</h5>
+
+                        <input type="checkbox" value="" formControlName="vehicle">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <h5> Vehicle Specifiaction</h5>
+
+
+                    <input type="text" class="form-control" value="" formControlName="purpose">
+                    <small class="text-danger errormsg" *ngIf="
+                              !form.controls.purpose.valid &&
+                              form.controls.purpose.touched
+                            ">Purpose is required</small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <h5> Build BY</h5>
+
+
+                    <input type="text" class="form-control" value="" formControlName="purpose">
+                    <small class="text-danger errormsg" *ngIf="
+                                  !form.controls.purpose.valid &&
+                                  form.controls.purpose.touched
+                                ">Purpose is required</small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <h5> Vin Number</h5>
+
+
+                    <input type="text" class="form-control" value="" formControlName="purpose">
+                    <small class="text-danger errormsg" *ngIf="
+                                      !form.controls.purpose.valid &&
+                                      form.controls.purpose.touched
+                                    ">Purpose is required</small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <h5> Vehicle Nick Name</h5>
+
+
+                    <input type="text" class="form-control" value="" formControlName="purpose">
+                    <small class="text-danger errormsg" *ngIf="
+                                          !form.controls.purpose.valid &&
+                                          form.controls.purpose.touched
+                                        ">Purpose is required</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row" id="bordertop">
+                <div class="col-md-4">
+                    <h4>Vehicle</h4>
+                </div>
+                <div class="col-md-2">
+                    <label class="checkboxdesign">
+                        <h5 id="top">HDT</h5>
+                        <input type="checkbox" value="" formControlName="vehicle">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div class="col-md-2">
+                    <label class="checkboxdesign">
+                        <h5 id="top">MDT</h5>
+                        <input type="checkbox" value="" formControlName="vehicle">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <h5>Test Purpose</h5>
+
+
+                    <input type="text" class="form-control" value="" formControlName="purpose">
+                    <small class="text-danger errormsg" *ngIf="
+                                  !form.controls.purpose.valid &&
+                                  form.controls.purpose.touched
+                                ">Purpose is required</small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <h5> Recived Date In R&D</h5>
+
+
+                    <input type="text" class="form-control" value="" formControlName="purpose">
+                    <small class="text-danger errormsg" *ngIf="
+                                      !form.controls.purpose.valid &&
+                                      form.controls.purpose.touched
+                                    ">Purpose is required</small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <h5> Invoice NO./Date</h5>
+
+
+                    <input type="text" class="form-control" value="" formControlName="purpose">
+                    <small class="text-danger errormsg" *ngIf="
+                                          !form.controls.purpose.valid &&
+                                          form.controls.purpose.touched
+                                        ">Purpose is required</small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <h5> Approver L4</h5>
+
+
+                    <input type="text" class="form-control" value="" formControlName="purpose">
+                    <small class="text-danger errormsg" *ngIf="
+                                              !form.controls.purpose.valid &&
+                                              form.controls.purpose.touched
+                                            ">Purpose is required</small>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <h3>Cabin</h3>
+        </div>
+    </div>
+    <div class="row" id="paddingbottom">
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-4">
+                    <!-- <h4>Vehicle Build Level</h4> -->
+                </div>
+                <!-- <div class="col-md-2">
+                    <label class="checkboxdesign">
+                        <h5 id="top">Tail</h5>
+                        <input type="checkbox" value="" formControlName="vehicle">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div class="col-md-2">
+                    <label class="checkboxdesign">
+                        <h5 id="top">C</h5>
+                        <input type="checkbox" value="" formControlName="vehicle">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div class="col-md-2">
+                    <label class="checkboxdesign">
+                        <h5 id="top">D</h5>
+
+                        <input type="checkbox" value="" formControlName="vehicle">
+                        <span class="checkmark"></span>
+                    </label>
+                </div> -->
+
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <h5> Cabin-Model</h5>
+
+
+                    <input type="text" class="form-control" value="" formControlName="purpose">
+                    <small class="text-danger errormsg" *ngIf="
+                                      !form.controls.purpose.valid &&
+                                      form.controls.purpose.touched
+                                    ">Purpose is required</small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <h5> Cabin Color</h5>
+
+
+                    <input type="text" class="form-control" value="" formControlName="purpose">
+                    <small class="text-danger errormsg" *ngIf="
+                                          !form.controls.purpose.valid &&
+                                          form.controls.purpose.touched
+                                        ">Purpose is required</small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <h5> A/c-NonA/c</h5>
+
+
+                    <input type="text" class="form-control" value="" formControlName="purpose">
+                    <small class="text-danger errormsg" *ngIf="
+                                              !form.controls.purpose.valid &&
+                                              form.controls.purpose.touched
+                                            ">Purpose is required</small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <h5> Cabin Type (Day/Day-Night)</h5>
+
+
+                    <input type="text" class="form-control" value="" formControlName="purpose">
+                    <small class="text-danger errormsg" *ngIf="
+                                                  !form.controls.purpose.valid &&
+                                                  form.controls.purpose.touched
+                                                ">Purpose is required</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-4">
+                    <!-- <h4>Vehicle</h4> -->
+                </div>
+                <!-- <div class="col-md-2">
+                    <label class="checkboxdesign">
+                        <h5 id="top">HDT</h5>
+                        <input type="checkbox" value="" formControlName="vehicle">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <div class="col-md-2">
+                    <label class="checkboxdesign">
+                        <h5 id="top">MDT</h5>
+                        <input type="checkbox" value="" formControlName="vehicle">
+                        <span class="checkmark"></span>
+                    </label>
+                </div> -->
+
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <h5>Cabin Part No</h5>
+
+
+                    <input type="text" class="form-control" value="" formControlName="purpose">
+                    <small class="text-danger errormsg" *ngIf="
+                                          !form.controls.purpose.valid &&
+                                          form.controls.purpose.touched
+                                        ">Purpose is required</small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <h5> Cabin Serial No</h5>
+
+
+                    <input type="text" class="form-control" value="" formControlName="purpose">
+                    <small class="text-danger errormsg" *ngIf="
+                                              !form.controls.purpose.valid &&
+                                              form.controls.purpose.touched
+                                            ">Purpose is required</small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <h5>Cabin Make (Local/Imported)</h5>
+
+
+                    <input type="text" class="form-control" value="" formControlName="purpose">
+                    <small class="text-danger errormsg" *ngIf="
+                                                  !form.controls.purpose.valid &&
+                                                  form.controls.purpose.touched
+                                                ">Purpose is required</small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <h5> ID Generation Date</h5>
+
+
+                    <input type="text" class="form-control" value="" formControlName="purpose">
+                    <small class="text-danger errormsg" *ngIf="
+                                                      !form.controls.purpose.valid &&
+                                                      form.controls.purpose.touched
+                                                    ">Purpose is required</small>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <h3>Engine</h3>
+        </div>
+    </div>
+    <div class="row" id="paddingbottom">
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-4">
+                    <!-- <h4>Vehicle Build Level</h4> -->
+                </div>
+                <!-- <div class="col-md-2">
+                        <label class="checkboxdesign">
+                            <h5 id="top">Tail</h5>
+                            <input type="checkbox" value="" formControlName="vehicle">
+                            <span class="checkmark"></span>
+                        </label>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="checkboxdesign">
+                            <h5 id="top">C</h5>
+                            <input type="checkbox" value="" formControlName="vehicle">
+                            <span class="checkmark"></span>
+                        </label>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="checkboxdesign">
+                            <h5 id="top">D</h5>
+
+                            <input type="checkbox" value="" formControlName="vehicle">
+                            <span class="checkmark"></span>
+                        </label>
+                    </div> -->
+
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <h5> Engine Specification</h5>
+
+
+                    <input type="text" class="form-control" value="" formControlName="purpose">
+                    <small class="text-danger errormsg" *ngIf="
+                                          !form.controls.purpose.valid &&
+                                          form.controls.purpose.touched
+                                        ">Purpose is required</small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <h5> Engine Serial Number</h5>
+
+
+                    <input type="text" class="form-control" value="" formControlName="purpose">
+                    <small class="text-danger errormsg" *ngIf="
+                                              !form.controls.purpose.valid &&
+                                              form.controls.purpose.touched
+                                            ">Purpose is required</small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <h5> Supplier Name (If any)</h5>
+
+
+                    <input type="text" class="form-control" value="" formControlName="purpose">
+                    <small class="text-danger errormsg" *ngIf="
+                                                  !form.controls.purpose.valid &&
+                                                  form.controls.purpose.touched
+                                                ">Purpose is required</small>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-4">
+                    <!-- <h4>Vehicle</h4> -->
+                </div>
+                <!-- <div class="col-md-2">
+                        <label class="checkboxdesign">
+                            <h5 id="top">HDT</h5>
+                            <input type="checkbox" value="" formControlName="vehicle">
+                            <span class="checkmark"></span>
+                        </label>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="checkboxdesign">
+                            <h5 id="top">MDT</h5>
+                            <input type="checkbox" value="" formControlName="vehicle">
+                            <span class="checkmark"></span>
+                        </label>
+                    </div> -->
+
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <h5>Engine Part No</h5>
+
+
+                    <input type="text" class="form-control" value="" formControlName="purpose">
+                    <small class="text-danger errormsg" *ngIf="
+                                              !form.controls.purpose.valid &&
+                                              form.controls.purpose.touched
+                                            ">Purpose is required</small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <h5> Make (Local/Imported)</h5>
+
+
+                    <input type="text" class="form-control" value="" formControlName="purpose">
+                    <small class="text-danger errormsg" *ngIf="
+                                                  !form.controls.purpose.valid &&
+                                                  form.controls.purpose.touched
+                                                ">Purpose is required</small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <h5>ID Generation Date</h5>
+
+
+                    <input type="text" class="form-control" value="" formControlName="purpose">
+                    <small class="text-danger errormsg" *ngIf="
+                                                      !form.controls.purpose.valid &&
+                                                      form.controls.purpose.touched
+                                                    ">Purpose is required</small>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h3>Axles</h3>
+        </div>
+    </div>
+    <div class="row" id="paddingbottom">
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-4">
+                    <b> <u>
+                            <h4>Front Axle</h4>
+                        </u></b>
+                </div>
+                <!-- <div class="col-md-2">
+                            <label class="checkboxdesign">
+                                <h5 id="top">Tail</h5>
+                                <input type="checkbox" value="" formControlName="vehicle">
+                                <span class="checkmark"></span>
+                            </label>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="checkboxdesign">
+                                <h5 id="top">C</h5>
+                                <input type="checkbox" value="" formControlName="vehicle">
+                                <span class="checkmark"></span>
+                            </label>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="checkboxdesign">
+                                <h5 id="top">D</h5>
+
+                                <input type="checkbox" value="" formControlName="vehicle">
+                                <span class="checkmark"></span>
+                            </label>
+                        </div> -->
+
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <h5> Axle Specifiaction</h5>
+
+
+                    <input type="text" class="form-control" value="" formControlName="purpose">
+                    <small class="text-danger errormsg" *ngIf="
+                                              !form.controls.purpose.valid &&
+                                              form.controls.purpose.touched
+                                            ">Purpose is required</small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <h5>Axle Part No </h5>
+
+
+                    <input type="text" class="form-control" value="" formControlName="purpose">
+                    <small class="text-danger errormsg" *ngIf="
+                                                  !form.controls.purpose.valid &&
+                                                  form.controls.purpose.touched
+                                                ">Purpose is required</small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <h5>Axle Serial Number </h5>
+
+
+                    <input type="text" class="form-control" value="" formControlName="purpose">
+                    <small class="text-danger errormsg" *ngIf="
+                                                      !form.controls.purpose.valid &&
+                                                      form.controls.purpose.touched
+                                                    ">Purpose is required</small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <h5> Make(Local/Imported)</h5>
+
+
+                    <input type="text" class="form-control" value="" formControlName="purpose">
+                    <small class="text-danger errormsg" *ngIf="
+                                                          !form.controls.purpose.valid &&
+                                                          form.controls.purpose.touched
+                                                        ">Purpose is required</small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <h5> ID Generation Date</h5>
+
+
+                    <input type="text" class="form-control" value="" formControlName="purpose">
+                    <small class="text-danger errormsg" *ngIf="
+                                                              !form.controls.purpose.valid &&
+                                                              form.controls.purpose.touched
+                                                            ">Purpose is required</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-4">
+                    <u> <b>
+                            <h4>Rear Axle</h4>
+                        </b></u>
+                </div>
+                <!-- <div class="col-md-2">
+                                <label class="checkboxdesign">
+                                    <h5 id="top">Tail</h5>
+                                    <input type="checkbox" value="" formControlName="vehicle">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="checkboxdesign">
+                                    <h5 id="top">C</h5>
+                                    <input type="checkbox" value="" formControlName="vehicle">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="checkboxdesign">
+                                    <h5 id="top">D</h5>
+
+                                    <input type="checkbox" value="" formControlName="vehicle">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div> -->
+
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <h5> Axle Specifiaction</h5>
+
+
+                    <input type="text" class="form-control" value="" formControlName="purpose">
+                    <small class="text-danger errormsg" *ngIf="
+                                                  !form.controls.purpose.valid &&
+                                                  form.controls.purpose.touched
+                                                ">Purpose is required</small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <h5>Axle Part No </h5>
+
+
+                    <input type="text" class="form-control" value="" formControlName="purpose">
+                    <small class="text-danger errormsg" *ngIf="
+                                                      !form.controls.purpose.valid &&
+                                                      form.controls.purpose.touched
+                                                    ">Purpose is required</small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <h5>Axle Serial Number </h5>
+
+
+                    <input type="text" class="form-control" value="" formControlName="purpose">
+                    <small class="text-danger errormsg" *ngIf="
+                                                          !form.controls.purpose.valid &&
+                                                          form.controls.purpose.touched
+                                                        ">Purpose is required</small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <h5> Make(Local/Imported)</h5>
+
+
+                    <input type="text" class="form-control" value="" formControlName="purpose">
+                    <small class="text-danger errormsg" *ngIf="
+                                                              !form.controls.purpose.valid &&
+                                                              form.controls.purpose.touched
+                                                            ">Purpose is required</small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <h5> ID Generation Date</h5>
+
+
+                    <input type="text" class="form-control" value="" formControlName="purpose">
+                    <small class="text-danger errormsg" *ngIf="
+                                                                  !form.controls.purpose.valid &&
+                                                                  form.controls.purpose.touched
+                                                                ">Purpose is required</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" id="paddingbottom">
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-4">
+                    <b> <u>
+                            <h4>Front Axle || (Twin Axle)</h4>
+                        </u></b>
+                </div>
+                <!-- <div class="col-md-2">
+                                <label class="checkboxdesign">
+                                    <h5 id="top">Tail</h5>
+                                    <input type="checkbox" value="" formControlName="vehicle">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="checkboxdesign">
+                                    <h5 id="top">C</h5>
+                                    <input type="checkbox" value="" formControlName="vehicle">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="checkboxdesign">
+                                    <h5 id="top">D</h5>
+
+                                    <input type="checkbox" value="" formControlName="vehicle">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div> -->
+
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <h5> Axle Specifiaction</h5>
+
+
+                    <input type="text" class="form-control" value="" formControlName="purpose">
+                    <small class="text-danger errormsg" *ngIf="
+                                                  !form.controls.purpose.valid &&
+                                                  form.controls.purpose.touched
+                                                ">Purpose is required</small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <h5>Axle Part No </h5>
+
+
+                    <input type="text" class="form-control" value="" formControlName="purpose">
+                    <small class="text-danger errormsg" *ngIf="
+                                                      !form.controls.purpose.valid &&
+                                                      form.controls.purpose.touched
+                                                    ">Purpose is required</small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <h5>Axle Serial Number </h5>
+
+
+                    <input type="text" class="form-control" value="" formControlName="purpose">
+                    <small class="text-danger errormsg" *ngIf="
+                                                          !form.controls.purpose.valid &&
+                                                          form.controls.purpose.touched
+                                                        ">Purpose is required</small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <h5> Make(Local/Imported)</h5>
+
+
+                    <input type="text" class="form-control" value="" formControlName="purpose">
+                    <small class="text-danger errormsg" *ngIf="
+                                                              !form.controls.purpose.valid &&
+                                                              form.controls.purpose.touched
+                                                            ">Purpose is required</small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <h5> ID Generation Date</h5>
+
+
+                    <input type="text" class="form-control" value="" formControlName="purpose">
+                    <small class="text-danger errormsg" *ngIf="
+                                                                  !form.controls.purpose.valid &&
+                                                                  form.controls.purpose.touched
+                                                                ">Purpose is required</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-4">
+                    <u> <b>
+                            <h4>Tag Axle</h4>
+                        </b></u>
+                </div>
+                <!-- <div class="col-md-2">
+                                    <label class="checkboxdesign">
+                                        <h5 id="top">Tail</h5>
+                                        <input type="checkbox" value="" formControlName="vehicle">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <div class="col-md-2">
+                                    <label class="checkboxdesign">
+                                        <h5 id="top">C</h5>
+                                        <input type="checkbox" value="" formControlName="vehicle">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <div class="col-md-2">
+                                    <label class="checkboxdesign">
+                                        <h5 id="top">D</h5>
+
+                                        <input type="checkbox" value="" formControlName="vehicle">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div> -->
+
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <h5> Axle Specifiaction</h5>
+
+
+                    <input type="text" class="form-control" value="" formControlName="purpose">
+                    <small class="text-danger errormsg" *ngIf="
+                                                      !form.controls.purpose.valid &&
+                                                      form.controls.purpose.touched
+                                                    ">Purpose is required</small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <h5>Axle Part No </h5>
+
+
+                    <input type="text" class="form-control" value="" formControlName="purpose">
+                    <small class="text-danger errormsg" *ngIf="
+                                                          !form.controls.purpose.valid &&
+                                                          form.controls.purpose.touched
+                                                        ">Purpose is required</small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <h5>Axle Serial Number </h5>
+
+
+                    <input type="text" class="form-control" value="" formControlName="purpose">
+                    <small class="text-danger errormsg" *ngIf="
+                                                              !form.controls.purpose.valid &&
+                                                              form.controls.purpose.touched
+                                                            ">Purpose is required</small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <h5> Make(Local/Imported)</h5>
+
+
+                    <input type="text" class="form-control" value="" formControlName="purpose">
+                    <small class="text-danger errormsg" *ngIf="
+                                                                  !form.controls.purpose.valid &&
+                                                                  form.controls.purpose.touched
+                                                                ">Purpose is required</small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <h5> ID Generation Date</h5>
+
+
+                    <input type="text" class="form-control" value="" formControlName="purpose">
+                    <small class="text-danger errormsg" *ngIf="
+                                                                      !form.controls.purpose.valid &&
+                                                                      form.controls.purpose.touched
+                                                                    ">Purpose is required</small>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" id="paddingbottom">
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-4">
+                    <b> <u>
+                            <h4>Tandum 1</h4>
+                        </u></b>
+                </div>
+                <!-- <div class="col-md-2">
+                                    <label class="checkboxdesign">
+                                        <h5 id="top">Tail</h5>
+                                        <input type="checkbox" value="" formControlName="vehicle">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <div class="col-md-2">
+                                    <label class="checkboxdesign">
+                                        <h5 id="top">C</h5>
+                                        <input type="checkbox" value="" formControlName="vehicle">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <div class="col-md-2">
+                                    <label class="checkboxdesign">
+                                        <h5 id="top">D</h5>
+
+                                        <input type="checkbox" value="" formControlName="vehicle">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div> -->
+
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <h5> Axle Specifiaction</h5>
+
+
+                    <input type="text" class="form-control" value="" formControlName="purpose">
+                    <small class="text-danger errormsg" *ngIf="
+                                                      !form.controls.purpose.valid &&
+                                                      form.controls.purpose.touched
+                                                    ">Purpose is required</small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <h5>Axle Part No </h5>
+
+
+                    <input type="text" class="form-control" value="" formControlName="purpose">
+                    <small class="text-danger errormsg" *ngIf="
+                                                          !form.controls.purpose.valid &&
+                                                          form.controls.purpose.touched
+                                                        ">Purpose is required</small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <h5>Axle Serial Number </h5>
+
+
+                    <input type="text" class="form-control" value="" formControlName="purpose">
+                    <small class="text-danger errormsg" *ngIf="
+                                                              !form.controls.purpose.valid &&
+                                                              form.controls.purpose.touched
+                                                            ">Purpose is required</small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <h5> Make(Local/Imported)</h5>
+
+
+                    <input type="text" class="form-control" value="" formControlName="purpose">
+                    <small class="text-danger errormsg" *ngIf="
+                                                                  !form.controls.purpose.valid &&
+                                                                  form.controls.purpose.touched
+                                                                ">Purpose is required</small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <h5> ID Generation Date</h5>
+
+
+                    <input type="text" class="form-control" value="" formControlName="purpose">
+                    <small class="text-danger errormsg" *ngIf="
+                                                                      !form.controls.purpose.valid &&
+                                                                      form.controls.purpose.touched
+                                                                    ">Purpose is required</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-4">
+                    <u> <b>
+                            <h4>Tandum 2</h4>
+                        </b></u>
+                </div>
+                <!-- <div class="col-md-2">
+                                        <label class="checkboxdesign">
+                                            <h5 id="top">Tail</h5>
+                                            <input type="checkbox" value="" formControlName="vehicle">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label class="checkboxdesign">
+                                            <h5 id="top">C</h5>
+                                            <input type="checkbox" value="" formControlName="vehicle">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label class="checkboxdesign">
+                                            <h5 id="top">D</h5>
+
+                                            <input type="checkbox" value="" formControlName="vehicle">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                    </div> -->
+
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <h5> Axle Specifiaction</h5>
+
+
+                    <input type="text" class="form-control" value="" formControlName="purpose">
+                    <small class="text-danger errormsg" *ngIf="
+                                                          !form.controls.purpose.valid &&
+                                                          form.controls.purpose.touched
+                                                        ">Purpose is required</small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <h5>Axle Part No </h5>
+
+
+                    <input type="text" class="form-control" value="" formControlName="purpose">
+                    <small class="text-danger errormsg" *ngIf="
+                                                              !form.controls.purpose.valid &&
+                                                              form.controls.purpose.touched
+                                                            ">Purpose is required</small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <h5>Axle Serial Number </h5>
+
+
+                    <input type="text" class="form-control" value="" formControlName="purpose">
+                    <small class="text-danger errormsg" *ngIf="
+                                                                  !form.controls.purpose.valid &&
+                                                                  form.controls.purpose.touched
+                                                                ">Purpose is required</small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <h5> Make(Local/Imported)</h5>
+
+
+                    <input type="text" class="form-control" value="" formControlName="purpose">
+                    <small class="text-danger errormsg" *ngIf="
+                                                                      !form.controls.purpose.valid &&
+                                                                      form.controls.purpose.touched
+                                                                    ">Purpose is required</small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <h5> ID Generation Date</h5>
+
+
+                    <input type="text" class="form-control" value="" formControlName="purpose">
+                    <small class="text-danger errormsg" *ngIf="
+                                                                          !form.controls.purpose.valid &&
+                                                                          form.controls.purpose.touched
+                                                                        ">Purpose is required</small>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+                <b> <u> <h3>Pusher Axle</h3></u></b>
+        </div>
+    </div>
+    <div class="row" id="paddingbottom">
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-4">
+                    <!-- <h4>Vehicle Build Level</h4> -->
+                </div>
+                <!-- <div class="col-md-2">
+                        <label class="checkboxdesign">
+                            <h5 id="top">Tail</h5>
+                            <input type="checkbox" value="" formControlName="vehicle">
+                            <span class="checkmark"></span>
+                        </label>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="checkboxdesign">
+                            <h5 id="top">C</h5>
+                            <input type="checkbox" value="" formControlName="vehicle">
+                            <span class="checkmark"></span>
+                        </label>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="checkboxdesign">
+                            <h5 id="top">D</h5>
+
+                            <input type="checkbox" value="" formControlName="vehicle">
+                            <span class="checkmark"></span>
+                        </label>
+                    </div> -->
+
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <h5> Axle Specification</h5>
+
+
+                    <input type="text" class="form-control" value="" formControlName="purpose">
+                    <small class="text-danger errormsg" *ngIf="
+                                          !form.controls.purpose.valid &&
+                                          form.controls.purpose.touched
+                                        ">Purpose is required</small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <h5> Axle Part NO</h5>
+
+
+                    <input type="text" class="form-control" value="" formControlName="purpose">
+                    <small class="text-danger errormsg" *ngIf="
+                                              !form.controls.purpose.valid &&
+                                              form.controls.purpose.touched
+                                            ">Purpose is required</small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <h5>  Axle Serial NO</h5>
+
+
+                    <input type="text" class="form-control" value="" formControlName="purpose">
+                    <small class="text-danger errormsg" *ngIf="
+                                                  !form.controls.purpose.valid &&
+                                                  form.controls.purpose.touched
+                                                ">Purpose is required</small>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <h5> Make(Local/Imported)</h5>
+
+
+                    <input type="text" class="form-control" value="" formControlName="purpose">
+                    <small class="text-danger errormsg" *ngIf="
+                                                      !form.controls.purpose.valid &&
+                                                      form.controls.purpose.touched
+                                                    ">Purpose is required</small>
+                </div>
+            </div>
+            <div class="row">
+                    <div class="col-md-12">
+
+                        <h5> ID Generation</h5>
+
+
+                        <input type="text" class="form-control" value="" formControlName="purpose">
+                        <small class="text-danger errormsg" *ngIf="
+                                                          !form.controls.purpose.valid &&
+                                                          form.controls.purpose.touched
+                                                        ">Purpose is required</small>
+                    </div>
+                </div>
+        </div>
+    <div class="col-md-6">
+        <h6 class="remarks">Remarks</h6>
+          <textarea class="remark-text" formControlName="remark"></textarea>
+          <small class="text-danger errormsg" *ngIf="
+            !finasidgenerationform.controls.pusheraxle.controls.remark.valid && finasidgenerationform.controls.pusheraxle.controls.remark.touched
+          ">Axle Specification </small>
+    </div>
+    </div>
+</div>

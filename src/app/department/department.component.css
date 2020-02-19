@@ -1,0 +1,8 @@
+tr > th{
+    text-align: center !important;
+    padding: 6px;
+}
+tr > td{
+    text-align: center !important;
+    padding: 6px;
+}

@@ -1,0 +1,6 @@
+<span [formGroup]="parentForm">
+    <span style="">{{this.label}}</span>
+    <dot *ngIf="isRequired == 'true' && this.label != null && this.label.length > 0"></dot>
+    <input type="number" style="margin-top:8px;" class="form-control" value="" [formControlName]="prop" placeholder="{{placeholder}}" min="{{min}}" max="{{max}}">
+    <errMsg *ngIf="isRequired == 'true'" [parentForm]="parentForm" [prop]="prop" [input]="prop"></errMsg>
+</span>

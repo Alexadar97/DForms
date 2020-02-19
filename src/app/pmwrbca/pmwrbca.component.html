@@ -1,0 +1,386 @@
+<app-spinner *ngIf="loading"></app-spinner>
+<div class="container">
+<div class="row">
+  <div class="col-md-10">
+    <h4 class="first_head">Machine Shop Work</h4>
+  </div>
+  <div class="col-md-2" style="padding-right: 30px;">
+    <button class="btn btn-default" style="float: right;margin:8px 0px 0px 0px" (click)="goBack()"><i
+        class="icon-chevron-left"></i>&nbsp;&nbsp;Back</button>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <h4 class="sec_head">Form Details</h4>
+  </div>
+</div>
+<div class="row">
+  <form [formGroup]="pmworkreqform" style="padding: 10px;width: 100%;">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="row" style="margin-top:10px;">
+          <div class="col-md-6  table-responsive">
+            <table class="table proto-table table-bordered">
+              <tr>
+                <th>Date of Request</th>
+                <td colspan="3"><input type="text" id="input" class="form-control" formControlName="createddate"
+                    disabled>
+                </td>
+              </tr>
+              <tr>
+                <th>Form ID</th>
+                <td colspan="3"><input type="text" id="input" class="form-control" formControlName="mswformid" disabled>
+                </td>
+              </tr>
+              <tr>
+                <th>Request Name</th>
+                <td colspan="3"><input type="text" id="input" class="form-control" formControlName="requestername"
+                    disabled></td>
+              </tr>
+              <tr>
+                <th>Department</th>
+                <td colspan="3"><input type="text" id="input" class="form-control" formControlName="department"
+                    disabled>
+                </td>
+              </tr>
+              <tr>
+                <th>CAD</th>
+                <td style="vertical-align: middle;">
+                  <ng-container *ngIf="card == 1">
+                    <input type="text" id="input" class="form-control" value="Yes" disabled>
+                  </ng-container>
+                  <ng-container *ngIf="card == 0">
+                    <input type="text" id="input" class="form-control" value="No" disabled>
+                  </ng-container>
+                </td>
+                <th style="vertical-align: middle;">
+                  <ng-container *ngIf="card == 0">
+                    CAD Remarks
+                  </ng-container>
+                  <ng-container *ngIf="card == 1">
+                    Attachment  File
+                  </ng-container>
+                </th>
+                <td style="vertical-align: middle;" style="width: 26%;padding: 5px">
+                  <div *ngIf="card == 1" style="height: 14vh;overflow: auto;">
+                    <table>
+                      <section class="file-scroll">
+                        <table>
+                          <ng-container *ngFor="let fileList of pmwrFileListData">
+                            <tr>
+                              <td style="border: none;padding:0px 0px 10px 0px;background: #fff !important;">{{fileList.filename}}</td>
+                              <td style="border: none;padding:0px 0px 10px 0px;width: 8%;background: #fff !important;"><i class="fa fa-download"
+                                  (click)="downlaodfile(fileList.filename+'.'+fileList.fileformat ,fileList.id)"
+                                  style="font-size: 15px;color: #130f0fb5;cursor: pointer;"></i></td>
+                            </tr>
+                          </ng-container>
+                        </table>
+                      </section>
+                    </table>
+                  </div>
+                  <ng-container *ngIf="card == 0">
+                    <input style="width: 132px;" type="text" id="input" class="form-control" formControlName="cadtext"
+                      disabled>
+                  </ng-container>
+                </td>
+              </tr>
+              <tr>
+                <th>Cost Center</th>
+                <td><input style="width: 132px;" type="text" id="input" class="form-control"
+                  formControlName="costcenter" disabled></td>
+                  <!-- <ng-container *ngIf="mechbcashortid != null">
+                    <th>BCA Short ID</th>
+                    <td>
+                        <input type="text" id="input" class="form-control" formControlName="mechbcashortid"
+                          disabled></td>
+                  </ng-container> -->
+              </tr>
+              <!-- <tr *ngIf="mechbcashortid != null">
+                <th>BCA Password</th>
+                <td>
+                    <input type="text" id="input" class="form-control" formControlName="mechbcapassword"
+                      disabled>
+                </td>
+              </tr> -->
+            </table>
+          </div>
+          <div class="col-md-6  table-responsive">
+            <table class="table proto-table table-bordered">
+              <tr>
+                <th>Project Name</th>
+                <td> <input type="text" id="input" class="form-control" formControlName="projectname" disabled></td>
+              </tr>
+              <tr>
+                <th>Purpose of Activity</th>
+                <td> <input class="form-control" id="input" type="text" formControlName="storagePurpose" disabled></td>
+              </tr>
+              <tr>
+                <th>Status</th>
+                <td><input class="form-control" id="input" type="text" formControlName="status" disabled></td>
+              </tr>
+              <tr>
+                <th>L4 Remarks</th>
+                <td><textarea style="height: 63px;overflow: auto" class="form-control" id="input" type="text"
+                    formControlName="l4remarks" disabled></textarea></td>
+              </tr>
+              <tr *ngIf="protol4remarks != null">
+                <th>Proto L4 Remarks</th>
+                <td><textarea style="height: 63px;overflow: auto" class="form-control" id="input" type="text"
+                    formControlName="protol4remarks" disabled></textarea></td>
+              </tr>
+              <tr>
+                <th>Activity Description</th>
+                <td> <textarea style="height: 63px;overflow: auto" id="input" class="form-control" type="text"
+                    formControlName="activity" disabled></textarea></td>
+              </tr>
+              <tr *ngIf="supervisorremarks != null">
+                <th>
+                  Supervisor Remarks
+                </th>
+                <td><textarea style="height: 63px;overflow: auto" id="input" class="form-control" type="text"
+                  formControlName="supervisorremarks" disabled></textarea></td>
+              </tr>
+              <tr>
+                
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <h4 style="margin-top: 22px;">Part Details</h4>
+      </div>
+      <div class="col-md-12">
+        <table class="table responsive table-bordered">
+          <thead>
+            <tr class="tableheader">
+              <th>S.No</th>
+              <th style="width: 17%;">Work Category<dot></dot>
+              </th>
+              <th style="width: 23%;">Sub Category<dot></dot>
+              </th>
+              <th>Part Number<dot></dot>
+              </th>
+              <th>Part Description<dot></dot>
+              </th>
+              <th>Vehicle number</th>
+              <th>Quantity<dot></dot>
+              </th>
+              <th>Expected Delivery Date<dot></dot>
+              </th>
+            </tr>
+          </thead>
+          <tbody formArrayName="mswParts">
+            <tr class="tablerow" *ngFor="let part of rowForms.controls;let i =index" [formGroupName]="i">
+              <td style="text-align: center;">{{i+1}}</td>
+              <td style="width: 16%;">
+                <select class="form-control" id="workcatid{{i}}" formControlName="workcategory"
+                  (change)="workcat($event.target.value,i)" disabled>
+                  <option value="null" disabled>Select Work Category</option>
+                  <option value="servicesutilization">Services Utilization</option>
+                  <option value="partfabrication">Part Fabrication</option>
+                </select>
+              </td>
+              <td>
+                  <ng-multiselect-dropdown [placeholder]="'Select Sub Category'" id="select{{i}}"
+                  [(data)]="dropdownList[i]" [(ngModel)]="selectedItems[i]" formControlName="worksubcategory2"
+                  [settings]="dropdownSettings" (onSelect)="onItemSelect($event,i)"
+                  (onSelectAll)="onSelectAll($event,i)" [disabled]="'false'">
+                </ng-multiselect-dropdown>
+              </td>
+              <td>
+                <input class="form-control" type="text" formControlName="partnumber" disabled>
+              </td>
+              <td>
+                <input class="form-control" type="text" formControlName="description" disabled>
+              </td>
+              <td>
+                <input class="form-control" type="text" formControlName="vehicleno" disabled>
+              </td>
+              <td>
+                <input class="form-control" type="text" formControlName="quantity" (keypress)="keyAlpha($event)" disabled>
+              </td>
+              <td>
+                  <input formControlName="startdate" type="text" placeholder="DD/MM/YYYY" class="form-control"
+                    bsDatepicker id="date{{i}}" [minDate]="today"
+                    [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }" disabled>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </form>
+    <div class="row" style="margin:37px 0px 0px 11px">
+      <div class="col-md-12 nopadding" style="margin-bottom: 55px;">
+        <div class="col-md-8 nopadding table-responsive">
+          <h4>Operations</h4>
+          <table id="table" class="table responsive table-bordered">
+            <thead>
+              <tr id="operations">
+                <th class="workcat" style="width: 9%;text-align: center;">S.No</th>
+                <th class="workcat" style="border-right: 1px solid #ebebeb;">Work Category</th>
+                <th class="workcat" style="border-right: 1px solid #ebebeb;">Sub Category</th>
+                <th class="workcat">Operations</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngIf="worksubcategory1 == 'servicesutilization'">
+                <td style="text-align: center;">
+                  <p class="workcat">1</p>
+                </td>
+                <td style="border-right: 1px solid #ffffff;">
+                  <p class="workcat">Services Utilization</p>
+                </td>
+
+                <td style="border-right: 1px solid #ffffff;">
+                  <ng-container *ngFor="let data of servicesutilization; let i=index">
+                    <p class="workcat">{{data.worksubcategory}}</p>
+                  </ng-container>
+                </td>
+                <td>
+                  <ng-container *ngFor="let data of servicesutilization; let i=index">
+                    <p><button class="btn-entires" (click)="showAddEntires(data,'servicesutilization',i)">{{data.technicianDetails.length}}
+                        Entries</button>
+                        <i *ngIf="selectedIndex == i && workcategory == 'servicesutilization'" class="fa fa-caret-right" aria-hidden="true"></i>
+                      </p>
+                  </ng-container>
+                </td>
+
+              </tr>
+              <tr *ngIf="worksubcategory2 == 'partfabrication'">
+                <td style="text-align: center;">
+                  <p class="workcat">{{PartCount}}</p>
+                </td>
+                <td style="border-right: 1px solid #ffffff;">
+                  <p class="workcat">Part Fabrication</p>
+                </td>
+
+                <td style="border-right: 1px solid #ffffff;">
+                  <ng-container *ngFor="let data of partfabrication; let i=index">
+                    <p class="workcat">{{data.worksubcategory}}</p>
+                  </ng-container>
+                </td>
+                <td>
+                  <ng-container *ngFor="let data of partfabrication; let i=index">
+                    <p><button class="btn-entires" (click)="showAddEntires(data,'partfabrication',i)">{{data.technicianDetails.length}} Entries</button>
+                      <i *ngIf="selectedIndex == i && workcategory == 'partfabrication'" class="fa fa-caret-right" aria-hidden="true"></i>
+                    </p>
+                  </ng-container>
+                </td>
+
+              </tr>
+            </tbody>
+          </table>
+          <div class="col-md-12 nopadding" style="text-align: right;" *ngIf="CategorySubmitStatus != 'submitted' &&  CategorySubmitStatus != 'submittedtosupervisor'">
+              <button class="btn-clear" style="margin: 14px 0px 0px 0px;" (click)="SaveCategory(1)">Save as Draft</button>
+              <button class="btn-submit" style="margin: 14px 0px 0px 17px;" (click)="SaveCategory(0)">Submit to Supervisor</button>
+            </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card" id="card" *ngIf="ShowEnires" [formGroup]="addrowForm">
+            <div id="sub-card">
+              <div class="card-header row" style="margin-bottom: 5px;">
+                <div class="col-sm-6">
+                  <p class="workHrs">{{workhoursname}}</p>
+                </div>
+                <div class="col-sm-6" style="text-align: right;" *ngIf="CategorySubmitStatus != 'submitted' &&  CategorySubmitStatus != 'submittedtosupervisor'">
+                  <!-- <button class="addnew"
+                    (click)="CatAddrow()">+
+                   </button> -->
+                    <button class="addnew"
+                    (click)="catSaveRow()">Save</button>
+                  </div>
+              </div>
+              <div class="card-body">
+                <table id="addTable" class="table responsive table-bordered">
+                  <ng-container *ngIf="CategorySubmitStatus != 'submitted' &&  CategorySubmitStatus != 'submittedtosupervisor'">
+                  <tr>
+                    <td style="border: none !important;">
+                      <input id="Catinput" type="text" placeholder="Technician Name" class="form-control"
+                        formControlName="technicianname">
+                    </td>
+                    <td style="border: none !important;width: 2%;"></td>
+                    <td style="border: none !important">
+                      <div style="position: relative;">
+                        <input formControlName="date" type="text" placeholder="DD/MM/YYYY" class="form-control"
+                          bsDatepicker id="adddate" [minDate]="today"
+                          [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }" style="height: 28px;">
+                        <img id="img" src="assets/images/date.svg">
+                      </div>
+                    </td>
+                    <td style="border: none !important;width: 2%;"></td>
+                    <td style="border: none !important;">
+                      <input formControlName="workinghrs" id="Catinput" type="text" placeholder="Working Hours"
+                        class="form-control">
+                    </td>
+                  </tr>
+                  <tr>
+                      <td style="border: none !important;">
+                        <small class="text-danger" *ngIf="
+                              !addrowForm.controls.technicianname.valid &&
+                              addrowForm.controls.technicianname.touched
+                            ">Technician Name is required</small>
+                      </td>
+                      <td style="border: none !important;width: 2%;"></td>
+                      <td style="border: none !important">
+                        <small class="text-danger" *ngIf="
+                            !addrowForm.controls.date.valid &&
+                            addrowForm.controls.date.touched
+                          ">Expected Delivery Date is required</small>
+                      </td>
+                      <td style="border: none !important;width: 2%;"></td>
+                      <td style="border: none !important;">
+                        <small class="text-danger" *ngIf="
+                            !addrowForm.controls.workinghrs.valid &&
+                            addrowForm.controls.workinghrs.touched
+                          ">Working Hours is required</small>
+                      </td>
+                    </tr>
+                  <tr>
+                    <td colspan="6" style="border: none !important;padding: 4px;"></td>
+                  </tr>
+                </ng-container>
+                  <ng-container *ngFor="let data of WorkHoursArray;let i=index">
+                    <tr>
+                      <td style="border: none !important;">
+                          <input disabled type="text" placeholder="Technician Name" class="form-control"
+                          value="{{data.technicianname}}" style="height: 28px;" style="height: 28px;padding: 0px 14px 0px 5px;">
+                        <!-- <p class="form-control oprs">{{data.technicianname}}</p> -->
+                      </td>
+                      <td style="border: none !important;width: 2%;"></td>
+                      <td style="border: none !important">
+                        <div style="position: relative;">
+                            <input disabled  type="text" placeholder="DD/MM/YYYY" class="form-control"
+                            bsDatepicker [minDate]="today" value="{{data.date}}"
+                            [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }" style="height: 28px;padding: 0px 14px 0px 5px;">
+
+                            <!-- <p class="form-control oprs">{{data.date}}</p>
+                          <img style="top: 6px;" id="img" src="assets/images/date.svg"> -->
+                        </div>
+                      </td>
+                      <td style="border: none !important;width: 2%;"></td>
+                      <td style="border: none !important;">
+                          <input disabled  type="text" placeholder="Working Hours"
+                          class="form-control" value="{{data.workinghrs}}" style="height: 28px;padding: 0px 14px 0px 5px;">
+                        <!-- <p class="form-control oprs">{{data.workinghrs}}</p> -->
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colspan="6" style="border: none !important;padding: 4px;"></td>
+                    </tr>
+                  </ng-container>
+                </table>
+              </div>
+            </div>
+            <p class="closecat"><span (click)="addrowClose()">Close <b>x</b></span></p>
+          </div>
+        </div>
+      </div>
+      <div class="row" style="margin: 0px 0px 39px 11px;">
+
+        <div class="col-md-4"></div>
+      </div>
+    </div>
+</div>
+</div>

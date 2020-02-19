@@ -1,0 +1,293 @@
+<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 ">
+
+  <div class="col-md-12 box1">
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9 text-center"></div>
+      <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 text-center">
+        <input type="text" class="form-control" placeholder="  Search  " name="search"
+          (input)="search($event.target.value)" #valsearchuser autocomplete="off"><i class="fa fa-search search"></i>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-1 col-lg-1 text-center">
+        <div class="input-style">
+          <button type="button" class="btn btn-default btn-md pull-right text-white" (click)="adduser()">
+            <i class="fa fa-plus-circle"> Add</i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-12 col-xs-12 col-md-12 col-lg-12 table-responsive pointer " style="margin-top:10px;">
+    <ng-container *ngIf="allusers?.length!=0">
+      <table style="width:100%" class="table-bordered">
+        <thead style="    background-color: #ececec;">
+          <tr class="text-center">
+            <th>S.No</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+
+            <th>Email</th>
+            <th>Short ID</th>
+            <!-- <th>Team</th> -->
+            <th>User Type</th>
+            <th>Edit</th>
+            <th style="width: 10%;">Active / Inactive</th>
+            <!-- <th>Delete</th> -->
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="text-center"
+            *ngFor="let data of allusers | paginate: { itemsPerPage: 10, currentPage: p1,id: 'two'};let index=index">
+            <td>{{((p1- 1) * 10 + index+1)}}</td>
+            <td> {{(data?.firstname != null) ? data?.firstname : '-' }} </td>
+            <td> {{(data?.lastname != null) ? data?.lastname : '-' }} </td>
+
+            <td> {{(data?.email != null) ? data?.email : '-' }} </td>
+            <td> {{(data?.shortid != null) ? data?.shortid : '-' }} </td>
+            <td>
+              <ng-container *ngIf="data?.usertype == 'ipl'">
+                IPL
+              </ng-container>
+              <ng-container *ngIf="data?.usertype == 'sm'">
+                SM
+              </ng-container>
+              <ng-container *ngIf="data?.usertype == 'tcplate'">
+                TC Plate Coordinator
+              </ng-container>
+              <ng-container *ngIf="data?.usertype == 'budgetapprover'">
+                Budget Approver
+              </ng-container>
+              <ng-container *ngIf="data?.usertype == 'L2'">
+                L2
+              </ng-container>
+              <ng-container *ngIf="data?.usertype == 'L3'">
+                L3
+              </ng-container>
+              <ng-container *ngIf="data?.usertype == 'L4'">
+                L4
+              </ng-container>
+              <ng-container *ngIf="data?.usertype == 'ProtoL3'">
+                Proto L3
+              </ng-container>
+              <ng-container *ngIf="data?.usertype == 'ProtoL4'">
+                Proto L4
+              </ng-container>
+              <ng-container *ngIf="data?.usertype == 'DeputyProtoL3'">
+                Deputy Proto L3
+              </ng-container>
+              <ng-container *ngIf="data?.usertype == 'DeputyProtoL4'">
+                Deputy Proto L4
+              </ng-container>
+              <ng-container *ngIf="data?.usertype == 'partsplanner'">
+                Parts Planner
+              </ng-container>
+              <ng-container *ngIf="data?.usertype == 'store'">
+                Store
+              </ng-container>
+              <ng-container *ngIf="data?.usertype == 'protovehicleowner'">
+                Proto Vehicle Owner
+              </ng-container>
+              <ng-container *ngIf="data?.usertype == 'mdtsupervisor'">
+                MDT Supervisor
+              </ng-container>
+              <ng-container *ngIf="data?.usertype == 'hdtsupervisor'">
+                HDT Supervisor
+              </ng-container>
+              <ng-container *ngIf="data?.usertype == 'eandesupervisor'">
+                E&E Supervisor
+              </ng-container>
+              <ng-container *ngIf="data?.usertype == 'ppssupervisor'">
+                PPS Supervisor
+              </ng-container>
+              <ng-container *ngIf="data?.usertype == 'maintenancesupervisor'">
+                Maintenance Supervisor
+              </ng-container>
+              <ng-container *ngIf="data?.usertype == 'mechanicalsupervisor'">
+                Mechanical Supervisor
+              </ng-container>
+              <ng-container *ngIf="data?.usertype == 'aggregatesupervisor'">
+                Aggregate Supervisor
+              </ng-container>
+              <ng-container *ngIf="data?.usertype == 'imcs'">
+               IMCS
+              </ng-container>
+
+            </td>
+
+            <td>
+              <button type="button" class="btn btn-sm btn-primary"
+                (click)="edituser((p1- 1) * 10 + index)">Edit</button>
+            </td>
+            <!-- <td>
+                <button type="button" class="btn btn-sm btn-danger" (click)="deleteuser((p1- 1) * 10 + index)">Delete</button>
+              </td> -->
+              <td>
+                <ng-container *ngIf="data.isactive == 1">
+                  <label class="switch"><input type="checkbox" id="togBtn{{i}}" (change)="disableuser('inactivated',$event.target.checked,index,data.id)" checked>
+                    <div class="slider round">
+                      <span class="on"></span><span class="off"></span>
+                    </div>
+                  </label>
+              </ng-container>
+                <ng-container  *ngIf="data.isactive == 0">
+                    <label class="switch"><input type="checkbox" id="togBtn{{i}}" (change)="disableuser('activated',$event.target.checked,index,data.id)">
+                      <div class="slider round">
+                        <span class="on"></span><span class="off"></span>
+                      </div>
+                    </label>
+                </ng-container>
+              </td>
+          </tr>
+        </tbody>
+      </table>
+      <br><br>
+      <pagination-controls style="text-align: right;" (pageChange)="p1 = $event" #api id="two">
+      </pagination-controls>
+    </ng-container>
+    <h4 *ngIf="allusers?.length==0" class="text-center">No user created yet.</h4>
+    <br>
+  </div>
+</div>
+<div class="modal fade" id="adduser" role="dialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">{{modalname}} User</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-12">
+            <form [formGroup]="addORedituserForm">
+              <div class="row">
+                <div class="col-md-8">
+                  <div class="form-group">
+                    <label for="email" class="editmodal">Short ID</label>
+                    <input type="text" class="form-control " formControlName="shortid" maxlength="40" autocomplete="off"
+                      id="adduname" placeholder="Enter Short ID ">
+                    <small class="text-danger"
+                      *ngIf="!addORedituserForm.controls.shortid.valid && addORedituserForm.controls.shortid.touched">Short
+                      ID is invalid (Min 3 and Special Characters are not allowed)</small>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <button class="btn btn-default form-control" (click)="searchUser()" style="margin-top: 25px;">
+                    Search
+                  </button>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="usr">First Name:</label>
+                <input type="text" readonly class="form-control" formControlName="firstname" placeholder="First Name">
+                <small class="text-danger"
+                  *ngIf="!addORedituserForm.controls.firstname.valid && addORedituserForm.controls.firstname.touched">
+                  Name is invalid </small>
+              </div>
+              <div class="form-group">
+                <label for="usr">Last Name:</label>
+                <input type="text" readonly class="form-control" formControlName="lastname" placeholder="Last Name">
+                <small class="text-danger"
+                  *ngIf="!addORedituserForm.controls.lastname.valid && addORedituserForm.controls.lastname.touched">
+                  Name is invalid </small>
+              </div>
+              <div class="form-group">
+                <label for="email" class="editmodal">E-mail</label>
+                <input type="email" readonly class="form-control" formControlName="email" autocomplete="off"
+                  placeholder="E-mail">
+                <small class="text-danger"
+                  *ngIf="!addORedituserForm.controls.email.valid && addORedituserForm.controls.email.touched">
+                  Email is invalid</small>
+              </div>
+
+              <!-- <div class="form-group">
+                      <label for="regionselect2" class="editmodal">Team:</label>
+                      <select id="regionselect2" class="form-control" formControlName="teamid">
+                        <option value=null selected disabled> Select Team </option>
+                        <ng-container *ngFor="let data of allteams">
+                            <option value={{data.id}}> {{data.name}} </option>
+                        </ng-container>
+                      </select>
+                      <small class="text-danger" *ngIf="!addORedituserForm.controls.teamid.valid && addORedituserForm.controls.teamid.touched">
+                        Team is required</small>
+                    </div> -->
+              <div class="form-group">
+                <label for="usr">User type:</label>
+                <select id="regionselect" class="form-control" formControlName="usertype">
+                  <option Value=null selected disabled> Select User type </option>
+                  <!-- <option Value='Requester'> Requester </option>
+                      <option Value='Processor'> Processor </option> -->
+                  <option Value='sm'> SM </option>
+                  <option Value='store'> Store </option>
+                  <option Value='L2'> L2 </option>
+                  <option Value='L3'> L3 </option>
+                  <option Value='L4'> L4 </option>
+                  <!-- <option Value='ProtoL2'>Proto L2 </option> -->
+                  <option Value='ProtoL3'>Proto L3 </option>
+                  <option Value='ProtoL4'>Proto L4 </option>
+                  <!-- <option value="DeputyProtoL2">Deputy Proto L2</option> -->
+                  <option value="DeputyProtoL3">Deputy Proto L3</option>
+                  <option value="DeputyProtoL4">Deputy Proto L4</option>
+                  <!-- <option Value='requester'> Requester </option> -->
+                  <option Value='budgetapprover'> Budget Approver </option>
+                  <option Value='partsplanner'> Parts Planner </option>
+                  <option Value='ipl'> IPL </option>
+                  <option value="protovehicleowner">Proto Vehicle Owner</option>
+                  <option value="hdtsupervisor">HDT Supervisor</option>
+                  <option value="mdtsupervisor">MDT Supervisor</option>
+                  <option value="aggregatesupervisor">Aggregate Supervisor</option>
+                  <option value="eandesupervisor">E&E Supervisor</option>
+                  <option value="ppssupervisor">PPS Supervisor</option>
+                  <option value="maintenancesupervisor">Maintenance Supervisor</option>
+                  <option value="mechanicalsupervisor">Mechanical Supervisor</option>
+                  <option value="imcs">IMCS</option>
+                  <option value="tcplate">TC Plate Coordinator</option>
+                  <!-- <option Value="Admin"> Admin </option>
+                      <option Value="Business admin"> Business admin </option>
+                      <option Value="Requester"> Requester </option>
+                      <option Value="Processor"> Processor </option>
+                      <option Value="SM"> SM </option>
+                      <option Value='User'> User </option> -->
+                </select>
+                <small class="text-danger"
+                  *ngIf="!addORedituserForm.controls.usertype.valid && addORedituserForm.controls.usertype.touched">
+                  User type is required</small>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-success" (click)="confirmAdduser()">Submit</button>
+        <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal">Cancel </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Active/Inactive modal -->
+
+<div class="modal fade" id="disableenableuser" role="dialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-10">
+              <p class="modalHeader"><b>{{modal}}</b></p>
+          </div>
+          <div class="col-md-2">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <br>
+          <div class="col-md-12">
+              <p> Are you sure want to {{head}} the user?</p>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-sm btn-primary new-ticket" data-dismiss="modal" (click)="cancelsisable()">No </button>
+        <button type="button" class="btn btn-sm btn-primary new-ticket" (click)="confirmdisableenableuser()">Yes</button>
+      </div>
+    </div>
+  </div>
+</div>

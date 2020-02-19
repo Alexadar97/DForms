@@ -1,0 +1,301 @@
+<app-spinner *ngIf="loading"></app-spinner>
+<div class="col-md-2" style="padding: 0;
+background-color: #242536; height: 100vh;">
+<div style="margin-top: 15px;">
+  <p class="sidetext" (click)="pmlists()"  routerLinkActive="active" ><i class="fa fa-angle-double-right"></i>&nbsp;&nbsp;Machine Shop Work List</p>
+    <p class="sidetext" (click)="addpmwork()"routerLinkActive="active" ><i class="fa fa-plus"></i>&nbsp;&nbsp;New
+                Request</p>
+     
+                <!-- <p  (click)="Material_master()"
+                *ngIf="usertype == 'mechanicalsupervisor'">Material Cost Master</p> -->
+    </div>
+</div>
+<div class="col-md-10">
+<div class="row">
+  <div class="col-md-10">
+    <h4>Machine Shop Work</h4>
+  </div>
+  <div class="col-md-2" style="padding-right: 30px;">
+  </div>
+</div>
+<form [formGroup]="pmworkreqform" style="padding: 10px;width: 100%;">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="form-group">
+        Project Name<dot></dot>
+        <input type="text" class="form-control" id="Project" formControlName="projectname" disabled>
+        <small class="text-danger" *ngIf="
+                                          !pmworkreqform.controls.projectname.valid &&
+                                          pmworkreqform.controls.projectname.touched
+                                        ">Project is required</small>
+      </div>
+
+    </div>
+    <div class="col-md-3">
+      <div class="form-group">
+        Purpose of Activity<dot></dot>
+        <input class="form-control" type="text" formControlName="storagePurpose" disabled>
+      </div>
+      <small class="text-danger" *ngIf="
+      !pmworkreqform.controls.storagePurpose.valid &&
+      pmworkreqform.controls.storagePurpose.touched
+    ">Purpose of Activity is required</small>
+    </div>
+
+    <div class="col-md-3">
+      <div class="form-group  text-field">
+        Approver L4<dot></dot>
+        <select class="form-control" formControlName="l4" disabled>
+          <option value=null selected disabled>Select Approver L4 </option>
+          <option value="{{data.shortid}}" *ngFor="let data of l4ProtoUsers">{{data.firstname}} {{data.lastname}}
+          </option>
+        </select>
+      </div>
+      <small class="text-danger" *ngIf="
+          !pmworkreqform.controls.l4.valid &&
+          pmworkreqform.controls.l4.touched
+        "> L4 is required</small>
+    </div>
+    <div class="col-md-3">
+    <div class="form-group">
+      Cost Center<dot></dot>
+      <input type="text" class="form-control" id="costcenter" formControlName="costcenter" disabled>
+      <small class="text-danger" *ngIf="
+                                        !pmworkreqform.controls.costcenter.valid &&
+                                        pmworkreqform.controls.costcenter.touched
+                                      ">Cost Center is required</small>
+    </div>
+  </div>
+  </div>
+  <div class="row">
+    <div class="col-md-3">
+      <div class="form-group">
+        Activity Description<dot></dot>
+        <textarea style="height: 63px;" class="form-control" type="text" formControlName="activity" disabled></textarea>
+      </div>
+      <small class="text-danger" *ngIf="
+            !pmworkreqform.controls.activity.valid &&
+            pmworkreqform.controls.activity.touched
+          ">Activity Description is required</small>
+    </div>
+    <div class="col-md-4">
+      <div class="row">
+        <div class="col-sm-5">
+          <div class="form-group" style="padding: 7px 0px 0px 0px;">
+            <label>CAD<dot></dot></label>
+            <div class="radio-group">
+              <label class="control control--radio">Yes
+                <input type="radio" id="value1" value=1 formControlName="iscad"
+                  (change)="aodrawyes($event.target.value)" disabled />
+                <div class="control__indicator"></div>
+              </label>
+              <label class="control control--radio">No
+                <input type="radio" id="value2" value=0 formControlName="iscad"
+                  (change)="aodrawyes($event.target.value)" disabled />
+                <div class="control__indicator"></div>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-7">
+          <div class="form-group" style="padding: 3px 0px 0px 0px;">
+            <label *ngIf="aono" style="font-size: 13px;width: 130px;font-weight: 600;">CAD Attachment Files
+              <!-- <br>
+              <label class="btn btn-sm btn-primary" for="aonofield">Select Multiple Files</label>
+              <input class="form-control" id="aonofield" type="file" #aodrawupload accept=".xlsx,.xls,.pdf"
+                (change)="uploadfile($event)" multiple disabled></label>
+            <label *ngIf="aoyes" id="card_desc">
+              <input id="cadtext" class="form-control" type="text" formControlName="cadtext" disabled> -->
+            </label>
+            <label *ngIf="aoyes" id="card_desc">
+                <label style="margin: 0px;">Remarks<dot></dot></label>
+                <textarea id="cadtext" class="form-control" type="text" formControlName="cadtext" style="width: 304px;height: 63px;" disabled></textarea>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="form-group" style="padding: 7px 0px 0px 0px;">
+        <div *ngIf="aono" style="height: 14vh;overflow: auto;">
+          <table>
+                  <section>
+                    <table>
+                      <ng-container *ngFor="let fileList of pmwrFileListData">
+                        <tr>
+                          <td style="border: none;padding:0px 0px 10px 0px">{{fileList.filename}}</td>
+                          <td style="border: none;padding:0px 0px 10px 0px;width: 8%"><i class="fa fa-download" (click)="downlaodfile(fileList.filename+'.'+fileList.fileformat ,fileList.id)"
+                              style="font-size: 15px;color: #130f0fb5;cursor: pointer;"></i></td>
+                        </tr>
+                      </ng-container>
+                  </table>
+                        </section>
+          </table>
+      </div>
+      </div>
+    </div>
+    <div class="col-md-1"></div>
+  </div>
+  <hr>
+  <div class="row">
+    <div class="col-md-12">
+      <table class="table responsive table-bordered">
+        <thead>
+          <tr class="tableheader">
+            <th>S.No</th>
+            <th style="width: 14%;">Work Category<dot></dot>
+            </th>
+            <th style="width: 19%;">Sub Category<dot></dot>
+            </th>
+            <th>Part Number<dot></dot>
+            </th>
+            <th>Part Description<dot></dot>
+            </th>
+            <th>Vehicle number</th>
+            <th>Quantity<dot></dot>
+            </th>
+            <th>Expected Delivery Date<dot></dot>
+            </th>
+            <!-- <th>Delete</th> -->
+          </tr>
+        </thead>
+        <tbody formArrayName="mswParts">
+          <tr class="tablerow" *ngFor="let part of rowForms.controls;let i =index" [formGroupName]="i">
+            <td style="text-align: center;">{{i+1}}</td>
+            <td>
+              <select class="form-control" id="workcatid{{i}}" formControlName="workcategory"
+                (change)="workcat($event.target.value,i)" disabled>
+                <option value="null" disabled>Select Work Category</option>
+                <option value="servicesutilization">Services Utilization</option>
+                <option value="partfabrication">Part Fabrication</option>
+              </select>
+            </td>
+            <td>
+              <!-- <ng-multiselect-dropdown [placeholder]="'Select Sub Category'" id="select{{i}}" [(data)]="dropdownList[i]"
+                [(ngModel)]="selectedItems[i]" formControlName="worksubcategory" [settings]="dropdownSettings"
+                (onSelect)="onItemSelect($event,i)" (onSelectAll)="onSelectAll($event,i)" disabled>
+              </ng-multiselect-dropdown> -->
+              <ng-multiselect-dropdown [placeholder]="'Select Sub Category'" id="select{{i}}"
+              [(data)]="dropdownList[i]" [(ngModel)]="selectedItems[i]" formControlName="worksubcategory2"
+              [settings]="dropdownSettings" (onSelect)="onItemSelect($event,i)"
+              (onSelectAll)="onSelectAll($event,i)" [disabled]="'false'">
+            </ng-multiselect-dropdown>
+            </td>
+            <td>
+              <input class="form-control" type="text" formControlName="partnumber" disabled>
+            </td>
+            <td>
+              <input class="form-control" type="text" formControlName="description" disabled>
+            </td>
+            <td>
+              <input class="form-control" type="text" formControlName="vehicleno" disabled>
+            </td>
+            <td>
+              <input class="form-control" type="text" formControlName="quantity" (keypress)="keyAlpha($event)" disabled>
+            </td>
+            <td>
+                  <input formControlName="startdate" type="text" placeholder="DD/MM/YYYY" class="form-control" bsDatepicker
+                  id="date{{i}}" [minDate]="today" [bsConfig]="{ adaptivePosition: true,dateInputFormat: 'DD-MM-YYYY' }">
+                  <small class="text-danger" *ngIf="
+                  !part.controls.startdate.valid &&
+                  part.controls.startdate.touched
+                ">Expected Delivery Date is required</small>
+            </td>
+            <!-- <td class="text-center"> <button *ngIf="rowForms.controls.length >1" class="btn btn-default"
+                (click)="deleteRow(i)"><i class="fas fa-trash"></i></button> </td> -->
+          </tr>
+     
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <!-- <ng-container *ngIf="(Mechusertype == 'requester' || Mechusertype == '') && (isreqapproved == 0 && Protostatus == 'mechsupervisorapproved')">
+  <div class="row">
+  <div class="col-md-9"></div>
+  <div class="col-md-3" [formGroup]="remarkForm">
+    <div class="form-group">
+      Remarks<dot></dot>
+      <textarea type="text" class="form-control" id="Project" formControlName="remark"></textarea>
+      <small class="text-danger" *ngIf="
+                                          !remarkForm.controls.remark.valid &&
+                                          remarkForm.controls.remark.touched
+                                        ">Remarks is required</small>
+    </div>
+  </div>
+</div>
+</ng-container> -->
+<ng-container *ngIf="Mechusertype == 'protoL4' || Mechusertype == 'L4'">
+    <div class="row">
+        <div class="col-md-9"></div>
+        <div class="col-md-3" [formGroup]="remarkForm">
+          <div class="form-group">
+            Remarks<dot></dot>
+            <textarea type="text" class="form-control" id="Project" formControlName="remark"></textarea>
+            <small class="text-danger" *ngIf="
+                                                !remarkForm.controls.remark.valid &&
+                                                remarkForm.controls.remark.touched
+                                              ">Remarks is required</small>
+          </div>
+        </div>
+      </div>
+</ng-container>
+</form>
+
+<div class="col-md-12" style="text-align: right;margin: 20px 0px;">
+  <ng-container *ngIf="(Mechusertype == 'requester' || Mechusertype == '') && ((isreqapproved == 0) && (Protostatus != 'mechsupervisorapproved' && Protostatus != 'protol4approved'))">
+      <button style="background: green;border:none;width:100px;" class="btn btn-primary btn-md"
+      (click)="updateData(1)">
+      <i class="fa fa-check"></i>&nbsp;&nbsp;Approve</button>
+    &nbsp;&nbsp;&nbsp;
+    <button style="background: #c9302c;border:none;width:100px;" class="btn btn-primary btn-md"
+      (click)="updateData(0)"><i class="fa fa-times"></i>&nbsp;&nbsp;Reject</button>
+  </ng-container>
+  <ng-container *ngIf="Mechusertype == 'protoL4' || Mechusertype == 'L4'">
+      <button style="background: green;border:none;width:100px;" class="btn btn-primary btn-md"
+      (click)="updateData(1)">
+      <i class="fa fa-check"></i>&nbsp;&nbsp;Approve</button>
+    &nbsp;&nbsp;&nbsp;
+    <button style="background: #c9302c;border:none;width:100px;" class="btn btn-primary btn-md"
+      (click)="updateData(0)"><i class="fa fa-times"></i>&nbsp;&nbsp;Reject</button>
+  </ng-container>
+  <ng-container *ngIf="(exigencycase == 0 || exigencycase == 1) && (Protostatus == 'protol4approved' || Protostatus == 'mechsupervisorapproved')">
+      <button class="btn btn-primary btn-md"
+      (click)="submitForm()">Submit</button>
+  </ng-container>
+</div>
+
+<!-- <div class="col-md-12" style="text-align: right;margin: 20px 0px;">
+ 
+</div> -->
+</div>
+
+
+
+
+
+<!-- confirm modal -->
+
+<div class="modal fade" id="confirmSubmit" role="dialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-10">
+            <p class="modalHeader" style="font-weight: 600;">Submit</p>
+          </div>
+          <div class="col-md-2">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <br>
+          <div class="col-md-12">
+            <p> Are you sure to submit the form ?</p>
+          </div>
+        </div>
+      </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-sm btn-primary" data-dismiss="modal">No </button>
+      <button type="button" class="btn btn-sm btn-primary" (click)="updateData(1)">Yes</button>
+    </div>
+  </div>
+  </div>
+</div>

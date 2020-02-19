@@ -1,0 +1,126 @@
+<div class="row" style="    margin: 30px 0 30px 0;">
+    <div class="col-md-12">
+            <div class="card">
+                <div class="col-md-5">
+                    <h5>Overall Trend</h5>
+                </div>
+                <div class="col-md-3">
+                </div>
+                <div class="col-md-4"></div>
+                <div [chart]="waterfallchart1" class="chartbody" id="waterfall1"></div>
+        </div>
+    </div>
+    <div class="col-md-12" style="margin-top:20px;padding: 0px;">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="col-md-5">
+                    <h5>Requester Yearly Trend</h5>
+                </div>
+                <div class="col-md-3">
+                    <select id="year" class="form-control selectbox" (change)="selectYear($event.target.value)">
+                        <ng-container *ngFor="let data of yearlist; let i=index">
+                            <option value={{data}}>{{data}}</option>
+                        </ng-container>
+                      
+                    </select>
+                </div>
+                <div class="col-md-4"></div>
+                <div [chart]="barchart" id="barchart"></div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="col-md-12" style="padding: 0px;">
+                    <div class="col-md-4" style="text-align: center;">
+                        <h5 >Requester Data</h5>
+                    </div>
+                    <div class="col-md-5" style="padding: 0px;">
+                        <p class="sub-head">Select Duration</p>
+                      
+                        <input class="form-control" bsDaterangepicker id="rangedagte" type="text" style="font-size: 12px;height: 25px;"
+                        [bsConfig]="bsConfig" [(ngModel)]="bsRangeValue"
+                        (bsValueChange)="SelectDate($event)" />
+                
+                    </div>
+                    <div class="col-md-3" style="padding: 0px;text-align: center;">
+                        <p class="sub-head">Exigency</p>
+                        <label for="yes"style=" font-size: 12px;">Yes</label>&nbsp;
+                        <input type="radio" id="yes" checked (click)="dateRadio($event.target.value)" value="yes" name="DateExi">&nbsp;
+                        <label for="no" style=" font-size: 12px;">No</label>&nbsp;
+                        <input type="radio" id="no" name="DateExi" (click)="dateRadio($event.target.value)" value="no">
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div [chart]="barChartTrend1" id="Trend-1"></div>
+                    <p>Total Requester</p>
+                </div>
+                <div class="col-md-7">
+                <div [chart]="piechart1" id="piechart1-1"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12" style="margin: 0px 0 10px 0;padding: 0px;">
+        <div class="col-md-6" style="margin-top:20px;">
+            <div class="card">
+                <div class="col-md-12" style="padding: 0px;">
+                    <div class="col-md-5" style="text-align: center;">
+                        <h5 >Project Vs Total cost of STO</h5>
+                    </div>
+                    <div class="col-md-4" style="padding: 0px;">
+                  <select class="form-control selectbox">
+                      <option></option>
+                  </select>
+                    </div>
+                    <div class="col-md-3" style="padding: 0px;text-align: center;">
+                        <p class="sub-head">Exigency</p>
+                        <label for="yes"style=" font-size: 12px;">Yes</label>&nbsp;
+                        <input type="radio" id="yes">&nbsp;
+                        <label for="no" style=" font-size: 12px;">No</label>&nbsp;
+                        <input type="radio" id="no">
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div [chart]="barChartTrend2" id="Trend-2"></div>
+                    <p>Total Requester</p>
+                </div>
+                <div class="col-md-7">
+                    <div [chart]="piechart2" id="piechart2-1"></div>
+                </div>
+            </div>
+           
+        </div>
+        <div class="col-md-6" style="margin-top:20px;">
+            <div class="card">
+                <div class="col-md-12" style="padding: 0px;">
+                    <div class="col-md-5" style="text-align: center;">
+                        <h5 >Department Vs Total no of request</h5>
+                    </div>
+                    <div class="col-md-4" style="padding: 0px;">
+                  <select class="form-control selectbox" (change)="Department($event.target.value)">
+                      <option value = null selected disabled>Select Department</option>
+                      <ng-container *ngFor="let data of departmentData">
+                      <option value="{{data}}">{{data}}</option>
+                      </ng-container>
+                  </select>
+                    </div>
+                    <div class="col-md-3" style="padding: 0px;text-align: center;">
+                        <p class="sub-head">Exigency</p>
+                        <label for="yes"style=" font-size: 12px;cursor:pointer" >Yes</label>&nbsp;
+                        <input type="radio" id="yes" checked name="depexi" (change)="deptexigency($event.target.value)" value="yes">&nbsp;
+                        <label for="no" style=" font-size: 12px;cursor:pointer">No</label>&nbsp;
+                        <input type="radio" id="no" name="depexi" (change)="deptexigency($event.target.value)" value="no">
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div [chart]="barChartTrend3" id="Trend-3"></div>
+                    <p>Total Requester</p>
+                </div>
+                <div class="col-md-7">
+                    <div [chart]="piechart3" id="piechart3-1"></div>
+                </div>
+            </div>
+          
+        </div>
+    </div>
+</div>

@@ -1,0 +1,216 @@
+<app-spinner *ngIf="loading"></app-spinner>
+<br>
+<div class="row">
+    <div class="col-md-4">
+        <h4>Finas Work Order</h4>
+    </div>
+    <div class="col-md-6"></div>
+    <div class="col-md-2" style="padding-right: 40px;">
+        <button class="btn btn-default" style="float:right" (click)="goBack()"><i
+                class="icon-chevron-left"></i>&nbsp;&nbsp;Back</button>
+    </div>
+</div>
+<div class="container">
+    <form [formGroup]="form">
+        <div class="row" id="marginbottom">
+            <div class="col-md-12">
+                <h5>Vehicle Ctegory</h5>
+            </div>
+        </div>
+        <div class="row" id="margin">
+            <div class="col-md-2">
+                <label class="checkboxdesign">LDT
+                    <input type="checkbox" value="" formControlName="vehicle">
+                    <span class="checkmark"></span>
+                </label>
+            </div>
+            <div class="col-md-2">
+                <label class="checkboxdesign">MDT
+                    <input type="checkbox" value="" formControlName="vehicle">
+                    <span class="checkmark"></span>
+                </label>
+            </div>
+            <div class="col-md-2">
+                <label class="checkboxdesign">HDT
+                    <input type="checkbox" value="" formControlName="vehicle">
+                    <span class="checkmark"></span>
+                </label>
+            </div>
+            <!-- <div class="row">
+                    <small class="text-danger errormsg" *ngIf="
+                    !form.controls.vehicle.valid &&
+                    form.controls.vehicle.touched
+                  ">Object/Vehicle Finas ID is required</small>
+                </div> -->
+        </div>
+        <div class="row" id="marginbottom">
+            <div class="col-md-12">
+                <h5>Object Ctegory</h5>
+            </div>
+        </div>
+        <div class="row" id="margin">
+            <div class="col-md-2">
+                <label class="checkboxdesign">Cabin
+                    <input type="checkbox" value="" >
+                    <span class="checkmark"></span>
+                </label>
+            </div>
+            <div class="col-md-2">
+                <label class="checkboxdesign">Engine
+                    <input type="checkbox" value="" >
+                    <span class="checkmark"></span>
+                </label>
+            </div>
+            <div class="col-md-2">
+                <label class="checkboxdesign">Axle
+                    <input type="checkbox" value="" >
+                    <span class="checkmark"></span>
+                </label>
+            </div>
+            <div class="col-md-2">
+                <label class="checkboxdesign">Trans
+                    <input type="checkbox" value="" >
+                    <span class="checkmark"></span>
+                </label>
+            </div>
+        </div>
+        <div class="row" id="marginbottom">
+            <div class="col-md-12">
+                <h5>Work Ctegory</h5>
+            </div>
+        </div>
+        <div class="row" id="margin">
+            <div class="col-md-2">
+                <label class="checkboxdesign">Vehicle Rebuild
+                    <input type="checkbox" value="" >
+                    <span class="checkmark"></span>
+                </label>
+            </div>
+            <div class="col-md-2">
+                <label class="checkboxdesign">Schedule
+                    <input type="checkbox" value="" >
+                    <span class="checkmark"></span>
+                </label>
+            </div>
+            <div class="col-md-2">
+                <label class="checkboxdesign">Trail
+                    <input type="checkbox" value="" >
+                    <span class="checkmark"></span>
+                </label>
+            </div>
+            <div class="col-md-2">
+                <label class="checkboxdesign">Repairs
+                    <input type="checkbox" value="">
+                    <span class="checkmark"></span>
+                </label>
+            </div>
+            <div class="col-md-2">
+                <label class="checkboxdesign">Others
+                    <input type="checkbox" value="" >
+                    <span class="checkmark"></span>
+                </label>
+            </div>
+        </div>
+        <div class="row">
+
+
+            <div class="col-md-5" id="margin">
+
+                <h5>Object/Vehicle Finas ID
+                <dot></dot></h5>
+                <input type="text" class="form-control" value="" formControlName="Object">
+
+                <small class="text-danger errormsg" *ngIf="
+                    !form.controls.Object.valid &&
+                    form.controls.Object.touched
+                  ">Object/Vehicle Finas ID is required</small>
+            </div>
+            <div class="col-md-7">
+
+            </div>
+        </div>
+        <div class="row">
+
+
+            <div class="col-md-5" id="margin">
+
+                    <h5>Vehicle No
+                <dot></dot></h5>
+                <input type="text" class="form-control" value="" formControlName="VehilceNo">
+
+                <small class="text-danger errormsg" *ngIf="
+                        !form.controls.VehilceNo.valid &&
+                        form.controls.VehilceNo.touched
+                      "> VehicleNo is Required</small>
+            </div>
+            <div class="col-md-7">
+
+            </div>
+        </div>
+        <div class="row">
+
+
+            <div class="col-md-5" id="margin">
+
+                    <h5> Vehicle KM
+                <dot></dot></h5>
+                <input type="text" class="form-control" value="" formControlName="Vehilcekm">
+
+                <small class="text-danger errormsg" *ngIf="
+                            !form.controls.Vehilcekm.valid &&
+                            form.controls.Vehilcekm.touched
+                          "> Vehicle KM is Required</small>
+            </div>
+            <div class="col-md-7">
+
+            </div>
+        </div>
+        <div class="row">
+
+
+            <div class="col-md-5" id="margin">
+
+                    <h5>Vehicle Owner Name
+                <dot></dot></h5>
+                <input type="text" class="form-control" value="" formControlName="VehilceOwner">
+
+                <small class="text-danger errormsg" *ngIf="
+                                !form.controls.VehilceOwner.valid &&
+                                form.controls.VehilceOwner.touched
+                              "> VehicleOwner Name is Required</small>
+            </div>
+            <div class="col-md-7">
+
+            </div>
+        </div>
+        <div class="row">
+
+
+            <div class="col-md-5" id="margin">
+
+                    <h5>Vehicle Due Date
+                <dot></dot></h5>
+                <input type="text" class="form-control" value="" formControlName="VehilceDue">
+
+                <small class="text-danger errormsg" *ngIf="
+                                    !form.controls.VehilceDue.valid &&
+                                    form.controls.VehilceDue.touched
+                                  "> VehicleDue Date is Required</small>
+            </div>
+            <div class="col-md-7">
+
+            </div>
+        </div>
+
+    </form>
+</div>
+<div class="row" style="
+padding: 10px;
+width: 100%;">
+    <div style="text-align: right;margin:20px 0px;">
+
+        <button class="btn btn-primary btn-md"  style=""><i
+                class="icon-save"></i>&nbsp;&nbsp;Submit</button>
+
+    </div>
+</div>
